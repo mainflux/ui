@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-xxl-3">
+    <nb-card status="info">
+      <nb-card-header>
+        {{ thingsNumber }} &nbsp; Things
+      </nb-card-header>
+    </nb-card>
+  </div>
+
+  <div class="col-xxl-3">
+    <nb-card status="success">
+      <nb-card-header>
+        {{ loraDevicesNumber }} &nbsp; LoRa Devices
+      </nb-card-header>
+    </nb-card>
+  </div>
+
+  <div class="col-xxl-3">
+    <nb-card status="success">
+      <nb-card-header>
+        {{ gatewaysNumber }} &nbsp; Gateways
+      </nb-card-header>
+    </nb-card>
+  </div>
+
+  <div class="col-xxl-3">
+    <div class="row">
+      <div class="col-md-6">
+        <button nbButton size="medium" shape="semi-round"
+                (click)="onClickUpload($event)">
+          <nb-icon icon="file-add-outline"></nb-icon>
+          Upload
+        </button>
+      </div>
+      <div class="col-md-6">
+        <button nbButton size="medium" shape="semi-round"
+                (click)="onClickSave($event)">
+          <nb-icon icon="save-outline"></nb-icon>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nb-card>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings"
+                     [source]="source"
+                     (createConfirm)="onCreateConfirm($event)"
+                     (editConfirm)="onEditConfirm($event)"
+                     (deleteConfirm)="onDeleteConfirm($event)"
+                     (userRowSelect)="onSelection($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

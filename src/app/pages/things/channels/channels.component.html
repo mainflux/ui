@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-3">
+    <nb-card status="info">
+      <nb-card-header>
+        {{ totalChanNumber }} &nbsp; Channels
+      </nb-card-header>
+    </nb-card>
+  </div>
+  <div class="col-md-3">
+    <nb-card status="success">
+      <nb-card-header>
+        {{ gwCtrlChanNumber }} &nbsp; Gateways Control
+      </nb-card-header>
+    </nb-card>
+  </div>
+  <div class="col-md-3">
+    <nb-card status="success">
+      <nb-card-header>
+        {{ gwDataChanNumber }} &nbsp; Gateways Data
+      </nb-card-header>
+    </nb-card>
+  </div>
+  <div class="col-md-3">
+    <nb-card status="success">
+      <nb-card-header>
+        {{ loraChanNumber }} &nbsp; LoRa Applications
+      </nb-card-header>
+    </nb-card>
+  </div>
+</div>
+
+
+<nb-card>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings"
+                     [source]="source"
+                     (createConfirm)="onCreateConfirm($event)"
+                     (editConfirm)="onEditConfirm($event)"
+                     (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

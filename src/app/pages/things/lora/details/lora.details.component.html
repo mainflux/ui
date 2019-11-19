@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-md-6">
+    <nb-card size="tiny" status="info">
+      <nb-card-header>
+        LoRa Device Info
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-2"> Name: </div><div class="col-10"> {{ loraDevice.name }} </div>
+          <div class="col-2"> ID: </div><div class="col-10"> {{ loraDevice.id }} </div>
+          <div class="col-2"> Key: </div><div class="col-10"> {{ loraDevice.key }} </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card size="medium">
+      <nb-card-header>
+        Messages
+      </nb-card-header>
+      <nb-card-body>
+        <pre *ngFor="let message of messages">{{ message | json }}</pre>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-md-6">
+    <nb-card size="tiny" status="primary">
+      <nb-card-header>
+        Metadata
+      </nb-card-header>
+      <nb-card-body>
+        <div>
+          <pre>{{ loraDevice.metadata | json}}</pre>
+        </div>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card size="medium">
+      <nb-card-body>
+        <div *ngIf="messages.length > 0" style="height:100%">
+          <ngx-chart [messages]="messages"></ngx-chart>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

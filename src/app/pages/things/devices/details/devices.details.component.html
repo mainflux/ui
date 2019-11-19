@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="col-md-6">
+    <nb-card size="tiny" status="info">
+      <nb-card-header>
+        Device Info
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-2"> Name: </div><div class="col-10"> {{ thing.name }} </div>
+          <div class="col-2"> ID: </div><div class="col-10"> {{ thing.id }} </div>
+          <div class="col-2"> Key: </div><div class="col-10"> {{ thing.key }} </div>
+          <div class="col-2"> Type: </div><div class="col-10"> {{ thing.metadata.type }} </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card size="small">
+      <nb-card-body>
+        <div *ngIf="messages.length > 0" style="height:100%">
+          <ngx-chart [messages]="messages"></ngx-chart>
+        </div>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card size="tiny">
+      <nb-card-header>
+        Messages
+      </nb-card-header>
+      <nb-card-body>
+        <pre *ngFor="let message of messages">{{ message | json }}</pre>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-md-6">
+    <nb-card size="small" status="info">
+      <nb-card-header>
+        Connections
+      </nb-card-header>
+      <nb-card-body>
+        <div *ngIf="connections.length === 0">
+          <div style="text-align: center">
+            No connections
+          </div>
+        </div>
+        <div *ngIf="connections.length !== 0">
+          <div *ngFor="let row of connections;">
+            <nb-icon status="warning" icon="arrow-right-outline"></nb-icon>
+            {{row.name}}
+          </div>
+        </div>
+      </nb-card-body>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-3">Connect to: </div>
+          <div class="col-9">
+            <nb-select multiple placeholder="Select Channels" [(selected)]="selectedChannels">
+              <nb-option *ngFor="let channel of this.channels" [value]="channel.id">
+                {{channel.name}}
+              </nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </nb-card-body>
+      <nb-card-body>
+        <button (click)="onDisconnect()" nbButton status="danger">
+          Disconnect
+        </button>
+        <button (click)="onConnect()" nbButton status="success">
+          Connect
+        </button>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card size="medium" status="primary">
+      <nb-card-header>
+        Metadata
+      </nb-card-header>
+      <nb-card-body style="padding: 0; min-height: 72%">
+        <json-editor class="col-md-12"
+                     [options]="editorOptions"
+                     [data]="metadata">
+        </json-editor>
+      </nb-card-body>
+      <nb-card-body>
+        <button (click)="onEdit()" nbButton status="success">
+          Edit
+        </button>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
