@@ -70,7 +70,7 @@
     "target": "http://localhost:8180",
     "secure": false
   },
-  "/tokens/*": {
+  "/tokens": {
     "target": "http://localhost:8180",
     "secure": false
   },

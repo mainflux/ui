@@ -28,30 +28,12 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.authService = this.inj.get(NbAuthService);
 
-    if (request.url.startsWith(environment.signupUrl)) {
-      return next.handle(request).pipe(tap(
-          resp => {
-            this.authService.authenticate('email', {
-              email: request.body.email,
-              password: request.body.password,
-            }).subscribe(
-              respAuth => {
-                this.router.navigateByUrl('/pages/dashboard');
-              },
-            );
-          },
-        ),
-      );
-    }
-
     return this.authService.getToken().pipe(switchMap(
       (token: NbAuthJWTToken) => {
         if (token && token.getValue() &&
           !request.url.startsWith(environment.writerChannelsUrl) &&
           !request.url.startsWith(environment.readerChannelsUrl) &&
-          !request.url.startsWith(environment.bootstrapUrl) &&
-          !request.url.startsWith(environment.signupUrl) &&
-          !request.url.startsWith(environment.loginUrl)
+          !request.url.startsWith(environment.bootstrapUrl)
         ) {
           request = request.clone({
             setHeaders: {
