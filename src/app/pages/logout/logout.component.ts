@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   template: '',
 })
 export class LogoutComponent extends NbLogoutComponent {
+  // strategy inherited
 
   constructor(
     @Inject(NB_AUTH_OPTIONS) protected options: {},
@@ -18,7 +19,7 @@ export class LogoutComponent extends NbLogoutComponent {
   }
 
   logout() {
-    this.authService.logout('email').subscribe(
+    this.authService.logout(this.strategy).subscribe(
       respAuth => {
         localStorage.removeItem('auth_app_token');
         this.router.navigateByUrl('/auth/login');

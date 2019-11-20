@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   templateUrl: 'register.component.html',
 })
 export class RegisterComponent extends NbRegisterComponent {
+  // user inherited
+  // strategy inherited
 
   constructor(
     @Inject(NB_AUTH_OPTIONS) protected options: {},
@@ -19,12 +21,12 @@ export class RegisterComponent extends NbRegisterComponent {
   }
 
   register() {
-    this.authService.register('email', {
+    this.authService.register(this.strategy, {
       email: this.user.email,
       password: this.user.password,
     }).subscribe(
       respReg => {
-        this.authService.authenticate('email', {
+        this.authService.authenticate(this.strategy, {
           email: this.user.email,
           password: this.user.password,
         }).subscribe(
