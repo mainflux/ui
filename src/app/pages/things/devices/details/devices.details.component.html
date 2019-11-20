@@ -9,7 +9,6 @@
           <div class="col-2"> Name: </div><div class="col-10"> {{ thing.name }} </div>
           <div class="col-2"> ID: </div><div class="col-10"> {{ thing.id }} </div>
           <div class="col-2"> Key: </div><div class="col-10"> {{ thing.key }} </div>
-          <div class="col-2"> Type: </div><div class="col-10"> {{ thing.metadata.type }} </div>
         </div>
       </nb-card-body>
     </nb-card>
@@ -79,7 +78,7 @@
       <nb-card-body style="padding: 0; min-height: 72%">
         <json-editor class="col-md-12"
                      [options]="editorOptions"
-                     [data]="metadata">
+                     [data]="thing.metadata">
         </json-editor>
       </nb-card-body>
       <nb-card-body>

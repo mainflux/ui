@@ -11,7 +11,6 @@
 export const environment = {
   production: false,
   usersUrl: '/users',
-  signupUrl: '/signup',
   loginUrl: '/tokens',
   requestPassUrl: '/password/reset-request',
   resetPassUrl: '/password/reset',
