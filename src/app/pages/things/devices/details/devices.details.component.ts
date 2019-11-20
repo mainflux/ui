@@ -18,14 +18,10 @@ export class DevicesDetailsComponent implements OnInit {
   offset = 0;
   limit = 20;
 
-  thing: Thing = {
-    name: '',
-    metadata: {},
-  };
+  thing: Thing = {};
 
   connections: Array<{name: string, id: string}> = [];
 
-  metadata = {};
   channels = [];
   messages = [];
   selectedChannels = [];
@@ -48,7 +44,6 @@ export class DevicesDetailsComponent implements OnInit {
     this.thingsService.getThing(id).subscribe(
       resp => {
         this.thing = <Thing>resp;
-        this.metadata = this.thing.metadata;
 
         this.connections = [];
 

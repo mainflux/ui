@@ -21,7 +21,6 @@ export class ChannelsDetailsComponent implements OnInit {
 
   connections: Array<{name: string, id: string}> = [];
 
-  metadata = {};
   things = [];
   selectedThings = [];
 
@@ -45,7 +44,6 @@ export class ChannelsDetailsComponent implements OnInit {
     this.channelsService.getChannel(id).subscribe(
       resp => {
         this.channel = <Channel>resp;
-        this.metadata = this.channel.metadata;
 
         this.connections = [];
 
