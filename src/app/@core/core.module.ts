@@ -42,7 +42,7 @@ export const NB_CORE_PROVIDERS = [
               endpoint: environment.loginUrl,
             },
             register: {
-              endpoint: environment.signupUrl,
+              endpoint: environment.usersUrl,
             },
             requestPass: {
               endpoint: environment.requestPassUrl,
