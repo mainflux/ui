@@ -1,6 +1,13 @@
+export interface User {
+  email?: string;
+  password?: string;
+  picture?: string;
+  metadata?: Object;
+}
+
 export interface Channel {
   id?: string;
-  name: string;
+  name?: string;
   metadata?: any;
 }
 
@@ -11,19 +18,20 @@ export interface Thing {
   metadata?: any;
 }
 
+export interface GatewayMetadata {
+  ctrlChannelID?: string;
+  dataChannelID?: string;
+  gwPassword?: string;
+  mac?: string;
+  cfgID?: string;
+  type?: string;
+}
+
 export interface Gateway {
   id?: string;
   key?: string;
-  mac?: string;
-  name: string;
-  metadata: any;
-}
-
-export interface User {
-  email?: string;
-  password?: string;
-  picture?: string;
-  metadata?: Object;
+  name?: string;
+  metadata?: GatewayMetadata;
 }
 
 export interface Config {

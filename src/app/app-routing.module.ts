@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 import {
   NbAuthComponent,
   NbLoginComponent,
-  NbRegisterComponent,
   NbRequestPasswordComponent,
 } from '@nebular/auth';
 
 import { LogoutComponent } from 'app/pages/logout/logout.component';
 import { ResetPasswordComponent } from 'app/pages/reset/reset.password.component';
+import { RegisterComponent } from 'app/pages/register/register.component';
 
 const routes: Routes = [
   {
@@ -29,7 +29,7 @@ const routes: Routes = [
       },
       {
         path: 'register',
-        component: NbRegisterComponent,
+        component: RegisterComponent,
       },
       {
         path: 'logout',

@@ -22,10 +22,14 @@ import {
   NbWindowModule,
   NbAlertModule,
   NbInputModule,
+  NbIconModule,
+  NbCheckboxModule,
+  NbButtonModule,
 } from '@nebular/theme';
 
 import { LogoutComponent } from './pages/logout/logout.component';
 import { ResetPasswordComponent } from './pages/reset/reset.password.component';
+import { RegisterComponent } from './pages/register/register.component';
 import {
   MqttModule,
   IMqttServiceOptions,
@@ -46,6 +50,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AppComponent,
     LogoutComponent,
     ResetPasswordComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +66,9 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NbToastrModule.forRoot(),
     NbAlertModule,
     NbInputModule,
+    NbIconModule,
+    NbButtonModule,
+    NbCheckboxModule,
     FormsModule,
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NbChatModule.forRoot({
