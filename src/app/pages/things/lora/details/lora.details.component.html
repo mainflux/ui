@@ -13,9 +13,18 @@
       </nb-card-body>
     </nb-card>
 
+    <nb-card size="tiny" status="primary">
+      <nb-card-header>
+        Metadata
+      </nb-card-header>
+      <nb-card-body>
+        <pre>{{ loraDevice.metadata | json}}</pre>
+      </nb-card-body>
+    </nb-card>
+
     <nb-card size="medium">
       <nb-card-header>
-        Messages
+        SenML Messages
       </nb-card-header>
       <nb-card-body>
         <pre *ngFor="let message of messages">{{ message | json }}</pre>
@@ -24,18 +33,7 @@
   </div>
 
   <div class="col-md-6">
-    <nb-card size="tiny" status="primary">
-      <nb-card-header>
-        Metadata
-      </nb-card-header>
-      <nb-card-body>
-        <div>
-          <pre>{{ loraDevice.metadata | json}}</pre>
-        </div>
-      </nb-card-body>
-    </nb-card>
-
-    <nb-card size="medium">
+    <nb-card size="giant">
       <nb-card-body>
         <div *ngIf="messages.length > 0" style="height:100%">
           <ngx-chart [messages]="messages"></ngx-chart>

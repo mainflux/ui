@@ -1,14 +1,14 @@
 export interface Channel {
   id?: string;
   name: string;
-  metadata?: Object;
+  metadata?: any;
 }
 
 export interface Thing {
   id?: string;
   key?: string;
   name?: string;
-  metadata?: Object;
+  metadata?: any;
 }
 
 export interface Gateway {

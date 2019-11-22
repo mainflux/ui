@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 
 import { ChartDataSets, ChartType, ChartOptions, ChartPoint } from 'chart.js';
 import { BaseChartDirective, Color } from 'ng2-charts';
+import { COLORS } from './chart.colors';
 
 @Component({
   selector: 'ngx-chart',
@@ -9,16 +10,7 @@ import { BaseChartDirective, Color } from 'ng2-charts';
   styleUrls: ['./chart.component.scss'],
 })
 export class ChartComponent implements OnChanges {
-  chartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(93,193,185, 0.1)',
-      borderColor: 'rgba(93,193,185, 0.5)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)',
-    },
-  ];
+  chartColors: Color[] = COLORS;
   chartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -30,12 +22,17 @@ export class ChartComponent implements OnChanges {
     animation: {
       easing: 'linear',
     },
+    scales: {
+        xAxes: [{
+            type: 'time',
+            time: {
+              unit: 'hour',
+            },
+        }],
+    },
   };
-  chartDataSets: ChartDataSets[] = [{
-    data: [],
-    label: '',
-    showLine: true,
-  }];
+
+  datasetsList: any[] = [];
   chartType: ChartType = 'scatter';
 
   @Input() messages: any[];
@@ -44,15 +41,37 @@ export class ChartComponent implements OnChanges {
   ) { }
 
   ngOnChanges() {
-    this.messages.forEach( msg => {
-      this.chartDataSets[0].label = msg.name;
+    let firstName = '';
+    let count = 0;
+    for (let i = 0; i < this.messages.length; i++) {
+      if (firstName === '') {
+        firstName = this.messages[i].name;
+        continue;
+      }
+      if (firstName === this.messages[i].name) {
+        count = i;
+        break;
+      }
+    }
 
-      const point: ChartPoint = {
-        x: msg.time,
-        y: msg.value,
-      };
-      (this.chartDataSets[0].data as ChartPoint[]).push(point);
+    for (let i = 0; i < count; i++) {
+      const chartDataSets: ChartDataSets[] = [{
+        data: [],
+        label: this.messages[i].name,
+        showLine: true,
+      }];
+
+      const result = this.messages.filter(obj => obj.name === this.messages[i].name);
+      result.forEach( msg => {
+        const point: ChartPoint = {
+          x: msg.time * 1000,
+          y: msg.value,
+        };
+        (chartDataSets[0].data as ChartPoint[]).push(point);
+      });
+
+      this.datasetsList.push(chartDataSets);
       this.chart && this.chart.update();
-    });
+    }
   }
 }

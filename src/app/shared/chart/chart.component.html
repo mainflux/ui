@@ -1,8 +1,8 @@
-<div style="height:100%">
+<div *ngFor="let d of datasetsList; let i = index;" style="height:25%">
   <canvas baseChart style="height:100%"
-          [datasets]="chartDataSets"
+          [datasets]="d"
           [options]="chartOptions"
           [chartType]="chartType"
-          [colors]="chartColors"
+          [colors]="[chartColors[i % 10]]"
   ></canvas>
 </div>

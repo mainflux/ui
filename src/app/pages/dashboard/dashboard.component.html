@@ -44,12 +44,8 @@
   <div class="col-xxl-7">
     <nb-card size="large">
       <nb-card-body>
-        <div *ngIf="messages.length > 0" style="height:50%">
+        <div *ngIf="messages.length > 0" style="height:100%">
           <ngx-chart [messages]="messages">
-          </ngx-chart>
-        </div>
-        <div *ngIf="messages.length > 0" style="height:50%">
-          <ngx-chart [messages]="messages2">
           </ngx-chart>
         </div>
       </nb-card-body>
