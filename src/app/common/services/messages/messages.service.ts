@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 
@@ -15,12 +15,16 @@ export class MessagesService {
   ) { }
 
   getMessages(channel: string, key: string) {
+    const params = new HttpParams()
+      .set('offset', '0')
+      .set('limit', '100');
+
     const headers = new HttpHeaders({
       'Authorization': key,
     });
 
     return this.http.get(`${environment.readerChannelsUrl}/${channel}/messages`,
-      { headers: headers }).map(
+      { headers: headers, params: params }).map(
         resp => {
           return resp;
         },
