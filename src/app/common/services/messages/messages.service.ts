@@ -17,7 +17,7 @@ export class MessagesService {
   getMessages(channel: string, key: string) {
     const params = new HttpParams()
       .set('offset', '0')
-      .set('limit', '100');
+      .set('limit', '500');
 
     const headers = new HttpHeaders({
       'Authorization': key,
