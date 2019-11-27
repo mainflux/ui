@@ -61,17 +61,14 @@
     <nb-card status="primary" size="large">
       <nb-card-header>
         Metadata
-      </nb-card-header>
-      <nb-card-body style="padding: 0; min-height: 72%">
-        <json-editor class="col-md-12"
-                     [options]="editorOptions"
-                     [data]="channel.metadata">
-        </json-editor>
-      </nb-card-body>
-      <nb-card-body>
-        <button (click)="onEdit()" nbButton status="success">
+        <button (click)="onEdit()" nbButton status="success" size="tiny">
           Edit
         </button>
+      </nb-card-header>
+      <nb-card-body style="padding: 0;">
+        <json-editor [options]="editorOptions"
+                     [data]="channel.metadata">
+        </json-editor>
       </nb-card-body>
     </nb-card>
   </div>
