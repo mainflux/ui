@@ -4,6 +4,7 @@ import { BootstrapService } from './services/bootstrap/bootstrap.service';
 import { ChannelsService } from './services/channels/channels.service';
 import { GatewaysService } from './services/gateways/gateways.service';
 import { LoraService } from './services/lora/lora.service';
+import { OpcuaService } from './services/opcua/opcua.service';
 import { MessagesService } from './services/messages/messages.service';
 import { MqttManagerService } from './services/mqtt/mqtt.manager.service';
 import { NotificationsService } from './services/notifications/notifications.service';
@@ -20,6 +21,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     ChannelsService,
     GatewaysService,
     LoraService,
+    OpcuaService,
     MessagesService,
     MqttManagerService,
     NotificationsService,

@@ -17,6 +17,8 @@ import { DevicesDetailsComponent } from 'app/pages/things/devices/details/device
 import { ChannelsDetailsComponent } from 'app/pages/things/channels/details/channels.details.component';
 import { LoraComponent } from 'app/pages/things/lora/lora.component';
 import { LoraDetailsComponent } from 'app/pages/things/lora/details/lora.details.component';
+import { OpcuaComponent } from 'app/pages/things/opcua/opcua.component';
+import { OpcuaDetailsComponent } from 'app/pages/things/opcua/details/opcua.details.component';
 import { GatewaysComponent } from 'app/pages/things/gateways/gateways.component';
 import { GatewaysDetailsComponent } from 'app/pages/things/gateways/details/gateways.details.component';
 import { GatewaysInfoComponent } from 'app/pages/things/gateways/details/info/gateways.info.component';
@@ -42,6 +44,8 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
     ChannelsDetailsComponent,
     LoraComponent,
     LoraDetailsComponent,
+    OpcuaComponent,
+    OpcuaDetailsComponent,
     GatewaysComponent,
     GatewaysDetailsComponent,
     GatewaysInfoComponent,

@@ -3,18 +3,18 @@ import { NbDialogService } from '@nebular/theme';
 
 import { LocalDataSource } from 'ng2-smart-table';
 
-import { LoraService } from 'app/common/services/lora/lora.service';
+import { OpcuaService } from 'app/common/services/opcua/opcua.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 
 @Component({
-  selector: 'ngx-lora-component',
-  templateUrl: './lora.component.html',
-  styleUrls: ['./lora.component.scss'],
+  selector: 'ngx-opcua-component',
+  templateUrl: './opcua.component.html',
+  styleUrls: ['./opcua.component.scss'],
 })
-export class LoraComponent implements OnInit {
+export class OpcuaComponent implements OnInit {
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -41,14 +41,16 @@ export class LoraComponent implements OnInit {
           placeholder: 'Search name',
         },
       },
-      appID: {
-        title: 'ApplicationID',
+      serverURI: {
+        width: '20%',
+        title: 'Server URI',
         editable: true,
         addable: true,
         filter: true,
       },
-      devEUI: {
-        title: 'DeviceEUI',
+      nodeID: {
+        width: '20%',
+        title: 'Node ID',
         editable: true,
         addable: true,
         filter: true,
@@ -85,7 +87,7 @@ export class LoraComponent implements OnInit {
         type: 'custom',
         renderComponent: DetailsComponent,
         valuePrepareFunction: (cell, row) => {
-          row.type = 'lora';
+          row.type = 'opcua';
           return row;
         },
         editable: false,
@@ -101,46 +103,41 @@ export class LoraComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
 
-  loraDevices = [];
-  loraDevsNumber = 0;
-  loraAppsNumber = 0;
+  opcuaNodes = [];
 
   offset = 0;
   limit = 20;
 
   constructor(
-    private loraService: LoraService,
+    private opcuaService: OpcuaService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
     private dialogService: NbDialogService,
   ) { }
 
   ngOnInit() {
-    this.getLoraDevices();
-    this.getLoraChanNum();
+    this.getOpcuaNodes();
   }
 
-  getLoraDevices(): void {
-    this.loraDevices = [];
+  getOpcuaNodes(): void {
+    this.opcuaNodes = [];
 
-    this.loraService.getDevices(this.offset, this.limit).subscribe(
+    this.opcuaService.getNodes(this.offset, this.limit).subscribe(
       (resp: any) => {
-        this.loraDevsNumber = resp.total;
+        resp.things.forEach(node => {
+          node.serverURI = node.metadata.opcua.serverURI;
+          node.nodeID = node.metadata.opcua.nodeID;
 
-        resp.things.forEach(thing => {
-          thing.devEUI = thing.metadata.lora.devEUI;
-          thing.appID = thing.metadata.lora.appID;
-
-          const chanID: string = thing.metadata ? thing.metadata.channelID : '';
-          this.messagesService.getMessages(chanID, thing.key).subscribe(
+          const chanID: string = node.metadata ? node.metadata.channelID : '';
+          this.messagesService.getMessages(chanID, node.key).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
-                thing.seen = msgResp.messages[0].time;
-                thing.messages = msgResp.total;
+                node.seen = msgResp.messages[0].time;
+                node.messages = msgResp.total;
               }
 
-              this.loraDevices.push(thing);
-              this.source.load(this.loraDevices);
+              this.opcuaNodes.push(node);
+              this.source.load(this.opcuaNodes);
               this.source.refresh();
             },
           );
@@ -149,47 +146,35 @@ export class LoraComponent implements OnInit {
     );
   }
 
-  getLoraChanNum() {
-    this.loraService.getChannels(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.loraAppsNumber = resp.total;
-      },
-    );
-  }
-
   onCreateConfirm(event): void {
-    // Check appID and devEUI
-    if (event.newData.devEUI !== '' && event.newData.appID !== '') {
+    // Check ServerURI and NodeID
+    if (event.newData.serverURI !== '' && event.newData.nodeID !== '') {
       // close create row
       event.confirm.resolve();
 
-      this.loraService.addDevice(event.newData).subscribe(
+      this.opcuaService.addNode(event.newData).subscribe(
         resp => {
           setTimeout(
             () => {
-              this.getLoraDevices();
-              this.getLoraChanNum();
+              this.getOpcuaNodes();
             }, 3000,
           );
         },
       );
     } else {
-      this.notificationsService.warn('AppID and DeviceEUI are required', '');
+      this.notificationsService.warn('Server URI and Node ID are required', '');
     }
   }
 
   onEditConfirm(event): void {
-    // Check appID and devEUI
-    if (event.newData.devEUI !== '' && event.newData.appID !== '') {
+    // Check ServerURI and NodeID
+    if (event.newData.serverURI !== '' && event.newData.nodeID !== '') {
       // close edit row
       event.confirm.resolve();
 
-      this.loraService.editDevice(event.newData).subscribe(
-        resp => {
-        },
-      );
+      this.opcuaService.editNode(event.newData).subscribe();
     } else {
-      this.notificationsService.warn('AppID and DeviceEUI are required', '');
+      this.notificationsService.warn('Server URI and Node ID are required', '');
     }
   }
 
@@ -199,10 +184,8 @@ export class LoraComponent implements OnInit {
         if (confirm) {
           event.confirm.resolve();
 
-          this.loraService.deleteDevice(event.data).subscribe(
+          this.opcuaService.deleteNode(event.data).subscribe(
             resp => {
-              this.loraDevsNumber--;
-              this.getLoraChanNum();
             },
           );
         }

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel } from 'app/common/interfaces/models';
+import { Channel } from 'app/common/interfaces/mainflux.interface';
 
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 

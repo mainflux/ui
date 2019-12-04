@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { GatewaysService } from 'app/common/services/gateways/gateways.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Gateway } from 'app/common/interfaces/models';
+import { Gateway } from 'app/common/interfaces/gateway.interface';
 
 import { MqttManagerService } from 'app/common/services/mqtt/mqtt.manager.service';
 

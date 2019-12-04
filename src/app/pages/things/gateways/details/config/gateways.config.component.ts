@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
-import { Gateway } from 'app/common/interfaces/models';
-import { Config } from 'app/common/interfaces/models';
-import { ConfigContent, ConfigUpdate } from 'app/common/interfaces/models';
+import { Gateway } from 'app/common/interfaces/gateway.interface';
+import { Config, ConfigContent, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 import { BootstrapService } from 'app/common/services/bootstrap/bootstrap.service';

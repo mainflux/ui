@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, AfterViewInit,
   ViewChild, ElementRef, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { Gateway, Message } from 'app/common/interfaces/models';
+import { Gateway } from 'app/common/interfaces/gateway.interface';
+import { Message } from 'app/common/interfaces/mainflux.interface';
 import { Terminal } from 'xterm';
 import { MqttManagerService } from 'app/common/services/mqtt/mqtt.manager.service';
 import { MqttConnectionState } from 'ngx-mqtt';

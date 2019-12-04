@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { action, observable } from 'mobx';
 
 import { GatewaysService } from 'app/common/services/gateways/gateways.service';
-import { Gateway } from 'app/common/interfaces/models';
+import { Gateway } from 'app/common/interfaces/gateway.interface';
 import { UiStore } from './ui.store';
 
 @Injectable()

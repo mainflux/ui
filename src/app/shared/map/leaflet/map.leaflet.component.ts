@@ -4,7 +4,7 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import * as L from 'leaflet';
 import { VersionsService } from 'app/common/services/versions/versions.service';
 import { MqttService, IMqttMessage } from 'ngx-mqtt';
-import { Gateway } from 'app/common/interfaces/models';
+import { Gateway } from 'app/common/interfaces/gateway.interface';
 
 
 @Component({

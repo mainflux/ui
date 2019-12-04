@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { MqttService, IMqttMessage, MqttConnectionState } from 'ngx-mqtt';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
-import { Message } from 'app/common/interfaces/models';
+import { Message } from 'app/common/interfaces/mainflux.interface';
 import { Subscription } from 'rxjs';
 
 @Injectable()

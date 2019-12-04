@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 
-import { Channel } from 'app/common/interfaces/models';
+import { Channel } from 'app/common/interfaces/mainflux.interface';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { GatewaysService } from 'app/common/services/gateways/gateways.service';
 import { LoraService } from 'app/common/services/lora/lora.service';
@@ -51,7 +51,7 @@ export class ChannelsComponent implements OnInit {
         type: 'custom',
         renderComponent: DetailsComponent,
         valuePrepareFunction: (cell, row) => {
-          row.type = 'channel';
+          row.type = 'channels';
           return row;
         },
         editable: false,

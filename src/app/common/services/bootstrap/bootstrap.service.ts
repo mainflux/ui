@@ -6,7 +6,8 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 
 import { environment } from 'environments/environment';
-import { Config, ConfigContent, ConfigUpdate, Gateway } from 'app/common/interfaces/models';
+import { Gateway } from 'app/common/interfaces/gateway.interface';
+import { Config, ConfigContent, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ThingsService } from 'app/common/services/things/things.service';
 

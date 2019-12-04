@@ -16,24 +16,6 @@ export class DetailsComponent {
   ) { }
 
   onOpenDetailsPage() {
-    let route = '';
-
-    if (this.value.type === 'gateway') {
-      route = 'things/gateways/details';
-    }
-
-    if (this.value.type === 'loraDevice') {
-      route = 'things/lora/details';
-    }
-
-    if (this.value.type === 'channel') {
-      route = 'things/channels/details';
-    }
-
-    if (this.value.type === 'device') {
-      route = 'things/devices/details';
-    }
-
-    this.router.navigate([`/pages/${route}/${this.value.id}`]);
+    this.router.navigate([`/pages/things/${this.value.type}/details/${this.value.id}`]);
   }
 }

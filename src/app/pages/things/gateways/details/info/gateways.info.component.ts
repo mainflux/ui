@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Gateway } from 'app/common/interfaces/models';
+import { Gateway } from 'app/common/interfaces/gateway.interface';
 
 @Component({
   selector: 'ngx-gateways-info',
