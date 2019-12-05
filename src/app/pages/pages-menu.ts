@@ -27,6 +27,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/things/lora',
       },
       {
+        title: 'OPC-UA',
+        icon: 'globe-outline',
+        link: '/pages/things/opcua',
+      },
+      {
         title: 'Gateways',
         icon: 'hard-drive-outline',
         link: '/pages/things/gateways',

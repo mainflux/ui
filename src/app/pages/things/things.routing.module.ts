@@ -7,6 +7,8 @@ import { DevicesDetailsComponent } from './devices/details/devices.details.compo
 import { ChannelsDetailsComponent } from './channels/details/channels.details.component';
 import { LoraComponent } from 'app/pages/things/lora/lora.component';
 import { LoraDetailsComponent } from 'app/pages/things/lora/details/lora.details.component';
+import { OpcuaComponent } from 'app/pages/things/opcua/opcua.component';
+import { OpcuaDetailsComponent } from 'app/pages/things/opcua/details/opcua.details.component';
 import { GatewaysComponent } from 'app/pages/things/gateways/gateways.component';
 import { GatewaysDetailsComponent } from 'app/pages/things/gateways/details/gateways.details.component';
 
@@ -34,6 +36,14 @@ const routes: Routes = [
   {
     path: 'lora/details/:id',
     component: LoraDetailsComponent,
+  },
+  {
+    path: 'opcua',
+    component: OpcuaComponent,
+  },
+  {
+    path: 'opcua/details/:id',
+    component: OpcuaDetailsComponent,
   },
   {
     path: 'gateways',

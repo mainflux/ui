@@ -5,7 +5,7 @@ import { LayoutService } from 'app/@core/utils';
 import { Subject, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { User } from 'app/common/interfaces/models';
+import { User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
 
 @Component({

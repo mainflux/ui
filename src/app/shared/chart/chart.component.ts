@@ -16,7 +16,10 @@ export class ChartComponent implements OnChanges {
     maintainAspectRatio: false,
     elements: {
       line: {
-        tension: 0.6, // disables bezier curves
+        tension: 0.6,
+      },
+      point: {
+        radius: 1,
       },
     },
     animation: {
@@ -41,13 +44,13 @@ export class ChartComponent implements OnChanges {
   ) { }
 
   ngOnChanges() {
-    let firstName = '';
+    if (this.messages.length < 1) {
+      return;
+    }
+
     let count = 0;
-    for (let i = 0; i < this.messages.length; i++) {
-      if (firstName === '') {
-        firstName = this.messages[i].name;
-        continue;
-      }
+    const firstName = this.messages[0].name;
+    for (let i = 1; i < this.messages.length; i++) {
       if (firstName === this.messages[i].name) {
         count = i;
         break;

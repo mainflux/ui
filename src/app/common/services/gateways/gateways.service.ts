@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 
-import { Gateway } from 'app/common/interfaces/models';
-import { Channel } from 'app/common/interfaces/models';
+import { Gateway } from 'app/common/interfaces/gateway.interface';
+import { Channel } from 'app/common/interfaces/mainflux.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { BootstrapService } from 'app/common/services/bootstrap/bootstrap.service';

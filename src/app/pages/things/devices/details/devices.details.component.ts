@@ -5,7 +5,7 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Thing } from 'app/common/interfaces/models';
+import { Thing } from 'app/common/interfaces/mainflux.interface';
 
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { NbDialogService } from '@nebular/theme';
 
 import { LocalDataSource } from 'ng2-smart-table';
-import { Thing } from 'app/common/interfaces/models';
+import { Thing } from 'app/common/interfaces/mainflux.interface';
 
 import { ThingsService } from 'app/common/services/things/things.service';
 import { GatewaysService } from 'app/common/services/gateways/gateways.service';
@@ -57,7 +57,7 @@ export class DevicesComponent implements OnInit {
         type: 'custom',
         renderComponent: DetailsComponent,
         valuePrepareFunction: (cell, row) => {
-          row.type = 'device';
+          row.type = 'devices';
           return row;
         },
         editable: false,

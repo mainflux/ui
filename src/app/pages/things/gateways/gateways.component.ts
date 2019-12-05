@@ -3,7 +3,7 @@ import { NbDialogService } from '@nebular/theme';
 
 import { LocalDataSource } from 'ng2-smart-table';
 
-import { Gateway } from 'app/common/interfaces/models';
+import { Gateway } from 'app/common/interfaces/gateway.interface';
 import { GatewaysService } from 'app/common/services/gateways/gateways.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
@@ -91,7 +91,7 @@ export class GatewaysComponent implements OnInit {
         type: 'custom',
         renderComponent: DetailsComponent,
         valuePrepareFunction: (cell, row) => {
-          row.type = 'gateway';
+          row.type = 'gateways';
           return row;
         },
         editable: 'false',

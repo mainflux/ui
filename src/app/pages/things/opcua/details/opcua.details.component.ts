@@ -3,15 +3,15 @@ import { ActivatedRoute } from '@angular/router';
 
 import { LoraService } from 'app/common/services/lora/lora.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
-import { LoraDevice } from 'app/common/interfaces/lora.interface';
+import { OpcuaNode } from 'app/common/interfaces/opcua.interface';
 
 @Component({
-  selector: 'ngx-lora-details-component',
-  templateUrl: './lora.details.component.html',
-  styleUrls: ['./lora.details.component.scss'],
+  selector: 'ngx-opcua-details-component',
+  templateUrl: './opcua.details.component.html',
+  styleUrls: ['./opcua.details.component.scss'],
 })
-export class LoraDetailsComponent implements OnInit {
-  loraDevice: LoraDevice = {
+export class OpcuaDetailsComponent implements OnInit {
+  opcuaNode: OpcuaNode = {
     name: '',
   };
   messages = [];
@@ -27,10 +27,11 @@ export class LoraDetailsComponent implements OnInit {
 
     this.loraService.getDevice(id).subscribe(
       resp => {
-        this.loraDevice = resp;
+        this.opcuaNode = resp;
 
-        this.messagesService.getMessages(this.loraDevice.metadata.channelID, this.loraDevice.key).subscribe(
+        this.messagesService.getMessages(this.opcuaNode.metadata.channelID, this.opcuaNode.key).subscribe(
           (msgResp: any) => {
+            this.messages = [];
             if (msgResp.messages) {
               this.messages = msgResp.messages;
             }

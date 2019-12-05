@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { action, observable } from 'mobx';
 
 import { ChannelsService } from 'app/common/services/channels/channels.service';
-import { Channel } from 'app/common/interfaces/models';
+import { Channel } from 'app/common/interfaces/mainflux.interface';
 import { UiStore } from './ui.store';
 
 @Injectable()
