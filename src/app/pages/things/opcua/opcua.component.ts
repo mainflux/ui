@@ -42,14 +42,12 @@ export class OpcuaComponent implements OnInit {
         },
       },
       serverURI: {
-        width: '20%',
         title: 'Server URI',
         editable: true,
         addable: true,
         filter: true,
       },
       nodeID: {
-        width: '20%',
         title: 'Node ID',
         editable: true,
         addable: true,
