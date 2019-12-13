@@ -20,10 +20,11 @@
           Edit
         </button>
       </nb-card-header>
-      <nb-card-body style="padding: 0;">
-        <json-editor [options]="editorOptions"
-                     [data]="thing.metadata">
-        </json-editor>
+      <nb-card-body style="padding: 0px;">
+        <textarea class="form-control"
+                  [ngModel]="thing.metadata | json"
+                  (ngModelChange)="editorMetadata=$event">
+        </textarea>
       </nb-card-body>
     </nb-card>
 

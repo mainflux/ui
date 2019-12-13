@@ -54,13 +54,13 @@ export class MapComponent implements OnChanges {
     private mqttService: MqttService,
   ) {
     this.versionService.getReaderVersion().subscribe(
-      () => {
+      resp => {
         this.msgServiceON = true;
-      }, err => {
+      },
+      err => {
         this.msgServiceON = false;
-        this.notificationsService.error('Gateways configuration not available',
-          `Error: ${err.status} - ${err.statusTexts}`);
-      });
+      },
+    );
   }
 
   addMarker(lon, lat, gw: Gateway) {

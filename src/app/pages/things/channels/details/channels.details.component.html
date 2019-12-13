@@ -12,6 +12,23 @@
       </nb-card-body>
     </nb-card>
 
+    <nb-card status="primary" size="small">
+      <nb-card-header>
+        Metadata
+        <button (click)="onEdit()" nbButton status="success" size="tiny">
+          Edit
+        </button>
+      </nb-card-header>
+      <nb-card-body style="padding: 0px;">
+        <textarea class="form-control"
+                  [ngModel]="channel.metadata | json"
+                  (ngModelChange)="editorMetadata=$event">
+        </textarea>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-md-6">
     <nb-card size="small" status="info">
       <nb-card-header>
         Connection
@@ -32,7 +49,6 @@
           </div>
         </div>
       </nb-card-body>
-
       <nb-card-body>
         <div class="row">
           <div class="col-3">Connect to: </div>
@@ -53,22 +69,6 @@
         <button (click)="onConnect()" nbButton status="success">
           Connect
         </button>
-      </nb-card-body>
-    </nb-card>
-  </div>
-
-  <div class="col-md-6">
-    <nb-card status="primary" size="large">
-      <nb-card-header>
-        Metadata
-        <button (click)="onEdit()" nbButton status="success" size="tiny">
-          Edit
-        </button>
-      </nb-card-header>
-      <nb-card-body style="padding: 0;">
-        <json-editor [options]="editorOptions"
-                     [data]="channel.metadata">
-        </json-editor>
       </nb-card-body>
     </nb-card>
   </div>

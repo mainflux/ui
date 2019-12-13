@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ThingsService } from 'app/common/services/things/things.service';
@@ -6,7 +6,6 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Channel } from 'app/common/interfaces/mainflux.interface';
 
-import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'ngx-channels-details-component',
@@ -14,29 +13,24 @@ import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
   styleUrls: ['./channels.details.component.scss'],
 })
 export class ChannelsDetailsComponent implements OnInit {
-  channel: Channel = {
-    name: '',
-    metadata: {},
-  };
+  offset = 0;
+  limit = 20;
+
+  channel: Channel = {};
 
   connections: Array<{name: string, id: string}> = [];
 
   things = [];
   selectedThings = [];
 
-  offset = 0;
-  limit = 20;
+  editorMetadata = '';
 
-  editorOptions: JsonEditorOptions;
-  @ViewChild(JsonEditorComponent, { static: true }) editor: JsonEditorComponent;
   constructor(
     private route: ActivatedRoute,
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
     private notificationsService: NotificationsService,
-  ) {
-    this.editorOptions = new JsonEditorOptions();
-  }
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -67,7 +61,13 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   onEdit() {
-    this.channel.metadata = this.editor.get();
+    try {
+      this.channel.metadata = JSON.parse(this.editorMetadata);
+    } catch (e) {
+      this.notificationsService.error('Wrong metadata format', '');
+      return;
+    }
+
     this.channelsService.editChannel(this.channel).subscribe(
       resp => {
         this.notificationsService.success('Channel metadata successfully edited', '');

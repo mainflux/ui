@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ThingsService } from 'app/common/services/things/things.service';
@@ -7,7 +7,6 @@ import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Thing } from 'app/common/interfaces/mainflux.interface';
 
-import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'ngx-devices-details-component',
@@ -26,17 +25,16 @@ export class DevicesDetailsComponent implements OnInit {
   messages = [];
   selectedChannels = [];
 
-  editorOptions: JsonEditorOptions;
-  @ViewChild(JsonEditorComponent, { static: true }) editor: JsonEditorComponent;
+  editorMetadata = '';
+
+
   constructor(
     private route: ActivatedRoute,
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
-  ) {
-    this.editorOptions = new JsonEditorOptions();
-  }
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -75,7 +73,13 @@ export class DevicesDetailsComponent implements OnInit {
   }
 
   onEdit() {
-    this.thing.metadata = this.editor.get();
+    try {
+      this.thing.metadata = JSON.parse(this.editorMetadata);
+    } catch (e) {
+      this.notificationsService.error('Wrong metadata format', '');
+      return;
+    }
+
     this.thingsService.editThing(this.thing).subscribe(
       resp => {
         this.notificationsService.success('Device metadata successfully edited', '');

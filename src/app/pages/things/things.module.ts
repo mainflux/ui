@@ -25,7 +25,6 @@ import { GatewaysInfoComponent } from 'app/pages/things/gateways/details/info/ga
 import { GatewaysConfigComponent } from 'app/pages/things/gateways/details/config/gateways.config.component';
 import { GatewaysXtermComponent } from 'app/pages/things/gateways/details/xterm/gateways.xterm.component';
 
-import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 @NgModule({
   imports: [
@@ -33,7 +32,6 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
     PagesModule,
     NbCardModule,
     NbButtonModule,
-    NgJsonEditorModule,
     NbSelectModule,
     FormsModule,
   ],
