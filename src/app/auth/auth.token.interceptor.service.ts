@@ -49,6 +49,7 @@ export class TokenInterceptor implements HttpInterceptor {
             if (err instanceof HttpErrorResponse &&
               !request.url.startsWith(environment.writerChannelsUrl) &&
               !request.url.startsWith(environment.readerChannelsUrl) &&
+              !request.url.startsWith(environment.readerVersionUrl) &&
               !request.url.startsWith(environment.bootstrapUrl) &&
               (err.status === 403 || err.status === 504)) {
               localStorage.removeItem('auth_app_token');
