@@ -31,44 +31,35 @@
   <div class="col-md-6">
     <nb-card size="small" status="info">
       <nb-card-header>
-        Connection
-      </nb-card-header>
-      <nb-card-body>
-        <div *ngIf="connections.length == 0">
-          <div class="row">
-            <div class="col-md-12" style="text-align: center">
-              No connections
-            </div>
-          </div>
-        </div>
-        <div *ngFor="let row of connections;">
-          <div class="row">
-            <div class="col-md-12">
-              <nb-icon status="warning" icon="arrow-right-outline"></nb-icon> {{row.name}}
-            </div>
-          </div>
-        </div>
-      </nb-card-body>
-      <nb-card-body>
-        <div class="row">
-          <div class="col-3">Connect to: </div>
-          <div class="col-9">
-            <nb-select multiple placeholder="Select Things" [(selected)]="selectedThings">
-              <nb-option *ngFor="let thing of this.things" [value]="thing.id">
-                {{thing.name}}
-              </nb-option>
-            </nb-select>
-          </div>
-        </div>
-      </nb-card-body>
-
-      <nb-card-body>
-        <button (click)="onDisconnect()" nbButton status="danger">
-          Disconnect
-        </button>
-        <button (click)="onConnect()" nbButton status="success">
+        Connections
+        <nb-select multiple placeholder="Select Things" [(selected)]="selectedThings" size="tiny">
+          <nb-option *ngFor="let thing of this.things" [value]="thing.id">
+            {{thing.name}}
+          </nb-option>
+        </nb-select>
+        <button (click)="onConnect()" nbButton status="success" size="tiny">
           Connect
         </button>
+      </nb-card-header>
+      <nb-card-body>
+        <div *ngIf="connections.length === 0">
+          <div style="text-align: center">
+            No connections
+          </div>
+        </div>
+        <div *ngIf="connections.length !== 0">
+          <div *ngFor="let con of connections;" class="row" style="padding: 2.6px;">
+            <div class="col-9">
+              <nb-icon status="info" icon="arrow-right-outline"></nb-icon>
+              {{con.name}}
+            </div>
+            <div class="col-3">
+              <button (click)="onDisconnect(con.id)" nbButton status="danger" size="tiny">
+                x
+              </button>
+            </div>
+          </div>
+        </div>
       </nb-card-body>
     </nb-card>
   </div>

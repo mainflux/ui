@@ -19,14 +19,12 @@ export class DevicesDetailsComponent implements OnInit {
 
   thing: Thing = {};
 
-  connections: Array<{name: string, id: string}> = [];
-
+  connections = [];
   channels = [];
   messages = [];
+
   selectedChannels = [];
-
   editorMetadata = '';
-
 
   constructor(
     private route: ActivatedRoute,
@@ -43,31 +41,7 @@ export class DevicesDetailsComponent implements OnInit {
       resp => {
         this.thing = <Thing>resp;
 
-        this.connections = [];
-
-        this.thingsService.connectedChannels(id).subscribe(
-          (respCons: any) => {
-            this.connections = respCons.channels;
-
-            this.connections.forEach(
-              channel => {
-                this.messagesService.getMessages(channel.id, this.thing.key).subscribe(
-                  (respMsg: any) => {
-                    if (respMsg.messages) {
-                      this.messages = respMsg.messages;
-                    }
-                  },
-                );
-              },
-            );
-          },
-        );
-
-        this.channelsService.getChannels(this.offset, this.limit).subscribe(
-          (respChans: any) => {
-            this.channels = respChans.channels;
-          },
-        );
+        this.findDisconnectedChans();
       },
     );
   }
@@ -98,24 +72,47 @@ export class DevicesDetailsComponent implements OnInit {
           );
         },
       );
+      this.findDisconnectedChans();
+      this.selectedChannels = [];
     } else {
       this.notificationsService.warn('Channels must be provided', '');
     }
   }
 
-  onDisconnect() {
-    if (this.selectedChannels !== undefined) {
-      this.selectedChannels.forEach(
-        chan => {
-          this.channelsService.disconnectThing(chan, this.thing.id).subscribe(
-            resp => {
-              this.notificationsService.success('Thing successfully disconnected', '');
-            },
-          );
-        },
-      );
-    } else {
-      this.notificationsService.warn('Channels must be provided', '');
-    }
+  onDisconnect(chanID: any) {
+    this.channelsService.disconnectThing(chanID, this.thing.id).subscribe(
+      resp => {
+        this.notificationsService.success('Thing successfully disconnected', '');
+        this.findDisconnectedChans();
+      },
+    );
+  }
+
+  findDisconnectedChans() {
+    this.channels = [];
+    this.messages = [];
+
+    this.thingsService.connectedChannels(this.thing.id).subscribe(
+      (respConns: any) => {
+        this.connections = respConns.channels;
+        this.channelsService.getChannels(this.offset, this.limit).subscribe(
+          (respChans: any) => {
+            respChans.channels.forEach(chan => {
+              if (!(this.connections.filter(c => c.id === chan.id).length > 0)) {
+                this.channels.push(chan);
+              } else {
+                this.messagesService.getMessages(chan.id, this.thing.key).subscribe(
+                  (respMsg: any) => {
+                    if (respMsg.messages) {
+                      this.messages = respMsg.messages;
+                    }
+                  },
+                );
+              }
+            });
+          },
+        );
+      },
+    );
   }
 }

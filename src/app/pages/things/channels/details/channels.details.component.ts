@@ -18,11 +18,10 @@ export class ChannelsDetailsComponent implements OnInit {
 
   channel: Channel = {};
 
-  connections: Array<{name: string, id: string}> = [];
-
+  connections = [];
   things = [];
-  selectedThings = [];
 
+  selectedThings = [];
   editorMetadata = '';
 
   constructor(
@@ -39,23 +38,7 @@ export class ChannelsDetailsComponent implements OnInit {
       resp => {
         this.channel = <Channel>resp;
 
-        this.connections = [];
-
-        this.channelsService.connectedThings(id).subscribe(
-          (respConn: any) => {
-            if (respConn.total) {
-              respConn.things.forEach( chan => {
-                this.connections.push(chan);
-              });
-            }
-          },
-        );
-
-        this.thingsService.getThings(this.offset, this.limit).subscribe(
-          (respThings: any) => {
-            this.things = respThings.things;
-          },
-        );
+        this.findDisconnectedThings();
       },
     );
   }
@@ -86,24 +69,38 @@ export class ChannelsDetailsComponent implements OnInit {
           );
         },
       );
+      this.findDisconnectedThings();
+      this.selectedThings = [];
     } else {
       this.notificationsService.warn('Things must be provided', '');
     }
   }
 
-  onDisconnect() {
-    if (this.selectedThings !== undefined) {
-      this.selectedThings.forEach(
-        thing => {
-          this.channelsService.disconnectThing(this.channel.id, thing).subscribe(
-            resp => {
-              this.notificationsService.success('Thing successfully disconnected', '');
-            },
-          );
-        },
-      );
-    } else {
-      this.notificationsService.warn('Things must be provided', '');
-    }
+  onDisconnect(thingID: any) {
+    this.channelsService.disconnectThing(this.channel.id, thingID).subscribe(
+      resp => {
+        this.notificationsService.success('Thing successfully disconnected', '');
+        this.findDisconnectedThings();
+      },
+    );
+  }
+
+  findDisconnectedThings() {
+    this.things = [];
+
+    this.channelsService.connectedThings(this.channel.id).subscribe(
+      (respConns: any) => {
+        this.connections = respConns.things;
+        this.thingsService.getThings(this.offset, this.limit).subscribe(
+          (respThings: any) => {
+            respThings.things.forEach(thing => {
+              if (!(this.connections.filter(c => c.id === thing.id).length > 0)) {
+                this.things.push(thing);
+              }
+            });
+          },
+        );
+      },
+    );
   }
 }

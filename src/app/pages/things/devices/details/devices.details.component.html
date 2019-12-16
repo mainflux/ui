@@ -45,6 +45,14 @@
     <nb-card size="small" status="info">
       <nb-card-header>
         Connections
+        <nb-select multiple placeholder="Select Channels" [(selected)]="selectedChannels" size="tiny">
+          <nb-option *ngFor="let channel of this.channels" [value]="channel.id">
+            {{channel.name}}
+          </nb-option>
+        </nb-select>
+        <button (click)="onConnect()" nbButton status="success" size="tiny">
+          Connect
+        </button>
       </nb-card-header>
       <nb-card-body>
         <div *ngIf="connections.length === 0">
@@ -53,31 +61,18 @@
           </div>
         </div>
         <div *ngIf="connections.length !== 0">
-          <div *ngFor="let row of connections;">
-            <nb-icon status="warning" icon="arrow-right-outline"></nb-icon>
-            {{row.name}}
+          <div *ngFor="let con of connections;" class="row" style="padding: 2.6px;">
+            <div class="col-9">
+              <nb-icon status="info" icon="arrow-right-outline"></nb-icon>
+              {{con.name}}
+            </div>
+            <div class="col-3">
+              <button (click)="onDisconnect(con.id)" nbButton status="danger" size="tiny">
+                x
+              </button>
+            </div>
           </div>
         </div>
-      </nb-card-body>
-      <nb-card-body>
-        <div class="row">
-          <div class="col-3">Connect to: </div>
-          <div class="col-9">
-            <nb-select multiple placeholder="Select Channels" [(selected)]="selectedChannels">
-              <nb-option *ngFor="let channel of this.channels" [value]="channel.id">
-                {{channel.name}}
-              </nb-option>
-            </nb-select>
-          </div>
-        </div>
-      </nb-card-body>
-      <nb-card-body>
-        <button (click)="onDisconnect()" nbButton status="danger">
-          Disconnect
-        </button>
-        <button (click)="onConnect()" nbButton status="success">
-          Connect
-        </button>
       </nb-card-body>
     </nb-card>
 
