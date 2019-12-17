@@ -170,13 +170,13 @@ export class GatewaysComponent implements OnInit {
   validate(row: any): boolean {
     if (row.name === '' || row.name.length > 32) {
       this.notificationsService.warn(
-        '', 'Name is required and must be maximum 32 characters long.');
+        'Name is required and must be maximum 32 characters long.', '');
       return false;
     }
 
     if (row.mac === '' || row.mac.length < 8) {
       this.notificationsService.warn(
-        '', 'MAC is required and must be at least 8 characters long.');
+        'MAC is required and must be at least 8 characters long.', '');
       return false;
     }
 

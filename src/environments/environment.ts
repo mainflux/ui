@@ -19,6 +19,7 @@ export const environment = {
   channelsUrl: '/channels',
   configUrl: '/config',
   bootstrapUrl: '/bootstrap',
+  connectUrl: '/connect',
 
   usersVersionUrl: '/users/version',
   thingsVersionUrl: '/things/version',

@@ -95,13 +95,17 @@ export class ChannelsService {
     );
   }
 
-  connectedThings(chanID: string) {
-    return this.http.get(`${environment.channelsUrl}/${chanID}/things`).map(
+  connectThings(channelIDs: string[], thingIDs: string[]) {
+    const conReq = {
+      channel_ids: channelIDs,
+      thing_ids: thingIDs,
+    };
+    return this.http.post(`${environment.connectUrl}`, conReq).map(
       resp => {
         return resp;
       },
       err => {
-        this.notificationsService.error('Failed to fetch connected Things to the Channel',
+        this.notificationsService.error('Failed to connect Things to Channels',
           `'Error: ${err.status} - ${err.statusTexts}`);
       },
     );
@@ -114,6 +118,18 @@ export class ChannelsService {
       },
       err => {
         this.notificationsService.error('Failed to disconnect Thing from Channel',
+          `'Error: ${err.status} - ${err.statusTexts}`);
+      },
+    );
+  }
+
+  connectedThings(chanID: string) {
+    return this.http.get(`${environment.channelsUrl}/${chanID}/things`).map(
+      resp => {
+        return resp;
+      },
+      err => {
+        this.notificationsService.error('Failed to fetch connected Things to the Channel',
           `'Error: ${err.status} - ${err.statusTexts}`);
       },
     );

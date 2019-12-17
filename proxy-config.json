@@ -71,6 +71,10 @@
     "target": "http://localhost:8182",
     "secure": false
   },
+  "/connect": {
+    "target": "http://localhost:8182",
+    "secure": false
+  },
   "/channels/*": {
     "target": "http://localhost:8182",
     "secure": false

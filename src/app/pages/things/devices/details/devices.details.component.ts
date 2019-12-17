@@ -62,28 +62,25 @@ export class DevicesDetailsComponent implements OnInit {
   }
 
   onConnect() {
-    if (this.selectedChannels !== undefined) {
-      this.selectedChannels.forEach(
-        chan => {
-          this.channelsService.connectThing(chan, this.thing.id).subscribe(
-            resp => {
-              this.notificationsService.success('Device successfully connected', '');
-            },
-          );
+    if (this.selectedChannels.length > 0) {
+      this.channelsService.connectThings(this.selectedChannels, [this.thing.id]).subscribe(
+        resp => {
+          this.notificationsService.success('Successfully connected to Channel(s)', '');
+          this.selectedChannels = [];
+          this.findDisconnectedChans();
         },
       );
-      this.findDisconnectedChans();
-      this.selectedChannels = [];
     } else {
-      this.notificationsService.warn('Channels must be provided', '');
+      this.notificationsService.warn('Channel(s) must be provided', '');
     }
   }
 
   onDisconnect(chanID: any) {
     this.channelsService.disconnectThing(chanID, this.thing.id).subscribe(
       resp => {
-        this.notificationsService.success('Thing successfully disconnected', '');
-        this.findDisconnectedChans();
+        this.notificationsService.success('Successfully disconnected from Channel', '');
+        this.channels.push(this.connections.find(c => c.id === chanID));
+        this.connections = this.connections.filter(c => c.id !== chanID);
       },
     );
   }

@@ -66,7 +66,8 @@ export class MapComponent implements OnChanges {
   addMarker(lon, lat, gw: Gateway) {
     const msg = `
     <h5><b>${ gw.name }</b></h5>
-    <div>Id: ${ gw.id }</div>
+    <div>ID: ${ gw.id }</div>
+    <div>MAC: ${ gw.metadata.mac }</div>
     `;
     const marker: L.Marker = L.marker(
       [lon, lat], {
