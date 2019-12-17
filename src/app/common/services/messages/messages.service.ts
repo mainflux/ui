@@ -83,8 +83,8 @@ export class MessagesService {
   }
 
   sendLocationMock(chanID: string, thingID: string) {
-    const lon = 44.787197 + 2 * Math.random();
-    const lat = 20.457273 + 2 * Math.random();
+    const lon = 44.7 + 0.5 * Math.random();
+    const lat = 20.4 + 0.5 * Math.random();
 
     const message = `[{"bn":"location-", "n":"lon", "v":${lon}}, {"n":"lat", "v":${lat}}]`;
 
