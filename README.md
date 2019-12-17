@@ -1,7 +1,10 @@
-# Mainflux-UI
-Mainflux-UI is an Angular UI based on [ngx-admin](https://github.com/akveo/ngx-admin) for the management of the Mainflux system.
+# Mainflux Admin UI based on Angular 8+ and <a href="https://github.com/akveo/nebular">Nebular</a>
 
-## Install Node modules and run the UI
+![dashboard][dashboard]
+
+![details][details]
+
+## Install
 
 ```
 cd ui
@@ -13,3 +16,6 @@ Make UI Docker:
 ```
 make docker_ui
 ```
+
+[dashboard]: https://github.com/mainflux/docs/blob/master/docs/img/UIdashboard.png
+[details]: https://github.com/mainflux/docs/blob/master/docs/img/UIdetails.png
