@@ -2,6 +2,8 @@
 
 ![dashboard][dashboard]
 
+![things][things]
+
 ![details][details]
 
 ## Install
@@ -17,5 +19,6 @@ Make UI Docker:
 make docker_ui
 ```
 
-[dashboard]: https://github.com/mainflux/docs/blob/master/docs/img/UIdashboard.png
-[details]: https://github.com/mainflux/docs/blob/master/docs/img/UIdetails.png
+[dashboard]: https://github.com/mainflux/docs/blob/master/docs/img/ui/dashboard.png
+[things]: https://github.com/mainflux/docs/blob/master/docs/img/ui/things.png
+[details]: https://github.com/mainflux/docs/blob/master/docs/img/ui/details.png
