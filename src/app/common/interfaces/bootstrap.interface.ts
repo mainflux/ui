@@ -13,7 +13,6 @@ export interface ConfigContent {
   http_port: string;
   mqtt_url: string;
   edgex_url: string;
-  wowza_url: string;
 }
 
 export interface ConfigUpdate {

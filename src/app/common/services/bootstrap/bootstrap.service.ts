@@ -18,7 +18,6 @@ export class BootstrapService {
     'http_port': '9000',
     'mqtt_url': 'localhost:1883',
     'edgex_url': 'http://localhost:48090/api/v1/',
-    'wowza_url': 'http://localhost:8087/v2/',
   };
 
   constructor(
