@@ -18,7 +18,6 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
     http_port: '',
     mqtt_url: '',
     edgex_url: '',
-    wowza_url: '',
   };
 
   constructor(
@@ -45,7 +44,6 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
           http_port: content.http_port,
           mqtt_url: content.mqtt_url,
           edgex_url: content.edgex_url,
-          wowza_url: content.wowza_url,
         };
       },
       err => {

@@ -49,7 +49,7 @@ export class GatewaysXtermComponent implements AfterViewInit, OnInit, OnDestroy 
   ngAfterViewInit() {
     this.terminal = new Terminal();
     this.terminal.open(this.terminalElement.nativeElement);
-    this.terminal.writeln('Welcome to \x1B[1;3;31mEdgeflux\x1B[0m');
+    this.terminal.writeln('Welcome to Mainflux IoT Agent');
     this.terminal.write('$ ');
     this.terminal.on('data', function(data: string) {
       this.mqttManagerService.publish(this.gateway.metadata.ctrlChannelID, '1', 'terminal', btoa(data));
