@@ -47,11 +47,13 @@ export class DevicesDetailsComponent implements OnInit {
   }
 
   onEdit() {
-    try {
-      this.thing.metadata = JSON.parse(this.editorMetadata);
-    } catch (e) {
-      this.notificationsService.error('Wrong metadata format', '');
-      return;
+    if (this.editorMetadata !== '') {
+      try {
+        this.thing.metadata = JSON.parse(this.editorMetadata);
+      } catch (e) {
+        this.notificationsService.error('Wrong metadata format', '');
+        return;
+      }
     }
 
     this.thingsService.editThing(this.thing).subscribe(
