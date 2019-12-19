@@ -44,11 +44,13 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   onEdit() {
-    try {
-      this.channel.metadata = JSON.parse(this.editorMetadata);
-    } catch (e) {
-      this.notificationsService.error('Wrong metadata format', '');
-      return;
+    if (this.editorMetadata !== '') {
+      try {
+        this.channel.metadata = JSON.parse(this.editorMetadata);
+      } catch (e) {
+        this.notificationsService.error('Wrong metadata format', '');
+        return;
+      }
     }
 
     this.channelsService.editChannel(this.channel).subscribe(
