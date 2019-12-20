@@ -5,6 +5,9 @@ import {
   NbButtonModule,
   NbCardModule,
   NbSelectModule,
+  NbInputModule,
+  NbListModule,
+  NbCheckboxModule,
 } from '@nebular/theme';
 
 import { ThingsRoutingModule } from './things.routing.module';
@@ -33,6 +36,9 @@ import { GatewaysXtermComponent } from 'app/pages/things/gateways/details/xterm/
     NbCardModule,
     NbButtonModule,
     NbSelectModule,
+    NbInputModule,
+    NbListModule,
+    NbCheckboxModule,
     FormsModule,
   ],
   declarations: [

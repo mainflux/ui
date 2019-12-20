@@ -1,12 +1,66 @@
-<div class="row">
-  <div class="col-xxl-12">
-    <nb-card status="success">
-      <nb-card-header>
-        {{ opcuaNodes.length }} &nbsp; OPC-UA Server Nodes
-      </nb-card-header>
-    </nb-card>
-  </div>
-</div>
+<nb-card status="info" size="tiny">
+  <nb-card-header>
+    <div class="row">
+      <div class="col-1">
+        ServerURI
+      </div>
+      <div class="col-3">
+        <input nbInput fullWidth [(ngModel)]="browseServerURI" fieldSize="tiny">
+      </div>
+      <div class="col-1">
+        Namespace
+      </div>
+      <div class="col-1">
+        <input nbInput fullWidth [(ngModel)]="browseNamespace" fieldSize="tiny">
+      </div>
+      <div class="col-1">
+        Identifier
+      </div>
+      <div class="col-3">
+        <input nbInput fullWidth [(ngModel)]="browseIdentifier" fieldSize="tiny">
+      </div>
+      <div class="col-1">
+        <button nbButton status="success" (click)="browseOpcuaNodes()" size="tiny">
+          Browse
+        </button>
+      </div>
+      <div class="col-1">
+        <button nbButton status="warning" (click)="subscribeOpcuaNodes()" size="tiny">
+          Subscribe
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item>
+        <div class="col-7">
+          Server URI
+        </div>
+        <div class="col-4">
+          Node ID
+        </div>
+      </nb-list-item>
+       <nb-list-item *ngFor="let node of browsedNodes" style="height: 20px;">
+         <div class="col-7">
+           {{ browseServerURI }}
+         </div>
+         <div class="col-4">
+           {{ node }}
+         </div>
+         <div class="col-1">
+           <nb-checkbox (checkedChange)="onCheckboxChanged($event, node)"></nb-checkbox>
+         </div>
+       </nb-list-item>
+     </nb-list>
+  </nb-card-body>
+</nb-card>
+
+<nb-card status="success">
+  <nb-card-header>
+    {{ opcuaNodes.length }} &nbsp; OPC-UA Server Subscription
+  </nb-card-header>
+</nb-card>
 
 <nb-card>
   <nb-card-body>

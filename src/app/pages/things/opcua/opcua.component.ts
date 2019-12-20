@@ -103,6 +103,12 @@ export class OpcuaComponent implements OnInit {
 
   opcuaNodes = [];
 
+  browseServerURI = '';
+  browseNamespace = '';
+  browseIdentifier = '';
+  browsedNodes = [];
+  checkedNodes = [];
+
   offset = 0;
   limit = 20;
 
@@ -188,6 +194,39 @@ export class OpcuaComponent implements OnInit {
           );
         }
       },
+    );
+  }
+
+  browseOpcuaNodes() {
+    this.opcuaService.browseServerNodes(this.browseServerURI, this.browseNamespace, this.browseIdentifier).subscribe(
+      (resp: any) => {
+        this.browsedNodes = resp.nodes;
+      },
+    );
+  }
+
+  onCheckboxChanged(event: boolean, node: any) {
+    if (event === true) {
+      this.checkedNodes.push(node);
+    } else {
+      this.checkedNodes = this.checkedNodes.filter(n => n !== node);
+    }
+  }
+
+  subscribeOpcuaNodes() {
+    this.checkedNodes.forEach( node => {
+      const row = {
+        name: 'NodeName',
+        serverURI: this.browseServerURI,
+        nodeID: node,
+      };
+      this.opcuaService.addNode(row).subscribe();
+    });
+
+    setTimeout(
+      () => {
+        this.getOpcuaNodes();
+      }, 3000,
     );
   }
 }
