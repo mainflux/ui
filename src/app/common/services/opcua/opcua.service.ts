@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import 'rxjs/add/operator/map';
 
+import { environment } from 'environments/environment';
 import { OpcuaNode } from 'app/common/interfaces/opcua.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
@@ -11,6 +14,7 @@ export class OpcuaService {
   typeOpcuaServer = 'OPC-UA-Server';
 
   constructor(
+    private http: HttpClient,
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
     private notificationsService: NotificationsService,
@@ -101,6 +105,23 @@ export class OpcuaService {
             this.notificationsService.success('OPC-UA Node successfully deleted', '');
           },
         );
+      },
+    );
+  }
+
+  browseServerNodes(uri: string, ns: string, id: string) {
+    const params = new HttpParams()
+      .set('server', uri)
+      .set('namespace', ns)
+      .set('identifier', id);
+
+    return this.http.get(environment.browseUrl, { params }).map(
+      resp => {
+        return resp;
+      },
+      err => {
+        this.notificationsService.error('Failed to Browse Server URI',
+          `'Error: ${err.status} - ${err.statusTexts}`);
       },
     );
   }

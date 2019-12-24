@@ -15,6 +15,7 @@ export const environment = {
   configUrl: '/config',
   bootstrapUrl: '/bootstrap',
   connectUrl: '/connect',
+  browseUrl: '/browse',
 
   usersVersionUrl: '/users/version',
   thingsVersionUrl: '/things/version',

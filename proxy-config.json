@@ -86,6 +86,10 @@
       "^/bootstrap": "/things/bootstrap"
     }
   },
+  "/browse": {
+    "target": "http://localhost:8188",
+    "secure": false
+  },
   "/grafana/*": {
     "target": "http://localhost:3001",
     "secure": false
