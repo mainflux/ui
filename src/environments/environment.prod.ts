@@ -6,6 +6,7 @@
 export const environment = {
   production: true,
   usersUrl: '/users',
+  usersVersionUrl: '/version',
   loginUrl: '/tokens',
   requestPassUrl: '/password/reset-request',
   resetPassUrl: '/password/reset',
@@ -17,14 +18,7 @@ export const environment = {
   connectUrl: '/connect',
   browseUrl: '/browse',
 
-  usersVersionUrl: '/users/version',
-  thingsVersionUrl: '/things/version',
-  normalizerVersionUrl: '/normalizer/version',
-  httpVersionUrl: '/http/version',
-  websocketVersionUrl: '/ws/version',
-  writerVersionUrl: '/writer/version',
   writerChannelsUrl: '/writer/channels',
-  readerVersionUrl: '/reader/version',
   readerChannelsUrl: '/reader/channels',
 
   grafanaHome: 'http://localhost:3001/?orgId=1&kiosk',
