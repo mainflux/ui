@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
       },
     );
 
-    this.versionsService.getThingsVersion().subscribe(
+    this.versionsService.getUsersVersion().subscribe(
       (resp: any) => {
         this.version = resp.version;
       },

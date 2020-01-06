@@ -1,65 +1,13 @@
 {
-  "/things/version": {
-    "target": "http://localhost:8182",
-    "secure": false,
-    "pathRewrite": {
-      "^/things": ""
-    }
-  },
-  "/users/version": {
-    "target": "http://localhost:8180",
-    "secure": false,
-    "pathRewrite": {
-      "^/users": ""
-    }
-  },
-  "/normalizer/version": {
-    "target": "http://localhost:8184",
-    "secure": false,
-    "pathRewrite": {
-      "^/normalizer": ""
-    }
-  },
-  "/http/version": {
-    "target": "http://localhost:8185",
-    "secure": false,
-    "pathRewrite": {
-      "^/http": ""
-    }
-  },
-  "/ws/version": {
-    "target": "http://localhost:8186",
-    "secure": false,
-    "pathRewrite": {
-      "^/ws": ""
-    }
-  },
-  "/writer/channels/*": {
-    "target": "http://localhost:8185",
-    "secure": false,
-    "pathRewrite": {
-      "^/writer": ""
-    }
-  },
-  "/reader/version": {
-    "target": "http://localhost:8905",
-    "secure": false,
-    "pathRewrite": {
-      "^/reader": ""
-    }
-  },
-  "/reader/channels/*": {
-    "target": "http://localhost:8905",
-    "secure": false,
-    "pathRewrite": {
-      "^/reader": ""
-    }
-  },
   "/password/*": {
     "target": "http://localhost:8180",
     "secure": false
   },
   "/users": {
+    "target": "http://localhost:8180",
+    "secure": false
+  },
+  "/version": {
     "target": "http://localhost:8180",
     "secure": false
   },
@@ -78,6 +26,20 @@
   "/channels/*": {
     "target": "http://localhost:8182",
     "secure": false
+  },
+  "/writer/channels/*": {
+    "target": "http://localhost:8185",
+    "secure": false,
+    "pathRewrite": {
+      "^/writer": ""
+    }
+  },
+  "/reader/channels/*": {
+    "target": "http://localhost:8905",
+    "secure": false,
+    "pathRewrite": {
+      "^/reader": ""
+    }
   },
   "/bootstrap/*": {
     "target": "http://localhost:8202",

@@ -2,7 +2,6 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import * as L from 'leaflet';
-import { VersionsService } from 'app/common/services/versions/versions.service';
 import { MqttService, IMqttMessage } from 'ngx-mqtt';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
 
@@ -15,7 +14,6 @@ import { Gateway } from 'app/common/interfaces/gateway.interface';
 export class MapComponent implements OnChanges {
   map: L.Map;
   markersGroup = new L.LayerGroup();
-  msgServiceON = false;
 
   options = {
     layers: [
@@ -50,18 +48,8 @@ export class MapComponent implements OnChanges {
   constructor(
     private msgService: MessagesService,
     private notificationsService: NotificationsService,
-    private versionService: VersionsService,
     private mqttService: MqttService,
-  ) {
-    this.versionService.getReaderVersion().subscribe(
-      resp => {
-        this.msgServiceON = true;
-      },
-      err => {
-        this.msgServiceON = false;
-      },
-    );
-  }
+  ) {}
 
   addMarker(lon, lat, gw: Gateway) {
     const msg = `
@@ -93,7 +81,7 @@ export class MapComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    if (this.gateways && this.msgServiceON) {
+    if (this.gateways) {
       this.gateways.forEach((gw) => {
         const key: string = gw.key ? gw.key : '';
         const channelID: string = gw.metadata ? gw.metadata.dataChannelID : '';
