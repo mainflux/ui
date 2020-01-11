@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-
-
 import { Observable } from 'rxjs';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
 
 import { environment } from 'environments/environment';
 import { OpcuaNode } from 'app/common/interfaces/opcua.interface';
@@ -143,6 +139,6 @@ export class OpcuaService {
             `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
         },
-    );
+      );
   }
 }

@@ -90,7 +90,7 @@ export class LoraService {
     };
 
     return this.thingsService.editThing(row).map(
-      () => {
+      resp => {
         this.notificationsService.success('LoRa Device successfully edited', '');
       },
     );

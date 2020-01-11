@@ -62,7 +62,7 @@ export class ProfileComponent implements OnInit {
       },
     };
 
-    this.usersService.updateUser(userReq).subscribe(
+    this.usersService.editUser(userReq).subscribe(
       resp => {
         this.notificationsService.success('User successfully edited', '');
       },

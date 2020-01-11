@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
+import { Observable } from 'rxjs';
 
+import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
@@ -23,14 +24,17 @@ export class MessagesService {
       'Authorization': key,
     });
 
-    return this.http.get(`${environment.readerChannelsUrl}/${channel}/messages`,
-      { headers: headers, params: params }).map(
+    return this.http.get(`${environment.readerChannelsUrl}/${channel}/messages`, { headers: headers, params: params })
+      .map(
         resp => {
           return resp;
         },
+      )
+      .catch(
         err => {
           this.notificationsService.error('Failed to read Messages',
-            `'Error: ${err.status} - ${err.statusTexts}`);
+            `'Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
         },
       );
   }
@@ -40,14 +44,17 @@ export class MessagesService {
       'Authorization': key,
     });
 
-    return this.http.post(`${environment.writerChannelsUrl}/${channel}/messages`,
-      msg, { headers: headers }).map(
+    return this.http.post(`${environment.writerChannelsUrl}/${channel}/messages`, msg, { headers: headers })
+      .map(
         resp => {
           return resp;
         },
+      )
+      .catch(
         err => {
           this.notificationsService.error('Failed to send Message',
-            `'Error: ${err.status} - ${err.statusTexts}`);
+            `'Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
         },
       );
   }
@@ -75,7 +82,7 @@ export class MessagesService {
           },
           err => {
             this.notificationsService.error('Failed to send messages mock',
-              `'Error: ${err.status} - ${err.statusTexts}`);
+              `'Error: ${err.status} - ${err.statusText}`);
           },
         );
       },

@@ -111,7 +111,7 @@ export class MapComponent implements OnChanges {
           },
           err => {
             this.notificationsService.error('Failed to fetch gateway configuration',
-              `Error: ${err.status} - ${err.statusTexts}`);
+              `Error: ${err.status} - ${err.statusText}`);
           },
         );
       });
