@@ -43,7 +43,7 @@ export class OpcuaComponent implements OnInit {
       },
       serverURI: {
         title: 'Server URI',
-        editable: true,
+        editable: false,
         addable: true,
         filter: true,
       },
@@ -202,6 +202,8 @@ export class OpcuaComponent implements OnInit {
       (resp: any) => {
         this.browsedNodes = resp.nodes;
       },
+      err => {
+      },
     );
   }
 
@@ -214,19 +216,24 @@ export class OpcuaComponent implements OnInit {
   }
 
   subscribeOpcuaNodes() {
-    this.checkedNodes.forEach( node => {
+    this.checkedNodes.forEach( (node, i) => {
       const row = {
-        name: 'NodeName',
+        name: `Node-${this.browseServerURI};${node}`,
         serverURI: this.browseServerURI,
         nodeID: node,
       };
-      this.opcuaService.addNode(row).subscribe();
+
+      setTimeout(
+        () => {
+          this.opcuaService.addNode(row).subscribe();
+        }, 1000 * i,
+      );
     });
 
     setTimeout(
       () => {
         this.getOpcuaNodes();
-      }, 3000,
+      }, 1000 * this.checkedNodes.length,
     );
   }
 }

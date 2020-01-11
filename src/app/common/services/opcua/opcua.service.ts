@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+
+
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { environment } from 'environments/environment';
@@ -29,47 +33,58 @@ export class OpcuaService {
   }
 
   addNode(node: any) {
-    const chanReq = {
-      name: `${this.typeOpcuaServer}-${node.name}`,
+    const nodeReq: OpcuaNode = {
+      name: node.name,
       metadata: {
         type: this.typeOpcua,
+        channelID: '',
         opcua: {
+          nodeID: node.nodeID,
           serverURI: node.serverURI,
         },
       },
     };
 
-    // TODO - Check if channel exist
-    return this.channelsService.addChannel(chanReq).map(
-      respChan => {
-        const chanID = respChan.headers.get('location').replace('/channels/', '');
-        const nodeReq: OpcuaNode = {
-          name: node.name,
-          metadata: {
-            type: this.typeOpcua,
-            channelID: chanID,
-            opcua: {
-              nodeID: node.nodeID,
-              serverURI: node.serverURI,
+    // Check if a channel exist for serverURI
+    return this.channelsService.getChannels(0, 1, 'opcua', `{"serverURI": "${node.serverURI}"}`).map(
+      (resp: any) => {
+        if (resp.total === 0) {
+          const chanReq = {
+            name: `${this.typeOpcuaServer}-${node.name}`,
+            metadata: {
+              type: this.typeOpcua,
+              opcua: {
+                serverURI: node.serverURI,
+              },
             },
-          },
-        };
+          };
 
-        this.thingsService.addThing(nodeReq).subscribe(
-          respThing => {
-            const thingID = respThing.headers.get('location').replace('/things/', '');
-            this.channelsService.connectThing(chanID, thingID).subscribe(
-              respCon => {
-                this.notificationsService.success('OPC-UA Node successfully created', '');
-              },
-              err => {
-                this.thingsService.deleteThing(thingID).subscribe();
-                this.channelsService.deleteChannel(chanID).subscribe();
-              },
-            );
+          this.channelsService.addChannel(chanReq).subscribe(
+            respChan => {
+              const chanID = respChan.headers.get('location').replace('/channels/', '');
+              nodeReq.metadata.channelID = chanID;
+              this.addAndConnect(nodeReq, chanID);
+            },
+          );
+        } else {
+          const chanID = resp.channels[0].id;
+          nodeReq.metadata.channelID = chanID;
+          this.addAndConnect(nodeReq, chanID);
+        }
+      },
+    );
+  }
+
+  addAndConnect(nodeReq: any, chanID: string) {
+    this.thingsService.addThing(nodeReq).subscribe(
+      respThing => {
+        const thingID = respThing.headers.get('location').replace('/things/', '');
+        this.channelsService.connectThing(chanID, thingID).subscribe(
+          respCon => {
+            this.notificationsService.success('OPC-UA Node successfully created', '');
           },
           err => {
-            this.channelsService.deleteChannel(chanID).subscribe();
+            this.thingsService.deleteThing(thingID).subscribe();
           },
         );
       },
@@ -115,14 +130,19 @@ export class OpcuaService {
       .set('namespace', ns)
       .set('identifier', id);
 
-    return this.http.get(environment.browseUrl, { params }).map(
-      resp => {
-        return resp;
-      },
-      err => {
-        this.notificationsService.error('Failed to Browse Server URI',
-          `'Error: ${err.status} - ${err.statusTexts}`);
-      },
+    return this.http.get(environment.browseUrl, { params })
+      .map(
+        resp => {
+          this.notificationsService.success('OPC-UA browsing finished', '');
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to Browse',
+            `Error: ${err.status} - ${err.statusText}`);
+          return Observable.throw(err);
+        },
     );
   }
 }
