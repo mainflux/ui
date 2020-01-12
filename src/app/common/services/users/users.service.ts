@@ -25,7 +25,7 @@ export class UsersService {
       .catch(
         err => {
           this.notificationsService.error('Failed to fetch User',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -41,7 +41,7 @@ export class UsersService {
       .catch(
         err => {
           this.notificationsService.error('Failed to edit User',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -57,7 +57,7 @@ export class UsersService {
       .catch(
         err => {
           this.notificationsService.error('Failed to change User password',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );

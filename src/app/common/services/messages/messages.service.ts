@@ -33,7 +33,7 @@ export class MessagesService {
       .catch(
         err => {
           this.notificationsService.error('Failed to read Messages',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -53,7 +53,7 @@ export class MessagesService {
       .catch(
         err => {
           this.notificationsService.error('Failed to send Message',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -82,7 +82,7 @@ export class MessagesService {
           },
           err => {
             this.notificationsService.error('Failed to send messages mock',
-              `'Error: ${err.status} - ${err.statusText}`);
+              `Error: ${err.status} - ${err.statusText}`);
           },
         );
       },

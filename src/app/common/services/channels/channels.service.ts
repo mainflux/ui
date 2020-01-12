@@ -25,7 +25,7 @@ export class ChannelsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to create Channel',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -41,7 +41,7 @@ export class ChannelsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to fetch Channel',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -69,7 +69,7 @@ export class ChannelsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to fetch Channels',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -85,7 +85,7 @@ export class ChannelsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to edit Channel',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -101,7 +101,7 @@ export class ChannelsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to delete Channel',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -117,7 +117,7 @@ export class ChannelsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to connect Thing to Channel',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -137,7 +137,7 @@ export class ChannelsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to connect Things to Channels',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -153,7 +153,7 @@ export class ChannelsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to disconnect Thing from Channel',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -169,7 +169,7 @@ export class ChannelsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to fetch connected Things to the Channel',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );

@@ -24,7 +24,7 @@ export class ThingsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to create Thing',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -40,7 +40,7 @@ export class ThingsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to fetch Thing',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -64,7 +64,7 @@ export class ThingsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to get Things',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -80,7 +80,7 @@ export class ThingsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to delete Thing',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
@@ -96,7 +96,7 @@ export class ThingsService {
     .catch(
       err => {
         this.notificationsService.error('Failed to edit Thing',
-          `'Error: ${err.status} - ${err.statusText}`);
+          `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
       },
     );
@@ -112,7 +112,7 @@ export class ThingsService {
       .catch(
         err => {
           this.notificationsService.error('Failed to fetch connected Chanels to the Thing',
-            `'Error: ${err.status} - ${err.statusText}`);
+            `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
