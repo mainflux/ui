@@ -18,6 +18,8 @@ export class GatewaysDetailsComponent implements OnInit, OnDestroy {
     metadata: {},
   };
 
+  mfxAgent = false;
+
   constructor(
     private route: ActivatedRoute,
     private gatewaysService: GatewaysService,
@@ -30,11 +32,13 @@ export class GatewaysDetailsComponent implements OnInit, OnDestroy {
     this.gatewaysService.getGateway(id).subscribe(
       gw => {
         this.gateway = <Gateway>gw;
-        this.mqttManagerService.init(
-          this.gateway.id,
-          this.gateway.key,
-          this.gateway.metadata.ctrlChannelID,
-        );
+        if (this.mfxAgent) {
+          this.mqttManagerService.init(
+            this.gateway.id,
+            this.gateway.key,
+            this.gateway.metadata.ctrlChannelID,
+          );
+        }
       },
       err => {
         this.notificationsService.error('Failed to fetch gateway',
@@ -44,6 +48,8 @@ export class GatewaysDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.mqttManagerService.disconnect();
+    if (this.mfxAgent) {
+      this.mqttManagerService.disconnect();
+    }
   }
 }

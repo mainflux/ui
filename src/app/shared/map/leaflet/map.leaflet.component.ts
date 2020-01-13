@@ -86,34 +86,36 @@ export class MapComponent implements OnChanges {
         const key: string = gw.key ? gw.key : '';
         const channelID: string = gw.metadata ? gw.metadata.dataChannelID : '';
 
-        this.msgService.getMessages(channelID, key).subscribe(
-          (resp: any) => {
-            let lon: Number;
-            let lat: Number;
-            if (resp.messages) {
-              resp.messages.forEach(msg => {
-                // Store lon and lat fields chronologically
-                if (msg.name.includes('lon') && !lon) {
-                  lon = msg.value;
-                }
-                if (msg.name.includes('lat') && !lat) {
-                  lat = msg.value;
-                }
-                // Stop for loop if both values are set
-                if (lon && lat) {
-                  this.addMarker(lon, lat, gw);
-                  return;
-                }
-              });
+        if (key !== '' && channelID !== '') {
+          this.msgService.getMessages(channelID, key).subscribe(
+            (resp: any) => {
+              let lon: Number;
+              let lat: Number;
+              if (resp.messages) {
+                resp.messages.forEach(msg => {
+                  // Store lon and lat fields chronologically
+                  if (msg.name.includes('lon') && !lon) {
+                    lon = msg.value;
+                  }
+                  if (msg.name.includes('lat') && !lat) {
+                    lat = msg.value;
+                  }
+                  // Stop for loop if both values are set
+                  if (lon && lat) {
+                    this.addMarker(lon, lat, gw);
+                    return;
+                  }
+                });
 
-              this.focusMap();
-            }
-          },
-          err => {
-            this.notificationsService.error('Failed to fetch gateway configuration',
-              `Error: ${err.status} - ${err.statusText}`);
-          },
-        );
+                this.focusMap();
+              }
+            },
+            err => {
+              this.notificationsService.error('Failed to fetch gateway configuration',
+                `Error: ${err.status} - ${err.statusText}`);
+            },
+          );
+        }
       });
     }
   }

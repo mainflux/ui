@@ -38,7 +38,7 @@ export class BootstrapService {
       state: 0,
     };
 
-    return this.http.post(environment.configUrl, config, { observe: 'response' })
+    return this.http.post(environment.bootstrapConfigsUrl, config, { observe: 'response' })
       .map(
         resp => {
           const cfgID: string = resp.headers.get('location').replace('/things/configs/', '');
@@ -71,6 +71,6 @@ export class BootstrapService {
   }
 
   updateConfig(configUpdate: ConfigUpdate, gateway: Gateway) {
-    return this.http.put(`${environment.configUrl}/${gateway.id}`, configUpdate, { observe: 'response' });
+    return this.http.put(`${environment.bootstrapConfigsUrl}/${gateway.id}`, configUpdate, { observe: 'response' });
   }
 }

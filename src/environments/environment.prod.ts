@@ -13,8 +13,8 @@ export const environment = {
   changePassUrl: '/password',
   thingsUrl: '/things',
   channelsUrl: '/channels',
-  configUrl: '/configs',
-  bootstrapUrl: '/bootstrap',
+  bootstrapConfigsUrl: '/bootstrap/things/configs',
+  bootstrapUrl: '/bootstrap/things/bootstrap',
   connectUrl: '/connect',
   browseUrl: '/browse',
 
