@@ -38,7 +38,7 @@ export class GatewaysDetailsComponent implements OnInit, OnDestroy {
       },
       err => {
         this.notificationsService.error('Failed to fetch gateway',
-          `'Error: ${err.status} - ${err.statusTexts}`);
+          `Error: ${err.status} - ${err.statusText}`);
       },
     );
   }

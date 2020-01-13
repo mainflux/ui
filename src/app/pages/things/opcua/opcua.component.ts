@@ -188,10 +188,7 @@ export class OpcuaComponent implements OnInit {
         if (confirm) {
           event.confirm.resolve();
 
-          this.opcuaService.deleteNode(event.data).subscribe(
-            resp => {
-            },
-          );
+          this.opcuaService.deleteNode(event.data).subscribe();
         }
       },
     );

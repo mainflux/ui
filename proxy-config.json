@@ -56,7 +56,7 @@
     "target": "http://localhost:3001",
     "secure": false
   },
-  "/config/*": {
+  "/configs/*": {
     "target": "http://localhost:8202",
     "secure": false,
     "pathRewrite": {

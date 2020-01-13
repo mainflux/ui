@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
 
 import { environment } from 'environments/environment';
 import { Thing } from 'app/common/interfaces/mainflux.interface';
@@ -15,27 +15,35 @@ export class ThingsService {
   ) { }
 
   addThing(thing: Thing) {
-    return this.http.post(environment.thingsUrl, thing, { observe: 'response' }).map(
-      resp => {
-        return resp;
-      },
-      err => {
-        this.notificationsService.error('Failed to create Device',
-          `'Error: ${err.status} - ${err.statusTexts}`);
-      },
-    );
+    return this.http.post(environment.thingsUrl, thing, { observe: 'response' })
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to create Thing',
+            `Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
+        },
+      );
   }
 
   getThing(thingID: string) {
-    return this.http.get(environment.thingsUrl + '/' + thingID).map(
-      resp => {
-        return resp;
-      },
-      err => {
-        this.notificationsService.error('Failed to fetch Device',
-          `'Error: ${err.status} - ${err.statusTexts}`);
-      },
-    );
+    return this.http.get(environment.thingsUrl + '/' + thingID)
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to fetch Thing',
+            `Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
+        },
+      );
   }
 
   getThings(offset: number, limit: number, type?: string) {
@@ -47,34 +55,66 @@ export class ThingsService {
       params = params.append('metadata', `{"type":"${type}"}`);
     }
 
-    return this.http.get(environment.thingsUrl, { params });
+    return this.http.get(environment.thingsUrl, { params })
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to get Things',
+            `Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
+        },
+      );
   }
 
   deleteThing(thingID: string) {
-    return this.http.delete(environment.thingsUrl + '/' + thingID).map(
-      resp => {
-        return resp;
-      },
-      err => {
-        this.notificationsService.error('Failed to delete Device',
-          `'Error: ${err.status} - ${err.statusTexts}`);
-      },
-    );
+    return this.http.delete(environment.thingsUrl + '/' + thingID)
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to delete Thing',
+            `Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
+        },
+      );
   }
 
   editThing(thing: Thing) {
-    return this.http.put(environment.thingsUrl + '/' + thing.id, thing).map(
+    return this.http.put(environment.thingsUrl + '/' + thing.id, thing)
+    .map(
       resp => {
         return resp;
       },
+    )
+    .catch(
       err => {
-        this.notificationsService.error('Failed to edit Device',
-          `'Error: ${err.status} - ${err.statusTexts}`);
+        this.notificationsService.error('Failed to edit Thing',
+          `Error: ${err.status} - ${err.statusText}`);
+          return Observable.throw(err);
       },
     );
   }
 
   connectedChannels(thingID: string) {
-    return this.http.get(environment.thingsUrl  + '/' + thingID + '/channels/');
+    return this.http.get(environment.thingsUrl  + '/' + thingID + '/channels/')
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to fetch connected Chanels to the Thing',
+            `Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
+        },
+      );
   }
 }
