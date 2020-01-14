@@ -27,14 +27,14 @@
     "target": "http://localhost:8182",
     "secure": false
   },
-  "/writer/channels/*": {
+  "/writer/*": {
     "target": "http://localhost:8185",
     "secure": false,
     "pathRewrite": {
       "^/writer": ""
     }
   },
-  "/reader/channels/*": {
+  "/reader/*": {
     "target": "http://localhost:8905",
     "secure": false,
     "pathRewrite": {
@@ -45,7 +45,7 @@
     "target": "http://localhost:8202",
     "secure": false,
     "pathRewrite": {
-      "^/bootstrap": "/things/bootstrap"
+      "^/bootstrap": ""
     }
   },
   "/browse": {
@@ -55,12 +55,5 @@
   "/grafana/*": {
     "target": "http://localhost:3001",
     "secure": false
-  },
-  "/configs/*": {
-    "target": "http://localhost:8202",
-    "secure": false,
-    "pathRewrite": {
-      "^/config": "/things/configs"
-    }
   }
 }
