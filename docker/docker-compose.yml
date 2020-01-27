@@ -17,6 +17,7 @@ volumes:
   mainflux-bootstrap-db-volume:
   mainflux-grafana-volume:
   mainflux-opcua-adapter-volume:
+  mainflux-opcua-redis-volume:
 
 services:
   nginx:
@@ -282,6 +283,8 @@ services:
     restart: on-failure
     networks:
       - mainflux-base-net
+    volumes:
+      - mainflux-opcua-redis-volume:/data
 
   opcua-adapter:
     image: mainflux/opcua:latest

@@ -206,9 +206,9 @@ export class OpcuaComponent implements OnInit {
 
   onCheckboxChanged(event: boolean, node: any) {
     if (event === true) {
-      this.checkedNodes.push(node);
+      this.checkedNodes.push(node.NodeID);
     } else {
-      this.checkedNodes = this.checkedNodes.filter(n => n !== node);
+      this.checkedNodes = this.checkedNodes.filter(n => n !== node.NodeID);
     }
   }
 
