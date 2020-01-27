@@ -34,19 +34,31 @@
   <nb-card-body>
     <nb-list>
       <nb-list-item>
-        <div class="col-7">
+        <div class="col-6">
           Server URI
         </div>
-        <div class="col-4">
+        <div class="col-3">
           Node ID
+        </div>
+        <div class="col-1">
+          Type
+        </div>
+        <div class="col-1">
+          Description
         </div>
       </nb-list-item>
        <nb-list-item *ngFor="let node of browsedNodes" style="height: 20px;">
-         <div class="col-7">
+         <div class="col-6">
            {{ browseServerURI }}
          </div>
-         <div class="col-4">
-           {{ node }}
+         <div class="col-3">
+           {{ node.NodeID }}
+         </div>
+         <div class="col-1">
+           {{ node.Type }}
+         </div>
+         <div class="col-1">
+           {{ node.Description }}
          </div>
          <div class="col-1">
            <nb-checkbox (checkedChange)="onCheckboxChanged($event, node)"></nb-checkbox>
