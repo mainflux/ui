@@ -11,8 +11,6 @@ import { OpcuaComponent } from 'app/pages/things/opcua/opcua.component';
 import { OpcuaDetailsComponent } from 'app/pages/things/opcua/details/opcua.details.component';
 import { GatewaysComponent } from 'app/pages/things/gateways/gateways.component';
 import { GatewaysDetailsComponent } from 'app/pages/things/gateways/details/gateways.details.component';
-import { DbReaderComponent } from './dbreader/dbreader.component';
-import { DbReaderDetailsComponent } from './dbreader/details/dbreader.details.component';
 
 const routes: Routes = [
   {
@@ -38,14 +36,6 @@ const routes: Routes = [
   {
     path: 'lora/details/:id',
     component: LoraDetailsComponent,
-  },
-  {
-    path: 'dbreader',
-    component: DbReaderComponent,
-  },
-  {
-    path: 'dbreader/details/:id',
-    component: DbReaderDetailsComponent,
   },
   {
     path: 'opcua',

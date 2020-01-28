@@ -27,11 +27,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/things/lora',
       },
       {
-        title: 'DB Reader',
-        icon: 'book-open-outline',
-        link: '/pages/things/dbreader',
-      },
-      {
         title: 'OPC-UA',
         icon: 'globe-outline',
         link: '/pages/things/opcua',
