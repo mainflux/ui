@@ -17,6 +17,8 @@ export const environment = {
   resetPassUrl: '/password/reset',
   changePassUrl: '/password',
   thingsUrl: '/things',
+  twinsUrl: '/twins',
+  statesUrl: '/states',
   channelsUrl: '/channels',
   bootstrapConfigsUrl: '/bootstrap/things/configs',
   bootstrapUrl: '/bootstrap/things/bootstrap',
