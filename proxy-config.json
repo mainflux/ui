@@ -55,5 +55,13 @@
   "/grafana/*": {
     "target": "http://localhost:3001",
     "secure": false
+  },
+  "/twins/*": {
+    "target": "http://localhost:9021",
+    "secure": false
+  },
+  "/states/*": {
+    "target": "http://localhost:9021",
+    "secure": false
   }
 }

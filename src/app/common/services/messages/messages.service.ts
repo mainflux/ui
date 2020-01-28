@@ -15,16 +15,21 @@ export class MessagesService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getMessages(channel: string, key: string) {
+  getMessages(channel: string, key: string, subtopic?: string, offset?: number, limit?: number) {
+    offset = offset || 0;
+    limit = limit || 10;
+
     const params = new HttpParams()
-      .set('offset', '0')
-      .set('limit', '1000');
+      .set('offset', offset.toString())
+      .set('limit', limit.toString());
 
     const headers = new HttpHeaders({
       'Authorization': key,
     });
 
-    return this.http.get(`${environment.readerChannelsUrl}/${channel}/messages`, { headers: headers, params: params })
+    const topic = subtopic ? `${environment.readerChannelsUrl}/${channel}/messages/${subtopic}` : `${environment.readerChannelsUrl}/${channel}/messages`;
+
+    return this.http.get(topic, { headers: headers, params: params })
       .map(
         resp => {
           return resp;
@@ -34,7 +39,7 @@ export class MessagesService {
         err => {
           this.notificationsService.error('Failed to read Messages',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+          return Observable.throw(err);
         },
       );
   }
@@ -54,7 +59,7 @@ export class MessagesService {
         err => {
           this.notificationsService.error('Failed to send Message',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+          return Observable.throw(err);
         },
       );
   }

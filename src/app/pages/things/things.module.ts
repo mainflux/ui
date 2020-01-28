@@ -28,7 +28,6 @@ import { GatewaysInfoComponent } from 'app/pages/things/gateways/details/info/ga
 import { GatewaysConfigComponent } from 'app/pages/things/gateways/details/config/gateways.config.component';
 import { GatewaysXtermComponent } from 'app/pages/things/gateways/details/xterm/gateways.xterm.component';
 
-
 @NgModule({
   imports: [
     ThingsRoutingModule,

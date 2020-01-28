@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-xxl-3">
+    <nb-card status="info">
+      <nb-card-header>
+        {{ twinsNumber }} &nbsp; Twins
+      </nb-card-header>
+    </nb-card>
+  </div>
+</div>
+
+<nb-card>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings"
+                     [source]="source"
+                     (createConfirm)="onCreateConfirm($event)"
+                     (editConfirm)="onEditConfirm($event)"
+                     (deleteConfirm)="onDeleteConfirm($event)"
+                     (userRowSelect)="onSelection($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

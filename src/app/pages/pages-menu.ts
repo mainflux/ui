@@ -57,6 +57,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
         icon: 'monitor-outline',
         link: '/pages/admin/loraserver',
       },
+      {
+        title: 'Twins',
+        icon: 'copy-outline',
+        link: '/pages/admin/twins',
+      },
     ],
   },
 ];

@@ -18,6 +18,18 @@ export interface Thing {
   metadata?: any;
 }
 
+export interface Twin {
+  name?: string;
+  owner?: string;
+  id?: string;
+  revision?: number;
+  thing_id?: string;
+  created?: Date;
+  definitions?: any[];
+  definition?: any; // for request
+  metadata?: any;
+}
+
 export interface Message {
   bn: string;
   bt: number;
