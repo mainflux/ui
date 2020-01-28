@@ -39,16 +39,11 @@ export class TwinsComponent implements OnInit {
         title: 'ID',
         editable: false,
         addable: false,
-        filter: false,
       },
       thing_id: {
         title: 'Thing ID',
         type: 'string',
         editable: false,
-        placeholder: 'Search thing id',
-        filter: {
-          placeholder: 'Search thing id',
-        },
       },
       details: {
         title: 'Details',

@@ -10,7 +10,7 @@ import { ThingsService } from 'app/common/services/things/things.service';
 @Component({
   selector: 'ngx-dbreader',
   templateUrl: './dbreader.component.html',
-  styleUrls: ['./dbreader.component.scss']
+  styleUrls: ['./dbreader.component.scss'],
 })
 export class DbReaderComponent implements OnInit {
   settings = {
@@ -94,9 +94,9 @@ export class DbReaderComponent implements OnInit {
     this.dbReaderService.getNodes(this.offset, this.limit).subscribe(
       (resp: any) => {
         resp.things.forEach(node => {
-              this.dbReaderNodes.push(node);
-              this.source.load(this.dbReaderNodes);
-              this.source.refresh();
+          this.dbReaderNodes.push(node);
+          this.source.load(this.dbReaderNodes);
+          this.source.refresh();
         });
       },
     );
@@ -123,15 +123,14 @@ export class DbReaderComponent implements OnInit {
   }
 
   onEditConfirm(event): void {
-       // close edditable row
-       event.confirm.resolve();
+    // close edditable row
+    event.confirm.resolve();
 
-       this.thingsService.editThing(event.newData).subscribe(
-         resp => {
-           this.notificationsService.success('DB Reader successfully edited', '');
-         },
-       );
-    
+    this.thingsService.editThing(event.newData).subscribe(
+      resp => {
+        this.notificationsService.success('DB Reader successfully edited', '');
+      },
+    );
   }
 
   onDeleteConfirm(event): void {
@@ -145,5 +144,4 @@ export class DbReaderComponent implements OnInit {
       },
     );
   }
-
 }

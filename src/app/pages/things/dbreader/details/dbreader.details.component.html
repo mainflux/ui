@@ -30,47 +30,44 @@
               <nb-icon status="info" icon="arrow-right-outline"></nb-icon>
               {{con.name}}
             </div>
-            <div class="col-3">
-            
-            </div>
           </div>
         </div>
       </nb-card-body>
     </nb-card>
-
   </div>
+  
   <div class="col-md-6"> 
     <nb-card size="medium" status="primary">
-        <nb-card-header>
-          Metadata
-          <button [disabled]="selectedDbType == null" (click)="onEdit()" nbButton status="success" size="tiny">
-            Edit
-          </button>
-        </nb-card-header>
-        <nb-card-body>
-            <div class="col-md-12">
-                <div class="row">
-                  <div class="col-12">                  
-                      <div class="col-md-12 decorate">
-                        <label for="dbtype">DB type:</label> &nbsp;
-                        <nb-select placeholder="Select DB type" id="dbtype" [(ngModel)]="selectedDbType" (selectedChange)="onDbTypeSelect($event)" size="small">
-                          <nb-option *ngFor="let type of dbTypes" [value]="type.value">
-                            {{ type.name }}
-                          </nb-option>
-                        </nb-select>                                          
-                      </div>                    
-                   </div>
-                <div class="col-12" *ngIf="selectedDbType != null; else default">
-                      <ngx-mssql [thing]="thing" [events]="eventsSubject.asObservable()"></ngx-mssql>
-                </div>
-                <ng-template #default>
-                    <div class="col-8">
-                      DB type is not selected.
-                    </div>
-                </ng-template>
-                </div>
-            </div> 
-        </nb-card-body>
-      </nb-card>
+      <nb-card-header>
+        Metadata
+        <button [disabled]="selectedDbType == null" (click)="onEdit()" nbButton status="success" size="tiny">
+          Edit
+        </button>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-12">                  
+              <div class="col-md-12 decorate">
+                <label for="dbtype">DB type:</label> &nbsp;
+                <nb-select placeholder="Select DB type" id="dbtype" [(ngModel)]="selectedDbType" (selectedChange)="onDbTypeSelect($event)" size="small">
+                  <nb-option *ngFor="let type of dbTypes" [value]="type.value">
+                    {{ type.name }}
+                  </nb-option>
+                </nb-select>                                          
+              </div>                    
+            </div>
+            <div class="col-12" *ngIf="selectedDbType != null; else default">
+              <ngx-mssql [thing]="thing" [events]="eventsSubject.asObservable()"></ngx-mssql>
+            </div>
+            <ng-template #default>
+              <div class="col-8">
+                DB type is not selected.
+              </div>
+            </ng-template>
+          </div>
+        </div> 
+      </nb-card-body>
+    </nb-card>
   </div>
 </div>

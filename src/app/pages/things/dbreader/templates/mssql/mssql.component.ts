@@ -10,13 +10,13 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 @Component({
   selector: 'ngx-mssql',
   templateUrl: './mssql.component.html',
-  styleUrls: ['./mssql.component.scss']
+  styleUrls: ['./mssql.component.scss'],
 })
 export class MssqlComponent extends DbReaderDetailsComponent implements OnInit, OnDestroy {
   @Input() thing: any;
   @Input() events: Observable<void>;
   eventsSubscription: any;
-  @ViewChild('metadataForm', {static: false}) metadataForm: NgForm;
+  @ViewChild('metadataForm', { static: false }) metadataForm: NgForm;
 
   constructor(
     protected route: ActivatedRoute,

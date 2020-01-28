@@ -74,7 +74,7 @@ export class TwinsService {
     return this.http.delete(environment.twinsUrl + '/' + twinID)
       .map(
         resp => {
-          this.notificationsService.success('Device successfully deleted', '');
+          this.notificationsService.success('Twin successfully deleted', '');
           return resp;
         },
       )

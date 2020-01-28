@@ -1,31 +1,31 @@
 nb-icon {
-    vertical-align: middle;
-  }
-  
-  .decorate {
-    text-align: left;
-    font-weight: bold;
-  }
-  
-  nb-select {
-    min-width: 300px;
-  }
-  
-  button {
-    float: right;
-    margin-left: 10px;
-  }
-  
-  textarea {
-    width: 100%;
-    height: 100%;
-  }
+  vertical-align: middle;
+}
 
-  .error {
-      color: red;
-      font-size: smaller;
-  }
-  
-  label {
-    font-size: small;
-  }
+.decorate {
+  text-align: left;
+  font-weight: bold;
+}
+
+nb-select {
+  min-width: 300px;
+}
+
+button {
+  float: right;
+  margin-left: 10px;
+}
+
+textarea {
+  width: 100%;
+  height: 100%;
+}
+
+.error {
+  color: red;
+  font-size: smaller;
+}
+
+label {
+  font-size: small;
+}

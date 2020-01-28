@@ -1,86 +1,85 @@
 <form #metadataForm="ngForm" (ngSubmit)="onEdit()" novalidate>
-    <div class="col-md-12 decorate">
-        <div class="row">
-            <div class="col-md-4 decorate">
-                <label for="server">Server *:</label>
-                <input type="text" nbInput status="primary" id="server" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.server" [(ngModel)]="thing.metadata.db_reader_data.server" name="server"
-                #server="ngModel" required> 
-                <div class="error" *ngIf="server.dirty && server.invalid">Server is required</div> 
-            </div>
-            <div class="col-md-4 decorate">
-                <label for="instance">Instance:</label>
-                <input type="text" nbInput status="primary" id="instance" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.instance" [(ngModel)]="thing.metadata.db_reader_data.instance" name="instance"
-                #instance="ngModel">     
-            </div>
-            <div class="col-md-4 decorate">
-                <label for="port">Port *:</label>
-                <input type="number" minlength="1" nbInput status="primary" id="port" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.port" [(ngModel)]="thing.metadata.db_reader_data.port" required name="port"
-                #port="ngModel">  
-                <div class="error" *ngIf="port.dirty && port.invalid">Port is required</div> 
-            </div>
-        </div>
+  <div class="col-md-12 decorate">
+    <div class="row">
+      <div class="col-md-4 decorate">
+        <label for="server">Server *:</label>
+        <input type="text" nbInput status="primary" id="server" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.server" [(ngModel)]="thing.metadata.db_reader_data.server" name="server"
+               #server="ngModel" required> 
+        <div class="error" *ngIf="server.dirty && server.invalid">Server is required</div> 
+      </div>
+      <div class="col-md-4 decorate">
+        <label for="instance">Instance:</label>
+        <input type="text" nbInput status="primary" id="instance" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.instance" [(ngModel)]="thing.metadata.db_reader_data.instance" name="instance"
+               #instance="ngModel">     
+      </div>
+      <div class="col-md-4 decorate">
+        <label for="port">Port *:</label>
+        <input type="number" minlength="1" nbInput status="primary" id="port" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.port" [(ngModel)]="thing.metadata.db_reader_data.port" required name="port"
+               #port="ngModel">  
+        <div class="error" *ngIf="port.dirty && port.invalid">Port is required</div> 
+      </div>
     </div>
-    <div class="col-md-12 decorate">
-        <div class="row">
-            <div class="col-md-6 decorate">
-                <label for="dbuser">DB User *:</label>
-                <input type="text" nbInput status="primary" id="dbuser" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.dbuser" [(ngModel)]="thing.metadata.db_reader_data.dbuser" required name="dbuser"
-                #dbuser="ngModel">  
-                <div class="error" *ngIf="dbuser.dirty && dbuser.invalid">DB User is required</div>  
-            </div>
-            <div class="col-md-6 decorate">
-                <label for="dbpass">DB Password *:</label>
-                <input type="password" nbInput status="primary" id="dbpass" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.dbpass" [(ngModel)]="thing.metadata.db_reader_data.dbpass" required name="dbpass"
-                #dbpass="ngModel">  
-                <div class="error" *ngIf="dbpass.dirty && dbpass.invalid">DB Password is required</div> 
-            </div>  
-        </div>
+  </div>
+  <div class="col-md-12 decorate">
+    <div class="row">
+      <div class="col-md-6 decorate">
+        <label for="dbuser">DB User *:</label>
+        <input type="text" nbInput status="primary" id="dbuser" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.dbuser" [(ngModel)]="thing.metadata.db_reader_data.dbuser" required name="dbuser"
+               #dbuser="ngModel">  
+        <div class="error" *ngIf="dbuser.dirty && dbuser.invalid">DB User is required</div>  
+      </div>
+      <div class="col-md-6 decorate">
+        <label for="dbpass">DB Password *:</label>
+        <input type="password" nbInput status="primary" id="dbpass" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.dbpass" [(ngModel)]="thing.metadata.db_reader_data.dbpass" required name="dbpass"
+               #dbpass="ngModel">  
+        <div class="error" *ngIf="dbpass.dirty && dbpass.invalid">DB Password is required</div> 
+      </div>  
     </div>
-        
-    <div class="col-md-12 decorate">
-        <div class="row">
-            <div class="col-md-4 decorate">
-                <label for="database">Database *:</label>
-                <input type="text" nbInput status="primary" id="database" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.database" [(ngModel)]="thing.metadata.db_reader_data.database" required name="database"
-                #database="ngModel">   
-                <div class="error" *ngIf="database.dirty && database.invalid">Database is required</div> 
-            </div>
-            <div class="col-md-4 decorate">
-                <label for="table">Table *:</label>
-                <input type="text" nbInput status="primary" id="table" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.table" [(ngModel)]="thing.metadata.db_reader_data.table" required name="table"
-                #table="ngModel">  
-                <div class="error" *ngIf="table.dirty && table.invalid">Table is required</div>   
-            </div>  
-            <div class="col-md-4 decorate">
-                <label for="columns">Columns :</label>
-                <input type="text" nbInput status="primary" id="columns" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.columns" [(ngModel)]="thing.metadata.db_reader_data.columns" name="columns"
-                #columns="ngModel">  
-            </div> 
-        </div>
+  </div>
+  
+  <div class="col-md-12 decorate">
+    <div class="row">
+      <div class="col-md-4 decorate">
+        <label for="database">Database *:</label>
+        <input type="text" nbInput status="primary" id="database" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.database" [(ngModel)]="thing.metadata.db_reader_data.database" required name="database"
+               #database="ngModel">   
+        <div class="error" *ngIf="database.dirty && database.invalid">Database is required</div> 
+      </div>
+      <div class="col-md-4 decorate">
+        <label for="table">Table *:</label>
+        <input type="text" nbInput status="primary" id="table" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.table" [(ngModel)]="thing.metadata.db_reader_data.table" required name="table"
+               #table="ngModel">  
+        <div class="error" *ngIf="table.dirty && table.invalid">Table is required</div>   
+      </div>  
+      <div class="col-md-4 decorate">
+        <label for="columns">Columns :</label>
+        <input type="text" nbInput status="primary" id="columns" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.columns" [(ngModel)]="thing.metadata.db_reader_data.columns" name="columns"
+               #columns="ngModel">  
+      </div> 
     </div>
-    
-    <div class="col-md-12 decorate">
-        <div class="row">
-            <div class="col-md-12 decorate">
-                <label for="where">Where:</label>
-            </div>
-            <div class="col-md-12 decorate">              
-                <textarea nbInput id="where" fullWidth [placeholder]="thing.metadata.db_reader_data.where" [(ngModel)]="thing.metadata.db_reader_data.where" name="where"
-                #where="ngModel"></textarea>
-            </div>
-        </div>
+  </div>
+  
+  <div class="col-md-12 decorate">
+    <div class="row">
+      <div class="col-md-12 decorate">
+        <label for="where">Where:</label>
+      </div>
+      <div class="col-md-12 decorate">              
+        <textarea nbInput id="where" fullWidth [placeholder]="thing.metadata.db_reader_data.where" [(ngModel)]="thing.metadata.db_reader_data.where" name="where"
+                  #where="ngModel"></textarea>
+      </div>
     </div>
+  </div>
 
-    <div class="col-md-12 decorate">
-        <div class="row">
-            <div class="col-md-12 decorate">
-                <label for="interval">Interval(minutes):</label>
-            </div>
-            <div class="col-md-3 decorate">              
-                <input type="number" nbInput id="interval" fullWidth status="primary" fieldSize="small" [placeholder]="thing.metadata.db_reader_data.interval" [(ngModel)]="thing.metadata.db_reader_data.interval" name="interval"
-                #interval="ngModel">     
-            </div>
-        </div>
+  <div class="col-md-12 decorate">
+    <div class="row">
+      <div class="col-md-12 decorate">
+        <label for="interval">Interval(minutes):</label>
+      </div>
+      <div class="col-md-3 decorate">              
+        <input type="number" nbInput id="interval" fullWidth status="primary" fieldSize="small" [placeholder]="thing.metadata.db_reader_data.interval" [(ngModel)]="thing.metadata.db_reader_data.interval" name="interval"
+               #interval="ngModel">     
+      </div>
     </div>
-    <!-- <input type="text" hidden nbInput status="primary" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.dbtype" [(ngModel)]="thing.metadata.db_reader_data.dbtype" required>   -->      
+  </div>
 </form>

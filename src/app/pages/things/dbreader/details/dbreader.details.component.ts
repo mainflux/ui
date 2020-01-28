@@ -11,7 +11,7 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 @Component({
   selector: 'ngx-dbreader-details-component',
   templateUrl: './dbreader.details.component.html',
-  styleUrls: ['./dbreader.details.component.scss']
+  styleUrls: ['./dbreader.details.component.scss'],
 })
 export class DbReaderDetailsComponent implements OnInit {
   offset = 0;
@@ -33,7 +33,7 @@ export class DbReaderDetailsComponent implements OnInit {
     protected thingsService: ThingsService,
     protected notificationsService: NotificationsService,
     protected channelsService: ChannelsService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
