@@ -9,13 +9,12 @@ import { Router } from '@angular/router';
 export class DetailsComponent {
   // Depends on valuePrepareFunction
   value: any;
-  title: any;
 
   constructor(
     private router: Router,
   ) { }
 
   onOpenDetailsPage() {
-    this.router.navigate([`/pages/things/${this.value.type}/details/${this.value.id}`]);
+    this.router.navigate([`${this.router.routerState.snapshot.url}/details/${this.value.id}`]);
   }
 }

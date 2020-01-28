@@ -27,6 +27,9 @@ import { GatewaysDetailsComponent } from 'app/pages/things/gateways/details/gate
 import { GatewaysInfoComponent } from 'app/pages/things/gateways/details/info/gateways.info.component';
 import { GatewaysConfigComponent } from 'app/pages/things/gateways/details/config/gateways.config.component';
 import { GatewaysXtermComponent } from 'app/pages/things/gateways/details/xterm/gateways.xterm.component';
+import { DbReaderComponent } from './dbreader/dbreader.component';
+import { DbReaderDetailsComponent } from './dbreader/details/dbreader.details.component';
+import { MssqlComponent } from './dbreader/templates/mssql/mssql.component';
 
 
 @NgModule({
@@ -55,9 +58,13 @@ import { GatewaysXtermComponent } from 'app/pages/things/gateways/details/xterm/
     GatewaysInfoComponent,
     GatewaysConfigComponent,
     GatewaysXtermComponent,
+    DbReaderComponent,
+    DbReaderDetailsComponent,
+    MssqlComponent,
   ],
   entryComponents: [
     ConfirmationComponent,
+    MssqlComponent,
   ],
 })
 export class ThingsModule { }
