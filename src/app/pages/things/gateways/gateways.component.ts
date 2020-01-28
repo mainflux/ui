@@ -145,18 +145,18 @@ export class GatewaysComponent implements OnInit {
       (resp: any) => {
         this.total = resp.total;
 
-        resp.things.forEach(thing => {
-          thing.mac = thing.metadata.mac;
+        resp.things.forEach(gw => {
+          gw.mac = gw.metadata.mac;
 
-          const dataChannelID: string = thing.metadata ? thing.metadata.dataChannelID : '';
-          this.messagesService.getMessages(dataChannelID, thing.key).subscribe(
+          const dataChannelID: string = gw.metadata ? gw.metadata.dataChannelID : '';
+          this.messagesService.getMessages(dataChannelID, gw.key, gw.id).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
-                thing.seen = msgResp.messages[0].time;
-                thing.messages = msgResp.total;
+                gw.seen = msgResp.messages[0].time;
+                gw.messages = msgResp.total;
               }
 
-              this.gateways.push(thing);
+              this.gateways.push(gw);
               this.source.load(this.gateways);
               this.source.refresh();
             },

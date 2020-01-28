@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
+import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Channel } from 'app/common/interfaces/mainflux.interface';
 
@@ -20,6 +21,7 @@ export class ChannelsDetailsComponent implements OnInit {
 
   connections = [];
   things = [];
+  messages = [];
 
   selectedThings = [];
   editorMetadata = '';
@@ -28,13 +30,14 @@ export class ChannelsDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
+    private messagesService: MessagesService,
     private notificationsService: NotificationsService,
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const chanID = this.route.snapshot.paramMap.get('id');
 
-    this.channelsService.getChannel(id).subscribe(
+    this.channelsService.getChannel(chanID).subscribe(
       resp => {
         this.channel = <Channel>resp;
 
@@ -97,8 +100,20 @@ export class ChannelsDetailsComponent implements OnInit {
                 this.things.push(thing);
               }
             });
+
+            this.getchannelMessages();
           },
         );
+      },
+    );
+  }
+
+  getchannelMessages() {
+    this.messagesService.getMessages(this.channel.id, this.connections[0].key).subscribe(
+      (respMsg: any) => {
+        if (respMsg.messages) {
+          this.messages = respMsg.messages;
+        }
       },
     );
   }

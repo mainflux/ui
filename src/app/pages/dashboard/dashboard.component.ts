@@ -72,10 +72,10 @@ export class DashboardComponent implements OnInit {
       const vPress = 1 + 0.1 * Math.random();
       const vTemp = 25 + 1 * Math.random();
       const vHum = 45 + 20 * Math.random();
-      this.messages.push({time: i, value: vTemp, name: 'temperature'});
-      this.messages.push({time: i, value: vHum, name: 'humidity'});
-      this.messages.push({time: i, value: vPress, name: 'pressure'});
-      this.messages.push({time: i, value: vGas, name: 'gas'});
+      this.messages.push({time: i, value: vTemp, publisher: 'mock', name: 'temperature'});
+      this.messages.push({time: i, value: vHum, publisher: 'mock2', name: 'humidity'});
+      this.messages.push({time: i, value: vPress, publisher: 'mock3', name: 'pressure'});
+      this.messages.push({time: i, value: vGas, publisher: 'mock4', name: 'gas'});
     }
   }
 

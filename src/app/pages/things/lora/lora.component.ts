@@ -132,7 +132,7 @@ export class LoraComponent implements OnInit {
           thing.appID = thing.metadata.lora.appID;
 
           const chanID: string = thing.metadata ? thing.metadata.channelID : '';
-          this.messagesService.getMessages(chanID, thing.key).subscribe(
+          this.messagesService.getMessages(chanID, thing.key, thing.id).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
                 thing.seen = msgResp.messages[0].time;

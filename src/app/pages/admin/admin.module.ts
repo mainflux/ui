@@ -7,7 +7,6 @@ import {
   NbCardModule,
   NbSelectModule,
   NbInputModule,
-  NbListModule,
   NbCheckboxModule,
 } from '@nebular/theme';
 

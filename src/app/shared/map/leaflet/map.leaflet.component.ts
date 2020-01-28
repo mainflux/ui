@@ -83,11 +83,10 @@ export class MapComponent implements OnChanges {
   ngOnChanges() {
     if (this.gateways) {
       this.gateways.forEach((gw) => {
-        const key: string = gw.key ? gw.key : '';
         const channelID: string = gw.metadata ? gw.metadata.dataChannelID : '';
 
-        if (key !== '' && channelID !== '') {
-          this.msgService.getMessages(channelID, key).subscribe(
+        if (gw.key !== '' && channelID !== '') {
+          this.msgService.getMessages(channelID, gw.key, gw.id).subscribe(
             (resp: any) => {
               let lon: Number;
               let lat: Number;

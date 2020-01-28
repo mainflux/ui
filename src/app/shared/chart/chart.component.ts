@@ -48,33 +48,29 @@ export class ChartComponent implements OnChanges {
       return;
     }
 
-    let count = 0;
-    const firstName = this.messages[0].name;
-    for (let i = 1; i < this.messages.length; i++) {
-      if (firstName === this.messages[i].name) {
-        count = i;
-        break;
-      }
-    }
+    const msgPublishers = this.messages.map(msg => msg.publisher);
+    const publishers = msgPublishers.filter((item, index) => msgPublishers.indexOf(item) === index);
 
-    for (let i = 0; i < count; i++) {
+    publishers.forEach( (pub, i) => {
+
       const chartDataSets: ChartDataSets[] = [{
         data: [],
-        label: this.messages[i].name,
         showLine: true,
       }];
 
-      const result = this.messages.filter(obj => obj.name === this.messages[i].name);
+      const result = this.messages.filter(obj => obj.publisher === pub);
       result.forEach( msg => {
         const point: ChartPoint = {
           x: msg.time * 1000,
           y: msg.value,
         };
+        chartDataSets[0].label = `${pub} - ${msg.name}`,
+
         (chartDataSets[0].data as ChartPoint[]).push(point);
       });
 
       this.datasetsList.push(chartDataSets);
       this.chart && this.chart.update();
-    }
+    });
   }
 }
