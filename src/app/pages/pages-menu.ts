@@ -59,7 +59,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Twins',
-        icon: 'monitor-outline',
+        icon: 'copy-outline',
         link: '/pages/admin/twins',
       },
     ],
