@@ -29,7 +29,8 @@ export class OpcuaDetailsComponent implements OnInit {
       resp => {
         this.opcuaNode = resp;
 
-        this.messagesService.getMessages(this.opcuaNode.metadata.channelID, this.opcuaNode.key).subscribe(
+        this.messagesService.getMessages(this.opcuaNode.metadata.channelID,
+          this.opcuaNode.key, this.opcuaNode.id).subscribe(
           (msgResp: any) => {
             this.messages = [];
             if (msgResp.messages) {

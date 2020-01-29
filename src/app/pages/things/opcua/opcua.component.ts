@@ -37,9 +37,6 @@ export class OpcuaComponent implements OnInit {
         title: 'Name',
         type: 'string',
         placeholder: 'Search name',
-        filter: {
-          placeholder: 'Search name',
-        },
       },
       serverURI: {
         title: 'Server URI',
@@ -67,7 +64,6 @@ export class OpcuaComponent implements OnInit {
         },
       },
       seen: {
-        width: '20%',
         title: 'Last Seen',
         type: 'text',
         editable: 'false',
@@ -133,7 +129,7 @@ export class OpcuaComponent implements OnInit {
           node.nodeID = node.metadata.opcua.nodeID;
 
           const chanID: string = node.metadata ? node.metadata.channelID : '';
-          this.messagesService.getMessages(chanID, node.key).subscribe(
+          this.messagesService.getMessages(chanID, node.key, node.id).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
                 node.seen = msgResp.messages[0].time;

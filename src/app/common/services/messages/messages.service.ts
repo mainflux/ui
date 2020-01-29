@@ -15,13 +15,17 @@ export class MessagesService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getMessages(channel: string, key: string, subtopic?: string, offset?: number, limit?: number) {
+  getMessages(channel: string, key: string, thingID?: string, subtopic?: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || 10;
+    limit = limit || 500;
 
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('offset', offset.toString())
       .set('limit', limit.toString());
+
+    if (thingID !== undefined) {
+      params = params.append('publisher', thingID);
+    }
 
     const headers = new HttpHeaders({
       'Authorization': key,

@@ -100,7 +100,7 @@ export class DevicesDetailsComponent implements OnInit {
               if (!(this.connections.filter(c => c.id === chan.id).length > 0)) {
                 this.channels.push(chan);
               } else {
-                this.messagesService.getMessages(chan.id, this.thing.key).subscribe(
+                this.messagesService.getMessages(chan.id, this.thing.key, this.thing.id).subscribe(
                   (respMsg: any) => {
                     if (respMsg.messages) {
                       this.messages = respMsg.messages;

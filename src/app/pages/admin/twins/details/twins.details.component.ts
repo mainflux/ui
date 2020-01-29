@@ -92,7 +92,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     Object.keys(this.defAttrs).forEach(k => {
       const chan = this.defAttrs[k].channel;
       const subtopic = this.defAttrs[k].subtopic;
-      this.messagesService.getMessages(chan, this.thing.key, subtopic).subscribe(
+      this.messagesService.getMessages(chan, this.thing.key, this.thing.id, subtopic).subscribe(
         (msgs: any) => {
           this.state[k] = msgs.messages[0].value;
           this.stateTime = msgs.messages[0].time * 1000;

@@ -1,4 +1,4 @@
-<nb-card status="info" size="tiny">
+<nb-card status="info" size="small">
   <nb-card-header>
     <div class="row">
       <div class="col-1">
@@ -34,31 +34,33 @@
   <nb-card-body>
     <nb-list>
       <nb-list-item>
-        <div class="col-6">
-          Server URI
-        </div>
-        <div class="col-3">
+        <div class="col-4">
           Node ID
         </div>
-        <div class="col-1">
+        <div class="col-2">
           Type
         </div>
-        <div class="col-1">
+        <div class="col-3">
           Description
+        </div>
+        <div class="col-2">
+          BrowseName
+        </div>
+        <div class="col-1">
         </div>
       </nb-list-item>
        <nb-list-item *ngFor="let node of browsedNodes" style="height: 20px;">
-         <div class="col-6">
-           {{ browseServerURI }}
-         </div>
-         <div class="col-3">
+         <div class="col-4">
            {{ node.NodeID }}
          </div>
-         <div class="col-1">
+         <div class="col-2">
            {{ node.Type }}
          </div>
-         <div class="col-1">
+         <div class="col-3">
            {{ node.Description }}
+         </div>
+         <div class="col-2">
+           {{ node.BrowseName }}
          </div>
          <div class="col-1">
            <nb-checkbox (checkedChange)="onCheckboxChanged($event, node)"></nb-checkbox>
