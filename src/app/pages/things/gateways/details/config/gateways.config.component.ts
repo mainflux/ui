@@ -18,6 +18,8 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
     http_port: '',
     mqtt_url: '',
     edgex_url: '',
+    nats_url: '',
+    export_config: '',
   };
 
   constructor(
@@ -44,6 +46,8 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
           http_port: content.http_port,
           mqtt_url: content.mqtt_url,
           edgex_url: content.edgex_url,
+          nats_url: content.nats_url,
+          export_config: content.export_config,
         };
       },
       err => {

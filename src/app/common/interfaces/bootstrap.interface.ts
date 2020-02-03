@@ -13,6 +13,8 @@ export interface ConfigContent {
   http_port: string;
   mqtt_url: string;
   edgex_url: string;
+  nats_url: string;
+  export_config?: any;
 }
 
 export interface ConfigUpdate {
