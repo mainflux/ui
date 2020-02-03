@@ -23,7 +23,7 @@ export class BootstrapService {
       'exp': {
         'log_level': 'debug',
         'nats': 'nats://localhost:4222',
-        'port': '8170'
+        'port': '8170',
       },
       'mqtt': {
         'ca_path': 'ca.crt',
@@ -36,23 +36,23 @@ export class BootstrapService {
         'qos': 0,
         'retain': false,
         'skip_tls_ver': false,
-        'username': 'b9688074-9bc1-4736-8132-7fd45a0736ef'
+        'username': 'b9688074-9bc1-4736-8132-7fd45a0736ef',
       },
       'routes': [
         {
           'mqtt_topic': 'channels/35860baf-6660-4f47-a5c5-8eb1bd176175/messages',
           'nats_topic': 'adc.samples',
           'subtopic': '',
-          'type': 'plain'
+          'type': 'plain',
         },
         {
           'mqtt_topic': 'channels/35860baf-6660-4f47-a5c5-8eb1bd176175/messages',
           'nats_topic': 'telegraf',
           'subtopic': '',
-          'type': 'plain'
-        }
-      ]
-    }
+          'type': 'plain',
+        },
+      ],
+    },
   };
 
   constructor(
