@@ -23,11 +23,17 @@ export interface Twin {
   owner?: string;
   id?: string;
   revision?: number;
-  thing_id?: string;
   created?: Date;
   definitions?: any[];
   definition?: any; // for request
   metadata?: any;
+}
+
+export interface Attribute {
+  name: string;
+  channel: string;
+  subtopic?: string;
+  persist_state: boolean;
 }
 
 export interface Message {

@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ThingsService } from 'app/common/services/things/things.service';
+import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { TwinsService } from 'app/common/services/twins/twins.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
-import { Thing, Twin, Channel } from 'app/common/interfaces/mainflux.interface';
-
+import { Twin, Channel, Attribute } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-twins-details-component',
@@ -18,29 +17,28 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   limit = 100;
 
   twin: Twin = {};
-  thing: Thing = {};
-  defAttrs = {};
-  channels: Channel[] = [];
+  defAttrs: Attribute[] = [];
   twinName: string;
 
-  attrs = {};
-  attrName: string = '';
-  attrSubtopic: string = '';
-  attrChannel: string = '';
-  attrPersist: boolean = false;
+  channels: Channel[] = [];
+
+  editAttrs: Attribute[] = [];
+  editAttr: Attribute = {
+    name: '',
+    channel: '',
+    subtopic: '',
+    persist_state: false,
+  };
 
   state = {};
   stateInterval = 5 * 1000;
   stateIntervalID: number;
   stateTime: number;
 
-  things = [];
-  selectedThing: Thing = {};
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private thingsService: ThingsService,
+    private channelsService: ChannelsService,
     private twinsService: TwinsService,
     private notificationsService: NotificationsService,
     private messagesService: MessagesService,
@@ -49,7 +47,11 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     this.getTwin(id);
-    this.getThings();
+    this.getChannels();
+    // this.getState();
+    // if (!this.stateIntervalID) {
+    //   this.stateIntervalID = window.setInterval(this.getState.bind(this), this.stateInterval);
+    // }    
   }
 
   getTwin(id: string) {
@@ -59,28 +61,21 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
 
         this.defAttrs = this.twin.definitions[
           this.twin.definitions.length - 1].attributes;
-        Object.keys(this.defAttrs).forEach(key => {
-          this.attrs[key] = this.defAttrs[key];
+
+        this.editAttrs = [];
+        this.defAttrs.forEach(attr => {
+          this.editAttrs.push({ ...attr });
         });
 
-        this.getThing();
-      },
-    );
-  }
-
-  getThing() {
-    this.thingsService.getThing(this.twin.thing_id).subscribe(
-      (th: Thing) => {
-        this.thing = th;
-        this.getChannels();
-        this.getState();
-        this.stateIntervalID = window.setInterval(this.getState.bind(this), this.stateInterval);
+        if (this.defAttrs.length) {
+          this.editAttr = { ...this.defAttrs[this.defAttrs.length - 1] };
+        }
       },
     );
   }
 
   getChannels() {
-    this.thingsService.connectedChannels(this.thing.id).subscribe(
+    this.channelsService.getChannels(0, 100).subscribe(
       (chans: any) => {
         this.channels = chans.channels;
       },
@@ -88,31 +83,25 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   getState() {
-    this.state = {};
-    Object.keys(this.defAttrs).forEach(k => {
-      const chan = this.defAttrs[k].channel;
-      const subtopic = this.defAttrs[k].subtopic;
-      this.messagesService.getMessages(chan, this.thing.key, this.thing.id, subtopic).subscribe(
-        (msgs: any) => {
-          this.state[k] = msgs.messages[0].value;
-          this.stateTime = msgs.messages[0].time * 1000;
-        },
-      );
-    });
-  }
-
-  getThings() {
-    this.thingsService.getThings(this.offset, this.limit).subscribe(
-      (respThings: any) => {
-        this.things = <Thing[]>respThings.things;
-      },
-    );
+    // this.state = {};
+    // Object.keys(this.defAttrs).forEach(k => {
+    //   const chan = this.defAttrs[k].channel;
+    //   const subtopic = this.defAttrs[k].subtopic;
+    //   this.messagesService.getMessages(chan, this.thing.key, this.thing.id, subtopic).subscribe(
+    //     (msgs: any) => {
+    //       if (!msgs.messages) {
+    //         return;
+    //       }
+    //       this.state[k] = msgs.messages[0] && msgs.messages[0].value;
+    //       this.stateTime = msgs.messages[0].time * 1000;
+    //     },
+    //   );
+    // });
   }
 
   updateInfo() {
     const twin: Twin = {
       id: this.twin.id,
-      thing_id: this.selectedThing.id || this.twin.thing_id,
       name: this.twinName || this.twin.name,
     };
 
@@ -125,14 +114,14 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
 
   // definition & attributes
   updateDefinition() {
-    if (!Object.keys(this.attrs).length) {
+    if (!Object.keys(this.editAttrs).length) {
       return;
     }
     const twin: Twin = {
       id: this.twin.id,
       definition: {},
     };
-    twin.definition.attributes = this.attrs;
+    twin.definition.attributes = this.editAttrs;
     this.twinsService.editTwin(twin).subscribe(
       resp => {
         this.getTwin(this.twin.id);
@@ -141,31 +130,24 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   togglePersist(checked: boolean) {
-    this.attrPersist = checked;
+    this.editAttr.persist_state = checked;
   }
 
-  removeAttribute(key) {
-    delete this.attrs[key];
+  removeAttribute(attr: Attribute) {
+    this.editAttrs.splice(this.editAttrs.indexOf(attr), 1);
   }
 
-  selectAttribute(attr) {
-    this.attrName = attr.key;
-    this.attrChannel = attr.value.channel;
-    this.attrSubtopic = attr.value.subtopic;
-    this.attrPersist = attr.value.persist_state;
+  selectAttribute(attr: Attribute) {
+    this.editAttr = { ...attr };
   }
 
-  updateAttribute() {
-    if (!this.attrName || !this.attrChannel) {
+  addAttribute() {
+    if (!this.editAttr.name || !this.editAttr.channel) {
       this.notificationsService.error('Missing attribute info', '');
       return;
     }
 
-    this.attrs[this.attrName] = {
-      channel: this.attrChannel,
-      subtopic: this.attrSubtopic,
-      persist_state: this.attrPersist,
-    };
+    this.editAttrs.push({ ...this.editAttr });
   }
 
   // states

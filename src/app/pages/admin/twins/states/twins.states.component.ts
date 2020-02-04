@@ -88,8 +88,11 @@ export class TwinsStatesComponent implements OnInit, OnDestroy {
     this.twinsService.listStates(this.twin.id, this.offset, this.limit).subscribe(
       (states: any) => {
         this.offset = states.total - this.limit;
+        this.offset = Math.max(0, this.offset);
+
         this.lowerLimit = this.offset + 1;
         this.upperLimit = this.offset + this.limit;
+
         this.getStates();
       },
     );
@@ -114,6 +117,7 @@ export class TwinsStatesComponent implements OnInit, OnDestroy {
       this.offset = val - 1;
       this.offset = Math.max(0, this.offset);
       this.limit = this.upperLimit - this.offset;
+      this.limit = Math.max(0, this.limit);
 
       this.getStates();
     }
@@ -128,6 +132,7 @@ export class TwinsStatesComponent implements OnInit, OnDestroy {
       this.limit = val - this.offset;
       this.limit = Math.max(0, this.limit);
       this.offset = this.lowerLimit - 1;
+      this.offset = Math.max(0, this.offset);
 
       this.getStates();
     }
