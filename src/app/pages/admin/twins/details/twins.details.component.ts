@@ -48,7 +48,6 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get('id');
     this.getTwin(id);
     this.getChannels();
-    this.getState();
     if (!this.stateIntervalID) {
       this.stateIntervalID = window.setInterval(this.getState.bind(this), this.stateInterval);
     }
@@ -62,11 +61,12 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
         this.defAttrs = this.twin.definitions[
           this.twin.definitions.length - 1].attributes;
 
+        this.getState();
+
         this.editAttrs = [];
         this.defAttrs.forEach(attr => {
           this.editAttrs.push({ ...attr });
         });
-
         if (this.defAttrs.length) {
           this.editAttr = { ...this.defAttrs[this.defAttrs.length - 1] };
         }
@@ -106,36 +106,12 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateInfo() {
-    const twin: Twin = {
-      id: this.twin.id,
-      name: this.twinName || this.twin.name,
-    };
-
-    this.twinsService.editTwin(twin).subscribe(
-      resp => {
-        this.getTwin(this.twin.id);
-      },
-    );
+  showStates() {
+    const route = this.router.routerState.snapshot.url.replace('details', 'states');
+    this.router.navigate([route]);
   }
 
-  // definition & attributes
-  updateDefinition() {
-    if (!Object.keys(this.editAttrs).length) {
-      return;
-    }
-    const twin: Twin = {
-      id: this.twin.id,
-      definition: {},
-    };
-    twin.definition.attributes = this.editAttrs;
-    this.twinsService.editTwin(twin).subscribe(
-      resp => {
-        this.getTwin(this.twin.id);
-      },
-    );
-  }
-
+  // definition editor
   togglePersist(checked: boolean) {
     this.editAttr.persist_state = checked;
   }
@@ -157,10 +133,22 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     this.editAttrs.push({ ...this.editAttr });
   }
 
-  // states
-  showStates() {
-    const route = this.router.routerState.snapshot.url.replace('details', 'states');
-    this.router.navigate([route]);
+  updateDefinition() {
+    if (!this.editAttrs.length) {
+      this.notificationsService.error('Empty definition', '');
+      return;
+    }
+    const twin: Twin = {
+      id: this.twin.id,
+      definition: {
+        attributes: this.editAttrs,
+      },
+    };
+    this.twinsService.editTwin(twin).subscribe(
+      resp => {
+        this.getTwin(this.twin.id);
+      },
+    );
   }
 
   ngOnDestroy() {
