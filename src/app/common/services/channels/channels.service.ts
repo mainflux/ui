@@ -31,6 +31,22 @@ export class ChannelsService {
       );
   }
 
+  addChannels(channels: Channel[]) {
+    return this.http.post(`${environment.channelsUrl}/bulk`, channels, { observe: 'response' })
+      .map(
+          resp => {
+            return resp;
+          },
+        )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to create Channels',
+            `Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
+        },
+      );
+  }
+
   getChannel(channel: string) {
     return this.http.get(`${environment.channelsUrl}/${channel}`)
       .map(

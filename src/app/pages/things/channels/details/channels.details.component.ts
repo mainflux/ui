@@ -96,6 +96,7 @@ export class ChannelsDetailsComponent implements OnInit {
         this.thingsService.getThings(this.offset, this.limit).subscribe(
           (respThings: any) => {
             respThings.things.forEach(thing => {
+              // Filter get Things resp and keep only disconnected ones.
               if (!(this.connections.filter(c => c.id === thing.id).length > 0)) {
                 this.things.push(thing);
               }
@@ -109,12 +110,14 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   getchannelMessages() {
-    this.messagesService.getMessages(this.channel.id, this.connections[0].key).subscribe(
-      (respMsg: any) => {
-        if (respMsg.messages) {
-          this.messages = respMsg.messages;
-        }
-      },
-    );
+    if (this.connections.length > 0) {
+      this.messagesService.getMessages(this.channel.id, this.connections[0].key).subscribe(
+        (respMsg: any) => {
+          if (respMsg.messages) {
+            this.messages = respMsg.messages;
+          }
+        },
+      );
+    }
   }
 }

@@ -1,36 +1,31 @@
-<div class="row">
-  <div class="col-md-3">
-    <nb-card status="info">
-      <nb-card-header>
+<nb-card status="info">
+  <nb-card-header>
+    <div class="row">
+      <div class="col-4">
         {{ totalChanNumber }} &nbsp; Channels
-      </nb-card-header>
-    </nb-card>
-  </div>
-  <div class="col-md-3">
-    <nb-card status="success">
-      <nb-card-header>
-        {{ gwCtrlChanNumber }} &nbsp; Gateways Control
-      </nb-card-header>
-    </nb-card>
-  </div>
-  <div class="col-md-3">
-    <nb-card status="success">
-      <nb-card-header>
-        {{ gwDataChanNumber }} &nbsp; Gateways Data
-      </nb-card-header>
-    </nb-card>
-  </div>
-  <div class="col-md-3">
-    <nb-card status="success">
-      <nb-card-header>
-        {{ loraChanNumber }} &nbsp; LoRa Applications
-      </nb-card-header>
-    </nb-card>
-  </div>
-</div>
+      </div>
+      <div class="col-4">
+        <input nbInput fullWidth placeholder="Search..."
+               [(ngModel)]="browseServerURI" fieldSize="small">
+      </div>
+      <div class="col-2">
+        <button nbButton size="small" status="success"
+                (click)="onClickSave($event)">
+          <nb-icon icon="save-outline"></nb-icon>
+          Save
+        </button>
+      </div>
+      <div class="col-2">
+        <button nbButton size="small"
+                (click)="fileInput.click()">
+          <nb-icon icon="file-add-outline"></nb-icon>
+          Upload
+          <input hidden #fileInput (change)="onFileSelected($event.target.files)" type="file">
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
 
-
-<nb-card>
   <nb-card-body>
     <ng2-smart-table [settings]="settings"
                      [source]="source"
