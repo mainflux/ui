@@ -1,55 +1,39 @@
 <div class="row">
   <div class="col-md-12">
-    <nb-card size="small" status="info">
+    <nb-card size="tiny" status="info">
       <nb-card-header>
         Info
-        <button (click)="updateInfo()" nbButton status="success" size="tiny">
-          Update twin
+        <button (click)="showStates()" nbButton status="success" size="tiny">
+          Show states
         </button>
       </nb-card-header>
       <nb-card-body>
         <div class="row">
-          <div class="col-2"> Name: </div><div class="col-5">{{twin.name}}</div>
-          <div class="col-5"><input type="text" nbInput [(ngModel)]="twinName" fieldSize="small"></div>
+          <div class="col-2"> Name: </div><div class="col-10">{{twin.name}}</div>
         </div>
 
         <div class="row">
           <div class="col-2"> Owner: </div><div class="col-10"> {{ twin.owner }} </div>
         </div>
 
-        <div class="row">          
+        <div class="row">
           <div class="col-2"> ID: </div><div class="col-10"> {{ twin.id }} </div>
         </div>
 
-        <div class="row">                    
-          <div class="col-2"> Thing ID: </div><div class="col-5">{{twin.thing_id}}</div>
-          <div class="col-5">
-            <nb-select placeholder="Select thing" [(selected)]="selectedThing" size="tiny">
-              <nb-option *ngFor="let thing of this.things" [value]="thing">{{thing.name}}</nb-option>
-            </nb-select>
-          </div>
-        </div>
-
-        <div class="row">                              
+        <div class="row">
           <div class="col-2"> Created: </div><div class="col-10"> {{ twin.created }} </div>
         </div>
-        
-        <div class="row">                              
+
+        <div class="row">
           <div class="col-2"> Revision: </div><div class="col-10"> {{ twin.revision }} </div>
         </div>
       </nb-card-body>
 
-      <nb-card-footer>
-        <button (click)="showStates()" nbButton status="success" size="tiny">
-          Show states
-        </button>
-      </nb-card-footer>
-      
     </nb-card>
         </div>
   </div>
 
-  <div class="row">  
+  <div class="row">
     <div class="col-md-12">
       <nb-card size="tiny" status="primary">
         <nb-card-header>State</nb-card-header>
@@ -57,42 +41,53 @@
           <em>{{ stateTime | date: 'long' }}</em>
           <div class="row" *ngFor="let attr of state | keyvalue">
             <div class="col-2" ><b>{{attr.key}}</b>:</div>
-            <div class="col-10">{{attr.value | json}}</div>          
+            <div class="col-10">{{attr.value | json}}</div>
           </div>
         </nb-card-body>
       </nb-card>
     </div>
   </div>
 
-  <div class="row">  
+  <div class="row">
     <div class="col-md-12">
-      <nb-card size="tiny" status="primary">
+      <nb-card size="normal" status="primary">
         <nb-card-header>Current definition</nb-card-header>
         <nb-card-body>
-          <div class="row" *ngFor="let attr of defAttrs | keyvalue">
-            <div class="col-2" ><b>{{attr.key}}</b>:</div>
-            <div class="col-10">{{attr.value | json}}</div>          
-          </div>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let attr of defAttrs">
+              <div class="col-2" ><b>{{attr.name}}</b></div>
+              <div class="col-10">
+                <ul>
+                  <li><b>Channel</b> {{ attr.channel }}</li>
+                  <li><b>Subtopic</b> {{ attr.subtopic }}</li>
+                  <li><b>Persisted</b> {{ attr.persist_state }}</li>
+                </ul>
+              </div>
+            </li>
+          </ul>
         </nb-card-body>
       </nb-card>
     </div>
   </div>
 
-  <div class="row">  
+  <div class="row">
     <div class="col-md-12">
       <nb-card size="small" status="primary">
         <nb-card-header>Definition history</nb-card-header>
         <nb-card-body>
-          <div class="row" *ngFor="let def of twin.definitions">
-            <div class="col-2"><b>{{ def.id }}</b>:</div>
-            <div class="col-10">{{ def | json }}</div>
+          <div class="row" *ngFor="let def of twin.definitions?.slice().reverse()">
+            <div class="col-2">{{ def.id }} - {{ def.created | date:'medium' }}</div>
+            <div class="col-10">
+              <div *ngFor="let attr of def.attributes">{{ attr | json }}</div>
+            </div>
+            <div class="col-12"><hr/></div>
           </div>
         </nb-card-body>
       </nb-card>
     </div>
   </div>
 
-  <div class="row">  
+  <div class="row">
     <div class="col-md-12">
       <nb-card size="medium" status="primary">
         <nb-card-header>
@@ -101,14 +96,14 @@
             Update definition
           </button>
         </nb-card-header>
-        
+
         <nb-card-body>
-          <div class="row" *ngFor="let attr of attrs | keyvalue">
+          <div class="row" *ngFor="let attr of editAttrs">
             <div class="col-10" id="selectable" (click)="selectAttribute(attr)">
-              <b>{{attr.key}}</b>: {{attr.value | json}}
+              {{attr | json}}
             </div>
             <div class="col-2">
-              <button (click)="removeAttribute(attr.key)" nbButton status="danger" size="tiny">-</button>
+              <button (click)="removeAttribute(attr)" nbButton status="danger" size="tiny">x</button>
             </div>
           </div>
         </nb-card-body>
@@ -116,31 +111,31 @@
         <nb-card-footer>
           <div class="row">
             <div class="col-2"> Name: </div><div class="col-10">
-              <input type="text" nbInput [(ngModel)]="attrName" fieldSize="small">
+              <input type="text" nbInput [(ngModel)]="editAttr.name" fieldSize="small">
             </div>
-            
+
             <div class="col-2"> Channel: </div><div class="col-10">
-              <nb-select placeholder="Select channel" [(selected)]="attrChannel" size="tiny">
+              <nb-select placeholder="Select channel" [(selected)]="editAttr.channel" size="tiny">
                 <nb-option *ngFor="let channel of this.channels" [value]="channel.id">
                   {{channel.name}}
                 </nb-option>
-              </nb-select>            
+              </nb-select>
             </div>
-            
+
             <div class="col-2"> Subtopic: </div><div class="col-10">
-              <input type="text" nbInput [(ngModel)]="attrSubtopic" fieldSize="small">
+              <input type="text" nbInput [(ngModel)]="editAttr.subtopic" fieldSize="small">
             </div>
-            
+
             <div class="col-2"> Persist state: </div><div class="col-5">
-              <nb-checkbox (checkedChange)="togglePersist($event)" [checked]="attrPersist"></nb-checkbox>
+              <nb-checkbox (checkedChange)="togglePersist($event)" [checked]="editAttr.persist_state"></nb-checkbox>
             </div>
           </div>
-          
-          <button (click)="updateAttribute()" nbButton status="success" size="tiny">
-            Update attribute
+
+          <button (click)="addAttribute()" nbButton status="success" size="tiny">
+            Add attribute
           </button>
         </nb-card-footer>
-        
+
       </nb-card>
   </div>
 </div>

@@ -35,15 +35,15 @@ export class TwinsComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      name: {
+        title: 'Name',
+        editable: true,
+        addable: true,
+      },
       id: {
         title: 'ID',
         editable: false,
         addable: false,
-      },
-      thing_id: {
-        title: 'Thing ID',
-        type: 'string',
-        editable: false,
       },
       details: {
         title: 'Details',
@@ -94,9 +94,6 @@ export class TwinsComponent implements OnInit {
     // close edditable row
     event.confirm.resolve();
 
-    if (!event.newData.thing_id) {
-      event.newData.thing_id = 'NO_THING_ID';
-    }
     this.twinsService.addTwin(event.newData).subscribe(
       resp => {
         this.getTwins();
