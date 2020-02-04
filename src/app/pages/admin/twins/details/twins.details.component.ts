@@ -5,7 +5,7 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { TwinsService } from 'app/common/services/twins/twins.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
-import { Twin, Channel, Attribute } from 'app/common/interfaces/mainflux.interface';
+import { Twin, Thing, Channel, Attribute } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-twins-details-component',
@@ -48,10 +48,10 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get('id');
     this.getTwin(id);
     this.getChannels();
-    // this.getState();
-    // if (!this.stateIntervalID) {
-    //   this.stateIntervalID = window.setInterval(this.getState.bind(this), this.stateInterval);
-    // }    
+    this.getState();
+    if (!this.stateIntervalID) {
+      this.stateIntervalID = window.setInterval(this.getState.bind(this), this.stateInterval);
+    }
   }
 
   getTwin(id: string) {
@@ -83,20 +83,27 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   getState() {
-    // this.state = {};
-    // Object.keys(this.defAttrs).forEach(k => {
-    //   const chan = this.defAttrs[k].channel;
-    //   const subtopic = this.defAttrs[k].subtopic;
-    //   this.messagesService.getMessages(chan, this.thing.key, this.thing.id, subtopic).subscribe(
-    //     (msgs: any) => {
-    //       if (!msgs.messages) {
-    //         return;
-    //       }
-    //       this.state[k] = msgs.messages[0] && msgs.messages[0].value;
-    //       this.stateTime = msgs.messages[0].time * 1000;
-    //     },
-    //   );
-    // });
+    this.state = {};
+    this.defAttrs.forEach(attr => {
+      const chan = attr.channel;
+      const subtopic = attr.subtopic;
+      this.channelsService.connectedThings(chan).subscribe(
+        (things: any) => {
+          const th: Thing = things.things[0];
+          if (th) {
+            this.messagesService.getMessages(chan, th.key, undefined, subtopic).subscribe(
+              (msgs: any) => {
+                if (!msgs.messages) {
+                  return;
+                }
+                this.state[attr.name] = msgs.messages[0] && msgs.messages[0].value;
+                this.stateTime = msgs.messages[0].time * 1000;
+              },
+            );
+          }
+        },
+      );
+    });
   }
 
   updateInfo() {
