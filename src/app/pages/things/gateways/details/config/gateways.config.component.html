@@ -1,4 +1,4 @@
-<nb-card size="tiny" status="info">
+<nb-card size="small" status="info">
   <nb-card-header>
     Bootstrap configuration
     <button class="float-right" nbButton size="tiny"
@@ -12,6 +12,7 @@
       <div class="col-3"> HTTP port: </div><div class="col-9"><input type="text" nbInput fullWidth fieldSize="small" placeholder="Input" [(ngModel)]="content.http_port"></div>
       <div class="col-3"> MQTT URL: </div><div class="col-9"><input type="text" nbInput fullWidth fieldSize="small" placeholder="Input" [(ngModel)]="content.mqtt_url"></div>
       <div class="col-3"> EdgeX URL: </div><div class="col-9"><input type="text" nbInput fullWidth fieldSize="small" placeholder="Input" [(ngModel)]="content.edgex_url"></div>
+      <div class="col-3"> NATS URL: </div><div class="col-9"><input type="text" nbInput fullWidth fieldSize="small" placeholder="Input" [(ngModel)]="content.nats_url"></div>
     </div>
   </nb-card-body>
 </nb-card>

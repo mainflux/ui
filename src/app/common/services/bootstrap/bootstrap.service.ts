@@ -18,6 +18,41 @@ export class BootstrapService {
     'http_port': '9000',
     'mqtt_url': 'localhost:1883',
     'edgex_url': 'http://localhost:48090/api/v1/',
+    'nats_url': 'localhost:4222',
+    'export_config': {
+      'exp': {
+        'log_level': 'debug',
+        'nats': 'nats://localhost:4222',
+        'port': '8170',
+      },
+      'mqtt': {
+        'ca_path': 'ca.crt',
+        'cert_path': 'thing.crt',
+        'channel': '',
+        'host': 'tcp://localhost:1883',
+        'mtls': false,
+        'password': '',
+        'priv_key_path': 'thing.key',
+        'qos': 0,
+        'retain': false,
+        'skip_tls_ver': false,
+        'username': '',
+      },
+      'routes': [
+        {
+          'mqtt_topic': '',
+          'nats_topic': 'adc.samples',
+          'subtopic': '',
+          'type': 'plain',
+        },
+        {
+          'mqtt_topic': '',
+          'nats_topic': 'telegraf',
+          'subtopic': '',
+          'type': 'plain',
+        },
+      ],
+    },
   };
 
   constructor(
@@ -28,6 +63,12 @@ export class BootstrapService {
 
   addConfig(gw: Gateway) {
     // Boostrap
+    this.content.export_config.mqtt.channel = gw.metadata.exportChannelID;
+    this.content.export_config.mqtt.username = gw.id;
+    this.content.export_config.routes[0].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
+    this.content.export_config.routes[1].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
+    this.content.export_config.mqtt.password = gw.key;
+
     const config: Config = {
       thing_id: gw.id,
       thing_key: gw.key,
