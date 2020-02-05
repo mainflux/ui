@@ -30,6 +30,22 @@ export class ThingsService {
       );
   }
 
+  addThings(things: Thing[]) {
+    return this.http.post(`${environment.thingsUrl}/bulk`, things, { observe: 'response' })
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to create Things',
+            `Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
+        },
+      );
+  }
+
   getThing(thingID: string) {
     return this.http.get(environment.thingsUrl + '/' + thingID)
       .map(

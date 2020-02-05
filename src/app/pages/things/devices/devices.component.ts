@@ -7,8 +7,6 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { Thing } from 'app/common/interfaces/mainflux.interface';
 
 import { ThingsService } from 'app/common/services/things/things.service';
-import { GatewaysService } from 'app/common/services/gateways/gateways.service';
-import { LoraService } from 'app/common/services/lora/lora.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 
@@ -41,10 +39,7 @@ export class DevicesComponent implements OnInit {
       name: {
         title: 'Name',
         type: 'string',
-        placeholder: 'Search name',
-        filter: {
-          placeholder: 'Search name',
-        },
+        filter: false,
       },
       id: {
         title: 'ID',
@@ -57,7 +52,6 @@ export class DevicesComponent implements OnInit {
         type: 'custom',
         renderComponent: DetailsComponent,
         valuePrepareFunction: (cell, row) => {
-          row.type = 'devices';
           return row;
         },
         editable: false,
@@ -75,38 +69,18 @@ export class DevicesComponent implements OnInit {
   things: Observable<Thing[]>;
 
   thingsNumber = 0;
-  gatewaysNumber = 0;
-  loraDevicesNumber = 0;
 
   offset = 0;
-  limit = 20;
+  limit = 100;
 
   constructor(
     private dialogService: NbDialogService,
     private thingsService: ThingsService,
-    private gatewaysService: GatewaysService,
-    private loraService: LoraService,
     private notificationsService: NotificationsService,
   ) { }
 
   ngOnInit() {
     this.getThings();
-
-    this.getThingsStats();
-  }
-
-  getThingsStats() {
-    this.gatewaysService.getGateways(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.gatewaysNumber = resp.total;
-      },
-    );
-
-    this.loraService.getDevices(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.loraDevicesNumber = resp.total;
-      },
-    );
   }
 
   getThings(): void {
@@ -130,7 +104,6 @@ export class DevicesComponent implements OnInit {
       resp => {
         this.notificationsService.success('Device successfully created', '');
         this.getThings();
-        this.getThingsStats();
       },
     );
   }
@@ -163,12 +136,42 @@ export class DevicesComponent implements OnInit {
     );
   }
 
-  onSelection(event): void {
-  }
+  onFileSelected(files: FileList) {
+    if (files && files.length > 0) {
+      const file: File = files.item(0);
+      const reader: FileReader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = () => {
+        const csv: string = reader.result as string;
+        const lines = csv.split('\n');
+        const things: Thing[] = [];
 
-  onClickUpload(event): void {
-  }
+        lines.forEach( line => {
+          const col = line.split('|');
+          const name = col[0];
+          if (name !== '' && name !== '<empty string>') {
+            let metadata = {};
+            if (col[1] !== undefined) {
+              try {
+                metadata = JSON.parse(col[1]);
+              } catch (e) {
+                this.notificationsService.warn('Wrong metadata format', '');
+              }
+            }
+            const thing = {
+              name: name,
+              metadata: metadata,
+            };
+            things.push(thing);
+          }
+        });
 
-  onClickSave(event): void {
+        this.thingsService.addThings(things).subscribe(
+          resp => {
+            this.getThings();
+          },
+        );
+      };
+    }
   }
 }

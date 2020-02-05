@@ -5,8 +5,6 @@ import { LocalDataSource } from 'ng2-smart-table';
 
 import { Channel } from 'app/common/interfaces/mainflux.interface';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
-import { GatewaysService } from 'app/common/services/gateways/gateways.service';
-import { LoraService } from 'app/common/services/lora/lora.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
@@ -39,6 +37,7 @@ export class ChannelsComponent implements OnInit {
       name: {
         title: 'Name',
         type: 'string',
+        filter: false,
       },
       id: {
         title: 'ID',
@@ -51,7 +50,6 @@ export class ChannelsComponent implements OnInit {
         type: 'custom',
         renderComponent: DetailsComponent,
         valuePrepareFunction: (cell, row) => {
-          row.type = 'channels';
           return row;
         },
         editable: false,
@@ -68,45 +66,19 @@ export class ChannelsComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   channels: Channel[];
 
-  gwDataChanNumber = 0;
-  gwCtrlChanNumber = 0;
-  loraChanNumber = 0;
   totalChanNumber = 0;
 
   offset = 0;
-  limit = 20;
+  limit = 100;
 
   constructor(
     private dialogService: NbDialogService,
     private channelsService: ChannelsService,
-    private gatewaysService: GatewaysService,
-    private loraService: LoraService,
     private notificationsService: NotificationsService,
   ) { }
 
   ngOnInit() {
     this.getChannels();
-    this.getChannelsStats();
-  }
-
-  getChannelsStats() {
-    this.gatewaysService.getCtrlChannels(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.gwCtrlChanNumber = resp.total;
-      },
-    );
-
-    this.gatewaysService.getDataChannels(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.gwDataChanNumber = resp.total;
-      },
-    );
-
-    this.loraService.getChannels(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.loraChanNumber = resp.total;
-      },
-    );
   }
 
   getChannels(): void {
@@ -130,7 +102,6 @@ export class ChannelsComponent implements OnInit {
       resp => {
         this.notificationsService.success('Channel successfully created', '');
         this.getChannels();
-        this.getChannelsStats();
       },
     );
   }
@@ -161,5 +132,45 @@ export class ChannelsComponent implements OnInit {
         }
       },
     );
+  }
+
+  onFileSelected(files: FileList) {
+    if (files && files.length > 0) {
+      const file: File = files.item(0);
+      const reader: FileReader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = () => {
+        const csv: string = reader.result as string;
+        const lines = csv.split('\n');
+        const channels: Channel[] = [];
+
+        lines.forEach( line => {
+          const col = line.split('|');
+          const name = col[0];
+          if (name !== '' && name !== '<empty string>') {
+            let metadata = {};
+            if (col[1] !== undefined) {
+              try {
+                metadata = JSON.parse(col[1]);
+              } catch (e) {
+                this.notificationsService.warn('Wrong metadata format', '');
+              }
+            }
+
+            const chann = {
+              name: name,
+              metadata: metadata,
+            };
+            channels.push(chann);
+          }
+        });
+
+        this.channelsService.addChannels(channels).subscribe(
+          resp => {
+            this.getChannels();
+          },
+        );
+      };
+    }
   }
 }

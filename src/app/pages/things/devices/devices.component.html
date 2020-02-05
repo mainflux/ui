@@ -1,56 +1,37 @@
-<div class="row">
-  <div class="col-xxl-3">
-    <nb-card status="info">
-      <nb-card-header>
-        {{ thingsNumber }} &nbsp; Things
-      </nb-card-header>
-    </nb-card>
-  </div>
-
-  <div class="col-xxl-3">
-    <nb-card status="success">
-      <nb-card-header>
-        {{ loraDevicesNumber }} &nbsp; LoRa Devices
-      </nb-card-header>
-    </nb-card>
-  </div>
-
-  <div class="col-xxl-3">
-    <nb-card status="success">
-      <nb-card-header>
-        {{ gatewaysNumber }} &nbsp; Gateways
-      </nb-card-header>
-    </nb-card>
-  </div>
-
-  <div class="col-xxl-3">
+<nb-card status="info">
+  <nb-card-header>
     <div class="row">
-      <div class="col-md-6">
-        <button nbButton size="medium" shape="semi-round"
-                (click)="onClickUpload($event)">
-          <nb-icon icon="file-add-outline"></nb-icon>
-          Upload
-        </button>
+      <div class="col-4">
+        {{ thingsNumber }} &nbsp; Devices
       </div>
-      <div class="col-md-6">
-        <button nbButton size="medium" shape="semi-round"
+      <div class="col-4">
+        <input nbInput fullWidth placeholder="Search..."
+               [(ngModel)]="browseServerURI" fieldSize="small">
+      </div>
+      <div class="col-2">
+        <button nbButton size="small" status="success"
                 (click)="onClickSave($event)">
           <nb-icon icon="save-outline"></nb-icon>
           Save
         </button>
       </div>
+      <div class="col-2">
+        <button nbButton size="small"
+                (click)="fileInput.click()">
+          <nb-icon icon="file-add-outline"></nb-icon>
+          Upload
+          <input hidden #fileInput (change)="onFileSelected($event.target.files)" type="file">
+        </button>
+      </div>
     </div>
-  </div>
-</div>
+  </nb-card-header>
 
-<nb-card>
   <nb-card-body>
     <ng2-smart-table [settings]="settings"
                      [source]="source"
                      (createConfirm)="onCreateConfirm($event)"
                      (editConfirm)="onEditConfirm($event)"
-                     (deleteConfirm)="onDeleteConfirm($event)"
-                     (userRowSelect)="onSelection($event)">
+                     (deleteConfirm)="onDeleteConfirm($event)">
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>

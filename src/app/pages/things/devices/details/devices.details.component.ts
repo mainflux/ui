@@ -102,9 +102,7 @@ export class DevicesDetailsComponent implements OnInit {
               } else {
                 this.messagesService.getMessages(chan.id, this.thing.key, this.thing.id).subscribe(
                   (respMsg: any) => {
-                    if (respMsg.messages) {
-                      this.messages = respMsg.messages;
-                    }
+                    this.messages = respMsg.messages || this.messages;
                   },
                 );
               }
