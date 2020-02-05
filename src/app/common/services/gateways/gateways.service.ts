@@ -161,7 +161,6 @@ export class GatewaysService {
         this.channelsService.deleteChannel(gw.metadata.ctrlChannelID).subscribe();
         this.channelsService.deleteChannel(gw.metadata.dataChannelID).subscribe();
         this.channelsService.deleteChannel(gw.metadata.exportChannelID).subscribe();
-
       },
     );
   }
