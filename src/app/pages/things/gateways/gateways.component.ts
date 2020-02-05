@@ -148,7 +148,6 @@ export class GatewaysComponent implements OnInit {
         resp.things.forEach(gw => {
           gw.mac = gw.metadata.mac;
 
-
           const dataChannelID: string = gw.metadata ? gw.metadata.dataChannelID : '';
           this.messagesService.getMessages(dataChannelID, gw.key, gw.id).subscribe(
             (msgResp: any) => {
