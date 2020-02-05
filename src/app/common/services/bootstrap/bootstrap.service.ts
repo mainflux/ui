@@ -29,7 +29,7 @@ export class BootstrapService {
         'ca_path': 'ca.crt',
         'cert_path': 'thing.crt',
         'channel': '35860baf-6660-4f47-a5c5-8eb1bd176175',
-        'host': 'tcp://84.201.171.65:1883',
+        'host': 'tcp://localhost:1883',
         'mtls': false,
         'password': 'e9c03586-7422-4772-8631-9e0d3f152ca1',
         'priv_key_path': 'thing.key',
