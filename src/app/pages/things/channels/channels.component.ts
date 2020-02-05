@@ -146,7 +146,8 @@ export class ChannelsComponent implements OnInit {
 
         lines.forEach( line => {
           const col = line.split('|');
-          if (col[0] !== '' && col[0] !== '<empty string>') {
+          const name = col[0];
+          if (name !== '' && name !== '<empty string>') {
             let metadata = {};
             if (col[1] !== undefined) {
               try {
@@ -157,7 +158,7 @@ export class ChannelsComponent implements OnInit {
             }
 
             const chann = {
-              name: col[0],
+              name: name,
               metadata: metadata,
             };
             channels.push(chann);

@@ -148,7 +148,8 @@ export class DevicesComponent implements OnInit {
 
         lines.forEach( line => {
           const col = line.split('|');
-          if (col[0] !== '' && col[0] !== '<empty string>') {
+          const name = col[0];
+          if (name !== '' && name !== '<empty string>') {
             let metadata = {};
             if (col[1] !== undefined) {
               try {
@@ -158,7 +159,7 @@ export class DevicesComponent implements OnInit {
               }
             }
             const thing = {
-              name: col[0],
+              name: name,
               metadata: metadata,
             };
             things.push(thing);

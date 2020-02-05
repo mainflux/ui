@@ -110,7 +110,7 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   getchannelMessages() {
-    if (this.connections.length > 0) {
+    if (this.connections.length) {
       this.messagesService.getMessages(this.channel.id, this.connections[0].key).subscribe(
         (respMsg: any) => {
           if (respMsg.messages) {
