@@ -65,7 +65,6 @@ export class BootstrapService {
     // Boostrap
     this.content.export_config.mqtt.channel = gw.metadata.exportChannelID;
     this.content.export_config.mqtt.username = gw.id;
-    console.log('gw:', gw);
     this.content.export_config.routes[0].mqtt_topic = 'channels/' + gw.metadata.exportChannelID + '/messages';
     this.content.export_config.routes[1].mqtt_topic = 'channels/' + gw.metadata.exportChannelID + '/messages';
     this.content.export_config.mqtt.password = gw.key;

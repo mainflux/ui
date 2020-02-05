@@ -52,7 +52,6 @@ export class GatewaysService {
         const gwID = resp.headers.get('location').replace('/things/', '');
         this.thingsService.getThing(gwID).subscribe(
           (respGetThing: any) => {
-            console.log('respGetThing: ', respGetThing);
             gateway.key = respGetThing.key;
             const ctrlChan: Channel = {
               name: `${gateway.name}-${this.typeCtrlChan}`,
@@ -62,7 +61,6 @@ export class GatewaysService {
             };
             this.channelsService.addChannel(ctrlChan).subscribe(
               respAddCtrl => {
-                console.log('respAddCtrl', respAddCtrl);
                 const ctrlChanID = respAddCtrl.headers.get('location').replace('/channels/', '');
 
                 const dataChannel: Channel = {
@@ -73,7 +71,6 @@ export class GatewaysService {
                 };
                 this.channelsService.addChannel(dataChannel).subscribe(
                   respAddData => {
-                    console.log('respAddCtrl', respAddData);
                     const dataChanID = respAddData.headers.get('location').replace('/channels/', '');
 
                     const exportChannel: Channel = {
@@ -84,7 +81,6 @@ export class GatewaysService {
                     };
                     this.channelsService.addChannel(exportChannel).subscribe(
                       respAddExport => {
-                        console.log('respAddCtrl', respAddExport);
                         const exportChanID = respAddExport.headers.get('location').replace('/channels/', '');
 
                         this.channelsService.connectThing(ctrlChanID, gwID).subscribe(

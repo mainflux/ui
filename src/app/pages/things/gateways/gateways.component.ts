@@ -147,7 +147,6 @@ export class GatewaysComponent implements OnInit {
 
         resp.things.forEach(gw => {
           gw.mac = gw.metadata.mac;
-          console.log('getgw:', gw);
 
 
           const dataChannelID: string = gw.metadata ? gw.metadata.dataChannelID : '';
