@@ -28,25 +28,25 @@ export class BootstrapService {
       'mqtt': {
         'ca_path': 'ca.crt',
         'cert_path': 'thing.crt',
-        'channel': '35860baf-6660-4f47-a5c5-8eb1bd176175',
+        'channel': '',
         'host': 'tcp://localhost:1883',
         'mtls': false,
-        'password': 'e9c03586-7422-4772-8631-9e0d3f152ca1',
+        'password': '',
         'priv_key_path': 'thing.key',
         'qos': 0,
         'retain': false,
         'skip_tls_ver': false,
-        'username': 'b9688074-9bc1-4736-8132-7fd45a0736ef',
+        'username': '',
       },
       'routes': [
         {
-          'mqtt_topic': 'channels/35860baf-6660-4f47-a5c5-8eb1bd176175/messages',
+          'mqtt_topic': '',
           'nats_topic': 'adc.samples',
           'subtopic': '',
           'type': 'plain',
         },
         {
-          'mqtt_topic': 'channels/35860baf-6660-4f47-a5c5-8eb1bd176175/messages',
+          'mqtt_topic': '',
           'nats_topic': 'telegraf',
           'subtopic': '',
           'type': 'plain',
@@ -65,8 +65,8 @@ export class BootstrapService {
     // Boostrap
     this.content.export_config.mqtt.channel = gw.metadata.exportChannelID;
     this.content.export_config.mqtt.username = gw.id;
-    this.content.export_config.routes[0].mqtt_topic = 'channels/' + gw.metadata.exportChannelID + '/messages';
-    this.content.export_config.routes[1].mqtt_topic = 'channels/' + gw.metadata.exportChannelID + '/messages';
+    this.content.export_config.routes[0].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
+    this.content.export_config.routes[1].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
     this.content.export_config.mqtt.password = gw.key;
 
     const config: Config = {

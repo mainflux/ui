@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 
 import { Gateway } from 'app/common/interfaces/gateway.interface';
-import { Channel } from 'app/common/interfaces/mainflux.interface';
+import { Thing, Channel } from 'app/common/interfaces/mainflux.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { BootstrapService } from 'app/common/services/bootstrap/bootstrap.service';
@@ -51,7 +51,7 @@ export class GatewaysService {
       resp => {
         const gwID = resp.headers.get('location').replace('/things/', '');
         this.thingsService.getThing(gwID).subscribe(
-          (respGetThing: any) => {
+          (respGetThing: Thing) => {
             gateway.key = respGetThing.key;
             const ctrlChan: Channel = {
               name: `${gateway.name}-${this.typeCtrlChan}`,
