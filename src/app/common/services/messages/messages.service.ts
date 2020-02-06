@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,8 +6,11 @@ import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
+const defaultLimit: number = 500;
+
 @Injectable()
 export class MessagesService {
+
 
   constructor(
     private http: HttpClient,
@@ -15,25 +18,20 @@ export class MessagesService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getMessages(channel: string, key: string, thingID?: string, subtopic?: string, offset?: number, limit?: number) {
+  getMessages(channel: string, thingKey: string, thingID?: string, subtopic?: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || 500;
-
-    let params = new HttpParams()
-      .set('offset', offset.toString())
-      .set('limit', limit.toString());
-
-    if (thingID !== undefined) {
-      params = params.append('publisher', thingID);
-    }
+    limit = limit || defaultLimit;
 
     const headers = new HttpHeaders({
-      'Authorization': key,
+      'Authorization': thingKey,
     });
 
-    const topic = subtopic ? `${environment.readerChannelsUrl}/${channel}/messages/${subtopic}` : `${environment.readerChannelsUrl}/${channel}/messages`;
+    let url = `${environment.readerChannelsUrl}/${channel}/messages`;
+    url += `?offset=${offset}&limit=${limit}`;
+    url = thingID ? url += `&publisher=${thingID}` : url;
+    url = subtopic ? url += `&subtopic=${encodeURIComponent(subtopic)}` : url;
 
-    return this.http.get(topic, { headers: headers, params: params })
+    return this.http.get(url, { headers: headers })
       .map(
         resp => {
           return resp;
@@ -79,10 +77,10 @@ export class MessagesService {
     const temp8 = 28 + 10 * Math.random();
 
     const message = `[{"bt": 15020, "bn":"temperature", "t": 0, "v":${temp1}},
-                      {"t":10, "v":${temp2}}, {"t":20, "v":${temp3}},
-                      {"t":30, "v":${temp4}}, {"t":40, "v":${temp5}},
-                      {"t":50, "v":${temp6}}, {"t":60, "v":${temp7}},
-                      {"t":70, "v":${temp8}}]`;
+        {"t":10, "v":${temp2}}, {"t":20, "v":${temp3}},
+        {"t":30, "v":${temp4}}, {"t":40, "v":${temp5}},
+        {"t":50, "v":${temp6}}, {"t":60, "v":${temp7}},
+        {"t":70, "v":${temp8}}]`;
 
     this.thingsService.getThing(thingID).subscribe(
       (resp: any) => {

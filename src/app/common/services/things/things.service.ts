@@ -25,7 +25,7 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to create Thing',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+          return Observable.throw(err);
         },
       );
   }
@@ -41,13 +41,13 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to create Things',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+          return Observable.throw(err);
         },
       );
   }
 
   getThing(thingID: string) {
-    return this.http.get(environment.thingsUrl + '/' + thingID)
+    return this.http.get(`${environment.thingsUrl}/${thingID}`)
       .map(
         resp => {
           return resp;
@@ -57,22 +57,23 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to fetch Thing',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+          return Observable.throw(err);
         },
       );
   }
 
   getThings(offset: number, limit: number, type?: string, metaValue?: string) {
+    offset = offset || 0;
+    limit = limit || 10;
     let params = new HttpParams()
       .set('offset', offset.toString())
       .set('limit', limit.toString());
-
-    if (type !== undefined) {
-      params = params.append('metadata', `{"type":"${type}"}`);
-    }
-
-    if (metaValue !== undefined) {
-      params = params.append('metadata', `{"${type}": ${metaValue}}`);
+    if (type) {
+      if (metaValue) {
+        params = params.append('metadata', `{"${type}": ${metaValue}}`);
+      } else {
+        params = params.append('metadata', `{"type":"${type}"}`);
+      }
     }
 
     return this.http.get(environment.thingsUrl, { params })
@@ -85,13 +86,13 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to get Things',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+          return Observable.throw(err);
         },
       );
   }
 
   deleteThing(thingID: string) {
-    return this.http.delete(environment.thingsUrl + '/' + thingID)
+    return this.http.delete(`${environment.thingsUrl}/${thingID}`)
       .map(
         resp => {
           return resp;
@@ -101,29 +102,29 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to delete Thing',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+          return Observable.throw(err);
         },
       );
   }
 
   editThing(thing: Thing) {
-    return this.http.put(environment.thingsUrl + '/' + thing.id, thing)
-    .map(
-      resp => {
-        return resp;
-      },
-    )
-    .catch(
-      err => {
-        this.notificationsService.error('Failed to edit Thing',
-          `Error: ${err.status} - ${err.statusText}`);
+    return this.http.put(`${environment.thingsUrl}/${thing.id}`, thing)
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to edit Thing',
+            `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
-      },
-    );
+        },
+      );
   }
 
   connectedChannels(thingID: string) {
-    return this.http.get(environment.thingsUrl  + '/' + thingID + '/channels/')
+    return this.http.get(`${environment.thingsUrl}/${thingID}/channels/`)
       .map(
         resp => {
           return resp;
@@ -133,7 +134,7 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to fetch connected Chanels to the Thing',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+          return Observable.throw(err);
         },
       );
   }

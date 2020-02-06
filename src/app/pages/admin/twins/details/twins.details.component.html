@@ -40,8 +40,9 @@
         <nb-card-body *ngIf="state">
           <em>{{ stateTime | date: 'long' }}</em>
           <div class="row" *ngFor="let attr of state | keyvalue">
-            <div class="col-2" ><b>{{attr.key}}</b>:</div>
-            <div class="col-10">{{attr.value | json}}</div>
+            <div class="col-2" ><b>{{attr.key}}</b></div>
+            <div class="col-5">{{attr.value.value}}</div>
+            <div class="col-5">{{attr.value.time | date: 'long'}}</div>
           </div>
         </nb-card-body>
       </nb-card>
