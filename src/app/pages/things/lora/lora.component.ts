@@ -107,6 +107,7 @@ export class LoraComponent implements OnInit {
 
   offset = 0;
   limit = 20;
+  loraSearch = '';
 
   constructor(
     private loraService: LoraService,
@@ -208,5 +209,11 @@ export class LoraComponent implements OnInit {
         }
       },
     );
+  }
+
+  onClickSave() {
+  }
+
+  onFileSelected(files: FileList) {
   }
 }

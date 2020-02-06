@@ -1,22 +1,30 @@
-<div class="row">
-  <div class="col-xxl-6">
-    <nb-card status="success">
-      <nb-card-header>
+<nb-card status="info">
+  <nb-card-header>
+    <div class="row">
+      <div class="col-4">
         {{ loraDevsNumber }} &nbsp; LoRa Devices
-      </nb-card-header>
-    </nb-card>
-  </div>
-
-  <div class="col-xxl-6">
-    <nb-card status="info">
-      <nb-card-header>
-        {{ loraAppsNumber }} &nbsp; LoRa Applications
-      </nb-card-header>
-    </nb-card>
-  </div>
-</div>
-
-<nb-card>
+      </div>
+      <div class="col-4">
+        <input nbInput fullWidth placeholder="Search..."
+               [(ngModel)]="loraSearch" fieldSize="small">
+      </div>
+      <div class="col-2">
+        <button nbButton size="small" status="success"
+                (click)="onClickSave()">
+          <nb-icon icon="save-outline"></nb-icon>
+          Save
+        </button>
+      </div>
+      <div class="col-2">
+        <button nbButton size="small"
+                (click)="fileInput.click()">
+          <nb-icon icon="file-add-outline"></nb-icon>
+          Upload
+          <input hidden #fileInput (change)="onFileSelected($event.target.files)" type="file">
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
   <nb-card-body>
     <ng2-smart-table [settings]="settings"
                      [source]="source"

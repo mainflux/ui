@@ -6,11 +6,11 @@
       </div>
       <div class="col-4">
         <input nbInput fullWidth placeholder="Search..."
-               [(ngModel)]="browseServerURI" fieldSize="small">
+               [(ngModel)]="channelSearch" fieldSize="small">
       </div>
       <div class="col-2">
         <button nbButton size="small" status="success"
-                (click)="onClickSave($event)">
+                (click)="onClickSave()">
           <nb-icon icon="save-outline"></nb-icon>
           Save
         </button>

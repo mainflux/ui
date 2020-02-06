@@ -119,6 +119,7 @@ export class OpcuaComponent implements OnInit {
 
   offset = 0;
   limit = 20;
+  nodeSearch = '';
 
   lineSeparator = '|';
 
@@ -249,6 +250,9 @@ export class OpcuaComponent implements OnInit {
         );
       },
     );
+  }
+
+  onClickSave() {
   }
 
   onFileSelected(files: FileList) {
