@@ -26,4 +26,6 @@ export const environment = {
   grafanaHome: 'http://localhost:3001/?orgId=1&kiosk',
   jaegerHome: 'http://localhost:16686/search',
   loraServer: 'http://lora.mainflux.io/#/',
+
+  mqttWsUrl: 'ws://localhost:80/mqtt',
 };
