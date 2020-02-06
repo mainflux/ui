@@ -33,7 +33,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   state = {};
   stateInterval = 5 * 1000;
   stateIntervalID: number;
-  stateTime: number;
+  stateTime: Date;
 
   constructor(
     private route: ActivatedRoute,
@@ -83,7 +83,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   getState() {
-    this.state = {};
+    this.stateTime = new Date();
     this.defAttrs.forEach(attr => {
       const chan = attr.channel;
       const subtopic = attr.subtopic;
@@ -91,13 +91,14 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
         (things: any) => {
           const th: Thing = things.things[0];
           if (th) {
-            this.messagesService.getMessages(chan, th.key, undefined, subtopic).subscribe(
+            this.messagesService.getMessages(chan, th.key, undefined, subtopic, 0, 1).subscribe(
               (msgs: any) => {
                 if (!msgs.messages) {
                   return;
                 }
-                this.state[attr.name] = msgs.messages[0] && msgs.messages[0].value;
-                this.stateTime = msgs.messages[0].time * 1000;
+                this.state[attr.name] = this.state[attr.name] || {};
+                this.state[attr.name].value = msgs.messages[0] && msgs.messages[0].value;
+                this.state[attr.name].time = msgs.messages[0].time * 1000;
               },
             );
           }

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,34 +6,39 @@ import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
+const urlEncoding = {
+  ';': '\%3B',
+  '=': '\%3D',
+  ':': '%3A',
+  '?': '%3F',
+};
+
 @Injectable()
 export class MessagesService {
-
   constructor(
     private http: HttpClient,
     private thingsService: ThingsService,
     private notificationsService: NotificationsService,
   ) { }
 
-  getMessages(channel: string, key: string, thingID?: string, subtopic?: string, offset?: number, limit?: number) {
+  getMessages(channel: string, thingKey: string, thingID?: string, subtopic?: string, offset?: number, limit?: number) {
     offset = offset || 0;
     limit = limit || 500;
 
-    let params = new HttpParams()
-      .set('offset', offset.toString())
-      .set('limit', limit.toString());
-
-    if (thingID !== undefined) {
-      params = params.append('publisher', thingID);
-    }
-
     const headers = new HttpHeaders({
-      'Authorization': key,
+      'Authorization': thingKey,
     });
 
-    const topic = subtopic ? `${environment.readerChannelsUrl}/${channel}/messages/${subtopic}` : `${environment.readerChannelsUrl}/${channel}/messages`;
+    let topic = `${environment.readerChannelsUrl}/${channel}/messages`;
+    topic += `?offset=${offset}&limit=${limit}`;
+    if (subtopic) {
+      Object.keys(urlEncoding).forEach((k, _) => {
+        subtopic = subtopic.split(k).join(urlEncoding[k]);
+      });
+      topic += `&subtopic=${subtopic}`;
+    }
 
-    return this.http.get(topic, { headers: headers, params: params })
+    return this.http.get(topic, { headers: headers })
       .map(
         resp => {
           return resp;
