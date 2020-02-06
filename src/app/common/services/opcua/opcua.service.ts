@@ -28,29 +28,17 @@ export class OpcuaService {
     return this.thingsService.getThings(offset, limit, this.typeOpcua);
   }
 
-  addNode(node: any) {
-    const nodeReq: OpcuaNode = {
-      name: node.name,
-      metadata: {
-        type: this.typeOpcua,
-        channelID: '',
-        opcua: {
-          nodeID: node.nodeID,
-          serverURI: node.serverURI,
-        },
-      },
-    };
-
+  addNodes(serverURI: string, nodes: any) {
     // Check if a channel exist for serverURI
-    return this.channelsService.getChannels(0, 1, 'opcua', `{"serverURI": "${node.serverURI}"}`).map(
+    return this.channelsService.getChannels(0, 1, 'opcua', `{"serverURI": "${serverURI}"}`).map(
       (resp: any) => {
         if (resp.total === 0) {
           const chanReq = {
-            name: `${this.typeOpcuaServer}-${node.name}`,
+            name: `${this.typeOpcuaServer}`,
             metadata: {
               type: this.typeOpcua,
               opcua: {
-                serverURI: node.serverURI,
+                serverURI: serverURI,
               },
             },
           };
@@ -58,29 +46,46 @@ export class OpcuaService {
           this.channelsService.addChannel(chanReq).subscribe(
             respChan => {
               const chanID = respChan.headers.get('location').replace('/channels/', '');
-              nodeReq.metadata.channelID = chanID;
-              this.addAndConnect(nodeReq, chanID);
+              this.addAndConnect(chanID, nodes);
             },
           );
         } else {
           const chanID = resp.channels[0].id;
-          nodeReq.metadata.channelID = chanID;
-          this.addAndConnect(nodeReq, chanID);
+          this.addAndConnect(chanID, nodes);
         }
       },
     );
   }
 
-  addAndConnect(nodeReq: any, chanID: string) {
-    this.thingsService.addThing(nodeReq).subscribe(
-      respThing => {
-        const thingID = respThing.headers.get('location').replace('/things/', '');
-        this.channelsService.connectThing(chanID, thingID).subscribe(
+  addAndConnect(chanID: string, nodes: any) {
+    const nodesReq: OpcuaNode[] = [];
+    nodes.forEach(node => {
+      const nodeReq: OpcuaNode = {
+        name: node.name,
+        metadata: {
+          type: this.typeOpcua,
+          opcua: {
+            nodeID: node.nodeID,
+            serverURI: node.serverURI,
+          },
+          channelID: chanID,
+        },
+      };
+      nodesReq.push(nodeReq);
+    });
+
+    this.thingsService.addThings(nodesReq).subscribe(
+      (respThings: any) => {
+        const channels = [chanID];
+        const nodesIDs = respThings.body.things.map( thing => thing.id);
+        this.channelsService.connectThings(channels, nodesIDs).subscribe(
           respCon => {
-            this.notificationsService.success('OPC-UA Node successfully created', '');
+            this.notificationsService.success('OPC-UA Nodes successfully created', '');
           },
           err => {
-            this.thingsService.deleteThing(thingID).subscribe();
+            nodesIDs.forEach( id => {
+              this.thingsService.deleteThing(id).subscribe();
+            });
           },
         );
       },
@@ -108,14 +113,18 @@ export class OpcuaService {
   }
 
   deleteNode(node: any) {
-    const channelID = node.metadata.channelID;
-    return this.channelsService.deleteChannel(channelID).map(
-      respChan => {
-        this.thingsService.deleteThing(node.id).subscribe(
-          respThing => {
-            this.notificationsService.success('OPC-UA Node successfully deleted', '');
+    return this.thingsService.deleteThing(node.id).map(
+      respThing => {
+        const serverURI = node.metadata.opcua.serverURI;
+        this.thingsService.getThings(0, 1, 'opcua', `{"serverURI": "${serverURI}"}`).subscribe(
+          (respChan: any) => {
+            if (respChan.total === 0) {
+              const channelID = node.metadata.channelID;
+              this.channelsService.deleteChannel(channelID).subscribe();
+            }
           },
         );
+        this.notificationsService.success('OPC-UA Node successfully deleted', '');
       },
     );
   }

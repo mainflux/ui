@@ -43,12 +43,24 @@ export class OpcuaComponent implements OnInit {
         editable: false,
         addable: true,
         filter: true,
+        valuePrepareFunction: (cell) => {
+          if (cell.length > 30) {
+            return `${cell.substring(10, 39)}...`;
+          }
+          return cell;
+        },
       },
       nodeID: {
         title: 'Node ID',
         editable: true,
         addable: true,
         filter: true,
+        valuePrepareFunction: (cell) => {
+          if (cell.length > 20) {
+            return `${cell.substring(0, 19)}...`;
+          }
+          return cell;
+        },
       },
       messages: {
         title: 'Messages',
@@ -108,6 +120,8 @@ export class OpcuaComponent implements OnInit {
   offset = 0;
   limit = 20;
 
+  lineSeparator = '|';
+
   constructor(
     private opcuaService: OpcuaService,
     private messagesService: MessagesService,
@@ -140,6 +154,11 @@ export class OpcuaComponent implements OnInit {
               this.source.load(this.opcuaNodes);
               this.source.refresh();
             },
+            err => {
+              this.opcuaNodes.push(node);
+              this.source.load(this.opcuaNodes);
+              this.source.refresh();
+            },
           );
         });
       },
@@ -152,7 +171,7 @@ export class OpcuaComponent implements OnInit {
       // close create row
       event.confirm.resolve();
 
-      this.opcuaService.addNode(event.newData).subscribe(
+      this.opcuaService.addNodes(event.newData.serverURI, [event.newData]).subscribe(
         resp => {
           setTimeout(
             () => {
@@ -209,24 +228,66 @@ export class OpcuaComponent implements OnInit {
   }
 
   subscribeOpcuaNodes() {
+    const nodesReq = [];
     this.checkedNodes.forEach( (node, i) => {
-      const row = {
-        name: `Node-${this.browseServerURI};${node}`,
+      const nodeReq = {
+        name: `MFX-${this.browseServerURI};${node}`,
         serverURI: this.browseServerURI,
         nodeID: node,
       };
 
-      setTimeout(
-        () => {
-          this.opcuaService.addNode(row).subscribe();
-        }, 1000 * i,
-      );
+      nodesReq.push(nodeReq);
     });
 
-    setTimeout(
-      () => {
-        this.getOpcuaNodes();
-      }, 1000 * this.checkedNodes.length,
+
+    this.opcuaService.addNodes(this.browseServerURI,  nodesReq).subscribe(
+      resp => {
+        setTimeout(
+          () => {
+            this.getOpcuaNodes();
+          }, 3000,
+        );
+      },
     );
+  }
+
+  onFileSelected(files: FileList) {
+    if (files && files.length > 0) {
+      const file: File = files.item(0);
+      const reader: FileReader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = () => {
+        const csv: string = reader.result as string;
+        const lines = csv.split('\n');
+
+        // Split all file lines using a separator
+        lines.forEach( (line, i) => {
+          const cols = line.split(this.lineSeparator);
+          const name = cols[0];
+          const nodes = [];
+          if (name !== '' && name !== '<empty string>' && cols.length > 2) {
+            const serv = cols[1];
+            for (let j = 2; j < cols.length; j++) {
+              const node = {
+                name: cols[0],
+                serverURI: serv,
+                nodeID: cols[j],
+              };
+              nodes.push(node);
+            }
+
+            this.opcuaService.addNodes(serv, nodes).subscribe(
+              resp => {
+                setTimeout( () => {
+                  this.getOpcuaNodes();
+                }, 3000 * i);
+              },
+            );
+          } else {
+            this.notificationsService.warn('Incomplete line found in file', '');
+          }
+        });
+      };
+    }
   }
 }

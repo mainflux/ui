@@ -1,4 +1,4 @@
-<nb-card status="info" size="small">
+<nb-card status="info" size="tiny">
   <nb-card-header>
     <div class="row">
       <div class="col-1">
@@ -8,24 +8,23 @@
         <input nbInput fullWidth [(ngModel)]="browseServerURI" fieldSize="tiny">
       </div>
       <div class="col-1">
-        Namespace
+        NodeID
       </div>
       <div class="col-1">
         <input nbInput fullWidth [(ngModel)]="browseNamespace" fieldSize="tiny">
       </div>
-      <div class="col-1">
-        Identifier
-      </div>
-      <div class="col-3">
+      <div class="col-2">
         <input nbInput fullWidth [(ngModel)]="browseIdentifier" fieldSize="tiny">
       </div>
-      <div class="col-1">
-        <button nbButton status="success" (click)="browseOpcuaNodes()" size="tiny">
+      <div class="col-2">
+        <button nbButton status="warning" (click)="browseOpcuaNodes()" size="small">
+          <nb-icon icon="maximize-outline"></nb-icon>
           Browse
         </button>
       </div>
-      <div class="col-1">
-        <button nbButton status="warning" (click)="subscribeOpcuaNodes()" size="tiny">
+      <div class="col-2">
+        <button nbButton (click)="subscribeOpcuaNodes()" size="small">
+          <nb-icon icon="collapse-outline"></nb-icon>
           Subscribe
         </button>
       </div>
@@ -38,7 +37,7 @@
           Node ID
         </div>
         <div class="col-2">
-          Type
+          Data Type
         </div>
         <div class="col-3">
           Description
@@ -54,7 +53,7 @@
            {{ node.NodeID }}
          </div>
          <div class="col-2">
-           {{ node.Type }}
+           {{ node.DataType }}
          </div>
          <div class="col-3">
            {{ node.Description }}
@@ -70,9 +69,32 @@
   </nb-card-body>
 </nb-card>
 
-<nb-card status="success">
+<nb-card status="info">
   <nb-card-header>
-    {{ opcuaNodes.length }} &nbsp; OPC-UA Server Subscription
+    <div class="row">
+      <div class="col-4">
+        {{ opcuaNodes.length }} &nbsp; OPC-UA Server Subscription
+      </div>
+      <div class="col-4">
+        <input nbInput fullWidth placeholder="Search..."
+               [(ngModel)]="nodeSearch" fieldSize="small">
+      </div>
+      <div class="col-2">
+        <button nbButton size="small" status="success"
+                (click)="onClickSave($event)">
+          <nb-icon icon="save-outline"></nb-icon>
+          Save
+        </button>
+      </div>
+      <div class="col-2">
+        <button nbButton size="small"
+                (click)="fileInput.click()">
+          <nb-icon icon="file-add-outline"></nb-icon>
+          Upload
+          <input hidden #fileInput (change)="onFileSelected($event.target.files)" type="file">
+        </button>
+      </div>
+    </div>
   </nb-card-header>
 
   <nb-card-body>
