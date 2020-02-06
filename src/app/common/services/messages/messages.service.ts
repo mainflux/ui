@@ -22,11 +22,12 @@ export class MessagesService {
       'Authorization': thingKey,
     });
 
-    let topic = `${environment.readerChannelsUrl}/${channel}/messages`;
-    topic += `?offset=${offset}&limit=${limit}`;
-    topic = subtopic ? topic += `&subtopic=${encodeURIComponent(subtopic)}` : topic;
+    let url = `${environment.readerChannelsUrl}/${channel}/messages`;
+    url += `?offset=${offset}&limit=${limit}`;
+    url = thingID ? url += `&publisher=${thingID}` : url;
+    url = subtopic ? url += `&subtopic=${encodeURIComponent(subtopic)}` : url;
 
-    return this.http.get(topic, { headers: headers })
+    return this.http.get(url, { headers: headers })
       .map(
         resp => {
           return resp;
@@ -72,10 +73,10 @@ export class MessagesService {
     const temp8 = 28 + 10 * Math.random();
 
     const message = `[{"bt": 15020, "bn":"temperature", "t": 0, "v":${temp1}},
-{"t":10, "v":${temp2}}, {"t":20, "v":${temp3}},
-{"t":30, "v":${temp4}}, {"t":40, "v":${temp5}},
-{"t":50, "v":${temp6}}, {"t":60, "v":${temp7}},
-{"t":70, "v":${temp8}}]`;
+        {"t":10, "v":${temp2}}, {"t":20, "v":${temp3}},
+        {"t":30, "v":${temp4}}, {"t":40, "v":${temp5}},
+        {"t":50, "v":${temp6}}, {"t":60, "v":${temp7}},
+        {"t":70, "v":${temp8}}]`;
 
     this.thingsService.getThing(thingID).subscribe(
       (resp: any) => {

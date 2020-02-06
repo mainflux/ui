@@ -63,13 +63,17 @@ export class ThingsService {
   }
 
   getThings(offset: number, limit: number, type?: string, metaValue?: string) {
+    offset = offset || 0;
+    limit = limit || 10;
     let params = new HttpParams()
       .set('offset', offset.toString())
       .set('limit', limit.toString());
-    params = type ? params.append('metadata', `{"type":"${type}"}`) : params;
-
-    if (metaValue !== undefined) {
-      params = params.append('metadata', `{"${type}": ${metaValue}}`);
+    if (type) {
+      if (metaValue) {
+        params = params.append('metadata', `{"${type}": ${metaValue}}`);
+      } else {
+        params = params.append('metadata', `{"type":"${type}"}`);
+      }
     }
 
     return this.http.get(environment.thingsUrl, { params })
