@@ -90,21 +90,23 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
       this.channelsService.connectedThings(chan).subscribe(
         (things: any) => {
           const th: Thing = things.things[0];
-          if (th) {
-            this.messagesService.getMessages(chan, th.key, undefined, subtopic, 0, 1).subscribe(
-              (msgs: any) => {
-                if (!msgs.messages) {
-                  return;
-                }
-                this.state[attr.name] = this.state[attr.name] || {};
-                this.state[attr.name].value = msgs.messages[0] && msgs.messages[0].value;
-                this.state[attr.name].time = msgs.messages[0].time * 1000;
-              },
-            );
-          }
+          th && this.setStateAttribute(attr.name, chan, th.key, subtopic);
         },
       );
     });
+  }
+
+  setStateAttribute(name: string, chan: string, key: string, subtopic: string) {
+    this.messagesService.getMessages(chan, key, undefined, subtopic, 0, 1).subscribe(
+      (msgs: any) => {
+        if (!msgs.messages) {
+          return;
+        }
+        this.state[name] = this.state[name] || {};
+        this.state[name].value = msgs.messages[0] && msgs.messages[0].value;
+        this.state[name].time = msgs.messages[0].time * 1000;
+      },
+    );
   }
 
   showStates() {
