@@ -7,6 +7,8 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { Twin, Thing, Channel, Attribute } from 'app/common/interfaces/mainflux.interface';
 
+const stateInterval: number = 5 * 1000;
+
 @Component({
   selector: 'ngx-twins-details-component',
   templateUrl: './twins.details.component.html',
@@ -31,7 +33,6 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   };
 
   state = {};
-  stateInterval = 5 * 1000;
   stateIntervalID: number;
   stateTime: Date;
 
@@ -49,7 +50,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     this.getTwin(id);
     this.getChannels();
     if (!this.stateIntervalID) {
-      this.stateIntervalID = window.setInterval(this.getState.bind(this), this.stateInterval);
+      this.stateIntervalID = window.setInterval(this.getState.bind(this), stateInterval);
     }
   }
 
