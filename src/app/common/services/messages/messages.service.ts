@@ -6,13 +6,6 @@ import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
-const urlEncoding = {
-  ';': '\%3B',
-  '=': '\%3D',
-  ':': '%3A',
-  '?': '%3F',
-};
-
 @Injectable()
 export class MessagesService {
   constructor(
@@ -31,12 +24,7 @@ export class MessagesService {
 
     let topic = `${environment.readerChannelsUrl}/${channel}/messages`;
     topic += `?offset=${offset}&limit=${limit}`;
-    if (subtopic) {
-      Object.keys(urlEncoding).forEach((k, _) => {
-        subtopic = subtopic.split(k).join(urlEncoding[k]);
-      });
-      topic += `&subtopic=${subtopic}`;
-    }
+    topic = subtopic ? topic += `&subtopic=${encodeURIComponent(subtopic)}` : topic;
 
     return this.http.get(topic, { headers: headers })
       .map(
@@ -84,10 +72,10 @@ export class MessagesService {
     const temp8 = 28 + 10 * Math.random();
 
     const message = `[{"bt": 15020, "bn":"temperature", "t": 0, "v":${temp1}},
-                      {"t":10, "v":${temp2}}, {"t":20, "v":${temp3}},
-                      {"t":30, "v":${temp4}}, {"t":40, "v":${temp5}},
-                      {"t":50, "v":${temp6}}, {"t":60, "v":${temp7}},
-                      {"t":70, "v":${temp8}}]`;
+{"t":10, "v":${temp2}}, {"t":20, "v":${temp3}},
+{"t":30, "v":${temp4}}, {"t":40, "v":${temp5}},
+{"t":50, "v":${temp6}}, {"t":60, "v":${temp7}},
+{"t":70, "v":${temp8}}]`;
 
     this.thingsService.getThing(thingID).subscribe(
       (resp: any) => {
