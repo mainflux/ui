@@ -72,6 +72,7 @@ export class DevicesComponent implements OnInit {
 
   offset = 0;
   limit = 100;
+  thingSearch = '';
 
   constructor(
     private dialogService: NbDialogService,
@@ -134,6 +135,9 @@ export class DevicesComponent implements OnInit {
         }
       },
     );
+  }
+
+  onClickSave() {
   }
 
   onFileSelected(files: FileList) {

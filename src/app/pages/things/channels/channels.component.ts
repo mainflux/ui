@@ -71,6 +71,8 @@ export class ChannelsComponent implements OnInit {
   offset = 0;
   limit = 100;
 
+  channelSearch = '';
+
   constructor(
     private dialogService: NbDialogService,
     private channelsService: ChannelsService,
@@ -132,6 +134,9 @@ export class ChannelsComponent implements OnInit {
         }
       },
     );
+  }
+
+  onClickSave() {
   }
 
   onFileSelected(files: FileList) {
