@@ -20,6 +20,7 @@ export class BootstrapService {
     'edgex_url': 'http://localhost:48090/api/v1/',
     'nats_url': 'localhost:4222',
     'export_config': {
+      'File':'/configs/export/config.toml',
       'exp': {
         'log_level': 'debug',
         'nats': 'nats://localhost:4222',

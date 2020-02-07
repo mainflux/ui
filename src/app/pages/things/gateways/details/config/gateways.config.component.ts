@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
-import { Config, ConfigContent, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
+import { Config, ConfigContent, ExportConfig, MqttConfig, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 import { BootstrapService } from 'app/common/services/bootstrap/bootstrap.service';
@@ -19,16 +19,37 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
     mqtt_url: '',
     edgex_url: '',
     nats_url: '',
-    export_config: '',
+    export_config: {
+      File: '/configs/export/config.toml',
+      mqtt : {
+        host: '',
+        qos: 0,
+        channel:'',
+        password:'',
+        username:'',
+        retain: false,
+        mtls: false,
+        ca_path:'',
+        cert_path: '',
+        priv_key_path: '',
+        skip_tls_ver: false,
+      },
+      exp: {
+        log_level:'',
+        nats:'',
+        port:'',
+      },
+      routes:[]
+    }
   };
 
   constructor(
     private bootstrapService: BootstrapService,
     private notificationsService: NotificationsService,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
+    
   }
 
   ngOnChanges() {
@@ -39,16 +60,7 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
     this.bootstrapService.getConfig(this.gateway).subscribe(
       resp => {
         const cfg = <Config>resp;
-        const content = JSON.parse(cfg.content);
-
-        this.content = {
-          log_level: content.log_level,
-          http_port: content.http_port,
-          mqtt_url: content.mqtt_url,
-          edgex_url: content.edgex_url,
-          nats_url: content.nats_url,
-          export_config: content.export_config,
-        };
+        this.content = JSON.parse(cfg.content);
       },
       err => {
         this.notificationsService.error(
