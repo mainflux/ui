@@ -38,12 +38,11 @@ export class DevicesComponent implements OnInit {
     columns: {
       name: {
         title: 'Name',
-        type: 'string',
         filter: false,
       },
       id: {
         title: 'ID',
-        editable: 'false',
+        editable: false,
         addable: false,
         filter: false,
       },
@@ -72,7 +71,9 @@ export class DevicesComponent implements OnInit {
 
   offset = 0;
   limit = 100;
-  thingSearch = '';
+
+  searchFreq = 0;
+  columnChar = '|';
 
   constructor(
     private dialogService: NbDialogService,
@@ -84,8 +85,8 @@ export class DevicesComponent implements OnInit {
     this.getThings();
   }
 
-  getThings(): void {
-    this.thingsService.getThings(this.offset, this.limit).subscribe(
+  getThings(name?: string): void {
+    this.thingsService.getThings(this.offset, this.limit, '', '', name).subscribe(
       (resp: any) => {
         this.things = resp.things;
         this.thingsNumber = resp.total;
@@ -137,6 +138,14 @@ export class DevicesComponent implements OnInit {
     );
   }
 
+  searchThing(input) {
+    const t = new Date().getTime();
+    if ((t - this.searchFreq) > 300) {
+      this.getThings(input);
+      this.searchFreq = t;
+    }
+  }
+
   onClickSave() {
   }
 
@@ -151,7 +160,7 @@ export class DevicesComponent implements OnInit {
         const things: Thing[] = [];
 
         lines.forEach( line => {
-          const col = line.split('|');
+          const col = line.split(this.columnChar);
           const name = col[0];
           if (name !== '' && name !== '<empty string>') {
             let metadata = {};

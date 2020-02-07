@@ -35,28 +35,23 @@ export class LoraComponent implements OnInit {
     columns: {
       name: {
         title: 'Name',
-        type: 'string',
-        placeholder: 'Search name',
-        filter: {
-          placeholder: 'Search name',
-        },
+        filter: false,
       },
       appID: {
         title: 'ApplicationID',
         editable: true,
         addable: true,
-        filter: true,
+        filter: false,
       },
       devEUI: {
         title: 'DeviceEUI',
         editable: true,
         addable: true,
-        filter: true,
+        filter: false,
       },
       messages: {
         title: 'Messages',
-        type: 'text',
-        editable: 'false',
+        editable: false,
         addable: false,
         filter: false,
         valuePrepareFunction: cell => {
@@ -69,8 +64,7 @@ export class LoraComponent implements OnInit {
       seen: {
         width: '20%',
         title: 'Last Seen',
-        type: 'text',
-        editable: 'false',
+        editable: false,
         addable: false,
         filter: false,
         valuePrepareFunction: (cell, row) => {
@@ -107,7 +101,8 @@ export class LoraComponent implements OnInit {
 
   offset = 0;
   limit = 20;
-  loraSearch = '';
+
+  searchFreq = 0;
 
   constructor(
     private loraService: LoraService,
@@ -118,13 +113,12 @@ export class LoraComponent implements OnInit {
 
   ngOnInit() {
     this.getLoraDevices();
-    this.getLoraChanNum();
   }
 
-  getLoraDevices(): void {
+  getLoraDevices(name?: string): void {
     this.loraDevices = [];
 
-    this.loraService.getDevices(this.offset, this.limit).subscribe(
+    this.loraService.getDevices(this.offset, this.limit, name).subscribe(
       (resp: any) => {
         this.loraDevsNumber = resp.total;
 
@@ -150,14 +144,6 @@ export class LoraComponent implements OnInit {
     );
   }
 
-  getLoraChanNum() {
-    this.loraService.getChannels(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.loraAppsNumber = resp.total;
-      },
-    );
-  }
-
   onCreateConfirm(event): void {
     // Check appID and devEUI
     if (event.newData.devEUI !== '' && event.newData.appID !== '') {
@@ -169,7 +155,6 @@ export class LoraComponent implements OnInit {
           setTimeout(
             () => {
               this.getLoraDevices();
-              this.getLoraChanNum();
             }, 3000,
           );
         },
@@ -203,12 +188,19 @@ export class LoraComponent implements OnInit {
           this.loraService.deleteDevice(event.data).subscribe(
             resp => {
               this.loraDevsNumber--;
-              this.getLoraChanNum();
             },
           );
         }
       },
     );
+  }
+
+  searchLora(input) {
+    const t = new Date().getTime();
+    if ((t - this.searchFreq) > 300) {
+      this.getLoraDevices(input);
+      this.searchFreq = t;
+    }
   }
 
   onClickSave() {

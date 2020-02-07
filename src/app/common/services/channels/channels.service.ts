@@ -63,17 +63,21 @@ export class ChannelsService {
       );
   }
 
-  getChannels(offset: number, limit: number, type?: string, metaValue?: string) {
+  getChannels(offset: number, limit: number, type?: string, metaValue?: string, name?: string) {
     let params = new HttpParams()
       .set('offset', offset.toString())
       .set('limit', limit.toString());
 
-    if (type !== undefined && metaValue === undefined) {
-      params = params.append('metadata', `{"type":"${type}"}`);
+    if (type) {
+      if (metaValue) {
+        params = params.append('metadata', `{"${type}": ${metaValue}}`);
+      } else {
+        params = params.append('metadata', `{"type":"${type}"}`);
+      }
     }
 
-    if (metaValue !== undefined) {
-      params = params.append('metadata', `{"${type}": ${metaValue}}`);
+    if (name) {
+      params = params.append('name', name);
     }
 
     return this.http.get(environment.channelsUrl, { params })

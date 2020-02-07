@@ -24,8 +24,8 @@ export class OpcuaService {
     return this.thingsService.getThing(id);
   }
 
-  getNodes(offset: number, limit: number) {
-    return this.thingsService.getThings(offset, limit, this.typeOpcua);
+  getNodes(offset: number, limit: number, name?: string) {
+    return this.thingsService.getThings(offset, limit, this.typeOpcua, '', name);
   }
 
   addNodes(serverURI: string, nodes: any) {

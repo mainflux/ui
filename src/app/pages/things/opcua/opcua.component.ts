@@ -35,14 +35,14 @@ export class OpcuaComponent implements OnInit {
     columns: {
       name: {
         title: 'Name',
-        type: 'string',
-        placeholder: 'Search name',
+        addable: true,
+        filter: false,
       },
       serverURI: {
         title: 'Server URI',
         editable: false,
         addable: true,
-        filter: true,
+        filter: false,
         valuePrepareFunction: (cell) => {
           if (cell.length > 30) {
             return `${cell.substring(10, 39)}...`;
@@ -54,7 +54,7 @@ export class OpcuaComponent implements OnInit {
         title: 'Node ID',
         editable: true,
         addable: true,
-        filter: true,
+        filter: false,
         valuePrepareFunction: (cell) => {
           if (cell.length > 20) {
             return `${cell.substring(0, 19)}...`;
@@ -64,8 +64,7 @@ export class OpcuaComponent implements OnInit {
       },
       messages: {
         title: 'Messages',
-        type: 'text',
-        editable: 'false',
+        editable: false,
         addable: false,
         filter: false,
         valuePrepareFunction: cell => {
@@ -77,8 +76,7 @@ export class OpcuaComponent implements OnInit {
       },
       seen: {
         title: 'Last Seen',
-        type: 'text',
-        editable: 'false',
+        editable: false,
         addable: false,
         filter: false,
         valuePrepareFunction: (cell, row) => {
@@ -119,9 +117,9 @@ export class OpcuaComponent implements OnInit {
 
   offset = 0;
   limit = 20;
-  nodeSearch = '';
 
-  lineSeparator = '|';
+  searchFreq = 0;
+  columnChar = '|';
 
   constructor(
     private opcuaService: OpcuaService,
@@ -134,11 +132,11 @@ export class OpcuaComponent implements OnInit {
     this.getOpcuaNodes();
   }
 
-  getOpcuaNodes(): void {
-    this.opcuaNodes = [];
-
-    this.opcuaService.getNodes(this.offset, this.limit).subscribe(
+  getOpcuaNodes(name?: string): void {
+    this.opcuaService.getNodes(this.offset, this.limit, name).subscribe(
       (resp: any) => {
+        this.opcuaNodes = [];
+
         resp.things.forEach(node => {
           node.serverURI = node.metadata.opcua.serverURI;
           node.nodeID = node.metadata.opcua.nodeID;
@@ -252,6 +250,14 @@ export class OpcuaComponent implements OnInit {
     );
   }
 
+  searchNode(input) {
+    const t = new Date().getTime();
+    if ((t - this.searchFreq) > 300) {
+      this.getOpcuaNodes(input);
+      this.searchFreq = t;
+    }
+  }
+
   onClickSave() {
   }
 
@@ -266,7 +272,7 @@ export class OpcuaComponent implements OnInit {
 
         // Split all file lines using a separator
         lines.forEach( (line, i) => {
-          const cols = line.split(this.lineSeparator);
+          const cols = line.split(this.columnChar);
           const name = cols[0];
           const nodes = [];
           if (name !== '' && name !== '<empty string>' && cols.length > 2) {

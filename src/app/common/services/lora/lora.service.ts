@@ -22,8 +22,8 @@ export class LoraService {
     return this.thingsService.getThing(id);
   }
 
-  getDevices(offset: number, limit: number) {
-    return this.thingsService.getThings(offset, limit, this.typeLora);
+  getDevices(offset: number, limit: number, name?: string) {
+    return this.thingsService.getThings(offset, limit, this.typeLora, '', name);
   }
 
   getChannels(offset: number, limit: number) {
