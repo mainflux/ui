@@ -230,7 +230,7 @@ export class OpcuaComponent implements OnInit {
     const nodesReq = [];
     this.checkedNodes.forEach( (node, i) => {
       const nodeReq = {
-        name: `MFX-${this.browseServerURI};${node}`,
+        name: `${this.browseServerURI};${node}`,
         serverURI: this.browseServerURI,
         nodeID: node,
       };

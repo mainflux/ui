@@ -12,6 +12,7 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 export class OpcuaService {
   typeOpcua = 'opcua';
   typeOpcuaServer = 'OPC-UA-Server';
+  typeOpcuaNode = 'OPC-UA-Node';
 
   constructor(
     private http: HttpClient,
@@ -34,7 +35,7 @@ export class OpcuaService {
       (resp: any) => {
         if (resp.total === 0) {
           const chanReq = {
-            name: `${this.typeOpcuaServer}`,
+            name: `${this.typeOpcuaServer}-${serverURI}`,
             metadata: {
               type: this.typeOpcua,
               opcua: {
@@ -61,7 +62,7 @@ export class OpcuaService {
     const nodesReq: OpcuaNode[] = [];
     nodes.forEach(node => {
       const nodeReq: OpcuaNode = {
-        name: node.name,
+        name: `${this.typeOpcuaNode}-${node.name}`,
         metadata: {
           type: this.typeOpcua,
           opcua: {
