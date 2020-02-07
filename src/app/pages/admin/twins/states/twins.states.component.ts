@@ -30,6 +30,10 @@ export class TwinsStatesComponent implements OnInit, OnDestroy {
       },
       created: {
         title: 'Created',
+        valuePrepareFunction: (cell, row) => {
+          const date = new Date(row.created);
+          return date.toUTCString();
+        },
       },
       payload: {
         title: 'Payload',
