@@ -3,9 +3,6 @@
     <nb-card size="tiny" status="info">
       <nb-card-header>
         Info
-        <button (click)="showStates()" nbButton status="success" size="tiny">
-          Show states
-        </button>
       </nb-card-header>
       <nb-card-body>
         <div class="row">
@@ -36,7 +33,12 @@
   <div class="row">
     <div class="col-md-12">
       <nb-card size="tiny" status="primary">
-        <nb-card-header>State</nb-card-header>
+        <nb-card-header>
+          State
+          <button (click)="showStates()" nbButton status="success" size="tiny">
+            State history
+          </button>
+        </nb-card-header>
         <nb-card-body *ngIf="state">
           <em>{{ stateTime | date: 'long' }}</em>
           <div class="row" *ngFor="let attr of state | keyvalue">
@@ -52,7 +54,12 @@
   <div class="row">
     <div class="col-md-12">
       <nb-card size="normal" status="primary">
-        <nb-card-header>Current definition</nb-card-header>
+        <nb-card-header>
+          Definition
+          <button (click)="showDefinitions()" nbButton status="success" size="tiny">
+            Definition history
+          </button>          
+        </nb-card-header>
         <nb-card-body>
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let attr of defAttrs">
@@ -66,23 +73,6 @@
               </div>
             </li>
           </ul>
-        </nb-card-body>
-      </nb-card>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      <nb-card size="small" status="primary">
-        <nb-card-header>Definition history</nb-card-header>
-        <nb-card-body>
-          <div class="row" *ngFor="let def of twin.definitions?.slice().reverse()">
-            <div class="col-2">{{ def.id }} - {{ def.created | date:'medium' }}</div>
-            <div class="col-10">
-              <div *ngFor="let attr of def.attributes">{{ attr | json }}</div>
-            </div>
-            <div class="col-12"><hr/></div>
-          </div>
         </nb-card-body>
       </nb-card>
     </div>

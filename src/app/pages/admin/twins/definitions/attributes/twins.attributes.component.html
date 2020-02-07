@@ -1,0 +1,15 @@
+<div>
+  <ul class="list-group">
+    <li class="list-group-item"><em>{{value.created | date: 'long'}}</em></li>
+    <li class="list-group-item" *ngFor="let attr of value.attributes">
+      <div class="col-2" ><b>{{attr.name}}</b></div>
+      <div class="col-10">
+        <ul>
+          <li><b>Channel</b> {{ attr.channel }}</li>
+          <li><b>Subtopic</b> {{ attr.subtopic }}</li>
+          <li><b>Persisted</b> {{ attr.persist_state }}</li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>

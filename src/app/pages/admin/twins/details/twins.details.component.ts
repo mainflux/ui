@@ -55,6 +55,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   getTwin(id: string) {
+    this.state = {};
     this.twinsService.getTwin(id).subscribe(
       resp => {
         this.twin = <Twin>resp;
@@ -112,6 +113,11 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
 
   showStates() {
     const route = this.router.routerState.snapshot.url.replace('details', 'states');
+    this.router.navigate([route]);
+  }
+
+  showDefinitions() {
+    const route = this.router.routerState.snapshot.url.replace('details', 'definitions');
     this.router.navigate([route]);
   }
 
