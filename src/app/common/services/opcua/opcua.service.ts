@@ -8,6 +8,8 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
+const defLimit: number = 20;
+
 @Injectable()
 export class OpcuaService {
   typeOpcua = 'opcua';
@@ -25,7 +27,10 @@ export class OpcuaService {
     return this.thingsService.getThing(id);
   }
 
-  getNodes(offset: number, limit: number, name?: string) {
+  getNodes(offset?: number, limit?: number, name?: string) {
+    offset = offset || 0;
+    limit = limit || defLimit;
+
     return this.thingsService.getThings(offset, limit, this.typeOpcua, '', name);
   }
 

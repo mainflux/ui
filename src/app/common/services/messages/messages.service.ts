@@ -6,7 +6,7 @@ import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
-const defaultLimit: number = 500;
+const defLimit: number = 500;
 
 @Injectable()
 export class MessagesService {
@@ -20,7 +20,7 @@ export class MessagesService {
 
   getMessages(channel: string, thingKey: string, thingID?: string, subtopic?: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || defaultLimit;
+    limit = limit || defLimit;
 
     const headers = new HttpHeaders({
       'Authorization': thingKey,

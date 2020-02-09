@@ -6,6 +6,8 @@ import { environment } from 'environments/environment';
 import { Thing } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
+const defLimit: number = 20;
+
 @Injectable()
 export class ThingsService {
 
@@ -62,9 +64,10 @@ export class ThingsService {
       );
   }
 
-  getThings(offset: number, limit: number, type?: string, metaValue?: string, name?: string) {
+  getThings(offset?: number, limit?: number, type?: string, metaValue?: string, name?: string) {
     offset = offset || 0;
-    limit = limit || 10;
+    limit = limit || defLimit;
+
     let params = new HttpParams()
       .set('offset', offset.toString())
       .set('limit', limit.toString());
