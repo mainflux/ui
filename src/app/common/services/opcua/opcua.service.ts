@@ -8,10 +8,13 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
+const defLimit: number = 20;
+
 @Injectable()
 export class OpcuaService {
   typeOpcua = 'opcua';
   typeOpcuaServer = 'OPC-UA-Server';
+  typeOpcuaNode = 'OPC-UA-Node';
 
   constructor(
     private http: HttpClient,
@@ -24,8 +27,11 @@ export class OpcuaService {
     return this.thingsService.getThing(id);
   }
 
-  getNodes(offset: number, limit: number) {
-    return this.thingsService.getThings(offset, limit, this.typeOpcua);
+  getNodes(offset?: number, limit?: number, name?: string) {
+    offset = offset || 0;
+    limit = limit || defLimit;
+
+    return this.thingsService.getThings(offset, limit, this.typeOpcua, '', name);
   }
 
   addNodes(serverURI: string, nodes: any) {
@@ -34,7 +40,7 @@ export class OpcuaService {
       (resp: any) => {
         if (resp.total === 0) {
           const chanReq = {
-            name: `${this.typeOpcuaServer}`,
+            name: `${this.typeOpcuaServer}-${serverURI}`,
             metadata: {
               type: this.typeOpcua,
               opcua: {
@@ -61,7 +67,7 @@ export class OpcuaService {
     const nodesReq: OpcuaNode[] = [];
     nodes.forEach(node => {
       const nodeReq: OpcuaNode = {
-        name: node.name,
+        name: `${this.typeOpcuaNode}-${node.name}`,
         metadata: {
           type: this.typeOpcua,
           opcua: {

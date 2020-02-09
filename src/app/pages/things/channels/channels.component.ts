@@ -9,6 +9,8 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 
+const defFreq: number = 100;
+
 @Component({
   selector: 'ngx-smart-table',
   templateUrl: './channels.component.html',
@@ -36,12 +38,11 @@ export class ChannelsComponent implements OnInit {
     columns: {
       name: {
         title: 'Name',
-        type: 'string',
         filter: false,
       },
       id: {
         title: 'ID',
-        editable: 'false',
+        editable: false,
         addable: false,
         filter: false,
       },
@@ -71,7 +72,8 @@ export class ChannelsComponent implements OnInit {
   offset = 0;
   limit = 100;
 
-  channelSearch = '';
+  searchFreq = 0;
+  columnChar = '|';
 
   constructor(
     private dialogService: NbDialogService,
@@ -83,8 +85,8 @@ export class ChannelsComponent implements OnInit {
     this.getChannels();
   }
 
-  getChannels(): void {
-    this.channelsService.getChannels(this.offset, this.limit).subscribe(
+  getChannels(name?: string): void {
+    this.channelsService.getChannels(this.offset, this.limit, '', '', name).subscribe(
       (resp: any) => {
         this.channels = resp.channels;
         this.totalChanNumber = resp.total;
@@ -136,6 +138,14 @@ export class ChannelsComponent implements OnInit {
     );
   }
 
+  searchChannel(input) {
+    const t = new Date().getTime();
+    if ((t - this.searchFreq) > defFreq) {
+      this.getChannels(input);
+      this.searchFreq = t;
+    }
+  }
+
   onClickSave() {
   }
 
@@ -150,7 +160,7 @@ export class ChannelsComponent implements OnInit {
         const channels: Channel[] = [];
 
         lines.forEach( line => {
-          const col = line.split('|');
+          const col = line.split(this.columnChar);
           const name = col[0];
           if (name !== '' && name !== '<empty string>') {
             let metadata = {};

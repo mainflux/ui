@@ -6,6 +6,8 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
+const defLimit: number = 20;
+
 @Injectable()
 export class LoraService {
   typeLora = 'lora';
@@ -22,8 +24,11 @@ export class LoraService {
     return this.thingsService.getThing(id);
   }
 
-  getDevices(offset: number, limit: number) {
-    return this.thingsService.getThings(offset, limit, this.typeLora);
+  getDevices(offset?: number, limit?: number, name?: string) {
+    offset = offset || 0;
+    limit = limit || defLimit;
+
+    return this.thingsService.getThings(offset, limit, this.typeLora, '', name);
   }
 
   getChannels(offset: number, limit: number) {

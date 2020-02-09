@@ -5,8 +5,8 @@
         {{ totalChanNumber }} &nbsp; Channels
       </div>
       <div class="col-4">
-        <input nbInput fullWidth placeholder="Search..."
-               [(ngModel)]="channelSearch" fieldSize="small">
+        <input nbInput fullWidth placeholder="Search..." fieldSize="small"
+               (input)="searchChannel($event.target.value)">
       </div>
       <div class="col-2">
         <button nbButton size="small" status="success"

@@ -10,6 +10,8 @@ import { MessagesService } from 'app/common/services/messages/messages.service';
 import { MqttService } from 'ngx-mqtt';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
+const defLimit: number = 20;
+
 @Injectable()
 export class GatewaysService {
   typeGateway = 'gateway';
@@ -26,7 +28,10 @@ export class GatewaysService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getGateways(offset: number, limit: number) {
+  getGateways(offset?: number, limit?: number) {
+    offset = offset || 0;
+    limit = limit || defLimit;
+
     return this.thingsService.getThings(offset, limit, this.typeGateway);
   }
 
