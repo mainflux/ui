@@ -18,22 +18,28 @@ export interface Thing {
   metadata?: any;
 }
 
+export interface Attribute {
+  name: string;
+  channel: string;
+  subtopic?: string;
+  persist_state: boolean;
+}
+
+export interface Definition {
+  id: string;
+  created: Date;
+  attributes: Attribute[];
+}
+
 export interface Twin {
   name?: string;
   owner?: string;
   id?: string;
   revision?: number;
   created?: Date;
-  definitions?: any[];
+  definitions?: Definition[];
   definition?: any; // for request
   metadata?: any;
-}
-
-export interface Attribute {
-  name: string;
-  channel: string;
-  subtopic?: string;
-  persist_state: boolean;
 }
 
 export interface Message {

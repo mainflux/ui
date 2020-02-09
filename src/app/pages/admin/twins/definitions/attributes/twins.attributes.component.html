@@ -1,0 +1,11 @@
+<div>
+  <em>{{value.created | date: 'long'}}</em>
+  <div *ngFor="let attr of value.attributes">
+    <b>{{attr.name}}</b>
+    <ul>
+      <li><b>Channel</b> {{ attr.channel }}</li>
+      <li><b>Subtopic</b> {{ attr.subtopic }}</li>
+      <li><b>Persisted</b> {{ attr.persist_state }}</li>
+    </ul>
+  </div>
+</div>

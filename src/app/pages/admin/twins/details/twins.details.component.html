@@ -3,9 +3,6 @@
     <nb-card size="tiny" status="info">
       <nb-card-header>
         Info
-        <button (click)="showStates()" nbButton status="success" size="tiny">
-          Show states
-        </button>
       </nb-card-header>
       <nb-card-body>
         <div class="row">
@@ -36,9 +33,13 @@
   <div class="row">
     <div class="col-md-12">
       <nb-card size="tiny" status="primary">
-        <nb-card-header>State</nb-card-header>
+        <nb-card-header>
+          State <em>{{ stateTime | date: 'long' }}</em>
+          <button (click)="showStates()" nbButton status="success" size="tiny">
+            History
+          </button>
+        </nb-card-header>
         <nb-card-body *ngIf="state">
-          <em>{{ stateTime | date: 'long' }}</em>
           <div class="row" *ngFor="let attr of state | keyvalue">
             <div class="col-2" ><b>{{attr.key}}</b></div>
             <div class="col-5">{{attr.value.value}}</div>
@@ -52,36 +53,22 @@
   <div class="row">
     <div class="col-md-12">
       <nb-card size="normal" status="primary">
-        <nb-card-header>Current definition</nb-card-header>
+        <nb-card-header>
+          Definition <em *ngIf="def">{{def.created | date: 'long'}}</em>
+          <button (click)="showDefinitions()" nbButton status="success" size="tiny">
+            History
+          </button>
+        </nb-card-header>
         <nb-card-body>
-          <ul class="list-group">
-            <li class="list-group-item" *ngFor="let attr of defAttrs">
-              <div class="col-2" ><b>{{attr.name}}</b></div>
-              <div class="col-10">
-                <ul>
-                  <li><b>Channel</b> {{ attr.channel }}</li>
-                  <li><b>Subtopic</b> {{ attr.subtopic }}</li>
-                  <li><b>Persisted</b> {{ attr.persist_state }}</li>
-                </ul>
-              </div>
-            </li>
-          </ul>
-        </nb-card-body>
-      </nb-card>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      <nb-card size="small" status="primary">
-        <nb-card-header>Definition history</nb-card-header>
-        <nb-card-body>
-          <div class="row" *ngFor="let def of twin.definitions?.slice().reverse()">
-            <div class="col-2">{{ def.id }} - {{ def.created | date:'medium' }}</div>
-            <div class="col-10">
-              <div *ngFor="let attr of def.attributes">{{ attr | json }}</div>
-            </div>
-            <div class="col-12"><hr/></div>
+          <div *ngFor="let attr of defAttrs">
+            <b>{{attr.name}}</b>
+            <ul>
+              <li><b>Channel</b> ---
+                {{ defChans[attr.channel] }} ---
+                {{ attr.channel }}</li>
+              <li><b>Subtopic</b> {{ attr.subtopic }}</li>
+              <li><b>Persisted</b> {{ attr.persist_state }}</li>
+            </ul>
           </div>
         </nb-card-body>
       </nb-card>
@@ -90,7 +77,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <nb-card size="medium" status="primary">
+      <nb-card size="large" status="primary">
         <nb-card-header>
           Add definition
           <button (click)="updateDefinition()" nbButton status="success" size="tiny">
@@ -100,10 +87,15 @@
 
         <nb-card-body>
           <div class="row" *ngFor="let attr of editAttrs">
-            <div class="col-10" id="selectable" (click)="selectAttribute(attr)">
-              {{attr | json}}
+            <div class="col-11" id="pickable" (click)="selectAttribute(attr)">
+              <b> {{ attr.name }}</b>
+              <ul>
+                <li><b>Channel</b> {{ attr.channel }}</li>
+                <li><b>Subtopic</b> {{ attr.subtopic }}</li>
+                <li><b>Persisted</b> {{ attr.persist_state }}</li>
+              </ul>              
             </div>
-            <div class="col-2">
+            <div class="col-1">
               <button (click)="removeAttribute(attr)" nbButton status="danger" size="tiny">x</button>
             </div>
           </div>
@@ -133,7 +125,7 @@
           </div>
 
           <button (click)="addAttribute()" nbButton status="success" size="tiny">
-            Add attribute
+            Add/Update attribute
           </button>
         </nb-card-footer>
 

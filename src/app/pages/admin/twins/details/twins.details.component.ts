@@ -5,7 +5,7 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { TwinsService } from 'app/common/services/twins/twins.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
-import { Twin, Thing, Channel, Attribute } from 'app/common/interfaces/mainflux.interface';
+import { Thing, Channel, Attribute, Definition, Twin } from 'app/common/interfaces/mainflux.interface';
 
 const stateInterval: number = 5 * 1000;
 
@@ -19,6 +19,8 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   limit = 100;
 
   twin: Twin = {};
+  def: Definition;
+  defChans: {};
   defAttrs: Attribute[] = [];
   twinName: string;
 
@@ -55,12 +57,21 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   getTwin(id: string) {
+    this.state = {};
+    this.defChans = {};
     this.twinsService.getTwin(id).subscribe(
       resp => {
         this.twin = <Twin>resp;
 
-        this.defAttrs = this.twin.definitions[
-          this.twin.definitions.length - 1].attributes;
+        this.def = this.twin.definitions[this.twin.definitions.length - 1];
+        this.defAttrs = this.def.attributes;
+        this.defAttrs.forEach(attr => {
+          this.channelsService.getChannel(attr.channel).subscribe(
+            (chan: Channel) => {
+              this.defChans[attr.channel] = chan.name;
+            },
+          );
+        });
 
         this.getState();
 
@@ -115,6 +126,11 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     this.router.navigate([route]);
   }
 
+  showDefinitions() {
+    const route = this.router.routerState.snapshot.url.replace('details', 'definitions');
+    this.router.navigate([route]);
+  }
+
   // definition editor
   togglePersist(checked: boolean) {
     this.editAttr.persist_state = checked;
@@ -134,7 +150,15 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.editAttrs.push({ ...this.editAttr });
+    const attr = this.editAttrs.find(a => a.name === this.editAttr.name);
+    if (attr) {
+      attr.name = this.editAttr.name;
+      attr.channel = this.editAttr.channel;
+      attr.subtopic = this.editAttr.subtopic;
+      attr.persist_state = this.editAttr.persist_state;
+    } else {
+      this.editAttrs.push({ ...this.editAttr });
+    }
   }
 
   updateDefinition() {
