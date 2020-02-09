@@ -12,6 +12,8 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
 
 import { DetailsComponent } from 'app/shared/details/details.component';
 
+const defFreq: number = 100;
+
 @Component({
   selector: 'ngx-smart-table',
   templateUrl: './devices.component.html',
@@ -140,7 +142,7 @@ export class DevicesComponent implements OnInit {
 
   searchThing(input) {
     const t = new Date().getTime();
-    if ((t - this.searchFreq) > 300) {
+    if ((t - this.searchFreq) > defFreq) {
       this.getThings(input);
       this.searchFreq = t;
     }

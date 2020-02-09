@@ -9,6 +9,8 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 
+const defFreq: number = 100;
+
 @Component({
   selector: 'ngx-lora-component',
   templateUrl: './lora.component.html',
@@ -197,7 +199,7 @@ export class LoraComponent implements OnInit {
 
   searchLora(input) {
     const t = new Date().getTime();
-    if ((t - this.searchFreq) > 300) {
+    if ((t - this.searchFreq) > defFreq) {
       this.getLoraDevices(input);
       this.searchFreq = t;
     }
