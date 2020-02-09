@@ -89,7 +89,7 @@
 
       <nb-card-body>
         <div class="row" *ngFor="let attr of editAttrs">
-          <div class="col-11" id="pickable" (click)="selectAttribute(attr)">
+          <div class="col-11 pickable" (click)="selectAttribute(attr)">
             <b>{{ attr.name }}</b>
             <ul>
               <li class="row"><b class="col-md-2">Channel</b>
