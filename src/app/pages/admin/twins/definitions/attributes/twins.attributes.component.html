@@ -3,9 +3,12 @@
   <div *ngFor="let attr of value.attributes">
     <b>{{attr.name}}</b>
     <ul>
-      <li><b>Channel</b> {{ attr.channel }}</li>
-      <li><b>Subtopic</b> {{ attr.subtopic }}</li>
-      <li><b>Persisted</b> {{ attr.persist_state }}</li>
+      <li class="row"><b class="col-md-2">Channel</b>
+        <span class="col-md-5">{{ attr.channel }}</span></li>
+      <li class="row"><b class="col-md-2">Subtopic</b>
+        <span class="col-md-5">{{ attr.subtopic }}</span></li>
+      <li class="row"><b class="col-md-2">Persisted</b>
+        <span class="col-md-5">{{ attr.persist_state }}</span></li>
     </ul>
   </div>
 </div>
