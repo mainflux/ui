@@ -65,7 +65,7 @@ export class MqttManagerService {
   }
 
   createTopic(channel: string) {
-    return `channels/${channel}/messages/`;
+    return `channels/${channel}/messages`;
   }
 
   createPayload(baseName: string, name: string, valueString: string) {
@@ -73,19 +73,19 @@ export class MqttManagerService {
   }
 
   publish(channel: string, bn: string, n: string, vs: string) {
-    const topic = this.createTopic(channel) + 'req';
+    const topic = `${this.createTopic(channel)}/req`;
     const payload = this.createPayload(bn, n, vs);
     this.mqttService.publish(topic, payload).subscribe();
   }
 
   publishToService(channel: string, svc: string, bn: string, n: string, vs: string) {
-    const topic = this.createTopic(channel) + `services/${svc}`;
+    const topic = `${this.createTopic(channel)}/services/${svc}`;
     const payload = this.createPayload(bn, n, vs);
     this.mqttService.publish(topic, payload).subscribe();
   }
 
   subscribe(channel: string) {
-    const topic = this.createTopic(channel) + 'res';
+    const topic = `${this.createTopic(channel)}/res`;
     const topicSub = this.mqttService.observe(topic).subscribe(
       (message: IMqttMessage) => {
         const pl = message.payload.toString();
