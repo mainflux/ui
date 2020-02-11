@@ -40,7 +40,7 @@ export class OpcuaComponent implements OnInit {
         title: 'Name',
         addable: true,
         filter: false,
-        valuePrepareFunction: (cell) => {
+        valuePrepareFunction: (cell, row) => {
           if (cell.length > 20) {
             return `${cell.substring(0, 19)}...`;
           }
@@ -52,7 +52,7 @@ export class OpcuaComponent implements OnInit {
         editable: false,
         addable: true,
         filter: false,
-        valuePrepareFunction: (cell) => {
+        valuePrepareFunction: (cell, row) => {
           if (cell.length > 30) {
             return `${cell.substring(10, 39)}...`;
           }
@@ -64,7 +64,7 @@ export class OpcuaComponent implements OnInit {
         editable: true,
         addable: true,
         filter: false,
-        valuePrepareFunction: (cell) => {
+        valuePrepareFunction: (cell, row) => {
           if (cell.length > 20) {
             return `${cell.substring(0, 19)}...`;
           }
@@ -76,7 +76,7 @@ export class OpcuaComponent implements OnInit {
         editable: false,
         addable: false,
         filter: false,
-        valuePrepareFunction: cell => {
+        valuePrepareFunction: (cell, row) => {
           if (cell > 0) {
             return cell;
           }
