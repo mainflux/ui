@@ -50,6 +50,7 @@ export class TokenInterceptor implements HttpInterceptor {
               !request.url.startsWith(environment.writerChannelsUrl) &&
               !request.url.startsWith(environment.readerChannelsUrl) &&
               !request.url.startsWith(environment.bootstrapUrl) &&
+              !request.url.startsWith(environment.browseUrl) &&
               (err.status === 403 || err.status === 504)) {
               localStorage.removeItem('auth_app_token');
               this.router.navigateByUrl('/auth/login');

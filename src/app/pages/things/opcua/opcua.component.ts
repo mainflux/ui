@@ -8,6 +8,7 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { MessagesService } from 'app/common/services/messages/messages.service';
+import { OpcuaStore } from 'app/common/store/opcua.store';
 
 const defFreq: number = 100;
 
@@ -39,6 +40,12 @@ export class OpcuaComponent implements OnInit {
         title: 'Name',
         addable: true,
         filter: false,
+        valuePrepareFunction: (cell) => {
+          if (cell.length > 20) {
+            return `${cell.substring(0, 19)}...`;
+          }
+          return cell;
+        },
       },
       serverURI: {
         title: 'Server URI',
@@ -112,9 +119,10 @@ export class OpcuaComponent implements OnInit {
   opcuaNodes = [];
 
   browseServerURI = '';
-  browseNamespace = '';
-  browseIdentifier = '';
+  browseNamespace = '0';
+  browseIdentifier = 'i=84';
   browsedNodes = [];
+  browseSearch = [];
   checkedNodes = [];
 
   offset = 0;
@@ -127,10 +135,14 @@ export class OpcuaComponent implements OnInit {
     private opcuaService: OpcuaService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
+    private opcuaStore: OpcuaStore,
     private dialogService: NbDialogService,
   ) { }
 
   ngOnInit() {
+    const browseStore = this.opcuaStore.getBrowsedNodes();
+    this.browseServerURI = browseStore.uri;
+    this.browsedNodes = browseStore.nodes;
     this.getOpcuaNodes();
   }
 
@@ -214,6 +226,11 @@ export class OpcuaComponent implements OnInit {
     this.opcuaService.browseServerNodes(this.browseServerURI, this.browseNamespace, this.browseIdentifier).subscribe(
       (resp: any) => {
         this.browsedNodes = resp.nodes;
+        const browsedNodes = {
+          uri: this.browseServerURI,
+          nodes: this.browsedNodes,
+        };
+        this.opcuaStore.setBrowsedNodes(browsedNodes);
       },
       err => {
       },
@@ -258,6 +275,15 @@ export class OpcuaComponent implements OnInit {
       this.getOpcuaNodes(input);
       this.searchFreq = t;
     }
+  }
+
+  searchBrowse(input) {
+    const browseStore = this.opcuaStore.getBrowsedNodes();
+    this.browsedNodes = browseStore.nodes.filter( node =>
+      (node.NodeID.includes(input) ||
+      node.Description.includes(input) ||
+      node.DataType.includes(input) ||
+      node.BrowseName.includes(input)));
   }
 
   onClickSave() {
