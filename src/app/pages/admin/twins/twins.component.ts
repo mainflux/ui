@@ -10,7 +10,6 @@ import { DetailsComponent } from 'app/shared/details/details.component';
 import { TwinsService } from 'app/common/services/twins/twins.service';
 import { Twin } from 'app/common/interfaces/mainflux.interface';
 
-
 @Component({
   selector: 'ngx-twins',
   templateUrl: './twins.component.html',
@@ -39,11 +38,13 @@ export class TwinsComponent implements OnInit {
         title: 'Name',
         editable: true,
         addable: true,
+        filter: false,
       },
       id: {
         title: 'ID',
         editable: false,
         addable: false,
+        filter: false,
       },
       details: {
         title: 'Details',
@@ -67,6 +68,8 @@ export class TwinsComponent implements OnInit {
   twins: Observable<Twin[]>;
 
   twinsNumber = 0;
+
+  searchFreq = 0;
 
   constructor(
     private dialogService: NbDialogService,
@@ -124,6 +127,12 @@ export class TwinsComponent implements OnInit {
     );
   }
 
-  onSelection(event): void {
+  onSaveFile() {
+  }
+
+  onFileSelected(files: FileList) {
+  }
+
+  searchThing(input) {
   }
 }
