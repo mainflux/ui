@@ -104,6 +104,8 @@ export class TwinsComponent implements OnInit {
   onEditConfirm(event): void {
     // close edditable row
     event.confirm.resolve();
+
+    this.twinsService.editTwin(event.newData).subscribe();
   }
 
   onDeleteConfirm(event): void {
