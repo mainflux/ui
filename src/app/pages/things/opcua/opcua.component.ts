@@ -10,7 +10,7 @@ import { DetailsComponent } from 'app/shared/details/details.component';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { OpcuaStore } from 'app/common/store/opcua.store';
 
-const defFreq: number = 100;
+const defSearchBardMs: number = 100;
 
 @Component({
   selector: 'ngx-opcua-component',
@@ -36,6 +36,17 @@ export class OpcuaComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      details: {
+        type: 'custom',
+        renderComponent: DetailsComponent,
+        valuePrepareFunction: (cell, row) => {
+          row.type = 'opcua';
+          return row;
+        },
+        editable: false,
+        addable: false,
+        filter: false,
+      },
       name: {
         title: 'Name',
         addable: true,
@@ -95,18 +106,6 @@ export class OpcuaComponent implements OnInit {
           return ' undefined ';
         },
       },
-      details: {
-        title: 'Details',
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          row.type = 'opcua';
-          return row;
-        },
-        editable: false,
-        addable: false,
-        filter: false,
-      },
     },
     pager: {
       display: true,
@@ -130,7 +129,7 @@ export class OpcuaComponent implements OnInit {
   offset = 0;
   limit = 20;
 
-  searchFreq = 0;
+  searcTime = 0;
   columnChar = '|';
 
   constructor(
@@ -273,9 +272,9 @@ export class OpcuaComponent implements OnInit {
 
   searchNode(input) {
     const t = new Date().getTime();
-    if ((t - this.searchFreq) > defFreq) {
+    if ((t - this.searcTime) > defSearchBardMs) {
       this.getOpcuaNodes(input);
-      this.searchFreq = t;
+      this.searcTime = t;
     }
   }
 

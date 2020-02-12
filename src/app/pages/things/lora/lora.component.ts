@@ -9,7 +9,7 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 
-const defFreq: number = 100;
+const defSearchBardMs: number = 100;
 
 @Component({
   selector: 'ngx-lora-component',
@@ -35,6 +35,18 @@ export class LoraComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      details: {
+        title: 'Details',
+        type: 'custom',
+        renderComponent: DetailsComponent,
+        valuePrepareFunction: (cell, row) => {
+          row.type = 'lora';
+          return row;
+        },
+        editable: false,
+        addable: false,
+        filter: false,
+      },
       name: {
         title: 'Name',
         filter: false,
@@ -76,18 +88,6 @@ export class LoraComponent implements OnInit {
           return ' undefined ';
         },
       },
-      details: {
-        title: 'Details',
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          row.type = 'lora';
-          return row;
-        },
-        editable: false,
-        addable: false,
-        filter: false,
-      },
     },
     pager: {
       display: true,
@@ -104,7 +104,7 @@ export class LoraComponent implements OnInit {
   offset = 0;
   limit = 20;
 
-  searchFreq = 0;
+  searcTime = 0;
 
   constructor(
     private loraService: LoraService,
@@ -199,9 +199,9 @@ export class LoraComponent implements OnInit {
 
   searchLora(input) {
     const t = new Date().getTime();
-    if ((t - this.searchFreq) > defFreq) {
+    if ((t - this.searcTime) > defSearchBardMs) {
       this.getLoraDevices(input);
-      this.searchFreq = t;
+      this.searcTime = t;
     }
   }
 

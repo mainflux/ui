@@ -6,7 +6,7 @@ import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
-const defLimit: number = 500;
+const defLimit: number = 100;
 
 @Injectable()
 export class MessagesService {

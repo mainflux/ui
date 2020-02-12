@@ -8,6 +8,7 @@ import {
   NbSelectModule,
   NbInputModule,
   NbCheckboxModule,
+  NbListModule,
 } from '@nebular/theme';
 
 
@@ -40,6 +41,7 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
     NbSelectModule,
     NbCheckboxModule,
     PagesModule,
+    NbListModule,
   ],
   declarations: [
     TracingComponent,

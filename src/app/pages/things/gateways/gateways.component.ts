@@ -11,16 +11,14 @@ import { MessagesService } from 'app/common/services/messages/messages.service';
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 
+const defSearchBardMs: number = 100;
+
 @Component({
   selector: 'ngx-gateways-component',
   templateUrl: './gateways.component.html',
   styleUrls: ['./gateways.component.scss'],
 })
 export class GatewaysComponent implements OnInit {
-  offset = 0;
-  limit = 20;
-  total = 0;
-
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -39,13 +37,21 @@ export class GatewaysComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      details: {
+        type: 'custom',
+        renderComponent: DetailsComponent,
+        valuePrepareFunction: (cell, row) => {
+          row.type = 'gateways';
+          return row;
+        },
+        editable: 'false',
+        addable: false,
+        filter: false,
+      },
       name: {
         title: 'Name',
         type: 'string',
-        placeholder: 'Search name',
-        filter: {
-          placeholder: 'Search name',
-        },
+        filter: false,
       },
       mac: {
         title: 'MAC',
@@ -53,11 +59,7 @@ export class GatewaysComponent implements OnInit {
         type: 'text',
         editable: true,
         addable: true,
-        filter: {
-          config: {
-            placeholder: 'Search MAC',
-          },
-        },
+        filter: false,
       },
       messages: {
         title: 'Messages',
@@ -76,7 +78,7 @@ export class GatewaysComponent implements OnInit {
         width: '20%',
         title: 'Last Seen',
         type: 'text',
-        editable: 'false',
+        editable: false,
         addable: false,
         filter: false,
         valuePrepareFunction: (cell, row) => {
@@ -85,18 +87,6 @@ export class GatewaysComponent implements OnInit {
           }
           return 'undefined';
         },
-      },
-      details: {
-        title: 'Details',
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          row.type = 'gateways';
-          return row;
-        },
-        editable: 'false',
-        addable: false,
-        filter: false,
       },
     },
     pager: {
@@ -111,6 +101,12 @@ export class GatewaysComponent implements OnInit {
   gwDataChanNumber = 0;
   gwCtrlChanNumber = 0;
   prefixLength = 3;
+
+  offset = 0;
+  limit = 20;
+  total = 0;
+
+  searcTime = 0;
 
   constructor(
     private gatewaysService: GatewaysService,
@@ -138,10 +134,10 @@ export class GatewaysComponent implements OnInit {
     );
   }
 
-  getGateways(): void {
+  getGateways(name?: string): void {
     this.gateways = [];
 
-    this.gatewaysService.getGateways(this.offset, this.limit).subscribe(
+    this.gatewaysService.getGateways(this.offset, this.limit, name).subscribe(
       (resp: any) => {
         this.total = resp.total;
 
@@ -241,5 +237,19 @@ export class GatewaysComponent implements OnInit {
         }
       },
     );
+  }
+
+  searchLora(input) {
+    const t = new Date().getTime();
+    if ((t - this.searcTime) > defSearchBardMs) {
+      this.getGateways(input);
+      this.searcTime = t;
+    }
+  }
+
+  onClickSave() {
+  }
+
+  onFileSelected(files: FileList) {
   }
 }

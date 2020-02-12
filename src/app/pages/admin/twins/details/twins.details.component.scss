@@ -2,8 +2,8 @@ nb-icon {
   vertical-align: middle;
 }
 
-.col-2 {
-  font-weight: bold;
+.row {
+  margin-bottom: 10px;
 }
 
 .pickable:hover {
@@ -11,7 +11,7 @@ nb-icon {
 }
 
 nb-select {
-  min-width: 300px;
+  min-width: 400px;
 }
 
 button {

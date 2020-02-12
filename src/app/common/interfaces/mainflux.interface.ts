@@ -37,6 +37,7 @@ export interface Twin {
   id?: string;
   revision?: number;
   created?: Date;
+  updated?: Date;
   definitions?: Definition[];
   definition?: any; // for request
   metadata?: any;

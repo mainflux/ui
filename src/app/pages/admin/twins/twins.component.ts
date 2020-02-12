@@ -34,25 +34,42 @@ export class TwinsComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      details: {
+        type: 'custom',
+        renderComponent: DetailsComponent,
+        valuePrepareFunction: (cell, row) => {
+          return row;
+        },
+        editable: false,
+        addable: false,
+        filter: false,
+      },
       name: {
         title: 'Name',
         editable: true,
         addable: true,
         filter: false,
       },
-      id: {
-        title: 'ID',
+      created: {
+        title: 'Created',
         editable: false,
         addable: false,
         filter: false,
-      },
-      details: {
-        title: 'Details',
-        type: 'custom',
-        renderComponent: DetailsComponent,
         valuePrepareFunction: (cell, row) => {
-          return row;
+          return new Date(cell).toLocaleString();
         },
+      },
+      updated: {
+        title: 'Updated',
+        editable: false,
+        addable: false,
+        filter: false,
+        valuePrepareFunction: (cell, row) => {
+          return new Date(cell).toLocaleString();
+        },
+      },
+      revision: {
+        title: 'Revision',
         editable: false,
         addable: false,
         filter: false,
@@ -69,7 +86,7 @@ export class TwinsComponent implements OnInit {
 
   twinsNumber = 0;
 
-  searchFreq = 0;
+  searcTime = 0;
 
   constructor(
     private dialogService: NbDialogService,

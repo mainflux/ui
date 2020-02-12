@@ -9,7 +9,7 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 
-const defFreq: number = 100;
+const defSearchBardMs: number = 100;
 
 @Component({
   selector: 'ngx-smart-table',
@@ -36,23 +36,22 @@ export class ChannelsComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      details: {
+        type: 'custom',
+        renderComponent: DetailsComponent,
+        valuePrepareFunction: (cell, row) => {
+          return row;
+        },
+        editable: false,
+        addable: false,
+        filter: false,
+      },
       name: {
         title: 'Name',
         filter: false,
       },
       id: {
         title: 'ID',
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-      details: {
-        title: 'Details',
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          return row;
-        },
         editable: false,
         addable: false,
         filter: false,
@@ -72,7 +71,7 @@ export class ChannelsComponent implements OnInit {
   offset = 0;
   limit = 100;
 
-  searchFreq = 0;
+  searcTime = 0;
   columnChar = '|';
 
   constructor(
@@ -140,9 +139,9 @@ export class ChannelsComponent implements OnInit {
 
   searchChannel(input) {
     const t = new Date().getTime();
-    if ((t - this.searchFreq) > defFreq) {
+    if ((t - this.searcTime) > defSearchBardMs) {
       this.getChannels(input);
-      this.searchFreq = t;
+      this.searcTime = t;
     }
   }
 
