@@ -1,20 +1,11 @@
-<nb-card status="info" size="small">
+<nb-card status="info" style="margin-bottom: 0px;">
   <nb-card-header>
     <div class="row">
-      <div class="col-1">
-        ServerURI
-      </div>
-      <div class="col-3">
-        <input nbInput fullWidth [(ngModel)]="browseServerURI" fieldSize="tiny">
-      </div>
-      <div class="col-1">
-        NodeID
-      </div>
-      <div class="col-1">
-        <input nbInput fullWidth [(ngModel)]="browseNamespace" fieldSize="tiny">
-      </div>
       <div class="col-2">
-        <input nbInput fullWidth [(ngModel)]="browseIdentifier" fieldSize="tiny">
+        OPC-UA Server URI:
+      </div>
+      <div class="col-6">
+        <input nbInput fullWidth placeholder="Browse..." [(ngModel)]="browseServerURI" fieldSize="small">
       </div>
       <div class="col-2">
         <button nbButton status="warning" (click)="browseOpcuaNodes()" size="small">
@@ -30,47 +21,55 @@
       </div>
     </div>
   </nb-card-header>
+</nb-card>
+
+<nb-card size="medium">
+  <nb-card-header>
+    <nb-list-item>
+      <div class="col-2">
+        <b>Node ID</b>
+      </div>
+      <div class="col-2">
+        <b>Data Type</b>
+      </div>
+      <div class="col-4">
+        <b>Description</b>
+      </div>
+      <div class="col-2">
+        <b>BrowseName</b>
+      </div>
+      <div class="col-2">
+        <input nbInput fullWidth placeholder="Search..." fieldSize="small"
+               (input)="searchBrowse($event.target.value)">
+      </div>
+    </nb-list-item>
+  </nb-card-header>
   <nb-card-body>
-    <nb-list>
-      <nb-list-item>
-        <div class="col-4">
-          Node ID
-        </div>
-        <div class="col-2">
-          Data Type
-        </div>
-        <div class="col-3">
-          Description
-        </div>
-        <div class="col-2">
-          BrowseName
-        </div>
-        <div class="col-1">
-        </div>
-      </nb-list-item>
-       <nb-list-item *ngFor="let node of browsedNodes" style="height: 20px;">
-         <div class="col-4">
-           {{ node.NodeID }}
-         </div>
-         <div class="col-2">
-           {{ node.DataType }}
-         </div>
-         <div class="col-3">
-           {{ node.Description }}
-         </div>
-         <div class="col-2">
-           {{ node.BrowseName }}
-         </div>
-         <div class="col-1">
-           <nb-checkbox (checkedChange)="onCheckboxChanged($event, node)"></nb-checkbox>
-         </div>
-       </nb-list-item>
-     </nb-list>
+    <nb-list-item *ngIf="!browsedNodes.length">
+      No browsed server
+    </nb-list-item>
+    <nb-list-item *ngFor="let node of browsedNodes">
+      <div class="col-2">
+        {{ node.NodeID }}
+      </div>
+      <div class="col-2">
+        {{ node.DataType }}
+      </div>
+      <div class="col-4">
+        {{ node.Description }}
+      </div>
+      <div class="col-2">
+        {{ node.BrowseName }}
+      </div>
+      <div class="col-2" style="text-align: center;">
+        <nb-checkbox (checkedChange)="onCheckboxChanged($event, node)"></nb-checkbox>
+      </div>
+    </nb-list-item>
   </nb-card-body>
 </nb-card>
 
 <nb-card status="info">
-  <nb-card-header>
+  <nb-card-header style="text-align: center;">
     <div class="row">
       <div class="col-4">
         {{ opcuaNodes.length }} &nbsp; OPC-UA Server Subscription
