@@ -1,0 +1,14 @@
+<nb-card status="success">
+  <nb-card-header>
+    {{ dbReaderNodes.length }} &nbsp; DB Reader/s
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings"
+                     [source]="source"
+                     (createConfirm)="onCreateConfirm($event)"
+                     (editConfirm)="onEditConfirm($event)"
+                     (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
