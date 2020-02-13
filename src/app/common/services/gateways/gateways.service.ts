@@ -28,11 +28,11 @@ export class GatewaysService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getGateways(offset?: number, limit?: number) {
+  getGateways(offset?: number, limit?: number, name?: string) {
     offset = offset || 0;
     limit = limit || defLimit;
 
-    return this.thingsService.getThings(offset, limit, this.typeGateway);
+    return this.thingsService.getThings(offset, limit, this.typeGateway, '', name);
   }
 
   getCtrlChannels(offset: number, limit: number) {

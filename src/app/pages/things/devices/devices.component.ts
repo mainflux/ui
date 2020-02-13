@@ -38,23 +38,22 @@ export class DevicesComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      details: {
+        type: 'custom',
+        renderComponent: DetailsComponent,
+        valuePrepareFunction: (cell, row) => {
+          return row;
+        },
+        editable: false,
+        addable: false,
+        filter: false,
+      },
       name: {
         title: 'Name',
         filter: false,
       },
       id: {
         title: 'ID',
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-      details: {
-        title: 'Details',
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          return row;
-        },
         editable: false,
         addable: false,
         filter: false,

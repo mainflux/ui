@@ -1,21 +1,36 @@
-<div class="row">
-  <div class="col-xxl-3">
-    <nb-card status="info">
-      <nb-card-header>
+<nb-card status="info">
+  <nb-card-header>
+    <div class="row">
+      <div class="col-4">
         {{ twinsNumber }} &nbsp; Twins
-      </nb-card-header>
-    </nb-card>
-  </div>
-</div>
-
-<nb-card>
+      </div>
+      <div class="col-4">
+        <input nbInput fullWidth placeholder="Search..." fieldSize="small"
+               (input)="searchThing($event.target.value)">
+      </div>
+      <div class="col-2">
+        <button nbButton size="small" status="success"
+                (click)="onSaveFile()">
+          <nb-icon icon="save-outline"></nb-icon>
+          Save
+        </button>
+      </div>
+      <div class="col-2">
+        <button nbButton size="small"
+                (click)="fileInput.click()">
+          <nb-icon icon="file-add-outline"></nb-icon>
+          Upload
+          <input hidden #fileInput (change)="onFileSelected($event.target.files)" type="file">
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
   <nb-card-body>
     <ng2-smart-table [settings]="settings"
                      [source]="source"
                      (createConfirm)="onCreateConfirm($event)"
                      (editConfirm)="onEditConfirm($event)"
-                     (deleteConfirm)="onDeleteConfirm($event)"
-                     (userRowSelect)="onSelection($event)">
+                     (deleteConfirm)="onDeleteConfirm($event)">
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>
