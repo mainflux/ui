@@ -71,7 +71,7 @@ export class ChannelsComponent implements OnInit {
   offset = 0;
   limit = 100;
 
-  searcTime = 0;
+  searchTime = 0;
   columnChar = '|';
 
   constructor(
@@ -139,9 +139,9 @@ export class ChannelsComponent implements OnInit {
 
   searchChannel(input) {
     const t = new Date().getTime();
-    if ((t - this.searcTime) > defSearchBardMs) {
+    if ((t - this.searchTime) > defSearchBardMs) {
       this.getChannels(input);
-      this.searcTime = t;
+      this.searchTime = t;
     }
   }
 

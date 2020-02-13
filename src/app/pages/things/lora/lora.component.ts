@@ -104,7 +104,7 @@ export class LoraComponent implements OnInit {
   offset = 0;
   limit = 20;
 
-  searcTime = 0;
+  searchTime = 0;
 
   constructor(
     private loraService: LoraService,
@@ -199,9 +199,9 @@ export class LoraComponent implements OnInit {
 
   searchLora(input) {
     const t = new Date().getTime();
-    if ((t - this.searcTime) > defSearchBardMs) {
+    if ((t - this.searchTime) > defSearchBardMs) {
       this.getLoraDevices(input);
-      this.searcTime = t;
+      this.searchTime = t;
     }
   }
 

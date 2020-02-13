@@ -106,7 +106,7 @@ export class GatewaysComponent implements OnInit {
   limit = 20;
   total = 0;
 
-  searcTime = 0;
+  searchTime = 0;
 
   constructor(
     private gatewaysService: GatewaysService,
@@ -241,9 +241,9 @@ export class GatewaysComponent implements OnInit {
 
   searchLora(input) {
     const t = new Date().getTime();
-    if ((t - this.searcTime) > defSearchBardMs) {
+    if ((t - this.searchTime) > defSearchBardMs) {
       this.getGateways(input);
-      this.searcTime = t;
+      this.searchTime = t;
     }
   }
 

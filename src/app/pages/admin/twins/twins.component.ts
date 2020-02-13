@@ -86,7 +86,7 @@ export class TwinsComponent implements OnInit {
 
   twinsNumber = 0;
 
-  searcTime = 0;
+  searchTime = 0;
 
   constructor(
     private dialogService: NbDialogService,

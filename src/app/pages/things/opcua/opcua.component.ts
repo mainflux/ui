@@ -129,7 +129,7 @@ export class OpcuaComponent implements OnInit {
   offset = 0;
   limit = 20;
 
-  searcTime = 0;
+  searchTime = 0;
   columnChar = '|';
 
   constructor(
@@ -272,9 +272,9 @@ export class OpcuaComponent implements OnInit {
 
   searchNode(input) {
     const t = new Date().getTime();
-    if ((t - this.searcTime) > defSearchBardMs) {
+    if ((t - this.searchTime) > defSearchBardMs) {
       this.getOpcuaNodes(input);
-      this.searcTime = t;
+      this.searchTime = t;
     }
   }
 
