@@ -77,38 +77,40 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <nb-list-item>
-      <div class="col-3">
-        <b>Name</b>
-      </div>
-      <div class="col-4">
-        <b>Channel</b>
-      </div>
-      <div class="col-3">
-        <b>Subtopic</b>
-      </div>
-      <div class="col-1">
-        <b>Persisted</b>
-      </div>
-      <div class="col-1">
-      </div>
-    </nb-list-item>
-    <nb-list-item *ngFor="let attr of defAttrs">
-      <div class="col-3">
-        {{ attr.name }}
-      </div>
-      <div class="col-4">
-        {{ attr.channel }} - {{ defChans[attr.channel] }}
-      </div>
-      <div class="col-3">
-        {{ attr.subtopic }}
-      </div>
-      <div class="col-1">
-        <b>{{ attr.persist_state }}</b>
-      </div>
-      <div class="col-1">
-      </div>
-    </nb-list-item>
+    <nb-list>
+      <nb-list-item>
+        <div class="col-3">
+          <b>Name</b>
+        </div>
+        <div class="col-4">
+          <b>Channel</b>
+        </div>
+        <div class="col-3">
+          <b>Subtopic</b>
+        </div>
+        <div class="col-1">
+          <b>Persisted</b>
+        </div>
+        <div class="col-1">
+        </div>
+      </nb-list-item>
+      <nb-list-item *ngFor="let attr of defAttrs">
+        <div class="col-3">
+          {{ attr.name }}
+        </div>
+        <div class="col-4">
+          {{ attr.channel }} - {{ defChans[attr.channel] }}
+        </div>
+        <div class="col-3">
+          {{ attr.subtopic }}
+        </div>
+        <div class="col-1">
+          <b>{{ attr.persist_state }}</b>
+        </div>
+        <div class="col-1">
+        </div>
+      </nb-list-item>
+    </nb-list>
   </nb-card-body>
 </nb-card>
 
@@ -121,39 +123,41 @@
   </nb-card-header>
 
   <nb-card-body>
-    <nb-list-item>
-      <div class="col-3">
-        <b>Name</b>
-      </div>
-      <div class="col-4">
-        <b>Channel</b>
-      </div>
-      <div class="col-3">
-        <b>Subtopic</b>
-      </div>
-      <div class="col-1">
-        <b>Persisted</b>
-      </div>
-      <div class="col-1">
-      </div>
-    </nb-list-item>
-    <nb-list-item *ngFor="let attr of editAttrs">
-      <div class="col-3">
-        {{ attr.name }}
-      </div>
-      <div class="col-4">
-        {{ attr.channel }}
-      </div>
-      <div class="col-3">
-        {{ attr.subtopic }}
-      </div>
-      <div class="col-1">
-        <b>{{ attr.persist_state }}</b>
-      </div>
-      <div class="col-1">
-        <button (click)="removeAttribute(attr)" nbButton status="danger" size="tiny">x</button>
-      </div>
-    </nb-list-item>
+    <nb-list>
+      <nb-list-item>
+        <div class="col-3">
+          <b>Name</b>
+        </div>
+        <div class="col-4">
+          <b>Channel</b>
+        </div>
+        <div class="col-3">
+          <b>Subtopic</b>
+        </div>
+        <div class="col-1">
+          <b>Persisted</b>
+        </div>
+        <div class="col-1">
+        </div>
+      </nb-list-item>
+      <nb-list-item *ngFor="let attr of editAttrs">
+        <div class="col-3">
+          {{ attr.name }}
+        </div>
+        <div class="col-4">
+          {{ attr.channel }}
+        </div>
+        <div class="col-3">
+          {{ attr.subtopic }}
+        </div>
+        <div class="col-1">
+          <b>{{ attr.persist_state }}</b>
+        </div>
+        <div class="col-1">
+          <button (click)="removeAttribute(attr)" nbButton status="danger" size="tiny">x</button>
+        </div>
+      </nb-list-item>
+    </nb-list>
   </nb-card-body>
 
   <nb-card-footer>

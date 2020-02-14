@@ -25,46 +25,50 @@
 
 <nb-card size="medium">
   <nb-card-header>
-    <nb-list-item>
-      <div class="col-2">
-        <b>Node ID</b>
-      </div>
-      <div class="col-2">
-        <b>Data Type</b>
-      </div>
-      <div class="col-4">
-        <b>Description</b>
-      </div>
-      <div class="col-2">
-        <b>BrowseName</b>
-      </div>
-      <div class="col-2">
-        <input nbInput fullWidth placeholder="Search..." fieldSize="small"
-               (input)="searchBrowse($event.target.value)">
-      </div>
-    </nb-list-item>
+    <nb-list>
+      <nb-list-item>
+        <div class="col-2">
+          <b>Node ID</b>
+        </div>
+        <div class="col-2">
+          <b>Data Type</b>
+        </div>
+        <div class="col-4">
+          <b>Description</b>
+        </div>
+        <div class="col-2">
+          <b>BrowseName</b>
+        </div>
+        <div class="col-2">
+          <input nbInput fullWidth placeholder="Search..." fieldSize="small"
+                 (input)="searchBrowse($event.target.value)">
+        </div>
+      </nb-list-item>
+    </nb-list>
   </nb-card-header>
   <nb-card-body>
-    <nb-list-item *ngIf="!browsedNodes.length">
-      No browsed server
-    </nb-list-item>
-    <nb-list-item *ngFor="let node of browsedNodes">
-      <div class="col-2">
-        {{ node.NodeID }}
-      </div>
-      <div class="col-2">
-        {{ node.DataType }}
-      </div>
-      <div class="col-4">
-        {{ node.Description }}
-      </div>
-      <div class="col-2">
-        {{ node.BrowseName }}
-      </div>
-      <div class="col-2" style="text-align: center;">
-        <nb-checkbox (checkedChange)="onCheckboxChanged($event, node)"></nb-checkbox>
-      </div>
-    </nb-list-item>
+    <nb-list>
+      <nb-list-item *ngIf="!browsedNodes.length">
+        No browsed server
+      </nb-list-item>
+      <nb-list-item *ngFor="let node of browsedNodes">
+        <div class="col-2">
+          {{ node.NodeID }}
+        </div>
+        <div class="col-2">
+          {{ node.DataType }}
+        </div>
+        <div class="col-4">
+          {{ node.Description }}
+        </div>
+        <div class="col-2">
+          {{ node.BrowseName }}
+        </div>
+        <div class="col-2" style="text-align: center;">
+          <nb-checkbox (checkedChange)="onCheckboxChanged($event, node)"></nb-checkbox>
+        </div>
+      </nb-list-item>
+    </nb-list>
   </nb-card-body>
 </nb-card>
 
