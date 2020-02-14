@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { TwinsService } from 'app/common/services/twins/twins.service';
-import { LocalDataSource } from 'ng2-smart-table';
-import { TwinsAttributesComponent } from './attributes/twins.attributes.component';
 import { Twin, Definition } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
@@ -12,37 +10,8 @@ import { Twin, Definition } from 'app/common/interfaces/mainflux.interface';
   styleUrls: ['./twins.definitions.component.scss'],
 })
 export class TwinsDefinitionsComponent implements OnInit {
-  settings = {
-    actions: {
-      add: false,
-      edit: false,
-      delete: false,
-    },
-    columns: {
-      id: {
-        title: 'ID',
-        width: '3%',
-        filter: false,
-      },
-      attributes: {
-        title: 'Attributes',
-        type: 'custom',
-        renderComponent: TwinsAttributesComponent,
-        valuePrepareFunction: (cell, row) => {
-          return row;
-        },
-        filter: false,
-      },
-    },
-    pager: {
-      display: true,
-      perPage: 10,
-    },
-  };
-
   twin: Twin = {};
   definitions: Definition[] = [];
-  source: LocalDataSource = new LocalDataSource();
 
   constructor(
     private route: ActivatedRoute,
@@ -59,7 +28,6 @@ export class TwinsDefinitionsComponent implements OnInit {
       (resp: Twin) => {
         this.twin = resp;
         this.definitions = this.twin.definitions;
-        this.source.load(this.definitions);
       },
     );
   }

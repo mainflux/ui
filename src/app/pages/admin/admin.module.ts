@@ -21,7 +21,6 @@ import { TwinsDetailsComponent } from './twins/details/twins.details.component';
 import { TwinsStatesComponent } from './twins/states/twins.states.component';
 import { TwinsPayloadComponent } from './twins/states/payload/twins.payload.component';
 import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
-import { TwinsAttributesComponent } from './twins/definitions/attributes/twins.attributes.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { GrafanaComponent } from './grafana/grafana.component';
 import { LoraServerComponent } from './loraserver/loraserver.component';
@@ -50,7 +49,6 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
     TwinsStatesComponent,
     TwinsPayloadComponent,
     TwinsDefinitionsComponent,
-    TwinsAttributesComponent,
     GrafanaComponent,
     LoraServerComponent,
   ],
@@ -58,7 +56,6 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
     ConfirmationComponent,
     DetailsComponent,
     TwinsPayloadComponent,
-    TwinsAttributesComponent,
   ],
 })
 export class AdminModule { }
