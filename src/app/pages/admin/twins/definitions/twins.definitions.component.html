@@ -1,20 +1,52 @@
-<div class="row">
-  <div class="col-md-12">
-    <nb-card size="big" status="info">
-      <nb-card-header>
-        <div class="row">
-          <div class="col-12">{{ definitions.length }} {{ twin.name }} definitions</div>
+<nb-card size="big" status="info">
+  <nb-card-header>
+    {{ definitions.length }} {{ twin.name }} definitions
+  </nb-card-header>
+
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item>
+        <div class="col-2">
+          <b>Created</b>
         </div>
-      </nb-card-header>
-
-      <nb-card-body>
-        <ng2-smart-table [settings]="settings"
-                         [source]="source">
-        </ng2-smart-table>
-      </nb-card-body>
-
-      <nb-card-footer>
-      </nb-card-footer>
-    </nb-card>
-  </div>
-</div>
+        <div class="col-10">
+          <div class="row">
+            <div class="col-2">
+              <b>Name</b>
+            </div>
+            <div class="col-5">
+              <b>Channels</b>
+            </div>
+            <div class="col-3">
+              <b>Subtopic</b>
+            </div>
+            <div class="col-2">
+              <b>Persisted</b>
+            </div>
+          </div>
+        </div>
+      </nb-list-item>
+      <nb-list-item *ngFor="let def of definitions">
+        <div class="col-2">
+          {{def.created | date: 'short'}}
+        </div>
+        <div class="col-10">
+          <div class="row" *ngFor="let attr of def.attributes">
+            <div class="col-2">
+              {{ attr.name }}
+            </div>
+            <div class="col-5">
+              {{ attr.channel }}
+            </div>
+            <div class="col-3">
+              {{ attr.subtopic }}
+            </div>
+            <div class="col-2">
+              <b>{{ attr.persist_state }}</b>
+            </div>
+          </div>
+        </div>
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>

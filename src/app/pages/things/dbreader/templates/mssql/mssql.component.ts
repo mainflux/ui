@@ -32,7 +32,6 @@ export class MssqlComponent extends DbReaderDetailsComponent implements OnInit, 
   }
   onEdit() {
     if (this.metadataForm.valid) {
-
       if (this.thing.metadata !== '') {
         try {
           // this.thing.metadata = JSON.parse(this.thing.metadata);
