@@ -1,6 +1,14 @@
-<nb-card status="success">
+<nb-card status="info">
   <nb-card-header>
-    {{ dbReaderNodes.length }} &nbsp; DB Reader/s
+    <div class="row">
+      <div class="col-4">
+        {{ dbReaderNodes.length }} &nbsp; DB Reader/s
+      </div>
+      <div class="col-4">
+        <input nbInput fullWidth placeholder="Search..." fieldSize="small"
+               (input)="searchReader($event.target.value)">
+      </div>
+    </div>
   </nb-card-header>
 
   <nb-card-body>
