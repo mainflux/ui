@@ -7,6 +7,8 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
 import { DbReaderService } from 'app/common/services/dbreader/dbreader.service';
 import { ThingsService } from 'app/common/services/things/things.service';
 
+const defSearchBardMs: number = 100;
+
 @Component({
   selector: 'ngx-dbreader',
   templateUrl: './dbreader.component.html',
@@ -31,28 +33,23 @@ export class DbReaderComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
-      name: {
-        title: 'Name',
-        type: 'string',
-        placeholder: 'Search name',
-        filter: {
-          placeholder: 'Search name',
-        },
-      },
-      id: {
-        title: 'ID',
-        editable: 'false',
-        addable: false,
-        filter: false,
-      },
       details: {
-        title: 'Details',
         type: 'custom',
         renderComponent: DetailsComponent,
         valuePrepareFunction: (cell, row) => {
-          row.type = 'dbreader';
           return row;
         },
+        editable: false,
+        addable: false,
+        filter: false,
+      },
+      name: {
+        title: 'Name',
+        type: 'string',
+        filter: false,
+      },
+      id: {
+        title: 'ID',
         editable: false,
         addable: false,
         filter: false,
@@ -68,14 +65,10 @@ export class DbReaderComponent implements OnInit {
 
   dbReaderNodes = [];
 
-  browseServerURI = '';
-  browseNamespace = '';
-  browseIdentifier = '';
-  browsedNodes = [];
-  checkedNodes = [];
-
   offset = 0;
   limit = 20;
+
+  searchTime = 0;
 
   constructor(
     private dbReaderService: DbReaderService,
@@ -88,10 +81,10 @@ export class DbReaderComponent implements OnInit {
     this.getDbReaderNodes();
   }
 
-  getDbReaderNodes(): void {
+  getDbReaderNodes(name?: string): void {
     this.dbReaderNodes = [];
 
-    this.dbReaderService.getNodes(this.offset, this.limit).subscribe(
+    this.dbReaderService.getNodes(this.offset, this.limit, name).subscribe(
       (resp: any) => {
         resp.things.forEach(node => {
           this.dbReaderNodes.push(node);
@@ -143,5 +136,13 @@ export class DbReaderComponent implements OnInit {
         }
       },
     );
+  }
+
+  searchReader(input) {
+    const t = new Date().getTime();
+    if ((t - this.searchTime) > defSearchBardMs) {
+      this.getDbReaderNodes(input);
+      this.searchTime = t;
+    }
   }
 }

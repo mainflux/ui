@@ -1,21 +1,4 @@
 <form #metadataForm="ngForm" (ngSubmit)="onEdit()" novalidate>
-
-  <div class="row">
-    <div class="col-12 decorate">
-      <label for="columns">Columns :</label>
-      <input type="text" nbInput status="primary" id="columns" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.columns" [(ngModel)]="thing.metadata.db_reader_data.columns" name="columns"
-             #columns="ngModel">
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 decorate">
-      <label for="interval">Interval(minutes):</label>
-      <input type="number" nbInput id="interval" fullWidth status="primary" fieldSize="small" [placeholder]="thing.metadata.db_reader_data.interval" [(ngModel)]="thing.metadata.db_reader_data.interval" name="interval"
-             #interval="ngModel">
-    </div>
-  </div>
-
   <div class="row">
     <div class="col-12 decorate">
       <label for="filename">Filename:</label>
@@ -24,4 +7,19 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-12 decorate">
+      <label for="columns">Columns:</label>
+      <input type="text" nbInput status="primary" id="columns" fullWidth fieldSize="small" [placeholder]="thing.metadata.db_reader_data.columns" [(ngModel)]="thing.metadata.db_reader_data.columns" name="columns"
+             #columns="ngModel">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 decorate">
+      <label for="interval">Interval (minutes):</label>
+      <input type="number" nbInput id="interval" fullWidth status="primary" fieldSize="small" [placeholder]="thing.metadata.db_reader_data.interval" [(ngModel)]="thing.metadata.db_reader_data.interval" name="interval"
+             #interval="ngModel">
+    </div>
+  </div>
 </form>

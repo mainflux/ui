@@ -20,8 +20,8 @@ export class DbReaderService {
     return this.thingsService.getThing(id);
   }
 
-  getNodes(offset: number, limit: number) {
-    return this.thingsService.getThings(offset, limit, this.typeDbReader);
+  getNodes(offset: number, limit: number, name?: string) {
+    return this.thingsService.getThings(offset, limit, this.typeDbReader, '', name);
   }
 
   addNode(node: any) {

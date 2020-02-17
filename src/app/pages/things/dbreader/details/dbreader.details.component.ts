@@ -15,19 +15,15 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
   styleUrls: ['./dbreader.details.component.scss'],
 })
 export class DbReaderDetailsComponent implements OnInit {
-  offset = 0;
-  limit = 20;
-
   thing: Thing = {};
 
-  connections = [];
-  channels = [];
-
   selectedDbType = null;
-
   dbTypes = DbTypes;
 
   eventsSubject: Subject<void> = new Subject<void>();
+
+  offset = 0;
+  limit = 20;
 
   constructor(
     protected route: ActivatedRoute,
@@ -43,7 +39,6 @@ export class DbReaderDetailsComponent implements OnInit {
         this.thing = <Thing>resp;
         this.selectedDbType = this.thing.metadata.db_reader_data &&
           this.thing.metadata.db_reader_data.dbtype;
-        this.findDisconnectedChans();
       },
     );
   }
@@ -64,24 +59,5 @@ export class DbReaderDetailsComponent implements OnInit {
 
   onEdit() {
     this.eventsSubject.next();
-  }
-
-  findDisconnectedChans() {
-    this.channels = [];
-
-    this.thingsService.connectedChannels(this.thing.id).subscribe(
-      (respConns: any) => {
-        this.connections = respConns.channels;
-        this.channelsService.getChannels(this.offset, this.limit).subscribe(
-          (respChans: any) => {
-            respChans.channels.forEach(chan => {
-              if (!(this.connections.filter(c => c.id === chan.id).length > 0)) {
-                this.channels.push(chan);
-              }
-            });
-          },
-        );
-      },
-    );
   }
 }
