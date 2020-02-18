@@ -114,11 +114,25 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
         if (!msgs.messages) {
           return;
         }
+
+        const value = this.findValue(msgs.messages[0]);
+        if (!value) return;
+
         this.state[name] = this.state[name] || {};
-        this.state[name].value = msgs.messages[0] && msgs.messages[0].value;
+        this.state[name].value = value;
         this.state[name].time = msgs.messages[0].time * 1000;
       },
     );
+  }
+
+  findValue(message: any): any {
+    let value: any;
+    if (message.value) value = message.value;
+    if (message.string_value) value = message.string_value;
+    if (message.date_value) value = message.date_value;
+    if (message.bool_value) value = message.bool_value;
+    if (message.sum) value = message.sum;
+    return value;
   }
 
   showStates() {
