@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
-import { Config, ConfigContent, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
+import { Config, ConfigContent, Route, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-
+import { environment } from 'environments/environment';
 import { BootstrapService } from 'app/common/services/bootstrap/bootstrap.service';
 
 @Component({
@@ -19,16 +19,21 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
     mqtt_url: '',
     edgex_url: '',
     nats_url: '',
-    export_config: '',
+    export_config: {
+      file:`${environment.exportConfigFile}`,
+      mqtt : {},
+      exp: {},
+      routes:Array<Route>(2),
+    }
   };
 
   constructor(
     private bootstrapService: BootstrapService,
     private notificationsService: NotificationsService,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
+    
   }
 
   ngOnChanges() {
@@ -39,16 +44,7 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
     this.bootstrapService.getConfig(this.gateway).subscribe(
       resp => {
         const cfg = <Config>resp;
-        const content = JSON.parse(cfg.content);
-
-        this.content = {
-          log_level: content.log_level,
-          http_port: content.http_port,
-          mqtt_url: content.mqtt_url,
-          edgex_url: content.edgex_url,
-          nats_url: content.nats_url,
-          export_config: content.export_config,
-        };
+        this.content = JSON.parse(cfg.content);
       },
       err => {
         this.notificationsService.error(
@@ -60,6 +56,7 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
 
   submit() {
     this.content.export_config.mqtt.host = `tcp://${this.content.mqtt_url}`;
+    this.content.export_config.exp.nats = `nats://${this.content.nats_url}`;
     const configUpdate: ConfigUpdate = {
       content: JSON.stringify(this.content),
       name: this.gateway.name,
