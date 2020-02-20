@@ -18,34 +18,34 @@ export interface ConfigContent {
 }
 
 export interface ExportConfig {
-  File: string;
+  file?: string;
   exp: ExpConf
   mqtt: MqttConfig;
   routes: Array<Route>;
 }
 export interface ExpConf {
-  log_level: string;
-  nats: string;
-  port: string;
+  log_level?: string;
+  nats?: string;
+  port?: string;
 } 
 export interface Route{
-  mqtt_topic: string;
-  nats_topic:string;
-  subtopic:string;
-  type:string;
+  mqtt_topic?: string;
+  nats_topic?:string;
+  subtopic?:string;
+  type?:string;
 }
 export interface MqttConfig {
-  host: string;
-  ca_path: string;
-  cert_path: string;
-  priv_key_path: string;
-  channel: string;
-  qos: number;
-  mtls: boolean;
-  password: string;
-  username: string;
-  skip_tls_ver: boolean;
-  retain: boolean;
+  host?: string;
+  ca_path?: string;
+  cert_path?: string;
+  priv_key_path?: string;
+  channel?: string;
+  qos?: number;
+  mtls?: boolean;
+  password?: string;
+  username?: string;
+  skip_tls_ver?: boolean;
+  retain?: boolean;
 }
 
 export interface ConfigUpdate {
