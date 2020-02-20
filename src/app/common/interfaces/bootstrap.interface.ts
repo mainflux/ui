@@ -27,6 +27,9 @@ export interface ExpConf {
   log_level?: string;
   nats?: string;
   port?: string;
+  cache_db?:string; 
+  cache_pass?:string;
+  cache_url?:string;
 } 
 export interface Route{
   mqtt_topic?: string;

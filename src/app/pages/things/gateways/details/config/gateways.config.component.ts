@@ -56,6 +56,7 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
 
   submit() {
     this.content.export_config.mqtt.host = `tcp://${this.content.mqtt_url}`;
+    this.content.export_config.exp.nats = `nats://${this.content.nats_url}`;
     const configUpdate: ConfigUpdate = {
       content: JSON.stringify(this.content),
       name: this.gateway.name,

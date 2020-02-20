@@ -21,9 +21,9 @@ export class BootstrapService {
     nats_url: 'localhost:4222',
     export_config:  {
       file:`${environment.exportConfigFile}`,
-      exp: {},
+      exp: {port:"8170",},
       mqtt:  {},
-      routes: Array<Route>(2),
+      routes: [{},{}],
     }
   };
 
@@ -40,6 +40,8 @@ export class BootstrapService {
     this.content.export_config.routes[0].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
     this.content.export_config.routes[1].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
     this.content.export_config.mqtt.password = gw.key;
+    this.content.export_config.exp.nats = this.content.nats_url
+
 
     const config: Config = {
       thing_id: gw.id,
