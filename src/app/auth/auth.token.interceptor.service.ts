@@ -33,7 +33,8 @@ export class TokenInterceptor implements HttpInterceptor {
         if (token && token.getValue() &&
           !request.url.startsWith(environment.writerChannelsUrl) &&
           !request.url.startsWith(environment.readerChannelsUrl) &&
-          !request.url.startsWith(environment.bootstrapUrl)
+          !request.url.startsWith(environment.bootstrapUrl) &&
+          !request.url.startsWith(environment.browseUrl)
         ) {
           request = request.clone({
             setHeaders: {
@@ -45,12 +46,9 @@ export class TokenInterceptor implements HttpInterceptor {
           resp => {
           },
           err => {
-            // Forbidden - 403 / Gateway Timeout - 504
+            // Status 403 - Forbiden
+            // Status 504 - Gateway Timeout
             if (err instanceof HttpErrorResponse &&
-              !request.url.startsWith(environment.writerChannelsUrl) &&
-              !request.url.startsWith(environment.readerChannelsUrl) &&
-              !request.url.startsWith(environment.bootstrapUrl) &&
-              !request.url.startsWith(environment.browseUrl) &&
               (err.status === 403 || err.status === 504)) {
               localStorage.removeItem('auth_app_token');
               this.router.navigateByUrl('/auth/login');

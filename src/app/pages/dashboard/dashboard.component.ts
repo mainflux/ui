@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VersionsService } from 'app/common/services/versions/versions.service';
 
+import { UsersService } from 'app/common/services/users/users.service';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { LoraService } from 'app/common/services/lora/lora.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
@@ -32,51 +33,57 @@ export class DashboardComponent implements OnInit {
     private thingsService: ThingsService,
     private loraService: LoraService,
     private channelsService: ChannelsService,
+    private usersService: UsersService,
     private router: Router,
   ) { }
 
   ngOnInit() {
-    this.thingsService.getThings(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.thingsNumber = resp.total;
+    // If Token is valid
+    this.usersService.getUser().subscribe(
+      respUser => {
+        this.thingsService.getThings(this.offset, this.limit).subscribe(
+          (resp: any) => {
+            this.thingsNumber = resp.total;
+          },
+        );
+
+        this.loraService.getDevices(this.offset, this.limit).subscribe(
+          (resp: any) => {
+            this.loraDevNumber = resp.total;
+          },
+        );
+
+        this.gatewaysService.getGateways(this.offset, this.limit).subscribe(
+          (resp: any) => {
+            this.gatewaysNumber = resp.total;
+            this.gateways = resp.things;
+          },
+        );
+
+        this.channelsService.getChannels(this.offset, this.limit).subscribe(
+          (resp: any) => {
+            this.totalChanNumber = resp.total;
+          },
+        );
+
+        this.versionsService.getUsersVersion().subscribe(
+          (resp: any) => {
+            this.version = resp.version;
+          },
+        );
+
+        for (let i = 0; i < 61; i++) {
+          const vGas = 125 + 5 * Math.random();
+          const vPress = 1 + 0.1 * Math.random();
+          const vTemp = 25 + 1 * Math.random();
+          const vHum = 45 + 20 * Math.random();
+          this.messages.push({time: i, value: vTemp, publisher: 'mock', name: 'temperature'});
+          this.messages.push({time: i, value: vHum, publisher: 'mock2', name: 'humidity'});
+          this.messages.push({time: i, value: vPress, publisher: 'mock3', name: 'pressure'});
+          this.messages.push({time: i, value: vGas, publisher: 'mock4', name: 'gas'});
+        }
       },
     );
-
-    this.loraService.getDevices(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.loraDevNumber = resp.total;
-      },
-    );
-
-    this.gatewaysService.getGateways(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.gatewaysNumber = resp.total;
-        this.gateways = resp.things;
-      },
-    );
-
-    this.channelsService.getChannels(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.totalChanNumber = resp.total;
-      },
-    );
-
-    this.versionsService.getUsersVersion().subscribe(
-      (resp: any) => {
-        this.version = resp.version;
-      },
-    );
-
-    for (let i = 0; i < 61; i++) {
-      const vGas = 125 + 5 * Math.random();
-      const vPress = 1 + 0.1 * Math.random();
-      const vTemp = 25 + 1 * Math.random();
-      const vHum = 45 + 20 * Math.random();
-      this.messages.push({time: i, value: vTemp, publisher: 'mock', name: 'temperature'});
-      this.messages.push({time: i, value: vHum, publisher: 'mock2', name: 'humidity'});
-      this.messages.push({time: i, value: vPress, publisher: 'mock3', name: 'pressure'});
-      this.messages.push({time: i, value: vGas, publisher: 'mock4', name: 'gas'});
-    }
   }
 
   toThingsList() {
