@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import 'rxjs/add/observable/empty';
+import { Router } from '@angular/router';
 
 import { environment } from 'environments/environment';
 import { User } from 'app/common/interfaces/mainflux.interface';
@@ -12,6 +14,7 @@ export class UsersService {
 
   constructor(
     private http: HttpClient,
+    private router: Router,
     private notificationsService: NotificationsService,
   ) { }
 
@@ -24,9 +27,8 @@ export class UsersService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to fetch User',
-            `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+          this.router.navigateByUrl('/auth/login');
+          return Observable.empty();
         },
       );
   }

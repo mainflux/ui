@@ -27,6 +27,7 @@ import {
   NbButtonModule,
 } from '@nebular/theme';
 
+import { LoginComponent } from './pages/login/login.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { ResetPasswordComponent } from './pages/reset/reset.password.component';
 import { RegisterComponent } from './pages/register/register.component';
@@ -46,6 +47,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     LogoutComponent,
     ResetPasswordComponent,
     RegisterComponent,
