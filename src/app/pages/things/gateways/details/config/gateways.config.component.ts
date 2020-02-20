@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
-import { Config, ConfigContent, ExportConfig, MqttConfig, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
+import { Config, ConfigContent, Route, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { environment } from 'environments/environment';
 import { BootstrapService } from 'app/common/services/bootstrap/bootstrap.service';
@@ -20,26 +20,10 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
     edgex_url: '',
     nats_url: '',
     export_config: {
-      File:`${environment.exportConfigFile}`,
-      mqtt : {
-        host: '',
-        qos: 0,
-        channel:'',
-        password:'',
-        username:'',
-        retain: false,
-        mtls: false,
-        ca_path:'',
-        cert_path: '',
-        priv_key_path: '',
-        skip_tls_ver: false,
-      },
-      exp: {
-        log_level:'',
-        nats:'',
-        port:'',
-      },
-      routes:[]
+      file:`${environment.exportConfigFile}`,
+      mqtt : {},
+      exp: {},
+      routes:Array<Route>(2),
     }
   };
 
