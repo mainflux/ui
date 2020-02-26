@@ -36,7 +36,7 @@ export class LoraComponent implements OnInit {
     },
     columns: {
       details: {
-        title: 'Details',
+        title: '',
         type: 'custom',
         renderComponent: DetailsComponent,
         valuePrepareFunction: (cell, row) => {

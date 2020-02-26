@@ -119,7 +119,7 @@ export class OpcuaComponent implements OnInit {
 
   browseServerURI = '';
   // Standard root OPC-UA server NodeID (ns=0;i=84)
-  browseNamespace = '0';
+  browseNamespace = 'ns=0';
   browseIdentifier = 'i=84';
 
   browsedNodes = [];

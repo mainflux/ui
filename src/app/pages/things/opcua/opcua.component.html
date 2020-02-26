@@ -4,8 +4,14 @@
       <div class="col-2">
         OPC-UA Server URI:
       </div>
-      <div class="col-6">
+      <div class="col-4 noPad">
         <input nbInput fullWidth placeholder="Browse..." [(ngModel)]="browseServerURI" fieldSize="small">
+      </div>
+      <div class="col-1 noPad">
+        <input nbInput fullWidth placeholder="Browse..." [(ngModel)]="browseNamespace" fieldSize="small">
+      </div>
+      <div class="col-1 noPad">
+        <input nbInput fullWidth placeholder="Browse..." [(ngModel)]="browseIdentifier" fieldSize="small">
       </div>
       <div class="col-2">
         <button nbButton status="warning" (click)="browseOpcuaNodes()" size="small">
