@@ -8,10 +8,10 @@
         <input nbInput fullWidth placeholder="Browse..." [(ngModel)]="browseServerURI" fieldSize="small">
       </div>
       <div class="col-1 noPad">
-        <input nbInput fullWidth placeholder="Browse..." [(ngModel)]="browseNamespace" fieldSize="small">
+        <input nbInput fullWidth placeholder="ns=0" [(ngModel)]="browseNamespace" fieldSize="small">
       </div>
       <div class="col-1 noPad">
-        <input nbInput fullWidth placeholder="Browse..." [(ngModel)]="browseIdentifier" fieldSize="small">
+        <input nbInput fullWidth placeholder="i=84" [(ngModel)]="browseIdentifier" fieldSize="small">
       </div>
       <div class="col-2">
         <button nbButton status="warning" (click)="browseOpcuaNodes()" size="small">
