@@ -180,6 +180,11 @@ export class OpcuaComponent implements OnInit {
   }
 
   onCreateConfirm(event): void {
+    // Check if subscription already exist
+    if (this.isSubscribed(event.newData.serverURI, event.newData.nodeID)) {
+      return;
+    }
+
     // Check ServerURI and NodeID
     if (event.newData.serverURI !== '' && event.newData.nodeID !== '') {
       // close create row
@@ -248,16 +253,18 @@ export class OpcuaComponent implements OnInit {
 
   subscribeOpcuaNodes() {
     const nodesReq = [];
-    this.checkedNodes.forEach( (node, i) => {
+    this.checkedNodes.forEach( (checkedNode, i) => {
       const nodeReq = {
-        name: `${this.browseServerURI};${node}`,
+        name: checkedNode,
         serverURI: this.browseServerURI,
-        nodeID: node,
+        nodeID: checkedNode,
       };
 
-      nodesReq.push(nodeReq);
+      // Check if subscription already exist
+      if (!this.isSubscribed(this.browseServerURI, checkedNode)) {
+        nodesReq.push(nodeReq);
+      }
     });
-
 
     this.opcuaService.addNodes(this.browseServerURI,  nodesReq).subscribe(
       resp => {
@@ -268,6 +275,16 @@ export class OpcuaComponent implements OnInit {
         );
       },
     );
+  }
+
+  isSubscribed(serverURI: string, nodeID: string) {
+    const subs = this.opcuaNodes.filter(n => n.serverURI === serverURI && n.nodeID === nodeID);
+    if (subs.length !== 0) {
+      this.notificationsService.warn(`Subscribtion to server ${serverURI} and nodeID ${nodeID} already exist`, '');
+      return true;
+    }
+
+    return false;
   }
 
   searchNode(input) {
