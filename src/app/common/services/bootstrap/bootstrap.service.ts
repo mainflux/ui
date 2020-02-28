@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 
 import { environment } from 'environments/environment';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
-import { Config, Route, ConfigContent, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
+import { Config, ConfigContent, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ThingsService } from 'app/common/services/things/things.service';
 
@@ -20,11 +20,13 @@ export class BootstrapService {
     edgex_url: 'http://localhost:48090/api/v1/',
     nats_url: 'localhost:4222',
     export_config:  {
-      file:`${environment.exportConfigFile}`,
-      exp: {port:"8170",},
+      file: `${environment.exportConfigFile}`,
+      exp: {
+        port: '8170',
+      },
       mqtt:  {},
-      routes: [{},{}],
-    }
+      routes: [{}, {}],
+    },
   };
 
   constructor(
@@ -40,7 +42,7 @@ export class BootstrapService {
     this.content.export_config.routes[0].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
     this.content.export_config.routes[1].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
     this.content.export_config.mqtt.password = gw.key;
-    this.content.export_config.exp.nats = this.content.nats_url
+    this.content.export_config.exp.nats = this.content.nats_url;
 
 
     const config: Config = {

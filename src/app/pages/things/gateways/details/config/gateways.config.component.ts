@@ -20,11 +20,11 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
     edgex_url: '',
     nats_url: '',
     export_config: {
-      file:`${environment.exportConfigFile}`,
+      file: `${environment.exportConfigFile}`,
       mqtt : {},
       exp: {},
-      routes:Array<Route>(2),
-    }
+      routes: Array<Route>(2),
+    },
   };
 
   constructor(
@@ -33,7 +33,6 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    
   }
 
   ngOnChanges() {
