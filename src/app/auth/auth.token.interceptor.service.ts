@@ -47,9 +47,8 @@ export class TokenInterceptor implements HttpInterceptor {
           },
           err => {
             // Status 403 - Forbiden
-            // Status 504 - Gateway Timeout
             if (err instanceof HttpErrorResponse &&
-              (err.status === 403 || err.status === 504)) {
+              err.status === 403) {
               localStorage.removeItem('auth_app_token');
               this.router.navigateByUrl('/auth/login');
             }
