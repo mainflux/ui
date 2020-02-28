@@ -68,7 +68,7 @@ export class DevicesComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   things: Observable<Thing[]>;
 
-  thingsNumber = 0;
+  thingsNum = 0;
 
   offset = 0;
   limit = 100;
@@ -90,7 +90,7 @@ export class DevicesComponent implements OnInit {
     this.thingsService.getThings(this.offset, this.limit, '', '', name).subscribe(
       (resp: any) => {
         this.things = resp.things;
-        this.thingsNumber = resp.total;
+        this.thingsNum = resp.total;
 
         // Load and refresh ngx-admin table
         this.source.load(resp.things);

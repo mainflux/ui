@@ -1,9 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/map';
 
 import { environment } from 'environments/environment';
 import { Gateway } from 'app/common/interfaces/gateway.interface';

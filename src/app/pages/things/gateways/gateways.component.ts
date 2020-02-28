@@ -239,7 +239,7 @@ export class GatewaysComponent implements OnInit {
     );
   }
 
-  searchLora(input) {
+  searchGW(input) {
     const t = new Date().getTime();
     if ((t - this.searchTime) > defSearchBardMs) {
       this.getGateways(input);

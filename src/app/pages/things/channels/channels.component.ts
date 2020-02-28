@@ -66,7 +66,7 @@ export class ChannelsComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   channels: Channel[];
 
-  totalChanNumber = 0;
+  chansNum = 0;
 
   offset = 0;
   limit = 100;
@@ -88,7 +88,7 @@ export class ChannelsComponent implements OnInit {
     this.channelsService.getChannels(this.offset, this.limit, '', '', name).subscribe(
       (resp: any) => {
         this.channels = resp.channels;
-        this.totalChanNumber = resp.total;
+        this.chansNum = resp.total;
 
         // Load and refresh ngx-admin table
         this.source.load(resp.channels);
