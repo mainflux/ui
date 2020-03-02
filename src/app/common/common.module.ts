@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
 
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/map';
+
 import { BootstrapService } from './services/bootstrap/bootstrap.service';
 import { ChannelsService } from './services/channels/channels.service';
 import { GatewaysService } from './services/gateways/gateways.service';

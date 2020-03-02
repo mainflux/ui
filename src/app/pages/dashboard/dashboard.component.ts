@@ -15,15 +15,12 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
   version: number;
-  addons = [];
-  thingsNumber = 0;
+
+  thingsNum = 0;
   gatewaysNumber = 0;
   loraDevNumber = 0;
-  totalChanNumber = 0;
-  options: any = {};
+  chansNum = 0;
   gateways = [];
-  offset = 0;
-  limit = 20;
   messages = [];
   messages2 = [];
 
@@ -41,28 +38,28 @@ export class DashboardComponent implements OnInit {
     // If Token is valid
     this.usersService.getUser().subscribe(
       respUser => {
-        this.thingsService.getThings(this.offset, this.limit).subscribe(
+        this.thingsService.getThings().subscribe(
           (resp: any) => {
-            this.thingsNumber = resp.total;
+            this.thingsNum = resp.total;
           },
         );
 
-        this.loraService.getDevices(this.offset, this.limit).subscribe(
+        this.loraService.getDevices().subscribe(
           (resp: any) => {
             this.loraDevNumber = resp.total;
           },
         );
 
-        this.gatewaysService.getGateways(this.offset, this.limit).subscribe(
+        this.gatewaysService.getGateways().subscribe(
           (resp: any) => {
             this.gatewaysNumber = resp.total;
             this.gateways = resp.things;
           },
         );
 
-        this.channelsService.getChannels(this.offset, this.limit).subscribe(
+        this.channelsService.getChannels().subscribe(
           (resp: any) => {
-            this.totalChanNumber = resp.total;
+            this.chansNum = resp.total;
           },
         );
 
