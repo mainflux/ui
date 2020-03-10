@@ -67,7 +67,7 @@ export class OpcuaService {
     const nodesReq: OpcuaNode[] = [];
     nodes.forEach(node => {
       const nodeReq: OpcuaNode = {
-        name: `${this.typeOpcuaNode}-${node.name}`,
+        name: node.name,
         metadata: {
           type: this.typeOpcua,
           opcua: {
@@ -108,6 +108,7 @@ export class OpcuaService {
           serverURI: node.serverURI,
           nodeID: node.nodeID,
         },
+        channelID: node.metadata.channelID,
       },
     };
 
