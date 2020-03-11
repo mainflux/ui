@@ -8,6 +8,7 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
 import { DetailsComponent } from 'app/shared/details/details.component';
 
 import { TwinsService } from 'app/common/services/twins/twins.service';
+import { FsService } from 'app/common/services/fs/fs.service';
 import { Twin } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
@@ -91,6 +92,7 @@ export class TwinsComponent implements OnInit {
   constructor(
     private dialogService: NbDialogService,
     private twinsService: TwinsService,
+    private fsService: FsService,
   ) { }
 
   ngOnInit() {
@@ -145,6 +147,7 @@ export class TwinsComponent implements OnInit {
   }
 
   onSaveFile() {
+    this.fsService.exportToCsv('twins.csv', this.twins);
   }
 
   onFileSelected(files: FileList) {

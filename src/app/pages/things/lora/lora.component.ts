@@ -8,6 +8,7 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { MessagesService } from 'app/common/services/messages/messages.service';
+import { FsService } from 'app/common/services/fs/fs.service';
 
 const defSearchBardMs: number = 100;
 
@@ -110,6 +111,7 @@ export class LoraComponent implements OnInit {
     private loraService: LoraService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
+    private fsService: FsService,
     private dialogService: NbDialogService,
   ) { }
 
@@ -206,6 +208,7 @@ export class LoraComponent implements OnInit {
   }
 
   onClickSave() {
+    this.fsService.exportToCsv('lora_devices.csv', this.loraDevices);
   }
 
   onFileSelected(files: FileList) {

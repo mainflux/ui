@@ -7,6 +7,7 @@ import { Gateway } from 'app/common/interfaces/gateway.interface';
 import { GatewaysService } from 'app/common/services/gateways/gateways.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
+import { FsService } from 'app/common/services/fs/fs.service';
 
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
@@ -112,6 +113,7 @@ export class GatewaysComponent implements OnInit {
     private gatewaysService: GatewaysService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
+    private fsService: FsService,
     private dialogService: NbDialogService,
   ) { }
 
@@ -248,6 +250,7 @@ export class GatewaysComponent implements OnInit {
   }
 
   onClickSave() {
+    this.fsService.exportToCsv('gateways.csv', this.gateways);
   }
 
   onFileSelected(files: FileList) {

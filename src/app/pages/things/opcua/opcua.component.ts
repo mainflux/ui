@@ -9,6 +9,7 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { OpcuaStore } from 'app/common/store/opcua.store';
+import { FsService } from 'app/common/services/fs/fs.service';
 
 const defSearchBardMs: number = 100;
 
@@ -138,6 +139,7 @@ export class OpcuaComponent implements OnInit {
     private notificationsService: NotificationsService,
     private opcuaStore: OpcuaStore,
     private dialogService: NbDialogService,
+    private fsService: FsService,
   ) { }
 
   ngOnInit() {
@@ -222,7 +224,15 @@ export class OpcuaComponent implements OnInit {
         if (confirm) {
           event.confirm.resolve();
 
-          this.opcuaService.deleteNode(event.data).subscribe();
+          this.opcuaService.deleteNode(event.data).subscribe(
+            resp => {
+              setTimeout(
+                () => {
+                  this.getOpcuaNodes();
+                }, 3000,
+              );
+            },
+          );
         }
       },
     );
@@ -305,11 +315,12 @@ export class OpcuaComponent implements OnInit {
   }
 
   onClickSave() {
+    this.fsService.exportToCsv('opcua_nodes.csv', this.opcuaNodes);
   }
 
   onFileSelected(files: FileList) {
     if (files && files.length > 0) {
-      const file: File = files.item(0);
+      const file:  File = files.item(0);
       const reader: FileReader = new FileReader();
       reader.readAsText(file);
       reader.onload = () => {

@@ -7,9 +7,9 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { Thing } from 'app/common/interfaces/mainflux.interface';
 
 import { ThingsService } from 'app/common/services/things/things.service';
+import { FsService } from 'app/common/services/fs/fs.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
-
 import { DetailsComponent } from 'app/shared/details/details.component';
 
 const defFreq: number = 100;
@@ -79,6 +79,7 @@ export class DevicesComponent implements OnInit {
   constructor(
     private dialogService: NbDialogService,
     private thingsService: ThingsService,
+    private fsService: FsService,
     private notificationsService: NotificationsService,
   ) { }
 
@@ -148,6 +149,7 @@ export class DevicesComponent implements OnInit {
   }
 
   onClickSave() {
+    this.fsService.exportToCsv('mfx_devices.csv', this.things);
   }
 
   onFileSelected(files: FileList) {
