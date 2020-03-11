@@ -320,7 +320,7 @@ export class OpcuaComponent implements OnInit {
 
   onFileSelected(files: FileList) {
     if (files && files.length > 0) {
-      const file:  File = files.item(0);
+      const file: File = files.item(0);
       const reader: FileReader = new FileReader();
       reader.readAsText(file);
       reader.onload = () => {
