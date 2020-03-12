@@ -6,6 +6,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { Channel } from 'app/common/interfaces/mainflux.interface';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
+import { FsService } from 'app/common/services/fs/fs.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 
@@ -78,6 +79,7 @@ export class ChannelsComponent implements OnInit {
     private dialogService: NbDialogService,
     private channelsService: ChannelsService,
     private notificationsService: NotificationsService,
+    private fsService: FsService,
   ) { }
 
   ngOnInit() {
@@ -146,6 +148,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   onClickSave() {
+    this.fsService.exportToCsv('mfx_channels.csv', this.channels);
   }
 
   onFileSelected(files: FileList) {
