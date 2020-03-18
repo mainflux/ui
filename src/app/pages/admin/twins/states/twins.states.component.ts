@@ -145,4 +145,5 @@ export class TwinsStatesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     window.clearInterval(this.intervalID);
   }
+
 }

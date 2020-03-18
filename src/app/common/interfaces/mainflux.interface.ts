@@ -29,6 +29,7 @@ export interface Definition {
   id: string;
   created: Date;
   attributes: Attribute[];
+  delta: number;
 }
 
 export interface Twin {
