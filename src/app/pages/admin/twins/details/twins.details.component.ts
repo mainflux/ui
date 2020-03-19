@@ -6,6 +6,7 @@ import { TwinsService } from 'app/common/services/twins/twins.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { Thing, Channel, Attribute, Definition, Twin } from 'app/common/interfaces/mainflux.interface';
+import { isNumber } from 'util';
 
 const stateInterval: number = 5 * 1000;
 
@@ -22,6 +23,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   def: Definition;
   defChans: {};
   defAttrs: Attribute[] = [];
+  defDelta: number = 1e6;
   twinName: string;
 
   channels: Channel[] = [];
@@ -64,6 +66,8 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
         this.twin = <Twin>resp;
 
         this.def = this.twin.definitions[this.twin.definitions.length - 1];
+
+        this.defDelta = this.def.delta;
         this.defAttrs = this.def.attributes;
         this.defAttrs.forEach(attr => {
           this.channelsService.getChannel(attr.channel).subscribe(
@@ -184,6 +188,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
       id: this.twin.id,
       definition: {
         attributes: this.editAttrs,
+        delta: this.defDelta,
       },
     };
     this.twinsService.editTwin(twin).subscribe(
@@ -191,6 +196,11 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
         this.getTwin(this.twin.id);
       },
     );
+  }
+
+  delta($event) {
+    const val = +$event.srcElement.value;
+    this.defDelta = isNumber(val) ? val * 1e6 : this.defDelta;
   }
 
   ngOnDestroy() {

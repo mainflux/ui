@@ -71,10 +71,19 @@
 
 <nb-card size="normal" status="primary">
   <nb-card-header>
-    Definition <em *ngIf="def">{{def.created | date: 'long'}}</em>
-    <button (click)="showDefinitions()" nbButton status="success" size="small">
-      History
-    </button>
+    <div class="row">
+      <div class="col-6">
+        Definition <em *ngIf="def">{{def.created | date: 'long'}}</em>
+      </div>
+      <div class="col-4">
+        delta (ms): {{this.defDelta / 1e6}}
+      </div>
+      <div class="col-2">
+        <button (click)="showDefinitions()" nbButton status="success" size="small">
+          History
+        </button>
+      </div>
+    </div>
   </nb-card-header>
   <nb-card-body>
     <nb-list>
@@ -116,10 +125,21 @@
 
 <nb-card size="medium" status="primary">
   <nb-card-header>
-    Add definition
-    <button (click)="updateDefinition()" nbButton status="success" size="small">
-      Update definition
-    </button>
+    <div class="row">
+      <div class="col-6">
+        Add definition
+      </div>
+
+      <div class="col-4">
+        delta (ms): <input type="text" nbInput value="{{this.defDelta / 1e6}}" (change)="delta($event)" fieldSize="small">
+      </div>
+      
+      <div class="col-2">
+        <button (click)="updateDefinition()" nbButton status="success" size="small">
+          Update definition
+        </button>
+      </div>
+    </div>
   </nb-card-header>
 
   <nb-card-body>
