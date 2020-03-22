@@ -3,8 +3,8 @@
     <nb-card size="big" status="info">
       <nb-card-header>
         <div class="row">
-          <div class="col-2"> {{ total }} states of {{ twin.name }}</div>
-          <div class="col-10">
+          <div class="col-md-2"> {{ total }} states of {{ twin.name }}</div>
+          <div class="col-md-10">
             from: <input type="text" nbInput value="{{this.lowerLimit}}" (change)="lower($event)" fieldSize="small">
             to: <input type="text" nbInput value="{{this.upperLimit}}" (change)="upper($event)" fieldSize="small">
           </div>

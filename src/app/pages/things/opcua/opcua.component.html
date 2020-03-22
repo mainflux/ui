@@ -1,25 +1,22 @@
 <nb-card status="info" style="margin-bottom: 0px;">
   <nb-card-header>
     <div class="row">
-      <div class="col-2">
-        OPC-UA Server URI:
+      <div class="col-md-4">
+        <input nbInput fullWidth placeholder="Server URI" [(ngModel)]="browseServerURI" fieldSize="small">
       </div>
-      <div class="col-4 tinyPadding">
-        <input nbInput fullWidth placeholder="Browse..." [(ngModel)]="browseServerURI" fieldSize="small">
-      </div>
-      <div class="col-1 tinyPadding">
+      <div class="col-md-2">
         <input nbInput fullWidth placeholder="ns=0" [(ngModel)]="browseNamespace" fieldSize="small">
       </div>
-      <div class="col-1 tinyPadding">
+      <div class="col-md-2">
         <input nbInput fullWidth placeholder="i=84" [(ngModel)]="browseIdentifier" fieldSize="small">
       </div>
-      <div class="col-2">
+      <div class="col-md-2">
         <button nbButton status="warning" (click)="browseOpcuaNodes()" size="small">
           <nb-icon icon="maximize-outline"></nb-icon>
           Browse
         </button>
       </div>
-      <div class="col-2">
+      <div class="col-md-2">
         <button nbButton (click)="subscribeOpcuaNodes()" size="small">
           <nb-icon icon="collapse-outline"></nb-icon>
           Subscribe
@@ -33,19 +30,19 @@
   <nb-card-header>
     <nb-list>
       <nb-list-item>
-        <div class="col-2">
+        <div class="col-md-2">
           <b>Node ID</b>
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
           <b>Data Type</b>
         </div>
-        <div class="col-4">
+        <div class="col-md-4">
           <b>Description</b>
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
           <b>BrowseName</b>
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
           <input nbInput fullWidth placeholder="Search..." fieldSize="small"
                  (input)="searchBrowse($event.target.value)">
         </div>
@@ -58,19 +55,19 @@
         No browsed server
       </nb-list-item>
       <nb-list-item *ngFor="let node of browsedNodes">
-        <div class="col-2">
+        <div class="col-md-2">
           {{ node.NodeID }}
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
           {{ node.DataType }}
         </div>
-        <div class="col-4">
+        <div class="col-md-4">
           {{ node.Description }}
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
           {{ node.BrowseName }}
         </div>
-        <div class="col-2" style="text-align: center;">
+        <div class="col-md-2" style="text-align: center;">
           <nb-checkbox (checkedChange)="onCheckboxChanged($event, node)"></nb-checkbox>
         </div>
       </nb-list-item>
@@ -81,21 +78,21 @@
 <nb-card status="info">
   <nb-card-header style="text-align: center;">
     <div class="row">
-      <div class="col-4">
+      <div class="col-md-4">
         {{ opcuaNodes.length }} &nbsp; OPC-UA Server Subscription
       </div>
-      <div class="col-4">
+      <div class="col-md-4">
         <input nbInput fullWidth placeholder="Search..." fieldSize="small"
                (input)="searchNode($event.target.value)">
       </div>
-      <div class="col-2">
+      <div class="col-md-2">
         <button nbButton size="small" status="success"
                 (click)="onClickSave()">
           <nb-icon icon="save-outline"></nb-icon>
           Save
         </button>
       </div>
-      <div class="col-2">
+      <div class="col-md-2">
         <button nbButton size="small"
                 (click)="fileInput.click()">
           <nb-icon icon="file-add-outline"></nb-icon>
