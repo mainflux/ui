@@ -166,6 +166,12 @@ export class GatewaysComponent implements OnInit {
 
 
   validate(row: any): boolean {
+    const gws = this.gateways.map(g => g.mac);
+    if (gws.includes(row.mac)) {
+      this.notificationsService.warn(
+        'MAC already exist.', '');
+      return false;
+    }
     if (row.name === '' || row.name.length > 32) {
       this.notificationsService.warn(
         'Name is required and must be maximum 32 characters long.', '');
@@ -204,6 +210,15 @@ export class GatewaysComponent implements OnInit {
   }
 
   onEditConfirm(event): void {
+    // Check if the row have been modified
+    const macs = this.gateways.map(g => g.mac);
+    const names = this.gateways.map(g => g.name);
+    if (macs.includes(event.newData.mac) && names.includes(event.newData.name)) {
+      // close edditable row
+      event.confirm.resolve();
+      return;
+    }
+
     // Formulaire Validator
     if (!this.validate(event.newData)) {
       return;
