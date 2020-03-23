@@ -6,9 +6,9 @@
       </nb-card-header>
       <nb-card-body>
         <div class="row">
-          <div class="col-2"> Name: </div><div class="col-10"> {{ thing.name }} </div>
-          <div class="col-2"> ID: </div><div class="col-10"> {{ thing.id }} </div>
-          <div class="col-2"> Key: </div><div class="col-10"> {{ thing.key }} </div>
+          <div class="col-md-2"> Name: </div><div class="col-md-10"> {{ thing.name }} </div>
+          <div class="col-md-2"> ID: </div><div class="col-md-10"> {{ thing.id }} </div>
+          <div class="col-md-2"> Key: </div><div class="col-md-10"> {{ thing.key }} </div>
         </div>
       </nb-card-body>
     </nb-card>
@@ -62,11 +62,11 @@
         </div>
         <div *ngIf="connections.length !== 0">
           <div *ngFor="let con of connections;" class="row" style="padding: 2.6px;">
-            <div class="col-9">
+            <div class="col-md-9">
               <nb-icon status="info" icon="arrow-right-outline"></nb-icon>
               {{con.name}}
             </div>
-            <div class="col-3">
+            <div class="col-md-3">
               <button (click)="onDisconnect(con.id)" nbButton status="danger" size="tiny">
                 x
               </button>
