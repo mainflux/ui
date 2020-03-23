@@ -14,4 +14,5 @@ export interface Gateway {
   key?: string;
   name?: string;
   metadata?: GatewayMetadata;
+  mac?: string;
 }
