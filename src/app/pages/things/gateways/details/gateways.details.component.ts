@@ -1,18 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { GatewaysService } from 'app/common/services/gateways/gateways.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
 
-import { MqttManagerService } from 'app/common/services/mqtt/mqtt.manager.service';
 
 @Component({
   selector: 'ngx-details-component',
   templateUrl: './gateways.details.component.html',
   styleUrls: ['./gateways.details.component.scss'],
 })
-export class GatewaysDetailsComponent implements OnInit, OnDestroy {
+export class GatewaysDetailsComponent implements OnInit {
   gateway: Gateway = {
     name: '',
     metadata: {},
@@ -24,7 +23,6 @@ export class GatewaysDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private gatewaysService: GatewaysService,
     private notificationsService: NotificationsService,
-    private mqttManagerService: MqttManagerService,
   ) { }
 
   ngOnInit() {
@@ -32,13 +30,7 @@ export class GatewaysDetailsComponent implements OnInit, OnDestroy {
     this.gatewaysService.getGateway(id).subscribe(
       gw => {
         this.gateway = <Gateway>gw;
-        if (this.mfxAgent) {
-          this.mqttManagerService.init(
-            this.gateway.id,
-            this.gateway.key,
-            this.gateway.metadata.ctrlChannelID,
-          );
-        }
+        
       },
       err => {
         this.notificationsService.error('Failed to fetch gateway',
@@ -47,9 +39,5 @@ export class GatewaysDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-    if (this.mfxAgent) {
-      this.mqttManagerService.disconnect();
-    }
-  }
+  
 }
