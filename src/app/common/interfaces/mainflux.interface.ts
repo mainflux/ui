@@ -11,6 +11,8 @@ export interface Channel {
   metadata?: any;
 }
 
+
+
 export interface Thing {
   id?: string;
   key?: string;
