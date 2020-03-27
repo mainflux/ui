@@ -37,7 +37,6 @@ export class GatewaysXtermComponent implements AfterViewInit, OnInit,  OnDestroy
   ngOnChanges() {
     if (this.gateway === undefined )
       return
-    console.log("ngOnInit")
     const term = this.terminal;
     const channel = this.gateway.metadata.ctrlChannelID;
     if ( this.gateway.id && this.gateway.metadata.ctrlChannelID){
