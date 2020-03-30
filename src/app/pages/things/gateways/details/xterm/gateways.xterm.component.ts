@@ -1,7 +1,7 @@
-import { Component, Input,Output, EventEmitter, AfterViewInit,
-  ViewChild, ElementRef, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, Input, AfterViewInit,
+  ViewChild, ElementRef, ViewEncapsulation, OnChanges, OnDestroy } from '@angular/core';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
-import { Message } from 'app/common/interfaces/mainflux.interface'
+import { Message } from 'app/common/interfaces/mainflux.interface';
 import { Terminal } from 'xterm';
 import { MqttService, IMqttMessage, MqttConnectionState } from 'ngx-mqtt';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
@@ -14,7 +14,7 @@ import { v4 as uuid } from 'uuid';
   styleUrls: ['./gateways.xterm.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class GatewaysXtermComponent implements AfterViewInit, OnDestroy {
+export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestroy {
   hbInterval: number = 5 * 1000;
   @Input() gateway: Gateway;
   intervalId: number;
@@ -31,15 +31,17 @@ export class GatewaysXtermComponent implements AfterViewInit, OnDestroy {
   constructor(
     private mqttService: MqttService,
     private notificationsService: NotificationsService,
-  ) { 
+  ) {
     this.connected = false;
+    this.uuid = uuid();
   }
 
   ngOnChanges() {
-    if (this.gateway === undefined || 
-        this.terminal === undefined || 
+    if (this.gateway === undefined ||
+        this.terminal === undefined ||
         this.connected === true)
-      return
+    return;
+    this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, 'term', btoa('open'));
     if ( this.gateway.id && this.gateway.metadata.ctrlChannelID){
       this.mqttService.connect({ username: this.gateway.id, password: this.gateway.key });
       this.stateSub = this.mqttService.state.subscribe(this.connectionHandler.bind(this));
@@ -48,32 +50,38 @@ export class GatewaysXtermComponent implements AfterViewInit, OnDestroy {
 
   connectionHandler(state: MqttConnectionState) {
     if (state === MqttConnectionState.CONNECTED) {
-      this.connected = true
+      this.connected = true;
+      const topic = `${this.createTopic(this.gateway.metadata.ctrlChannelID)}/res/term`;
+      const term = this.terminal;
+      this.mqttService.publish(topic, 'payload');
       this.notificationsService.success('Connected to MQTT broker', '');
       this.connectAgent();
     }
   }
 
   connectAgent() {
-      const topic = `${this.createTopic(this.gateway.metadata.ctrlChannelID)}/res/term`;
+      const topic = `${this.createTopic(this.gateway.metadata.ctrlChannelID)}/res/term/${this.uuid}`;
       const term = this.terminal;
+      this.mqttService.publish(topic, 'payload');
       this.chanSub = this.mqttService.observe(topic).subscribe(
         (message: IMqttMessage) => {
           var res: string;
           const pl = message.payload.toString();
-          const senml = <Message>(<any>message.payload.toString())
+          const senml = <Message>(<any>message.payload.toString());
           res = JSON.parse(pl);
           const msg = <Message>(<any>res[0]);
-          term.write(msg.vs)
+          term.write(msg.vs);
         });
-      this.notificationsService.success(`Subscribed to channel ${this.gateway.metadata.ctrlChannelID}`, '');
+      this.notificationsService.success(`Subscribed to channel ${topic}`, '');
   }
 
   publish(channel: string, bn: string, n: string, vs: string) {
     const topic = `${this.createTopic(channel)}/req`;
-    const t = Date.now()
+    const t = Date.now();
     const payload = this.createPayload(bn, n, t, vs);
-    this.mqttService.publish(topic, payload);
+    this.mqttService.publish(topic, payload).subscribe(err => {
+      this.notificationsService.error('Failed to publish', '${err}');
+    });
   }
 
   createTopic(channel: string) {
@@ -81,25 +89,22 @@ export class GatewaysXtermComponent implements AfterViewInit, OnDestroy {
   }
 
   createPayload(baseName: string, name: string, time:number, valueString: string) {
-    return `[{"bn":"${baseName}:", "n":"${name}", "vs":"${valueString}"}]`;
-    //return `[{"bn":"${baseName}:", "n":"${name}", "t":"${time}", "vs":"${valueString}"}]`;
+    return `[{"bn":"${baseName}:", "n":"${name}", "t":"${time}", "vs":"${valueString}"}]`;
   }
 
   ngAfterViewInit() {
     this.terminal = new Terminal();
     this.terminal.open(this.terminalElement.nativeElement);
     this.terminal.writeln('Welcome to Mainflux IoT Agent');
-    this.terminal.write('$ ');
-    this.uuid = uuid();
-    this.terminal.on('data', function(data: string) {
-      const vs = `ch, ${data}`;
+    this.terminal.onData( data => {
+      const vs = `c,${data}`;
       this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, 'term', btoa(vs));
-    }.bind(this));
+    });
   }
 
   ngOnDestroy() {
     const vs = 'close';
-    this.connected = false
+    this.connected = false;
     this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, 'term', btoa(vs));
     this.stateSub && this.stateSub.unsubscribe();
     this.chanSub && this.chanSub.unsubscribe();
