@@ -41,10 +41,7 @@ import { environment } from 'environments/environment';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   connectOnCreate: false,
-  hostname: 'localhost',
-  port: 80,
-  protocol: 'ws',
-  path: '/mqtt/',
+  url: environment.mqttWsUrl,
 };
 
 @NgModule({
