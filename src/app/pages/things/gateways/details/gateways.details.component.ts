@@ -30,7 +30,6 @@ export class GatewaysDetailsComponent implements OnInit {
     this.gatewaysService.getGateway(id).subscribe(
       gw => {
         this.gateway = <Gateway>gw;
-        
       },
       err => {
         this.notificationsService.error('Failed to fetch gateway',
@@ -38,6 +37,4 @@ export class GatewaysDetailsComponent implements OnInit {
       },
     );
   }
-
-  
 }

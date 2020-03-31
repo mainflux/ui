@@ -41,8 +41,7 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
         this.terminal === undefined ||
         this.connected === true)
     return;
-    this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, 'term', btoa('open'));
-    if ( this.gateway.id && this.gateway.metadata.ctrlChannelID){
+    if ( this.gateway.id && this.gateway.metadata.ctrlChannelID) {
       this.mqttService.connect({ username: this.gateway.id, password: this.gateway.key });
       this.stateSub = this.mqttService.state.subscribe(this.connectionHandler.bind(this));
     }
@@ -51,9 +50,7 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
   connectionHandler(state: MqttConnectionState) {
     if (state === MqttConnectionState.CONNECTED) {
       this.connected = true;
-      const topic = `${this.createTopic(this.gateway.metadata.ctrlChannelID)}/res/term`;
-      const term = this.terminal;
-      this.mqttService.publish(topic, 'payload');
+      this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, 'term', btoa('open'));
       this.notificationsService.success('Connected to MQTT broker', '');
       this.connectAgent();
     }
@@ -65,9 +62,8 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
       this.mqttService.publish(topic, 'payload');
       this.chanSub = this.mqttService.observe(topic).subscribe(
         (message: IMqttMessage) => {
-          var res: string;
+          let res: string;
           const pl = message.payload.toString();
-          const senml = <Message>(<any>message.payload.toString());
           res = JSON.parse(pl);
           const msg = <Message>(<any>res[0]);
           term.write(msg.vs);
@@ -77,9 +73,11 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
 
   publish(channel: string, bn: string, n: string, vs: string) {
     const topic = `${this.createTopic(channel)}/req`;
-    const t = Date.now();
+    const t = Date.now() / 1000;
     const payload = this.createPayload(bn, n, t, vs);
-    this.mqttService.publish(topic, payload).subscribe(err => {
+    this.mqttService.publish(topic, payload).subscribe(e => {
+    },
+      err => {
       this.notificationsService.error('Failed to publish', '${err}');
     });
   }
@@ -88,8 +86,8 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
     return `channels/${channel}/messages`;
   }
 
-  createPayload(baseName: string, name: string, time:number, valueString: string) {
-    return `[{"bn":"${baseName}:", "n":"${name}", "t":"${time}", "vs":"${valueString}"}]`;
+  createPayload(baseName: string, name: string, time: number, valueString: string) {
+    return `[{"bn":"${baseName}:", "n":"${name}", "bt":${time}, "vs":"${valueString}"}]`;
   }
 
   ngAfterViewInit() {
