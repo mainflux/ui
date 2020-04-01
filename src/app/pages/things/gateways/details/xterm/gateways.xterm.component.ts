@@ -14,6 +14,9 @@ import { v4 as uuid } from 'uuid';
   styleUrls: ['./gateways.xterm.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
+
+declare const Term = 'term';
+
 export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestroy {
   hbInterval: number = 5 * 1000;
   @Input() gateway: Gateway;
@@ -50,7 +53,7 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
   connectionHandler(state: MqttConnectionState) {
     if (state === MqttConnectionState.CONNECTED) {
       this.connected = true;
-      this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, 'term', btoa('open'));
+      this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, Term, btoa('open'));
       this.notificationsService.success('Connected to MQTT broker', '');
       this.connectAgent();
     }
@@ -75,11 +78,12 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
     const topic = `${this.createTopic(channel)}/req`;
     const t = Date.now() / 1000;
     const payload = this.createPayload(bn, n, t, vs);
-    this.mqttService.publish(topic, payload).subscribe(e => {
-    },
+    this.mqttService.publish(topic, payload).subscribe(
+      resp => {
+      },
       err => {
-      this.notificationsService.error('Failed to publish', '${err}');
-    });
+        this.notificationsService.error('Failed to publish', '${err}');
+      });
   }
 
   createTopic(channel: string) {
