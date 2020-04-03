@@ -9,6 +9,7 @@ export interface Channel {
   id?: string;
   name?: string;
   metadata?: any;
+  type?: string;
 }
 
 export interface Thing {
@@ -16,6 +17,7 @@ export interface Thing {
   key?: string;
   name?: string;
   metadata?: any;
+  type?: string;
 }
 
 export interface Attribute {
