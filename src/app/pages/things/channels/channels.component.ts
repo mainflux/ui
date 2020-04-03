@@ -51,6 +51,11 @@ export class ChannelsComponent implements OnInit {
         title: 'Name',
         filter: false,
       },
+      type: {
+        title: 'Type',
+        filter: false,
+        addable: false,
+      },
       id: {
         title: 'ID',
         editable: false,
@@ -91,6 +96,11 @@ export class ChannelsComponent implements OnInit {
       (resp: any) => {
         this.channels = resp.channels;
         this.chansNum = resp.total;
+
+        // Check if there is a type defined in the metadata
+        this.channels.forEach( (chann: Channel) => {
+          chann.type = chann.metadata ? chann.metadata.type : 'undefined';
+        });
 
         // Load and refresh ngx-admin table
         this.source.load(resp.channels);

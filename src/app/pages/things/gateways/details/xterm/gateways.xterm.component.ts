@@ -8,15 +8,14 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { Subscription } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
+declare const Term = 'term';
+
 @Component({
   selector: 'ngx-gateways-xterm',
   templateUrl: './gateways.xterm.component.html',
   styleUrls: ['./gateways.xterm.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-
-declare const Term = 'term';
-
 export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestroy {
   hbInterval: number = 5 * 1000;
   @Input() gateway: Gateway;

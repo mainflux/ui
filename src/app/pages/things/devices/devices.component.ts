@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { NbDialogService } from '@nebular/theme';
 
@@ -52,6 +51,11 @@ export class DevicesComponent implements OnInit {
         title: 'Name',
         filter: false,
       },
+      type: {
+        title: 'Type',
+        filter: false,
+        addable: false,
+      },
       id: {
         title: 'ID',
         editable: false,
@@ -66,7 +70,7 @@ export class DevicesComponent implements OnInit {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  things: Observable<Thing[]>;
+  things: Thing[];
 
   thingsNum = 0;
 
@@ -93,8 +97,13 @@ export class DevicesComponent implements OnInit {
         this.things = resp.things;
         this.thingsNum = resp.total;
 
+        // Check if there is a type defined in the metadata
+        this.things.forEach( (thing: Thing) => {
+          thing.type = thing.metadata ? thing.metadata.type : 'undefined';
+        });
+
         // Load and refresh ngx-admin table
-        this.source.load(resp.things);
+        this.source.load(this.things);
         this.source.refresh();
       },
     );
