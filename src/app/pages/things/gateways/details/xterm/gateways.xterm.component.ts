@@ -8,7 +8,7 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { Subscription } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-declare const Term = 'term';
+const Term = 'term';
 
 @Component({
   selector: 'ngx-gateways-xterm',
