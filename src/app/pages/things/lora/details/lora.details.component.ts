@@ -30,7 +30,7 @@ export class LoraDetailsComponent implements OnInit {
         this.loraDevice = resp;
 
         this.messagesService.getMessages(
-          this.loraDevice.metadata.channelID, this.loraDevice.key, this.loraDevice.id).subscribe(
+          this.loraDevice.metadata.channel_id, this.loraDevice.key, this.loraDevice.id).subscribe(
           (msgResp: any) => {
             if (msgResp.messages) {
               this.messages = msgResp.messages;

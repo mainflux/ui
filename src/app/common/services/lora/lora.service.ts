@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { LoraDevice } from 'app/common/interfaces/lora.interface';
+import { LoraDevice, LoraTableRow } from 'app/common/interfaces/lora.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
@@ -35,13 +35,13 @@ export class LoraService {
     return this.channelsService.getChannels(offset, limit, this.typeLora);
   }
 
-  addDevice(row: LoraDevice) {
+  addDevice(row: LoraTableRow) {
     const chanReq = {
       name: `${this.typeLoraApp}-${row.appID}`,
       metadata: {
         type: this.typeLora,
         lora: {
-          appID: row.appID,
+          app_id: row.appID,
         },
       },
     };
@@ -54,10 +54,10 @@ export class LoraService {
           name: row.name,
           metadata: {
             type: this.typeLora,
-            channelID: chanID,
+            channel_id: chanID,
             lora: {
-              devEUI: row.devEUI,
-              appID: row.appID,
+              dev_eui: row.devEUI,
+              app_id: row.appID,
             },
           },
         };
@@ -87,11 +87,16 @@ export class LoraService {
     );
   }
 
-  editDevice(row: LoraDevice) {
-    row.name = row.name,
-    row.metadata.lora = {
-        devEUI: row.devEUI,
-        appID: row.appID,
+  editDevice(row: LoraTableRow) {
+    const devReq: LoraDevice = {
+      id: row.id,
+      name: row.name,
+      metadata: row.metadata,
+    };
+
+    devReq.metadata.lora = {
+        dev_eui: row.devEUI,
+        app_id: row.appID,
     };
 
     return this.thingsService.editThing(row).map(
@@ -101,8 +106,8 @@ export class LoraService {
     );
   }
 
-  deleteDevice(loraDev: LoraDevice) {
-    const channelID = loraDev.metadata.channelID;
+  deleteDevice(loraDev: LoraTableRow) {
+    const channelID = loraDev.metadata.channel_id;
     return this.channelsService.deleteChannel(channelID).map(
       () => {
         this.thingsService.deleteThing(loraDev.id).subscribe(

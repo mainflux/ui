@@ -127,10 +127,10 @@ export class LoraComponent implements OnInit {
         this.loraDevsNumber = resp.total;
 
         resp.things.forEach(thing => {
-          thing.devEUI = thing.metadata.lora.devEUI;
-          thing.appID = thing.metadata.lora.appID;
+          thing.devEUI = thing.metadata.lora.dev_eui;
+          thing.appID = thing.metadata.lora.app_id;
 
-          const chanID: string = thing.metadata ? thing.metadata.channelID : '';
+          const chanID: string = thing.metadata ? thing.metadata.channel_id : '';
           this.messagesService.getMessages(chanID, thing.key, thing.id).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {

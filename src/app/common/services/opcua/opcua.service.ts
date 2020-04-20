@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from 'environments/environment';
-import { OpcuaNode } from 'app/common/interfaces/opcua.interface';
+import { OpcuaNode, OpcuaTableRow } from 'app/common/interfaces/opcua.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
@@ -36,7 +36,7 @@ export class OpcuaService {
 
   addNodes(serverURI: string, nodes: any) {
     // Check if a channel exist for serverURI
-    return this.channelsService.getChannels(0, 1, 'opcua', `{"serverURI": "${serverURI}"}`).map(
+    return this.channelsService.getChannels(0, 1, 'opcua', `{"server_uri": "${serverURI}"}`).map(
       (resp: any) => {
         if (resp.total === 0) {
           const chanReq = {
@@ -44,7 +44,7 @@ export class OpcuaService {
             metadata: {
               type: this.typeOpcua,
               opcua: {
-                serverURI: serverURI,
+                server_uri: serverURI,
               },
             },
           };
@@ -71,10 +71,10 @@ export class OpcuaService {
         metadata: {
           type: this.typeOpcua,
           opcua: {
-            nodeID: node.nodeID,
-            serverURI: node.serverURI,
+            node_id: node.nodeID,
+            server_uri: node.serverURI,
           },
-          channelID: chanID,
+          channel_id: chanID,
         },
       };
       nodesReq.push(nodeReq);
@@ -98,17 +98,17 @@ export class OpcuaService {
     );
   }
 
-  editNode(node: any) {
+  editNode(node: OpcuaTableRow) {
     const nodeReq: OpcuaNode = {
       id: node.id,
       name: node.name,
       metadata: {
         type: this.typeOpcua,
         opcua: {
-          serverURI: node.serverURI,
-          nodeID: node.nodeID,
+          server_uri: node.serverURI,
+          node_id: node.nodeID,
         },
-        channelID: node.metadata.channelID,
+        channel_id: node.metadata.channel_id,
       },
     };
 
@@ -122,11 +122,11 @@ export class OpcuaService {
   deleteNode(node: any) {
     return this.thingsService.deleteThing(node.id).map(
       respThing => {
-        const serverURI = node.metadata.opcua.serverURI;
-        this.thingsService.getThings(0, 1, 'opcua', `{"serverURI": "${serverURI}"}`).subscribe(
+        const serverURI = node.metadata.opcua.server_uri;
+        this.thingsService.getThings(0, 1, 'opcua', `{"server_uri": "${serverURI}"}`).subscribe(
           (respChan: any) => {
             if (respChan.total === 0) {
-              const channelID = node.metadata.channelID;
+              const channelID = node.metadata.channel_id;
               this.channelsService.deleteChannel(channelID).subscribe();
             }
           },

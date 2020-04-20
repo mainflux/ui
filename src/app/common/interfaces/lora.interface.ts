@@ -1,10 +1,10 @@
 export interface LoraMetadata {
     type: string;
     lora: {
-      devEUI?: string,
-      appID?: string,
+      dev_eui?: string,
+      app_id?: string,
     };
-    channelID: string;
+    channel_id: string;
 }
 
 export interface LoraDevice {
@@ -12,6 +12,12 @@ export interface LoraDevice {
   id?: string;
   key?: string;
   metadata?: LoraMetadata;
-  devEUI?: string;
-  appID?: string;
+}
+
+export interface LoraTableRow {
+  name: string;
+  id: string;
+  devEUI: string;
+  appID: string;
+  metadata: LoraMetadata;
 }
