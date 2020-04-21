@@ -99,8 +99,6 @@ export class GatewaysComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   gateways: Gateway[];
 
-  gwDataChanNumber = 0;
-  gwCtrlChanNumber = 0;
   prefixLength = 3;
 
   offset = 0;
@@ -119,21 +117,6 @@ export class GatewaysComponent implements OnInit {
 
   ngOnInit() {
     this.getGateways();
-    this.getGatewaysChannels();
-  }
-
-  getGatewaysChannels() {
-    this.gatewaysService.getCtrlChannels(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.gwCtrlChanNumber = resp.total;
-      },
-    );
-
-    this.gatewaysService.getDataChannels(this.offset, this.limit).subscribe(
-      (resp: any) => {
-        this.gwDataChanNumber = resp.total;
-      },
-    );
   }
 
   getGateways(name?: string): void {
@@ -202,7 +185,6 @@ export class GatewaysComponent implements OnInit {
         setTimeout(
           () => {
             this.getGateways();
-            this.getGatewaysChannels();
           }, 3000,
         );
       },
@@ -233,6 +215,7 @@ export class GatewaysComponent implements OnInit {
 
     this.gatewaysService.editGateway(name, mac, gw).subscribe(
       resp => {
+        this.getGateways();
       },
     );
   }

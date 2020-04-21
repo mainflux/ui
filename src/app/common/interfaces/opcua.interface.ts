@@ -1,10 +1,10 @@
 export interface OpcuaMetadata {
     type?: string;
     opcua: {
-      serverURI?: string,
-      nodeID?: string,
+      server_uri?: string,
+      node_id?: string,
     };
-    channelID?: string;
+    channel_id?: string;
 }
 
 export interface OpcuaNode {
@@ -12,4 +12,12 @@ export interface OpcuaNode {
   id?: string;
   key?: string;
   metadata?: OpcuaMetadata;
+}
+
+export interface OpcuaTableRow {
+  name: string;
+  id: string;
+  serverURI: string;
+  nodeID: string;
+  metadata: OpcuaMetadata;
 }

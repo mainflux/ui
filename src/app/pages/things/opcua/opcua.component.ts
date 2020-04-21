@@ -155,10 +155,10 @@ export class OpcuaComponent implements OnInit {
         this.opcuaNodes = [];
 
         resp.things.forEach(node => {
-          node.serverURI = node.metadata.opcua.serverURI;
-          node.nodeID = node.metadata.opcua.nodeID;
+          node.serverURI = node.metadata.opcua.server_uri;
+          node.nodeID = node.metadata.opcua.node_id;
 
-          const chanID: string = node.metadata ? node.metadata.channelID : '';
+          const chanID: string = node.metadata ? node.metadata.channel_id : '';
           this.messagesService.getMessages(chanID, node.key, node.id).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
