@@ -36,53 +36,66 @@ export class LoraService {
   }
 
   addDevice(row: LoraTableRow) {
-    const chanReq = {
-      name: `${this.typeLoraApp}-${row.appID}`,
+    // Check if a channel exist for row appID
+    return this.channelsService.getChannels(0, 1, 'lora', `{"app_id": "${row.appID}"}`).map(
+      (resp: any) => {
+        if (resp.total === 0) {
+          const chanReq = {
+            name: `${this.typeLoraApp}-${row.appID}`,
+            metadata: {
+              type: this.typeLora,
+              lora: {
+                app_id: row.appID,
+              },
+            },
+          };
+
+          this.channelsService.addChannel(chanReq).subscribe(
+            respChan => {
+              const chanID = respChan.headers.get('location').replace('/channels/', '');
+              this.addAndConnect(chanID, row);
+            },
+          );
+        } else {
+          const chanID = resp.channels[0].id;
+          this.addAndConnect(chanID, row);
+        }
+      },
+    );
+  }
+
+  addAndConnect(chanID: string, row: LoraTableRow) {
+    const devReq: LoraDevice = {
+      name: row.name,
       metadata: {
         type: this.typeLora,
+        channel_id: chanID,
         lora: {
+          dev_eui: row.devEUI,
           app_id: row.appID,
         },
       },
     };
 
-    // TODO - Check if channel exist
-    return this.channelsService.addChannel(chanReq).map(
-      respChan => {
-        const chanID = respChan.headers.get('location').replace('/channels/', '');
-        const devReq: LoraDevice = {
-          name: row.name,
-          metadata: {
-            type: this.typeLora,
-            channel_id: chanID,
-            lora: {
-              dev_eui: row.devEUI,
-              app_id: row.appID,
-            },
-          },
-        };
+    this.thingsService.addThing(devReq).subscribe(
+      respThing => {
+        const thingID = respThing.headers.get('location').replace('/things/', '');
 
-        this.thingsService.addThing(devReq).subscribe(
-          respThing => {
-            const thingID = respThing.headers.get('location').replace('/things/', '');
+        this.channelsService.connectThing(chanID, thingID).subscribe(
+          respCon => {
+            this.notificationsService.success('LoRa Device successfully created', '');
 
-            this.channelsService.connectThing(chanID, thingID).subscribe(
-              respCon => {
-                this.notificationsService.success('LoRa Device successfully created', '');
-
-                // Send temperature and humidity messages
-                this.messagesService.sendTempMock(chanID, thingID);
-              },
-              err => {
-                this.thingsService.deleteThing(thingID).subscribe();
-                this.channelsService.deleteChannel(chanID).subscribe();
-              },
-            );
+            // Send temperature and humidity messages
+            this.messagesService.sendTempMock(chanID, thingID);
           },
           err => {
+            this.thingsService.deleteThing(thingID).subscribe();
             this.channelsService.deleteChannel(chanID).subscribe();
           },
         );
+      },
+      err => {
+        this.channelsService.deleteChannel(chanID).subscribe();
       },
     );
   }
