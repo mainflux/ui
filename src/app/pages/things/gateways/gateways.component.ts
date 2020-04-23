@@ -141,6 +141,11 @@ export class GatewaysComponent implements OnInit {
               this.source.load(this.gateways);
               this.source.refresh();
             },
+            err => {
+              this.gateways.push(gw);
+              this.source.load(this.gateways);
+              this.source.refresh();
+            },
           );
         });
       },

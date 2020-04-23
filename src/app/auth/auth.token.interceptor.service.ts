@@ -47,8 +47,8 @@ export class TokenInterceptor implements HttpInterceptor {
           },
           err => {
             // Status 403 - Forbiden
-            if (err instanceof HttpErrorResponse &&
-              err.status === 403) {
+            if (err instanceof HttpErrorResponse && err.status === 403 &&
+              !request.url.startsWith(environment.readerChannelsUrl)) {
               localStorage.removeItem('auth_app_token');
               this.router.navigateByUrl('/auth/login');
             }
