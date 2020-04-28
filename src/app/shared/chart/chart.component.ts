@@ -48,23 +48,25 @@ export class ChartComponent implements OnChanges {
       return;
     }
 
-    const msgPublishers = this.messages.map(msg => msg.publisher);
-    const publishers = msgPublishers.filter((item, index) => msgPublishers.indexOf(item) === index);
+    // Create list of all messages names
+    const msgsNames = this.messages.map(msg => msg.name);
+    // Remove duplicated names
+    const msgsNamesUnique = msgsNames.filter((item, index) => msgsNames.indexOf(item) === index);
 
-    publishers.forEach( (pub, i) => {
-
+    // Create charts by name
+    msgsNamesUnique.forEach( (name, i) => {
       const chartDataSets: ChartDataSets[] = [{
         data: [],
         showLine: true,
       }];
 
-      const result = this.messages.filter(obj => obj.publisher === pub);
+      const result = this.messages.filter(msg => msg.name === name);
       result.forEach( msg => {
         const point: ChartPoint = {
           x: msg.time * 1000,
           y: msg.value,
         };
-        chartDataSets[0].label = `${pub} - ${msg.name}`,
+        chartDataSets[0].label = `${msg.name}`,
 
         (chartDataSets[0].data as ChartPoint[]).push(point);
       });
