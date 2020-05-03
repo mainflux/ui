@@ -129,8 +129,8 @@ export class GatewaysComponent implements OnInit {
         resp.things.forEach(gw => {
           gw.mac = gw.metadata.mac;
 
-          const dataChannelID: string = gw.metadata ? gw.metadata.dataChannelID : '';
-          this.messagesService.getMessages(dataChannelID, gw.key, gw.id).subscribe(
+          const data_channel_id: string = gw.metadata ? gw.metadata.data_channel_id : '';
+          this.messagesService.getMessages(data_channel_id, gw.key, gw.id).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
                 gw.seen = msgResp.messages[0].time;

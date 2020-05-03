@@ -33,10 +33,10 @@ export class BootstrapService {
 
   addConfig(gw: Gateway) {
     // Boostrap
-    this.content.export_config.mqtt.channel = gw.metadata.exportChannelID;
+    this.content.export_config.mqtt.channel = gw.metadata.export_channel_id;
     this.content.export_config.mqtt.username = gw.id;
-    this.content.export_config.routes[0].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
-    this.content.export_config.routes[1].mqtt_topic = `channels/${gw.metadata.exportChannelID}/messages`;
+    this.content.export_config.routes[0].mqtt_topic = `channels/${gw.metadata.export_channel_id}/messages`;
+    this.content.export_config.routes[1].mqtt_topic = `channels/${gw.metadata.export_channel_id}/messages`;
     this.content.export_config.mqtt.password = gw.key;
     this.content.export_config.exp.nats = this.content.nats_url;
 
@@ -44,9 +44,9 @@ export class BootstrapService {
     const config: Config = {
       thing_id: gw.id,
       thing_key: gw.key,
-      channels: [gw.metadata.ctrlChannelID, gw.metadata.dataChannelID],
+      channels: [gw.metadata.ctrl_channel_id, gw.metadata.data_channel_id],
       external_id: gw.metadata.mac,
-      external_key: gw.metadata.gwPassword,
+      external_key: gw.metadata.gw_password,
       content: JSON.stringify(this.content),
       state: 0,
     };
@@ -54,8 +54,8 @@ export class BootstrapService {
     return this.http.post(environment.bootstrapConfigsUrl, config, { observe: 'response' })
       .map(
         resp => {
-          const cfgID: string = resp.headers.get('location').replace('/things/configs/', '');
-          gw.metadata.cfgID = cfgID;
+          const cfg_id: string = resp.headers.get('location').replace('/things/configs/', '');
+          gw.metadata.cfg_id = cfg_id;
           this.thingsService.editThing(gw).subscribe(
             respEdit => {
               this.notificationsService.success('Gateway successfully bootstrapped', '');
@@ -77,7 +77,7 @@ export class BootstrapService {
 
   getConfig(gateway: Gateway) {
     const headers = new HttpHeaders({
-      'Authorization': gateway.metadata.gwPassword,
+      'Authorization': gateway.metadata.gw_password,
     });
 
     return this.http.get(`${environment.bootstrapUrl}/${gateway.metadata.mac}`, { headers: headers });

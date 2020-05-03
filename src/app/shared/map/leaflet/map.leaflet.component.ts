@@ -70,7 +70,7 @@ export class MapComponent implements OnChanges {
 
   refreshCoordinate(gateway: Gateway) {
     this.mqttService.connect({ username: gateway.id, password: gateway.key });
-    const topic = 'channels/' + gateway.metadata.ctrlChannelID + '/messages/req';
+    const topic = 'channels/' + gateway.metadata.ctrl_channel_id + '/messages/req';
     this.mqttService.observe(topic).subscribe((message: IMqttMessage) => {
     });
     this.mqttService.observe(topic).subscribe((message: IMqttMessage) => {
@@ -83,7 +83,7 @@ export class MapComponent implements OnChanges {
   ngOnChanges() {
     if (this.gateways) {
       this.gateways.forEach((gw) => {
-        const channelID: string = gw.metadata ? gw.metadata.dataChannelID : '';
+        const channelID: string = gw.metadata ? gw.metadata.data_channel_id : '';
 
         if (gw.key !== '' && channelID !== '') {
           this.msgService.getMessages(channelID, gw.key, gw.id).subscribe(
