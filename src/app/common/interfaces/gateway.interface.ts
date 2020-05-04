@@ -1,11 +1,11 @@
 export interface GatewayMetadata {
-  ctrlChannelID?: string;
-  dataChannelID?: string;
-  exportChannelID?: string;
-  exportThingID?: string;
-  gwPassword?: string;
+  ctrl_channel_id?: string;
+  data_channel_id?: string;
+  export_channel_id?: string;
+  export_thing_id?: string;
+  gw_password?: string;
   mac?: string;
-  cfgID?: string;
+  cfg_id?: string;
   type?: string;
 }
 

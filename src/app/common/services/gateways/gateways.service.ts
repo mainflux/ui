@@ -94,10 +94,10 @@ export class GatewaysService {
                               respConnectData => {
                                 this.channelsService.connectThing(exportChanID, gwID).subscribe(
                                   respConnectExport => {
-                                    gateway.metadata.ctrlChannelID = ctrlChanID;
-                                    gateway.metadata.dataChannelID = dataChanID;
-                                    gateway.metadata.exportChannelID = exportChanID;
-                                    gateway.metadata.gwPassword = uuid();
+                                    gateway.metadata.ctrl_channel_id = ctrlChanID;
+                                    gateway.metadata.data_channel_id = dataChanID;
+                                    gateway.metadata.export_channel_id = exportChanID;
+                                    gateway.metadata.gw_password = uuid();
                                     gateway.id = gwID;
 
                                     this.thingsService.editThing(gateway).subscribe(
@@ -163,9 +163,9 @@ export class GatewaysService {
       resp => {
         this.notificationsService.success('Gateway successfully deleted', '');
 
-        this.channelsService.deleteChannel(gw.metadata.ctrlChannelID).subscribe();
-        this.channelsService.deleteChannel(gw.metadata.dataChannelID).subscribe();
-        this.channelsService.deleteChannel(gw.metadata.exportChannelID).subscribe();
+        this.channelsService.deleteChannel(gw.metadata.ctrl_channel_id).subscribe();
+        this.channelsService.deleteChannel(gw.metadata.data_channel_id).subscribe();
+        this.channelsService.deleteChannel(gw.metadata.export_channel_id).subscribe();
       },
     );
   }
@@ -179,7 +179,7 @@ export class GatewaysService {
       (resp: any) => {
         const gw: Gateway = resp;
         // TODO: remove this mocks
-        const topic = 'channels/' + gw.metadata.dataChannelID + '/messages';
+        const topic = 'channels/' + gw.metadata.data_channel_id + '/messages';
         const lon = 48 + 2 * Math.random();
         const lat = 20 + 2 * Math.random();
         const cmd = `[{"bn":"location-", "n":"lon", "v":${lon}}, {"n":"lat", "v":${lat}}]`;

@@ -43,7 +43,7 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
         this.terminal === undefined ||
         this.connected === true)
     return;
-    if ( this.gateway.id && this.gateway.metadata.ctrlChannelID) {
+    if ( this.gateway.id && this.gateway.metadata.ctrl_channel_id) {
       this.mqttService.connect({ username: this.gateway.id, password: this.gateway.key });
       this.stateSub = this.mqttService.state.subscribe(this.connectionHandler.bind(this));
     }
@@ -52,14 +52,14 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
   connectionHandler(state: MqttConnectionState) {
     if (state === MqttConnectionState.CONNECTED) {
       this.connected = true;
-      this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, Term, btoa('open'));
+      this.publish(this.gateway.metadata.ctrl_channel_id, this.uuid, Term, btoa('open'));
       this.notificationsService.success('Connected to MQTT broker', '');
       this.connectAgent();
     }
   }
 
   connectAgent() {
-      const topic = `${this.createTopic(this.gateway.metadata.ctrlChannelID)}/res/term/${this.uuid}`;
+      const topic = `${this.createTopic(this.gateway.metadata.ctrl_channel_id)}/res/term/${this.uuid}`;
       const term = this.terminal;
       this.mqttService.publish(topic, 'payload');
       this.chanSub = this.mqttService.observe(topic).subscribe(
@@ -99,14 +99,14 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
     this.terminal.writeln('Welcome to Mainflux IoT Agent');
     this.terminal.onData( data => {
       const vs = `c,${data}`;
-      this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, 'term', btoa(vs));
+      this.publish(this.gateway.metadata.ctrl_channel_id, this.uuid, 'term', btoa(vs));
     });
   }
 
   ngOnDestroy() {
     const vs = 'close';
     this.connected = false;
-    this.publish(this.gateway.metadata.ctrlChannelID, this.uuid, 'term', btoa(vs));
+    this.publish(this.gateway.metadata.ctrl_channel_id, this.uuid, 'term', btoa(vs));
     this.stateSub && this.stateSub.unsubscribe();
     this.chanSub && this.chanSub.unsubscribe();
     this.mqttService.disconnect();
