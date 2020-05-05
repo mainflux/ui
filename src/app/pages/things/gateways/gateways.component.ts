@@ -198,9 +198,9 @@ export class GatewaysComponent implements OnInit {
 
   onEditConfirm(event): void {
     // Check if the row have been modified
-    const macs = this.gateways.map(g => g.metadata.external_id);
+    const extIDs = this.gateways.map(g => g.metadata.external_id);
     const names = this.gateways.map(g => g.name);
-    if (macs.includes(event.newData.external_id) && names.includes(event.newData.name)) {
+    if (extIDs.includes(event.newData.external_id) && names.includes(event.newData.name)) {
       // close edditable row
       event.confirm.resolve();
       return;
@@ -215,10 +215,10 @@ export class GatewaysComponent implements OnInit {
     event.confirm.resolve();
 
     const name = event.newData.name;
-    const mac = event.newData.external_id;
+    const external_id = event.newData.external_id;
     const gw = event.newData;
 
-    this.gatewaysService.editGateway(name, mac, gw).subscribe(
+    this.gatewaysService.editGateway(name, external_id, gw).subscribe(
       resp => {
         this.getGateways();
       },
