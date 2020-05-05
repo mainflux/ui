@@ -54,9 +54,9 @@ export class GatewaysComponent implements OnInit {
         type: 'string',
         filter: false,
       },
-      mac: {
-        title: 'MAC',
-        placeholder: 'Search MAC',
+      external_id: {
+        title: 'External ID',
+        placeholder: 'Search External ID',
         type: 'text',
         editable: true,
         addable: true,
@@ -127,7 +127,7 @@ export class GatewaysComponent implements OnInit {
         this.total = resp.total;
 
         resp.things.forEach(gw => {
-          gw.mac = gw.metadata.mac;
+          gw.mac = gw.metadata.external_id;
 
           const data_channel_id: string = gw.metadata ? gw.metadata.data_channel_id : '';
           this.messagesService.getMessages(data_channel_id, gw.key, gw.id).subscribe(
@@ -154,7 +154,7 @@ export class GatewaysComponent implements OnInit {
 
 
   validate(row: any): boolean {
-    const gws = this.gateways.map(g => g.mac);
+    const gws = this.gateways.map(g => g.metadata.external_id);
     if (gws.includes(row.mac)) {
       this.notificationsService.warn(
         'MAC already exist.', '');
@@ -198,7 +198,7 @@ export class GatewaysComponent implements OnInit {
 
   onEditConfirm(event): void {
     // Check if the row have been modified
-    const macs = this.gateways.map(g => g.mac);
+    const macs = this.gateways.map(g => g.metadata.external_id);
     const names = this.gateways.map(g => g.name);
     if (macs.includes(event.newData.mac) && names.includes(event.newData.name)) {
       // close edditable row

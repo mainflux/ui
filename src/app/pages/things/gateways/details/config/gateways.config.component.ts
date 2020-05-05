@@ -36,7 +36,7 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (!this.gateway.metadata.gw_password) {
+    if (!this.gateway.metadata.external_key) {
       return;
     }
 
