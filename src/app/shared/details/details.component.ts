@@ -15,7 +15,7 @@ export class DetailsComponent {
   ) { }
 
   onOpenDetailsPage() {
-    if (this.value.id !== undefined) {
+    if (this.value.id) {
       this.router.navigate([`${this.router.routerState.snapshot.url}/details/${this.value.id}`]);
     }
   }
