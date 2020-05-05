@@ -28,5 +28,5 @@ export const environment = {
   loraServer: 'http://lora.mainflux.io/#/',
 
   mqttWsUrl: 'ws://localhost:80/mqtt',
-  exportConfigFile: 'export.toml',
+  exportConfigFile: '/configs/export/config.toml',
 };
