@@ -54,9 +54,8 @@ export class GatewaysComponent implements OnInit {
         type: 'string',
         filter: false,
       },
-      mac: {
-        title: 'MAC',
-        placeholder: 'Search MAC',
+      external_id: {
+        title: 'External ID',
         type: 'text',
         editable: true,
         addable: true,
@@ -127,7 +126,7 @@ export class GatewaysComponent implements OnInit {
         this.total = resp.total;
 
         resp.things.forEach(gw => {
-          gw.mac = gw.metadata.mac;
+          gw.external_id = gw.metadata.external_id;
 
           const data_channel_id: string = gw.metadata ? gw.metadata.data_channel_id : '';
           this.messagesService.getMessages(data_channel_id, gw.key, gw.id).subscribe(
@@ -154,10 +153,10 @@ export class GatewaysComponent implements OnInit {
 
 
   validate(row: any): boolean {
-    const gws = this.gateways.map(g => g.mac);
-    if (gws.includes(row.mac)) {
+    const gws = this.gateways.map(g => g.metadata.external_id);
+    if (gws.includes(row.external_id)) {
       this.notificationsService.warn(
-        'MAC already exist.', '');
+        'External ID already exist.', '');
       return false;
     }
     if (row.name === '' || row.name.length > 32) {
@@ -166,9 +165,9 @@ export class GatewaysComponent implements OnInit {
       return false;
     }
 
-    if (row.mac === '' || row.mac.length < 8) {
+    if (row.external_id === '' || row.external_id.length < 8) {
       this.notificationsService.warn(
-        'MAC is required and must be at least 8 characters long.', '');
+        'External ID is required and must be at least 8 characters long.', '');
       return false;
     }
 
@@ -185,7 +184,7 @@ export class GatewaysComponent implements OnInit {
     // close edditable row
     event.confirm.resolve();
 
-    this.gatewaysService.addGateway(event.newData.name, event.newData.mac).subscribe(
+    this.gatewaysService.addGateway(event.newData.name, event.newData.external_id).subscribe(
       resp => {
         setTimeout(
           () => {
@@ -198,9 +197,9 @@ export class GatewaysComponent implements OnInit {
 
   onEditConfirm(event): void {
     // Check if the row have been modified
-    const macs = this.gateways.map(g => g.mac);
+    const extIDs = this.gateways.map(g => g.metadata.external_id);
     const names = this.gateways.map(g => g.name);
-    if (macs.includes(event.newData.mac) && names.includes(event.newData.name)) {
+    if (extIDs.includes(event.newData.external_id) && names.includes(event.newData.name)) {
       // close edditable row
       event.confirm.resolve();
       return;
@@ -215,10 +214,10 @@ export class GatewaysComponent implements OnInit {
     event.confirm.resolve();
 
     const name = event.newData.name;
-    const mac = event.newData.mac;
+    const external_id = event.newData.external_id;
     const gw = event.newData;
 
-    this.gatewaysService.editGateway(name, mac, gw).subscribe(
+    this.gatewaysService.editGateway(name, external_id, gw).subscribe(
       resp => {
         this.getGateways();
       },

@@ -30,9 +30,9 @@ export class GatewaysStore {
   }
 
   @action
-  addGateway(name: string, mac: string) {
+  addGateway(name: string, externalID: string) {
     this.uiState.loading = true;
-    this.gatewaysService.addGateway(name, mac)
+    this.gatewaysService.addGateway(name, externalID)
       .subscribe(() => {
         this.uiState.loading = false;
         this.getGateways(this.offset, this.limit);
@@ -43,9 +43,9 @@ export class GatewaysStore {
   }
 
   @action
-  editGateway(name: string, mac: string, gw: Gateway) {
+  editGateway(name: string, externalID: string, gw: Gateway) {
     this.uiState.loading = true;
-    this.gatewaysService.editGateway(name, mac, gw)
+    this.gatewaysService.editGateway(name, externalID, gw)
       .subscribe(() => {
         this.uiState.loading = false;
         this.getGateways(this.offset, this.limit);

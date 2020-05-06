@@ -3,8 +3,8 @@ export interface GatewayMetadata {
   data_channel_id?: string;
   export_channel_id?: string;
   export_thing_id?: string;
-  gw_password?: string;
-  mac?: string;
+  external_key?: string;
+  external_id?: string;
   cfg_id?: string;
   type?: string;
 }
@@ -14,5 +14,4 @@ export interface Gateway {
   key?: string;
   name?: string;
   metadata?: GatewayMetadata;
-  mac?: string;
 }

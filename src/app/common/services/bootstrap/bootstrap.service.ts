@@ -45,8 +45,8 @@ export class BootstrapService {
       thing_id: gw.id,
       thing_key: gw.key,
       channels: [gw.metadata.ctrl_channel_id, gw.metadata.data_channel_id],
-      external_id: gw.metadata.mac,
-      external_key: gw.metadata.gw_password,
+      external_id: gw.metadata.external_id,
+      external_key: gw.metadata.external_key,
       content: JSON.stringify(this.content),
       state: 0,
     };
@@ -77,10 +77,10 @@ export class BootstrapService {
 
   getConfig(gateway: Gateway) {
     const headers = new HttpHeaders({
-      'Authorization': gateway.metadata.gw_password,
+      'Authorization': gateway.metadata.external_key,
     });
 
-    return this.http.get(`${environment.bootstrapUrl}/${gateway.metadata.mac}`, { headers: headers });
+    return this.http.get(`${environment.bootstrapUrl}/${gateway.metadata.external_id}`, { headers: headers });
   }
 
   updateConfig(configUpdate: ConfigUpdate, gateway: Gateway) {
