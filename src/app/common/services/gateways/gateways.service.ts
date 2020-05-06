@@ -43,12 +43,12 @@ export class GatewaysService {
     return this.channelsService.getChannels(offset, limit, this.typeDataChan);
   }
 
-  addGateway(name: string, external_id: string) {
+  addGateway(name: string, externalID: string) {
     const gateway: Gateway = {
       name: name,
       metadata: {
         type: this.typeGateway,
-        external_id: external_id,
+        external_id: externalID,
       },
     };
 
@@ -147,8 +147,8 @@ export class GatewaysService {
     );
   }
 
-  editGateway(name: string, external_id: string, gateway: Gateway) {
-    gateway.metadata.external_id = external_id;
+  editGateway(name: string, externalID: string, gateway: Gateway) {
+    gateway.metadata.external_id = externalID;
 
     return this.thingsService.editThing(gateway).map(
       resp => {

@@ -56,7 +56,6 @@ export class GatewaysComponent implements OnInit {
       },
       external_id: {
         title: 'External ID',
-        placeholder: 'Search External ID',
         type: 'text',
         editable: true,
         addable: true,
