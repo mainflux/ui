@@ -6,7 +6,7 @@ EA = info@mainflux.com
 CN = localhost
 CRT_FILE_NAME = thing
 
-all: clean_certs ca server_crt
+all: clean_certs ca server_cert
 
 # CA name and key is "ca".
 ca:
