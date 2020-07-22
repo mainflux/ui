@@ -133,17 +133,41 @@ export class ThingsService {
 
   connectedChannels(thingID: string) {
     return this.http.get(`${environment.thingsUrl}/${thingID}/channels/`)
-      .map(
-        resp => {
-          return resp;
-        },
-      )
-      .catch(
-        err => {
-          this.notificationsService.error('Failed to fetch connected Chanels to the Thing',
-            `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
-        },
-      );
+    .map(
+      resp => {
+        return resp;
+      },
+    )
+    .catch(
+      err => {
+        this.notificationsService.error('Failed to fetch connected Chanels to the Thing',
+          `Error: ${err.status} - ${err.statusText}`);
+        return Observable.throw(err);
+      },
+    );
+  }
+
+  disconnectedChannels(thingID: string, offset?: number, limit?: number) {
+    offset = offset || 0;
+    limit = limit || defLimit;
+
+    const params = new HttpParams()
+      .set('offset', offset.toString())
+      .set('limit', limit.toString())
+      .set('connected', 'false');
+
+    return this.http.get(`${environment.thingsUrl}/${thingID}/channels`, { params })
+    .map(
+      resp => {
+        return resp;
+      },
+    )
+    .catch(
+      err => {
+        this.notificationsService.error('Failed to fetch not connected Channels to the Thing',
+          `Error: ${err.status} - ${err.statusText}`);
+        return Observable.throw(err);
+      },
+    );
   }
 }
