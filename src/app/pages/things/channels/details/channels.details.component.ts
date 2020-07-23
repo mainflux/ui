@@ -88,28 +88,22 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   findDisconnectedThings() {
-    this.things = [];
-
     this.channelsService.connectedThings(this.channel.id).subscribe(
       (respConns: any) => {
         this.connections = respConns.things;
-        this.thingsService.getThings(this.offset, this.limit).subscribe(
-          (respThings: any) => {
-            respThings.things.forEach(thing => {
-              // Filter get Things resp and keep only disconnected ones.
-              if (!(this.connections.filter(c => c.id === thing.id).length > 0)) {
-                this.things.push(thing);
-              }
-            });
 
-            this.getchannelMessages();
-          },
-        );
+        this.getChannelMessages();
+      },
+    );
+
+    this.channelsService.disconnectedThings(this.channel.id).subscribe(
+      (respDisconns: any) => {
+        this.things = respDisconns.things;
       },
     );
   }
 
-  getchannelMessages() {
+  getChannelMessages() {
     if (this.connections.length) {
       this.messagesService.getMessages(this.channel.id, this.connections[0].key).subscribe(
         (respMsg: any) => {

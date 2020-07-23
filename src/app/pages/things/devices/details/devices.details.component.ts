@@ -87,28 +87,30 @@ export class DevicesDetailsComponent implements OnInit {
     );
   }
 
+  getChannelMessages() {
+    this.connections.forEach(chan => {
+      this.messagesService.getMessages(chan.id, this.thing.key, this.thing.id).subscribe(
+        (respMsg: any) => {
+          this.messages = respMsg.messages || this.messages;
+        },
+      );
+    });
+  }
+
   findDisconnectedChans() {
-    this.channels = [];
     this.messages = [];
 
     this.thingsService.connectedChannels(this.thing.id).subscribe(
       (respConns: any) => {
         this.connections = respConns.channels;
-        this.channelsService.getChannels(this.offset, this.limit).subscribe(
-          (respChans: any) => {
-            respChans.channels.forEach(chan => {
-              if (!(this.connections.filter(c => c.id === chan.id).length > 0)) {
-                this.channels.push(chan);
-              } else {
-                this.messagesService.getMessages(chan.id, this.thing.key, this.thing.id).subscribe(
-                  (respMsg: any) => {
-                    this.messages = respMsg.messages || this.messages;
-                  },
-                );
-              }
-            });
-          },
-        );
+
+        this.getChannelMessages();
+      },
+    );
+
+    this.thingsService.disconnectedChannels(this.thing.id).subscribe(
+      (respDisconn: any) => {
+        this.channels = respDisconn.channels;
       },
     );
   }
