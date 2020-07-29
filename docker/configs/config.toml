@@ -76,3 +76,9 @@
 
   [channels.metadata]
     type = "data"
+
+[[channels]]
+  name = "export-channel"
+
+  [channels.metadata]
+    type = "export"
