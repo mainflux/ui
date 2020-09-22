@@ -1,62 +1,72 @@
 <div class="row">
-  <div class="col-xxl-4">
-    <nb-card status="primary">
-      <nb-card-header>
-          Mainflux IoT platform &nbsp; {{ version }}
-      </nb-card-header>
-    </nb-card>
-  </div>
-
-  <div class="col-xxl-2">
-    <nb-card status="info">
-      <nb-card-header>
-        {{ thingsNum }} &nbsp; Things
-      </nb-card-header>
-    </nb-card>
-  </div>
-
-  <div class="col-xxl-2">
-    <nb-card status="info">
-      <nb-card-header>
-        {{ chansNum }} &nbsp; Channels
-      </nb-card-header>
-    </nb-card>
-  </div>
-
-  <div class="col-xxl-2">
-    <nb-card status="success">
-      <nb-card-header>
-        {{ gatewaysNumber }} &nbsp; Gateways
-      </nb-card-header>
-    </nb-card>
-  </div>
-
-  <div class="col-xxl-2">
-    <nb-card status="success">
-      <nb-card-header>
-        {{ loraDevNumber }} &nbsp; LoRa Devices
-      </nb-card-header>
+  <div class="col-xxl-12">
+    <nb-card size="tiny" id="topCard">
+      <nb-card-body>
+        <h5 id="topCardText">Welcome to Mainflux IoT Platform</h5>
+        <p id="topCardText">
+          Mainflux IoT Platform is composed of all components and micro
+          services necessary for IoT solutions, projects or products
+        </p>
+        <a id="topCardButton" href="https://www.youtube.com/watch?v=H4BPKfvCZLk"
+           target="_blank">
+          Watch video
+        </a>
+      </nb-card-body>
     </nb-card>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-xxl-7">
-    <nb-card size="large">
+  <div class="col-xxl-4">
+    <nb-card size="medium">
+      <nb-card-header>
+        <nb-icon icon="settings-2-outline"></nb-icon>
+      </nb-card-header>
       <nb-card-body>
-        <div *ngIf="messages.length > 0" style="height:100%">
-          <ngx-chart [messages]="messages">
-          </ngx-chart>
-        </div>
+        <h6>How it works</h6>
+        <p id="bottomCardText">
+          Step by step tutorial teach you how to connect devices and apps
+        </p>
+        <a id="bottomCardButton" href="https://medium.com/mainflux-iot-platform"
+           target="_blank">
+          Read the tutorials
+        </a>
       </nb-card-body>
     </nb-card>
   </div>
 
-  <div class="col-xxl-5">
-    <nb-card size="large">
+  <div class="col-xxl-4">
+    <nb-card size="medium">
+      <nb-card-header>
+        <nb-icon icon="monitor-outline"></nb-icon>
+      </nb-card-header>
       <nb-card-body>
-        <ngx-map-leaflet [gateways]="gateways">
-        </ngx-map-leaflet>
+        <h6>Demo</h6>
+        <p id="bottomCardText">
+          Learn in minutes how to use Mainflux IoT Platform
+        </p>
+        <a id="bottomCardButton" href="https://mainflux.com"
+           target="_blank">
+          Watch demo
+        </a>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-xxl-4">
+    <nb-card size="medium">
+      <nb-card-header>
+        <nb-icon icon="book-open-outline"></nb-icon>
+      </nb-card-header>
+      <nb-card-body>
+        <h6>Docuentation</h6>
+        <p id="bottomCardText">
+          Comprehensive help for more details and advance usage
+        </p>
+        <a id="bottomCardButton" href="https://mainflux.readthedocs.io"
+           target="_blank">
+          Go to documentation
+        </a>
       </nb-card-body>
     </nb-card>
   </div>

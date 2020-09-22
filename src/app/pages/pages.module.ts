@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
-import { DashboardModule } from './dashboard/dashboard.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ProfileModule } from './profile/profile.module';
@@ -21,7 +21,6 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
   imports: [
     PagesRoutingModule,
     ThemeModule,
-    DashboardModule,
     MiscellaneousModule,
     NbMenuModule,
     ProfileModule,
@@ -35,6 +34,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
   ],
   declarations: [
     PagesComponent,
+    DashboardComponent,
   ],
   providers: [
     NbDialogService,
