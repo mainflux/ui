@@ -64,7 +64,7 @@
     "leaflet": "^1.6.0",
     "leaflet-draw": "^1.0.4",
     "nebular-icons": "1.1.0",
-    "ng2-charts": "^2.3.0",
+    "ng2-charts": "2.3.3",
     "ng2-ckeditor": "^1.2.6",
     "ng2-completer": "3.0.2",
     "ng2-smart-table": "1.5.0",
