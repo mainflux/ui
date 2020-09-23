@@ -65,6 +65,10 @@ export class UsersService {
       );
   }
 
+  getServiceVersion() {
+    return this.http.get(environment.usersVersionUrl);
+  }
+
   getUserPicture(): any {
     return this.picture;
   }

@@ -1,5 +1,51 @@
+nb-card-body {
+  text-align: center;
+}
+
 nb-card-header {
   text-align: center;
-  padding-left: 0;
-  padding-right: 0;
+}
+
+nb-icon {
+  font-size: 6rem;
+}
+
+a {
+  background-color: #5E8ECF;
+  color: white;
+  font-size: 15px;
+  padding: 10px;
+  width: 200px;
+  display: inline-block;
+}
+a:hover {
+  color: #3B3C4F;
+  text-decoration: none;
+}
+
+#topCard {
+  background-color: #3B3C4F;
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+#topCardText {
+  color: #DFDEE9;
+  padding-left: 250px;
+  padding-right: 250px;
+}
+
+#topCardButton {
+  margin-top: 30px;
+}
+
+#bottomCardText {
+  padding-left: 30px;
+  padding-right: 30px;
+  vertical-align: middle;
+}
+
+#bottomCardButton {
+  margin-top: 60px;
 }

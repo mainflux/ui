@@ -43,6 +43,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   userMenu = [{ title: 'Profile' }, { title: 'Log out', link: '/auth/logout' }];
 
+  version = '0.0.0'
+
   constructor(
     private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
@@ -60,6 +62,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       resp => {
         this.user = resp;
         this.user.picture = this.usersService.getUserPicture();
+      },
+    );
+
+    this.usersService.getServiceVersion().subscribe(
+      (resp: any) => {
+        this.version = resp.version;
       },
     );
 
