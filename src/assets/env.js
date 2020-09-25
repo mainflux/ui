@@ -2,5 +2,5 @@
     window["env"] = window["env"] || {};
   
     // Environment variables
-    window["env"]["mqttWsUrl"] = "https://api.myapp.com";
+    window["env"]["mqttWsUrl"] = "ws://localhost/mqtt";
   })(this);
