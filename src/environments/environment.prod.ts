@@ -27,6 +27,6 @@ export const environment = {
   jaegerHome: 'http://localhost:16686/search',
   loraServer: 'http://lora.mainflux.io/#/',
 
-  mqttWsUrl: 'ws://localhost:80/mqtt',
+  mqttWsUrl: window['env']['mqttWsUrl'] || 'ws://localhost/mqtt',
   exportConfigFile: '/configs/export/config.toml',
 };
