@@ -33,6 +33,7 @@ services:
       - mainflux-base-net
     environment:
       MF_UI_PORT: ${MF_UI_PORT}
+      MF_UI_MQTT_WS_URL: ${MF_UI_MQTT_WS_URL}
 
   nginx:
     image: nginx:1.16.0-alpine
