@@ -78,7 +78,7 @@ export const NB_CORE_PROVIDERS = [
       validation: {
         password: {
           required: true,
-          minLength: 6,
+          minLength: 8,
           maxLength: 50,
         },
         email: {
