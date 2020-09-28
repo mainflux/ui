@@ -1,5 +1,5 @@
-<nb-card size="tiny" status="info">
-  <nb-card-header>
+<nb-card size="tiny">
+  <nb-card-header class="headerDetails">
     Twin Info
   </nb-card-header>
   <nb-card-body>
@@ -53,10 +53,11 @@
   </nb-card-body>
 </nb-card>
 
-<nb-card size="tiny" status="primary">
-  <nb-card-header>
+<nb-card size="tiny">
+  <nb-card-header class="headerDetails">
     State <em>{{ stateTime | date: 'long' }}</em>
-    <button (click)="showStates()" nbButton status="success" size="small">
+    <button nbButton size="small" class="buttonGreen"
+            (click)="showStates()">
       History
     </button>
   </nb-card-header>
@@ -69,8 +70,8 @@
   </nb-card-body>
 </nb-card>
 
-<nb-card size="normal" status="primary">
-  <nb-card-header>
+<nb-card size="normal">
+  <nb-card-header class="headerDetails">
     <div class="row">
       <div class="col-6">
         Definition <em *ngIf="def">{{def.created | date: 'long'}}</em>
@@ -79,7 +80,8 @@
         delta (ms): {{this.defDelta / 1e6}}
       </div>
       <div class="col-2">
-        <button (click)="showDefinitions()" nbButton status="success" size="small">
+        <button nbButton size="small" class="buttonGreen"
+                (click)="showDefinitions()">
           History
         </button>
       </div>
@@ -123,8 +125,8 @@
   </nb-card-body>
 </nb-card>
 
-<nb-card size="large" status="primary">
-  <nb-card-header>
+<nb-card size="large">
+  <nb-card-header class="headerDetails">
     <div class="row">
       <div class="col-6">
         Add definition
@@ -133,9 +135,10 @@
       <div class="col-4">
         delta (ms): <input type="text" nbInput value="{{this.defDelta / 1e6}}" (change)="delta($event)" fieldSize="small">
       </div>
-      
+
       <div class="col-2">
-        <button (click)="updateDefinition()" nbButton status="success" size="small">
+        <button nbButton size="small" class="buttonGreen"
+                (click)="updateDefinition()">
           Update definition
         </button>
       </div>
@@ -174,7 +177,10 @@
           <b>{{ attr.persist_state }}</b>
         </div>
         <div class="col-md-1">
-          <button (click)="removeAttribute(attr)" nbButton status="danger" size="tiny">x</button>
+          <button nbButton status="danger" size="tiny"
+                  (click)="removeAttribute(attr)">
+            x
+          </button>
         </div>
       </nb-list-item>
     </nb-list>
@@ -216,7 +222,8 @@
       </div>
     </div>
 
-    <button (click)="addAttribute()" nbButton size="small">
+    <button nbButton size="small" class="buttonBlue"
+            (click)="addAttribute()">
       Add / Update attribute
     </button>
   </nb-card-footer>

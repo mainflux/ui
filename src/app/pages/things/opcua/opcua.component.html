@@ -1,6 +1,6 @@
-<nb-card status="info" style="margin-bottom: 0px;">
-  <nb-card-header>
-    <div class="row">
+<nb-card size="medium">
+  <nb-card-header class="headerTabs" id="subHeader">
+    <div class="row" id="searchBar">
       <div class="col-md-4">
         <input nbInput fullWidth placeholder="Server URI" [(ngModel)]="browseServerURI" fieldSize="small">
       </div>
@@ -11,23 +11,20 @@
         <input nbInput fullWidth placeholder="i=84" [(ngModel)]="browseIdentifier" fieldSize="small">
       </div>
       <div class="col-md-2">
-        <button nbButton status="warning" (click)="browseOpcuaNodes()" size="small">
+        <button nbButton size="small" class="buttonBlue"
+                (click)="browseOpcuaNodes()">
           <nb-icon icon="maximize-outline"></nb-icon>
           Browse
         </button>
       </div>
       <div class="col-md-2">
-        <button nbButton (click)="subscribeOpcuaNodes()" size="small">
+        <button nbButton size="small" class="buttonGreen"
+                (click)="subscribeOpcuaNodes()" >
           <nb-icon icon="collapse-outline"></nb-icon>
           Subscribe
         </button>
       </div>
     </div>
-  </nb-card-header>
-</nb-card>
-
-<nb-card size="medium">
-  <nb-card-header>
     <nb-list>
       <nb-list-item>
         <div class="col-md-2">
@@ -75,8 +72,8 @@
   </nb-card-body>
 </nb-card>
 
-<nb-card status="info">
-  <nb-card-header style="text-align: center;">
+<nb-card>
+  <nb-card-header class="headerTabs">
     <div class="row">
       <div class="col-md-4">
         {{ opcuaNodes.length }} &nbsp; OPC-UA Server Subscription
@@ -86,14 +83,14 @@
                (input)="searchNode($event.target.value)">
       </div>
       <div class="col-md-2">
-        <button nbButton size="small" status="success"
+        <button nbButton size="small" class="buttonBlue"
                 (click)="onClickSave()">
           <nb-icon icon="save-outline"></nb-icon>
           Save
         </button>
       </div>
       <div class="col-md-2">
-        <button nbButton size="small"
+        <button nbButton size="small" class="buttonGreen"
                 (click)="fileInput.click()">
           <nb-icon icon="file-add-outline"></nb-icon>
           Upload

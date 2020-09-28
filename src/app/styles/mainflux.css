@@ -1,0 +1,25 @@
+.buttonGreen {
+  background-color: #A5BB6B !important;
+  border-color: #A5BB6B !important;
+}
+
+.buttonBlue {
+  background-color: #5F8ECF !important;
+  border-color: #5F8ECF !important;
+}
+
+.headerTabs {
+  background-color: #D3D4DE !important;
+  text-align: center !important;
+}
+
+.headerDetails {
+  background-color: #1D375B !important;
+  color: white !important;
+}
+
+.infoDetails {
+  text-align: right;
+  padding: 0;
+  font-weight: bold;
+}
