@@ -23,7 +23,6 @@ import { TwinsPayloadComponent } from './twins/states/payload/twins.payload.comp
 import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 import { GrafanaComponent } from './grafana/grafana.component';
-import { LoraServerComponent } from './loraserver/loraserver.component';
 
 import { PagesModule } from 'app/pages/pages.module';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
@@ -50,7 +49,6 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
     TwinsPayloadComponent,
     TwinsDefinitionsComponent,
     GrafanaComponent,
-    LoraServerComponent,
   ],
   entryComponents: [
     ConfirmationComponent,

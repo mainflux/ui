@@ -7,7 +7,6 @@ import { TwinsDetailsComponent } from './twins/details/twins.details.component';
 import { TwinsStatesComponent } from './twins/states/twins.states.component';
 import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
 import { GrafanaComponent } from './grafana/grafana.component';
-import { LoraServerComponent } from './loraserver/loraserver.component';
 
 const routes: Routes = [
   {
@@ -33,10 +32,6 @@ const routes: Routes = [
   {
     path: 'twins/definitions/:id',
     component: TwinsDefinitionsComponent,
-  },
-  {
-    path: 'loraserver',
-    component: LoraServerComponent,
   },
 ];
 
