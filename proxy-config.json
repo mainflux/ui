@@ -52,10 +52,6 @@
     "target": "http://localhost:8188",
     "secure": false
   },
-  "/grafana/*": {
-    "target": "http://localhost:3001",
-    "secure": false
-  },
   "/twins/*": {
     "target": "http://localhost:9021",
     "secure": false

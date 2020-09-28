@@ -23,9 +23,6 @@ export const environment = {
   writerChannelsUrl: '/writer/channels',
   readerChannelsUrl: '/reader/channels',
 
-  grafanaHome: 'http://localhost:3001/?orgId=1&kiosk',
-  jaegerHome: 'http://localhost:16686/search',
-
   mqttWsUrl: window['env']['mqttWsUrl'] || 'ws://localhost/mqtt',
   exportConfigFile: '/configs/export/config.toml',
 };

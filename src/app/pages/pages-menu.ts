@@ -43,21 +43,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'shield-outline',
     children: [
       {
-        title: 'Tracing',
-        icon: 'search-outline',
-        link: '/pages/admin/tracing',
-      },
-      {
-        title: 'Grafana',
-        icon: 'activity-outline',
-        link: '/pages/admin/grafana',
-      },
-      {
-        title: 'Lora Server',
-        icon: 'monitor-outline',
-        link: '/pages/admin/loraserver',
-      },
-      {
         title: 'Twins',
         icon: 'copy-outline',
         link: '/pages/admin/twins',
