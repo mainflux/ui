@@ -1,24 +1,24 @@
-.buttonGreen {
+.button-green {
   background-color: #A5BB6B !important;
   border-color: #A5BB6B !important;
 }
 
-.buttonBlue {
+.button-blue {
   background-color: #5F8ECF !important;
   border-color: #5F8ECF !important;
 }
 
-.headerTabs {
+.header-tabs {
   background-color: #D3D4DE !important;
   text-align: center !important;
 }
 
-.headerDetails {
+.header-details {
   background-color: #1D375B !important;
   color: white !important;
 }
 
-.infoDetails {
+.info-details {
   text-align: right;
   padding: 0;
   font-weight: bold;

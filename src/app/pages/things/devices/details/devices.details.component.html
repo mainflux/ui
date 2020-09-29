@@ -1,22 +1,22 @@
 <div class="row">
   <div class="col-md-6">
     <nb-card size="tiny">
-      <nb-card-header class="headerDetails">
+      <nb-card-header class="header-details">
         Device Info
       </nb-card-header>
       <nb-card-body>
         <div class="row">
-          <div class="col-md-2 infoDetails"> Name: </div><div class="col-md-10"> {{ thing.name }} </div>
-          <div class="col-md-2 infoDetails"> ID: </div><div class="col-md-10"> {{ thing.id }} </div>
-          <div class="col-md-2 infoDetails"> Key: </div><div class="col-md-10"> {{ thing.key }} </div>
+          <div class="col-md-2 info-details"> Name: </div><div class="col-md-10"> {{ thing.name }} </div>
+          <div class="col-md-2 info-details"> ID: </div><div class="col-md-10"> {{ thing.id }} </div>
+          <div class="col-md-2 info-details"> Key: </div><div class="col-md-10"> {{ thing.key }} </div>
         </div>
       </nb-card-body>
     </nb-card>
 
     <nb-card size="small">
-      <nb-card-header class="headerDetails">
+      <nb-card-header class="header-details">
         Metadata
-        <button nbButton size="tiny" class="buttonGreen"
+        <button nbButton size="tiny" class="button-green"
                 (click)="onEdit()">
           Edit
         </button>
@@ -30,7 +30,7 @@
     </nb-card>
 
     <nb-card size="small">
-      <nb-card-header class="headerDetails">
+      <nb-card-header class="header-details">
         Raw Messages
       </nb-card-header>
       <nb-card-body>
@@ -44,7 +44,7 @@
 
   <div class="col-md-6">
     <nb-card size="small">
-      <nb-card-header class="headerDetails">
+      <nb-card-header class="header-details">
         <div class="row">
             <div class="col-md-3">
               Connections
@@ -57,7 +57,7 @@
               </nb-select>
             </div>
             <div class="col-md-2">
-              <button nbButton size="tiny" class="buttonGreen"
+              <button nbButton size="tiny" class="button-green"
                       (click)="onConnect()">
                 Connect
               </button>

@@ -1,5 +1,5 @@
 <nb-card size="tiny">
-  <nb-card-header class="headerDetails">
+  <nb-card-header class="header-details">
     Twin Info
   </nb-card-header>
   <nb-card-body>
@@ -54,9 +54,9 @@
 </nb-card>
 
 <nb-card size="tiny">
-  <nb-card-header class="headerDetails">
+  <nb-card-header class="header-details">
     State <em>{{ stateTime | date: 'long' }}</em>
-    <button nbButton size="small" class="buttonGreen"
+    <button nbButton size="small" class="button-green"
             (click)="showStates()">
       History
     </button>
@@ -71,7 +71,7 @@
 </nb-card>
 
 <nb-card size="normal">
-  <nb-card-header class="headerDetails">
+  <nb-card-header class="header-details">
     <div class="row">
       <div class="col-6">
         Definition <em *ngIf="def">{{def.created | date: 'long'}}</em>
@@ -80,7 +80,7 @@
         delta (ms): {{this.defDelta / 1e6}}
       </div>
       <div class="col-2">
-        <button nbButton size="small" class="buttonGreen"
+        <button nbButton size="small" class="button-green"
                 (click)="showDefinitions()">
           History
         </button>
@@ -126,7 +126,7 @@
 </nb-card>
 
 <nb-card size="large">
-  <nb-card-header class="headerDetails">
+  <nb-card-header class="header-details">
     <div class="row">
       <div class="col-6">
         Add definition
@@ -137,7 +137,7 @@
       </div>
 
       <div class="col-2">
-        <button nbButton size="small" class="buttonGreen"
+        <button nbButton size="small" class="button-green"
                 (click)="updateDefinition()">
           Update definition
         </button>
@@ -222,7 +222,7 @@
       </div>
     </div>
 
-    <button nbButton size="small" class="buttonBlue"
+    <button nbButton size="small" class="button-blue"
             (click)="addAttribute()">
       Add / Update attribute
     </button>

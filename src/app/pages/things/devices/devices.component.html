@@ -1,5 +1,5 @@
 <nb-card>
-  <nb-card-header class="headerTabs">
+  <nb-card-header class="header-tabs">
     <div class="row">
       <div class="col-md-4">
         {{ thingsNum }} &nbsp; Devices
@@ -9,14 +9,14 @@
                (input)="searchThing($event.target.value)">
       </div>
       <div class="col-md-2">
-        <button nbButton size="small" class="buttonBlue"
+        <button nbButton size="small" class="button-blue"
                 (click)="onClickSave()">
           <nb-icon icon="save-outline"></nb-icon>
           Save
         </button>
       </div>
       <div class="col-md-2">
-        <button nbButton size="small" class="buttonGreen"
+        <button nbButton size="small" class="button-green"
                 (click)="fileInput.click()">
           <nb-icon icon="file-add-outline"></nb-icon>
           Upload

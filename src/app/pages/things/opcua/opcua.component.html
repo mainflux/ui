@@ -1,5 +1,5 @@
 <nb-card size="medium">
-  <nb-card-header class="headerTabs" id="subHeader">
+  <nb-card-header class="header-tabs" id="subHeader">
     <div class="row" id="searchBar">
       <div class="col-md-4">
         <input nbInput fullWidth placeholder="Server URI" [(ngModel)]="browseServerURI" fieldSize="small">
@@ -11,14 +11,14 @@
         <input nbInput fullWidth placeholder="i=84" [(ngModel)]="browseIdentifier" fieldSize="small">
       </div>
       <div class="col-md-2">
-        <button nbButton size="small" class="buttonBlue"
+        <button nbButton size="small" class="button-blue"
                 (click)="browseOpcuaNodes()">
           <nb-icon icon="maximize-outline"></nb-icon>
           Browse
         </button>
       </div>
       <div class="col-md-2">
-        <button nbButton size="small" class="buttonGreen"
+        <button nbButton size="small" class="button-green"
                 (click)="subscribeOpcuaNodes()" >
           <nb-icon icon="collapse-outline"></nb-icon>
           Subscribe
@@ -73,7 +73,7 @@
 </nb-card>
 
 <nb-card>
-  <nb-card-header class="headerTabs">
+  <nb-card-header class="header-tabs">
     <div class="row">
       <div class="col-md-4">
         {{ opcuaNodes.length }} &nbsp; OPC-UA Server Subscription
@@ -83,14 +83,14 @@
                (input)="searchNode($event.target.value)">
       </div>
       <div class="col-md-2">
-        <button nbButton size="small" class="buttonBlue"
+        <button nbButton size="small" class="button-blue"
                 (click)="onClickSave()">
           <nb-icon icon="save-outline"></nb-icon>
           Save
         </button>
       </div>
       <div class="col-md-2">
-        <button nbButton size="small" class="buttonGreen"
+        <button nbButton size="small" class="button-green"
                 (click)="fileInput.click()">
           <nb-icon icon="file-add-outline"></nb-icon>
           Upload
