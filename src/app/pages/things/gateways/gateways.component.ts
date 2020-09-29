@@ -75,7 +75,6 @@ export class GatewaysComponent implements OnInit {
         },
       },
       seen: {
-        width: '20%',
         title: 'Last Seen',
         type: 'text',
         editable: false,

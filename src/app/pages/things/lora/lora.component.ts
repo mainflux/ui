@@ -77,7 +77,6 @@ export class LoraComponent implements OnInit {
         },
       },
       seen: {
-        width: '20%',
         title: 'Last Seen',
         editable: false,
         addable: false,

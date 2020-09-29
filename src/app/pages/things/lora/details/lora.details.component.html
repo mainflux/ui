@@ -1,20 +1,20 @@
 <div class="row">
   <div class="col-md-6">
-    <nb-card size="tiny" status="info">
-      <nb-card-header>
+    <nb-card size="tiny">
+      <nb-card-header class="header-details">
         LoRa Device Info
       </nb-card-header>
       <nb-card-body>
         <div class="row">
-          <div class="col-md-2"> Name: </div><div class="col-md-10"> {{ loraDevice.name }} </div>
-          <div class="col-md-2"> ID: </div><div class="col-md-10"> {{ loraDevice.id }} </div>
-          <div class="col-md-2"> Key: </div><div class="col-md-10"> {{ loraDevice.key }} </div>
+          <div class="col-md-2 info-details"> Name: </div><div class="col-md-10"> {{ loraDevice.name }} </div>
+          <div class="col-md-2 info-details"> ID: </div><div class="col-md-10"> {{ loraDevice.id }} </div>
+          <div class="col-md-2 info-details"> Key: </div><div class="col-md-10"> {{ loraDevice.key }} </div>
         </div>
       </nb-card-body>
     </nb-card>
 
     <nb-card size="large">
-      <nb-card-header>
+      <nb-card-header class="header-details">
         Raw Messages
       </nb-card-header>
       <nb-card-body>
@@ -27,8 +27,8 @@
   </div>
 
   <div class="col-md-6">
-    <nb-card size="tiny" status="primary">
-      <nb-card-header>
+    <nb-card size="tiny">
+      <nb-card-header class="header-details">
         Metadata
       </nb-card-header>
       <nb-card-body>

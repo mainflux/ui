@@ -1,21 +1,22 @@
 <div class="row">
   <div class="col-md-6">
-    <nb-card size="tiny" status="info">
-      <nb-card-header>
+    <nb-card size="tiny">
+      <nb-card-header class="header-details">
         Channel Info
       </nb-card-header>
       <nb-card-body>
         <div class="row">
-          <div class="col-md-2"> Name: </div><div class="col-md-10"> {{ channel.name }} </div>
-          <div class="col-md-2"> ID: </div><div class="col-md-10"> {{ channel.id }} </div>
+          <div class="col-md-2 info-details"> Name: </div><div class="col-md-10"> {{ channel.name }} </div>
+          <div class="col-md-2 info-details"> ID: </div><div class="col-md-10"> {{ channel.id }} </div>
         </div>
       </nb-card-body>
     </nb-card>
 
-    <nb-card status="primary" size="small">
-      <nb-card-header>
+    <nb-card size="small">
+      <nb-card-header class="header-details">
         Metadata
-        <button (click)="onEdit()" nbButton status="success" size="tiny">
+        <button nbButton size="tiny" class="button-green"
+                (click)="onEdit()">
           Edit
         </button>
       </nb-card-header>
@@ -28,7 +29,7 @@
     </nb-card>
 
     <nb-card size="small">
-      <nb-card-header>
+      <nb-card-header class="header-details">
         Raw Messages
       </nb-card-header>
       <nb-card-body>
@@ -41,17 +42,26 @@
   </div>
 
   <div class="col-md-6">
-    <nb-card size="small" status="info">
-      <nb-card-header>
-        Connections
-        <nb-select multiple placeholder="Select Things" [(selected)]="selectedThings" size="tiny">
-          <nb-option *ngFor="let thing of this.things" [value]="thing.id">
-            {{thing.name}}
-          </nb-option>
-        </nb-select>
-        <button (click)="onConnect()" nbButton status="success" size="tiny">
-          Connect
-        </button>
+    <nb-card size="small">
+      <nb-card-header class="header-details">
+        <div class="row">
+            <div class="col-md-3">
+              Connections
+            </div>
+            <div class="col-md-7">
+              <nb-select multiple placeholder="Select Things" [(selected)]="selectedThings" size="tiny">
+                <nb-option *ngFor="let thing of this.things" [value]="thing.id">
+                  {{thing.name}}
+                </nb-option>
+              </nb-select>
+            </div>
+            <div class="col-md-2">
+              <button nbButton size="tiny" class="button-green"
+                      (click)="onConnect()">
+                Connect
+              </button>
+            </div>
+        </div>
       </nb-card-header>
       <nb-card-body>
         <div *ngIf="connections.length === 0">
