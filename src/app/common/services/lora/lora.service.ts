@@ -84,9 +84,6 @@ export class LoraService {
         this.channelsService.connectThing(chanID, thingID).subscribe(
           respCon => {
             this.notificationsService.success('LoRa Device successfully created', '');
-
-            // Send temperature and humidity messages
-            this.messagesService.sendTempMock(chanID, thingID);
           },
           err => {
             this.thingsService.deleteThing(thingID).subscribe();
