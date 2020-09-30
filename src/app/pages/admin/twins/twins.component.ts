@@ -111,7 +111,7 @@ export class TwinsComponent implements OnInit {
     event.confirm.resolve();
 
     this.twinsService.addTwin(event.newData).subscribe(
-      resp => {
+      _resp => {
         this.getTwins();
       },
     );
@@ -131,7 +131,7 @@ export class TwinsComponent implements OnInit {
           // close edditable row
           event.confirm.resolve();
           this.twinsService.deleteTwin(event.data.id).subscribe(
-            resp => {
+            _resp => {
               this.getTwins();
             },
           );
@@ -144,7 +144,7 @@ export class TwinsComponent implements OnInit {
     this.fsService.exportToCsv('twins.csv', this.twins);
   }
 
-  onFileSelected(files: FileList) {
+  onFileSelected(_files: FileList) {
   }
 
   searchThing(input: any) {
