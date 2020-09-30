@@ -63,7 +63,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     this.twinsService.getTwin(id).subscribe(
       resp => {
         this.twin = <Twin>resp;
-        
+
         this.def = this.twin.definitions[this.twin.definitions.length - 1];
         this.defDelta = this.def.delta;
         this.defAttrs = this.def.attributes;
@@ -199,7 +199,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
       },
     };
     this.twinsService.editTwin(twin).subscribe(
-      _resp => {
+      resp => {
         this.getTwin(this.twin.id);
       },
     );
