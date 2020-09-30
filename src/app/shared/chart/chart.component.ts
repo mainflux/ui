@@ -3,6 +3,7 @@ import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartType, ChartOptions, ChartPoint } from 'chart.js';
 import { BaseChartDirective, Color } from 'ng2-charts';
 import { COLORS } from './chart.colors';
+import { MsgResp } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-chart',
@@ -26,19 +27,17 @@ export class ChartComponent implements OnChanges {
       easing: 'linear',
     },
     scales: {
-        xAxes: [{
-            type: 'time',
-            time: {
-              unit: 'hour',
-            },
-        }],
+      xAxes: [{
+        type: 'time',
+        distribution: 'series',
+      }],
     },
   };
 
   datasetsList: any[] = [];
   chartType: ChartType = 'scatter';
 
-  @Input() messages: any[];
+  @Input() messages: MsgResp[];
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
   constructor(
   ) { }
@@ -64,7 +63,7 @@ export class ChartComponent implements OnChanges {
       result.forEach( msg => {
         const point: ChartPoint = {
           x: msg.time * 1000,
-          y: msg.value,
+          y: this.findValue(msg),
         };
         chartDataSets[0].label = `${msg.name}`,
 
@@ -75,4 +74,15 @@ export class ChartComponent implements OnChanges {
       this.chart && this.chart.update();
     });
   }
+
+  findValue(message: MsgResp): any {
+    let value: any;
+    if (message.value) value = message.value;
+    if (message.string_value) value = message.string_value;
+    if (message.data_value) value = message.data_value;
+    if (message.bool_value) value = message.bool_value;
+    if (message.sum) value = message.sum;
+    return value;
+  }
+  
 }

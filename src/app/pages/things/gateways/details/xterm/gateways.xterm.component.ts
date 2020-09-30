@@ -1,7 +1,7 @@
 import { Component, Input, AfterViewInit,
   ViewChild, ElementRef, ViewEncapsulation, OnChanges, OnDestroy } from '@angular/core';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
-import { Message } from 'app/common/interfaces/mainflux.interface';
+import { SenMLRec } from 'app/common/interfaces/mainflux.interface';
 import { Terminal } from 'xterm';
 import { MqttService, IMqttMessage, MqttConnectionState } from 'ngx-mqtt';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
@@ -67,7 +67,7 @@ export class GatewaysXtermComponent implements AfterViewInit, OnChanges, OnDestr
           let res: string;
           const pl = message.payload.toString();
           res = JSON.parse(pl);
-          const msg = <Message>(<any>res[0]);
+          const msg = <SenMLRec>(<any>res[0]);
           term.write(msg.vs);
         });
       this.notificationsService.success(`Subscribed to channel ${topic}`, '');

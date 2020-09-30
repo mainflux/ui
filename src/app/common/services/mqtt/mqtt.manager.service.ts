@@ -2,12 +2,12 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { MqttService, IMqttMessage, MqttConnectionState } from 'ngx-mqtt';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
-import { Message } from 'app/common/interfaces/mainflux.interface';
+import { SenMLRec } from 'app/common/interfaces/mainflux.interface';
 import { Subscription } from 'rxjs';
 
 @Injectable()
 export class MqttManagerService {
-  public message: Message;
+  public message: SenMLRec;
   messageChange = new EventEmitter();
   connectChange = new EventEmitter();
   subscriptions: Subscription[] = new Array();
@@ -89,7 +89,7 @@ export class MqttManagerService {
     const topicSub = this.mqttService.observe(topic).subscribe(
       (message: IMqttMessage) => {
         const pl = message.payload.toString();
-        this.message = <Message>JSON.parse(pl)[0];
+        this.message = <SenMLRec>JSON.parse(pl)[0];
         this.messageChange.emit(this.message);
       },
     );

@@ -131,7 +131,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     let value: any;
     if (message.value) value = message.value;
     if (message.string_value) value = message.string_value;
-    if (message.date_value) value = message.date_value;
+    if (message.data_value) value = message.data_value;
     if (message.bool_value) value = message.bool_value;
     if (message.sum) value = message.sum;
     return value;
