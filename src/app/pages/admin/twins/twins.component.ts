@@ -38,9 +38,7 @@ export class TwinsComponent implements OnInit {
       details: {
         type: 'custom',
         renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          return row;
-        },
+        valuePrepareFunction: (cell: any, row: any) => row,
         editable: false,
         addable: false,
         filter: false,
@@ -56,18 +54,14 @@ export class TwinsComponent implements OnInit {
         editable: false,
         addable: false,
         filter: false,
-        valuePrepareFunction: (cell, row) => {
-          return new Date(cell).toLocaleString();
-        },
+        valuePrepareFunction: (cell: any, row: any) => new Date(cell).toLocaleString(),
       },
       updated: {
         title: 'Updated',
         editable: false,
         addable: false,
         filter: false,
-        valuePrepareFunction: (cell, row) => {
-          return new Date(cell).toLocaleString();
-        },
+        valuePrepareFunction: (cell: any, row: any) => new Date(cell).toLocaleString(),
       },
       revision: {
         title: 'Revision',
@@ -112,7 +106,7 @@ export class TwinsComponent implements OnInit {
     );
   }
 
-  onCreateConfirm(event): void {
+  onCreateConfirm(event: any): void {
     // close edditable row
     event.confirm.resolve();
 
@@ -123,14 +117,14 @@ export class TwinsComponent implements OnInit {
     );
   }
 
-  onEditConfirm(event): void {
+  onEditConfirm(event: any): void {
     // close edditable row
     event.confirm.resolve();
 
     this.twinsService.editTwin(event.newData).subscribe();
   }
 
-  onDeleteConfirm(event): void {
+  onDeleteConfirm(event: any): void {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'twin' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
@@ -153,6 +147,6 @@ export class TwinsComponent implements OnInit {
   onFileSelected(files: FileList) {
   }
 
-  searchThing(input) {
+  searchThing(input: any) {
   }
 }

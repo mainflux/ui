@@ -6,7 +6,6 @@ import { TwinsService } from 'app/common/services/twins/twins.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { Thing, Channel, Attribute, Definition, Twin } from 'app/common/interfaces/mainflux.interface';
-import { isNumber } from 'util';
 
 const stateInterval: number = 5 * 1000;
 
@@ -66,7 +65,6 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
         this.twin = <Twin>resp;
 
         this.def = this.twin.definitions[this.twin.definitions.length - 1];
-
         this.defDelta = this.def.delta;
         this.defAttrs = this.def.attributes;
         this.defAttrs.forEach(attr => {
@@ -163,8 +161,17 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   addAttribute() {
-    if (!this.editAttr.name || !this.editAttr.channel) {
-      this.notificationsService.error('Missing attribute info', '');
+    if (!this.editAttr.name) {
+      if (this.editAttr.subtopic) {
+        this.notificationsService.warn('Using subtopic as attribute name', '');
+        this.editAttr.name = this.editAttr.subtopic;
+      } else {
+        this.notificationsService.error('Attribute name missing', '')
+        return;
+      }
+    }
+    if (!this.editAttr.channel) {
+      this.notificationsService.error('Attribute channel missing', '');
       return;
     }
 
@@ -198,9 +205,9 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  delta($event) {
-    const val = +$event.srcElement.value;
-    this.defDelta = isNumber(val) ? val * 1e6 : this.defDelta;
+  delta(event: any) {
+    const val = +event.srcElement.value;
+    this.defDelta = typeof(val) == 'number' ? val * 1e6 : this.defDelta;
   }
 
   ngOnDestroy() {
