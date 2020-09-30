@@ -38,7 +38,7 @@ export class TwinsComponent implements OnInit {
       details: {
         type: 'custom',
         renderComponent: DetailsComponent,
-        valuePrepareFunction: (_cell: any, row: any) => row,
+        valuePrepareFunction: (cell: any, row: any) => row,
         editable: false,
         addable: false,
         filter: false,
@@ -54,14 +54,14 @@ export class TwinsComponent implements OnInit {
         editable: false,
         addable: false,
         filter: false,
-        valuePrepareFunction: (cell: any, _row: any) => new Date(cell).toLocaleString(),
+        valuePrepareFunction: (cell: any, row: any) => new Date(cell).toLocaleString(),
       },
       updated: {
         title: 'Updated',
         editable: false,
         addable: false,
         filter: false,
-        valuePrepareFunction: (cell: any, _row: any) => new Date(cell).toLocaleString(),
+        valuePrepareFunction: (cell: any, row: any) => new Date(cell).toLocaleString(),
       },
       revision: {
         title: 'Revision',
@@ -111,7 +111,7 @@ export class TwinsComponent implements OnInit {
     event.confirm.resolve();
 
     this.twinsService.addTwin(event.newData).subscribe(
-      _resp => {
+      resp => {
         this.getTwins();
       },
     );
@@ -131,7 +131,7 @@ export class TwinsComponent implements OnInit {
           // close edditable row
           event.confirm.resolve();
           this.twinsService.deleteTwin(event.data.id).subscribe(
-            _resp => {
+            resp => {
               this.getTwins();
             },
           );
@@ -144,9 +144,9 @@ export class TwinsComponent implements OnInit {
     this.fsService.exportToCsv('twins.csv', this.twins);
   }
 
-  onFileSelected(_files: FileList) {
+  onFileSelected(files: FileList) {
   }
 
-  searchThing(_input: any) {
+  searchThing(input: any) {
   }
 }

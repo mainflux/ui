@@ -63,7 +63,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     this.twinsService.getTwin(id).subscribe(
       resp => {
         this.twin = <Twin>resp;
-        
+
         this.def = this.twin.definitions[this.twin.definitions.length - 1];
         this.defDelta = this.def.delta;
         this.defAttrs = this.def.attributes;
@@ -161,8 +161,17 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   addAttribute() {
-    if (!this.editAttr.name || !this.editAttr.channel) {
-      this.notificationsService.error('Missing attribute info', '');
+    if (!this.editAttr.name) {
+      if (this.editAttr.subtopic) {
+        this.notificationsService.warn('Using subtopic as attribute name', '');
+        this.editAttr.name = this.editAttr.subtopic;
+      } else {
+        this.notificationsService.error('Attribute name missing', '')
+        return;
+      }
+    }
+    if (!this.editAttr.channel) {
+      this.notificationsService.error('Attribute channel missing', '');
       return;
     }
 
@@ -190,7 +199,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
       },
     };
     this.twinsService.editTwin(twin).subscribe(
-      _resp => {
+      resp => {
         this.getTwin(this.twin.id);
       },
     );
