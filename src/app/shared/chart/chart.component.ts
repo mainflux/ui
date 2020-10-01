@@ -3,6 +3,7 @@ import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartType, ChartOptions, ChartPoint } from 'chart.js';
 import { BaseChartDirective, Color } from 'ng2-charts';
 import { COLORS } from './chart.colors';
+import { MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-chart',
@@ -26,19 +27,17 @@ export class ChartComponent implements OnChanges {
       easing: 'linear',
     },
     scales: {
-        xAxes: [{
-            type: 'time',
-            time: {
-              unit: 'hour',
-            },
-        }],
+      xAxes: [{
+        type: 'time',
+        distribution: 'series',
+      }],
     },
   };
 
   datasetsList: any[] = [];
   chartType: ChartType = 'scatter';
 
-  @Input() messages: any[];
+  @Input() messages: MainfluxMsg[];
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
   constructor(
   ) { }
@@ -64,7 +63,7 @@ export class ChartComponent implements OnChanges {
       result.forEach( msg => {
         const point: ChartPoint = {
           x: msg.time * 1000,
-          y: msg.value,
+          y: this.parseValue(msg),
         };
         chartDataSets[0].label = `${msg.name}`,
 
@@ -75,4 +74,10 @@ export class ChartComponent implements OnChanges {
       this.chart && this.chart.update();
     });
   }
+
+  parseValue(message: MainfluxMsg): any {
+    return message.value || message.bool_value ||
+      message.string_value || message.data_value || message.sum;
+  }
+  
 }

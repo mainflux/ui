@@ -46,7 +46,7 @@ export interface Twin {
   metadata?: any;
 }
 
-export interface Message {
+export interface SenMLRec {
   bn: string;
   bt: number;
   bu: string;
@@ -56,4 +56,15 @@ export interface Message {
   u: string;
   v: number;
   vs: string;
+}
+
+export interface MainfluxMsg {
+  name: string;
+  time: number;
+  unit: string;
+  value: number;
+  string_value: string;
+  bool_value: boolean;
+  data_value: string;
+  sum: number;
 }
