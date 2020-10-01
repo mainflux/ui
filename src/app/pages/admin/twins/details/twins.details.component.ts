@@ -5,7 +5,7 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { TwinsService } from 'app/common/services/twins/twins.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
-import { Thing, Channel, Attribute, Definition, Twin } from 'app/common/interfaces/mainflux.interface';
+import { Thing, Channel, Attribute, Definition, Twin, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 
 const stateInterval: number = 5 * 1000;
 
@@ -117,7 +117,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const value = this.findValue(msgs.messages[0]);
+        const value = this.parseValue(msgs.messages[0]);
         if (!value) return;
 
         this.state[name] = this.state[name] || {};
@@ -127,14 +127,9 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  findValue(message: any): any {
-    let value: any;
-    if (message.value) value = message.value;
-    if (message.string_value) value = message.string_value;
-    if (message.data_value) value = message.data_value;
-    if (message.bool_value) value = message.bool_value;
-    if (message.sum) value = message.sum;
-    return value;
+  parseValue(message: MainfluxMsg): any {
+    return message.value || message.bool_value ||
+      message.string_value || message.data_value || message.sum;
   }
 
   showStates() {

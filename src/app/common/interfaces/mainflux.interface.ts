@@ -58,7 +58,7 @@ export interface SenMLRec {
   vs: string;
 }
 
-export interface MsgResp {
+export interface MainfluxMsg {
   name: string;
   time: number;
   unit: string;

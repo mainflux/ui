@@ -5,7 +5,7 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel, MsgResp } from 'app/common/interfaces/mainflux.interface';
+import { Channel, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-channels-details-component',
@@ -20,7 +20,7 @@ export class ChannelsDetailsComponent implements OnInit {
 
   connections = [];
   things = [];
-  messages: MsgResp[] = [];
+  messages: MainfluxMsg[] = [];
 
   selectedThings = [];
   editorMetadata = '';

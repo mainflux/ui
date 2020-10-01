@@ -5,7 +5,7 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Thing, MsgResp } from 'app/common/interfaces/mainflux.interface';
+import { Thing, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class DevicesDetailsComponent implements OnInit {
 
   connections = [];
   channels = [];
-  messages: MsgResp[] = [];
+  messages: MainfluxMsg[] = [];
 
   selectedChannels = [];
   editorMetadata = '';
