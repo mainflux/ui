@@ -161,7 +161,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
         this.notificationsService.warn('Using subtopic as attribute name', '');
         this.editAttr.name = this.editAttr.subtopic;
       } else {
-        this.notificationsService.error('Attribute name missing', '')
+        this.notificationsService.error('Attribute name missing', '');
         return;
       }
     }
@@ -202,7 +202,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
 
   delta(event: any) {
     const val = +event.srcElement.value;
-    this.defDelta = typeof(val) == 'number' ? val * 1e6 : this.defDelta;
+    this.defDelta = typeof(val) === 'number' ? val * 1e6 : this.defDelta;
   }
 
   ngOnDestroy() {

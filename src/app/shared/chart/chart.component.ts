@@ -79,5 +79,4 @@ export class ChartComponent implements OnChanges {
     return message.value || message.bool_value ||
       message.string_value || message.data_value || message.sum;
   }
-  
 }

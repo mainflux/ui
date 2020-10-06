@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { LoraDevice, LoraTableRow } from 'app/common/interfaces/lora.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
-import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 const defLimit: number = 20;
@@ -16,7 +15,6 @@ export class LoraService {
   constructor(
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
-    private messagesService: MessagesService,
     private notificationsService: NotificationsService,
   ) { }
 

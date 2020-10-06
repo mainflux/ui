@@ -38,7 +38,9 @@ export class TwinsComponent implements OnInit {
       details: {
         type: 'custom',
         renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell: any, row: any) => row,
+        valuePrepareFunction: (cell, row) => {
+          return row;
+        },
         editable: false,
         addable: false,
         filter: false,
@@ -54,14 +56,18 @@ export class TwinsComponent implements OnInit {
         editable: false,
         addable: false,
         filter: false,
-        valuePrepareFunction: (cell: any, row: any) => new Date(cell).toLocaleString(),
+        valuePrepareFunction: (cell, row) => {
+          return new Date(cell).toLocaleString();
+        },
       },
       updated: {
         title: 'Updated',
         editable: false,
         addable: false,
         filter: false,
-        valuePrepareFunction: (cell: any, row: any) => new Date(cell).toLocaleString(),
+        valuePrepareFunction: (cell, row) => {
+          return new Date(cell).toLocaleString();
+        },
       },
       revision: {
         title: 'Revision',
@@ -99,14 +105,14 @@ export class TwinsComponent implements OnInit {
         this.twins = resp.twins;
         this.twinsNumber = resp.total;
 
-        // Load and refresh ngx-admin table
+        // Load and refresh Twins table
         this.source.load(resp.twins);
         this.source.refresh();
       },
     );
   }
 
-  onCreateConfirm(event: any): void {
+  onCreateConfirm(event): void {
     // close edditable row
     event.confirm.resolve();
 
@@ -117,14 +123,14 @@ export class TwinsComponent implements OnInit {
     );
   }
 
-  onEditConfirm(event: any): void {
+  onEditConfirm(event): void {
     // close edditable row
     event.confirm.resolve();
 
     this.twinsService.editTwin(event.newData).subscribe();
   }
 
-  onDeleteConfirm(event: any): void {
+  onDeleteConfirm(event): void {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'twin' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
@@ -147,6 +153,6 @@ export class TwinsComponent implements OnInit {
   onFileSelected(files: FileList) {
   }
 
-  searchThing(input: any) {
+  searchThing(input) {
   }
 }

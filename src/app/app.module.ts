@@ -11,7 +11,6 @@ import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
 import {
   NbChatModule,
   NbDatepickerModule,
@@ -20,64 +19,63 @@ import {
   NbSidebarModule,
   NbToastrModule,
   NbWindowModule,
-  NbAlertModule,
   NbInputModule,
+  NbCardModule,
   NbIconModule,
-  NbCheckboxModule,
   NbButtonModule,
 } from '@nebular/theme';
 
-import { LoginComponent } from './pages/login/login.component';
-import { LogoutComponent } from './pages/logout/logout.component';
-import { ResetPasswordComponent } from './pages/reset/reset.password.component';
-import { RegisterComponent } from './pages/register/register.component';
-import {
-  MqttModule,
-  IMqttServiceOptions,
-  MqttService,
-} from 'ngx-mqtt';
+// MFx- Foorm dependency
+import { FormsModule } from '@angular/forms';
+// Mfx - MQTT dependencies for Gateways page
+import { MqttModule, IMqttServiceOptions, MqttService } from 'ngx-mqtt';
 import { environment } from 'environments/environment';
-
-
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   connectOnCreate: false,
   url: environment.mqttWsUrl,
 };
+// Mfx - Auth and Profile pages
+import { LogoutComponent } from './pages/logout/logout.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    // Mfx Componennt
     LogoutComponent,
-    ResetPasswordComponent,
     RegisterComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+
     ThemeModule.forRoot(),
+
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbDatepickerModule.forRoot(),
     NbDialogModule.forRoot(),
     NbWindowModule.forRoot(),
     NbToastrModule.forRoot(),
-    NbAlertModule,
-    NbInputModule,
-    NbIconModule,
-    NbButtonModule,
-    NbCheckboxModule,
-    FormsModule,
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NbChatModule.forRoot({
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),
     CoreModule.forRoot(),
+    // Mfx dependencies
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    FormsModule,
+    NbInputModule,
+    NbCardModule,
+    NbIconModule,
+    NbButtonModule,
   ],
-  providers: [MqttService],
   bootstrap: [AppComponent],
+  // Mfx dependencies
+  providers: [MqttService],
 })
 export class AppModule {
 }

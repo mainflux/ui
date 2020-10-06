@@ -5,6 +5,7 @@
  */
 export const environment = {
   production: true,
+
   usersUrl: '/users',
   usersVersionUrl: '/version',
   loginUrl: '/tokens',

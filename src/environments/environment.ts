@@ -10,6 +10,7 @@
 
 export const environment = {
   production: false,
+
   usersUrl: '/users',
   usersVersionUrl: '/version',
   loginUrl: '/tokens',
@@ -28,6 +29,6 @@ export const environment = {
   writerChannelsUrl: '/writer/channels',
   readerChannelsUrl: '/reader/channels',
 
-  mqttWsUrl:  window['env']['mqttWsUrl'] || 'ws://localhost/mqtt',
+  mqttWsUrl: window['env']['mqttWsUrl'] || 'ws://localhost/mqtt',
   exportConfigFile: '/configs/export/config.toml',
 };

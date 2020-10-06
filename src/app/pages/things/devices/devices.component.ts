@@ -102,7 +102,7 @@ export class DevicesComponent implements OnInit {
           thing.type = thing.metadata ? thing.metadata.type : 'undefined';
         });
 
-        // Load and refresh ngx-admin table
+        // Load and refresh Things table
         this.source.load(this.things);
         this.source.refresh();
       },
