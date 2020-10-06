@@ -102,7 +102,7 @@ export class ChannelsComponent implements OnInit {
           chann.type = chann.metadata ? chann.metadata.type : 'undefined';
         });
 
-        // Load and refresh ngx-admin table
+        // Load and refresh Channels table
         this.source.load(resp.channels);
         this.source.refresh();
       },

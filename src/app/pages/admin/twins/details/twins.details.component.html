@@ -163,8 +163,7 @@
         <div class="col-md-1">
         </div>
       </nb-list-item>
-      <nb-list-item *ngFor="let attr of editAttrs"
-                    (click)="selectAttribute(attr)" class="pickable">
+      <nb-list-item *ngFor="let attr of editAttrs">
         <div class="col-md-2">
           {{ attr.name }}
         </div>
@@ -178,7 +177,7 @@
           <b>{{ attr.persist_state }}</b>
         </div>
         <div class="col-md-1">
-          <button nbButton status="danger" size="tiny"
+          <button nbButton size="tiny" class="button-red"
                   (click)="removeAttribute(attr)">
             x
           </button>

@@ -24,11 +24,14 @@ export class TwinsService {
 
     return this.http.get(environment.twinsUrl, { params })
       .map(
-        resp => resp,
+        resp => {
+          return resp;
+        },
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to get twins', `Error: ${err.status} - ${err.statusText}`);
+          this.notificationsService.error('Failed to get twins',
+            `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
         },
       );

@@ -8,6 +8,7 @@ import {
   NbInputModule,
   NbListModule,
   NbCheckboxModule,
+  NbIconModule,
 } from '@nebular/theme';
 
 import { ThingsRoutingModule } from './things.routing.module';
@@ -28,6 +29,8 @@ import { GatewaysInfoComponent } from 'app/pages/things/gateways/details/info/ga
 import { GatewaysConfigComponent } from 'app/pages/things/gateways/details/config/gateways.config.component';
 import { GatewaysXtermComponent } from 'app/pages/things/gateways/details/xterm/gateways.xterm.component';
 
+import { SharedModule } from 'app/shared/shared.module';
+
 @NgModule({
   imports: [
     ThingsRoutingModule,
@@ -38,7 +41,9 @@ import { GatewaysXtermComponent } from 'app/pages/things/gateways/details/xterm/
     NbInputModule,
     NbListModule,
     NbCheckboxModule,
+    NbIconModule,
     FormsModule,
+    SharedModule,
   ],
   declarations: [
     DevicesComponent,

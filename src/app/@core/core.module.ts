@@ -8,15 +8,12 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
 import {
   AnalyticsService,
   LayoutService,
-  StateService,
 } from './utils';
-import { DataModule } from './data/data.module';
-import { environment } from '../../environments/environment';
+
+// Mainflux
 import { TokenInterceptor } from 'app/auth/auth.token.interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
-const DATA_SERVICES = [
-];
+import { environment } from 'environments/environment';
 
 export class NbSimpleRoleProvider extends NbRoleProvider {
   getRole() {
@@ -26,8 +23,8 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
 }
 
 export const NB_CORE_PROVIDERS = [
-  ...DataModule.forRoot().providers,
-  ...DATA_SERVICES,
+  // ...MockDataModule.forRoot().providers,
+  // ...DATA_SERVICES,
   ...NbAuthModule.forRoot({
 
     strategies: [
@@ -35,7 +32,7 @@ export const NB_CORE_PROVIDERS = [
         name: 'email',
         token: {
           class: NbAuthJWTToken,
-          key: 'token', // this parameter tells where to look for the token
+          key: 'token', // this parameter indicates where to look for the token
         },
         baseEndpoint: '',
             login: {
@@ -110,7 +107,6 @@ export const NB_CORE_PROVIDERS = [
   },
   AnalyticsService,
   LayoutService,
-  StateService,
 ];
 
 @NgModule({
@@ -134,8 +130,8 @@ export class CoreModule {
     throwIfAlreadyLoaded(parentModule, 'CoreModule');
   }
 
-  static forRoot(): ModuleWithProviders {
-    return <ModuleWithProviders>{
+  static forRoot(): ModuleWithProviders<CoreModule> {
+    return {
       ngModule: CoreModule,
       providers: [
         ...NB_CORE_PROVIDERS,

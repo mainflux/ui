@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Channel, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
+
 
 @Component({
   selector: 'ngx-channels-details-component',
@@ -27,7 +27,6 @@ export class ChannelsDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private thingsService: ThingsService,
     private channelsService: ChannelsService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,

@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
-import { LayoutService } from 'app/@core/utils';
-import { Subject, Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { LayoutService } from '../../../@core/utils';
+import { map, takeUntil } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
+import { RippleService } from '../../../@core/utils/ripple.service';
 
-import { User } from 'app/common/interfaces/mainflux.interface';
+// Mfx - Users service
 import { UsersService } from 'app/common/services/users/users.service';
 
 @Component({
@@ -16,10 +17,11 @@ import { UsersService } from 'app/common/services/users/users.service';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
+  public readonly materialTheme$: Observable<boolean>;
   userPictureOnly: boolean = false;
-  user: User;
+  user: any;
 
-  /* themes = [
+  themes = [
     {
       value: 'default',
       name: 'Light',
@@ -36,53 +38,77 @@ export class HeaderComponent implements OnInit, OnDestroy {
       value: 'corporate',
       name: 'Corporate',
     },
-  ]; */
+    {
+      value: 'material-light',
+      name: 'Material Light',
+    },
+    {
+      value: 'material-dark',
+      name: 'Material Dark',
+    },
+  ];
 
-  nebularTheme = 'corporate';
+  currentTheme = 'default';
 
-  private subscriptions: Subscription[] = [];
-  userMenu = [{ title: 'Profile' }, { title: 'Log out', link: '/auth/logout' }];
+  // Mfx - Menu and version
+  userMenu = [
+    { title: 'Profile', link: '/pages/profile' },
+    { title: 'Log out', link: '/auth/logout' },
+  ];
+  version = '0.0.0';
 
-  version = '0.0.0'
-
-  constructor(
+  public constructor(
     private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
-    private usersService: UsersService,
-    private layoutService: LayoutService,
     private themeService: NbThemeService,
-    private router: Router,
-  ) { }
+    private layoutService: LayoutService,
+    private breakpointService: NbMediaBreakpointsService,
+    private rippleService: RippleService,
+    private usersService: UsersService,
+  ) {
+    this.materialTheme$ = this.themeService.onThemeChange()
+      .pipe(map(theme => {
+        const themeName: string = theme?.name || '';
+        return themeName.startsWith('material');
+      }));
+  }
 
   ngOnInit() {
-    this.changeTheme(this.nebularTheme);
-    this.nebularTheme = this.themeService.currentTheme;
+    this.currentTheme = this.themeService.currentTheme;
 
+    // Mfx - get Users infos and picture
     this.usersService.getUser().subscribe(
-      resp => {
+      (resp: any) => {
         this.user = resp;
         this.user.picture = this.usersService.getUserPicture();
       },
     );
-
     this.usersService.getServiceVersion().subscribe(
       (resp: any) => {
         this.version = resp.version;
       },
     );
 
-    const menuSubscription: Subscription = this.menuService.onItemClick()
-      .subscribe(({ item }) => {
-        if (item.title === 'Profile') {
-          this.router.navigateByUrl('/pages/profile');
-        }
-      });
+    const { xl } = this.breakpointService.getBreakpointsMap();
+    this.themeService.onMediaQueryChange()
+      .pipe(
+        map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
 
-    this.subscriptions.push(menuSubscription);
+    this.themeService.onThemeChange()
+      .pipe(
+        map(({ name }) => name),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(themeName => {
+        this.currentTheme = themeName;
+        this.rippleService.toggle(themeName?.startsWith('material'));
+      });
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.destroy$.next();
     this.destroy$.complete();
   }

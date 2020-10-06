@@ -11,41 +11,42 @@ nb-icon {
 }
 
 a {
-  background-color: #5E8ECF;
+  background-color: #5e8ecf;
   color: white;
   font-size: 15px;
   padding: 10px;
   width: 200px;
   display: inline-block;
+  text-decoration: none;
 }
 a:hover {
-  color: #3B3C4F;
+  color: #3b3c4f;
   text-decoration: none;
 }
 
-#topCard {
-  background-color: #3B3C4F;
-  margin-top: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
+.dash-top {
+  background-color: #3b3c4f;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
-#topCardText {
-  color: #DFDEE9;
+.dash-top-text {
+  color: #dfdee9;
   padding-left: 250px;
   padding-right: 250px;
 }
 
-#topCardButton {
+.dash-top-button {
   margin-top: 30px;
 }
 
-#bottomCardText {
+.dash-bottom-text {
   padding-left: 30px;
   padding-right: 30px;
   vertical-align: middle;
 }
 
-#bottomCardButton {
+.dash-bottom-button {
   margin-top: 60px;
 }
