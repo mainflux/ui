@@ -6,8 +6,9 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { RippleService } from '../../../@core/utils/ripple.service';
 
-// Mfx - Users service
-import { UsersService } from 'app/common/services/users/users.service';
+// Mainflux - Users
+ import { User } from 'app/common/interfaces/mainflux.interface';
+ import { UsersService } from 'app/common/services/users/users.service';
 
 @Component({
   selector: 'ngx-header',
@@ -19,7 +20,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   public readonly materialTheme$: Observable<boolean>;
   userPictureOnly: boolean = false;
-  user: any;
+  user: User;
 
   themes = [
     {
@@ -50,7 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  // Mfx - Menu and version
+  // Mainflux - Menu and version
   userMenu = [
     { title: 'Profile', link: '/pages/profile' },
     { title: 'Log out', link: '/auth/logout' },

@@ -10,54 +10,13 @@
     >
       <nb-icon [icon]="(materialTheme$ | async) ? 'menu-outline' : 'menu-2-outline'"></nb-icon>
     </a>
-    <!--
-    <a class="logo" href="#" (click)="navigateHome()">ngx-<span>admin</span></a>
-    -->
     <a class="logo" href="#" (click)="navigateHome()" style="font-family: 'Montserrat', sans-serif; font-weight: 700;">MAINFLUX</a>
     <div style="font-family: 'Montserrat', sans-se rif; font-weight: 10;">v{{version}}</div>
   </div>
-  <!--
-  <nb-select
-    status="primary"
-    matRipple
-    [selected]="currentTheme"
-    (selectedChange)="changeTheme($event)"
-  >
-    <nb-option
-      *ngFor="let theme of themes"
-      [value]="theme.value"
-      matRipple
-    >{{ theme.name }}</nb-option>
-  </nb-select>
-  <ngx-layout-direction-switcher class="direction-switcher"></ngx-layout-direction-switcher>
-  -->
 </div>
 
 <div class="header-container">
   <nb-actions size="small">
-    <!--
-    <nb-action class="control-item">
-      <nb-search
-        type="rotate-layout"
-        matRipple
-        [matRippleUnbounded]="true"
-        [matRippleCentered]="true"
-      ></nb-search></nb-action>
-    <nb-action
-      class="control-item"
-      icon="email-outline"
-      matRipple
-      [matRippleUnbounded]="true"
-      [matRippleCentered]="true"
-    ></nb-action>
-    <nb-action
-      class="control-item"
-      icon="bell-outline"
-      matRipple
-      [matRippleUnbounded]="true"
-      [matRippleCentered]="true"
-    ></nb-action>
-    -->
     <nb-action
       class="user-action"
       *nbIsGranted="['view', 'user']"
