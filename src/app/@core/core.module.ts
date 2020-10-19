@@ -23,8 +23,6 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
 }
 
 export const NB_CORE_PROVIDERS = [
-  // ...MockDataModule.forRoot().providers,
-  // ...DATA_SERVICES,
   ...NbAuthModule.forRoot({
 
     strategies: [
