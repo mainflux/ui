@@ -20,7 +20,11 @@ export class UsersService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getUser(userID?: string): any {
+  getProfile(): any {
+    return this.getUser('profile');
+  }
+
+  getUser(userID: string): any {
     return this.http.get(`${environment.usersUrl}/${userID}`)
       .map(
         resp => {
