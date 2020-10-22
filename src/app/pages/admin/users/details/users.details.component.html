@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-6">
+    <nb-card size="tiny">
+      <nb-card-header class="header-details">
+        User Info
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-md-2 info-details"> Email: </div><div class="col-md-10"> {{ user.email }} </div>
+          <div class="col-md-2 info-details"> ID: </div><div class="col-md-10"> {{ user.id }} </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-md-6">
+    <nb-card size="tiny">
+      <nb-card-header class="header-details">
+        User Groups
+      </nb-card-header>
+      <nb-card-body>
+        <nb-list>
+          <nb-list-item *ngFor="let g of groups">
+            <div class="col-md-6">
+              {{ g.name }}
+            </div>
+            <div class="col-md-6">
+              {{ g.id }}
+            </div>
+          </nb-list-item>
+        </nb-list>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

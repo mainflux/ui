@@ -25,6 +25,9 @@ import { DetailsComponent } from 'app/shared/details/details.component';
 import { PagesModule } from 'app/pages/pages.module';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 
+import { UsersComponent } from 'app/pages/admin/users/users.component';
+import { UsersDetailsComponent } from 'app/pages/admin/users/details/users.details.component';
+
 @NgModule({
   imports: [
     AdminRoutingModule,
@@ -45,6 +48,8 @@ import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.comp
     TwinsStatesComponent,
     TwinsPayloadComponent,
     TwinsDefinitionsComponent,
+    UsersComponent,
+    UsersDetailsComponent,
   ],
   entryComponents: [
     ConfirmationComponent,

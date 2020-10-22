@@ -7,6 +7,7 @@ export const environment = {
   production: true,
 
   usersUrl: '/users',
+  groupsUrl: '/groups',
   usersVersionUrl: '/version',
   loginUrl: '/tokens',
   requestPassUrl: '/password/reset-request',

@@ -6,7 +6,18 @@ import { TwinsDetailsComponent } from './twins/details/twins.details.component';
 import { TwinsStatesComponent } from './twins/states/twins.states.component';
 import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
 
+import { UsersComponent } from './users/users.component';
+import { UsersDetailsComponent } from './users/details/users.details.component';
+
 const routes: Routes = [
+  {
+    path: 'users',
+    component: UsersComponent,
+  },
+  {
+    path: 'users/details/:id',
+    component: UsersDetailsComponent,
+  },
   {
     path: 'twins',
     component: TwinsComponent,
