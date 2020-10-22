@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.picture = this.usersService.getUserPicture();
 
-    this.usersService.getUser().subscribe(
+    this.usersService.getProfile().subscribe(
       resp => {
         this.email = resp.email ? resp.email : '';
 

@@ -12,6 +12,7 @@ export const environment = {
   production: false,
 
   usersUrl: '/users',
+  groupsUrl: '/groups',
   usersVersionUrl: '/version',
   loginUrl: '/tokens',
   requestPassUrl: '/password/reset-request',

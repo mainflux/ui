@@ -1,0 +1,37 @@
+<nb-card>
+  <nb-card-header class="header-tabs">
+    <div class="row">
+      <div class="col-md-4">
+        {{ users.length }} &nbsp; Users
+      </div>
+      <div class="col-md-4">
+        <input nbInput fullWidth placeholder="Search..." fieldSize="small"
+               (input)="searchUsersbyEmail($event.target.value)">
+      </div>
+      <div class="col-md-2">
+        <button nbButton size="small" class="button-blue"
+                (click)="onClickSave()">
+          <nb-icon icon="save-outline"></nb-icon>
+          Save
+        </button>
+      </div>
+      <div class="col-md-2">
+        <button nbButton size="small" class="button-green"
+                (click)="fileInput.click()">
+          <nb-icon icon="file-add-outline"></nb-icon>
+          Upload
+          <input hidden #fileInput (change)="onFileSelected($event.target.files)" type="file">
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings"
+                     [source]="source"
+                     (createConfirm)="onCreateConfirm($event)"
+                     (editConfirm)="onEditConfirm($event)"
+                     (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

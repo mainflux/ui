@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.currentTheme = this.themeService.currentTheme;
 
     // Mfx - get Users infos and picture
-    this.usersService.getUser().subscribe(
+    this.usersService.getProfile().subscribe(
       (resp: any) => {
         this.user = resp;
         this.user.picture = this.usersService.getUserPicture();

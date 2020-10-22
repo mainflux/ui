@@ -43,6 +43,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'shield-outline',
     children: [
       {
+        title: 'Users',
+        icon: 'people-outline',
+        link: '/pages/admin/users',
+      },
+      {
         title: 'Twins',
         icon: 'copy-outline',
         link: '/pages/admin/twins',
