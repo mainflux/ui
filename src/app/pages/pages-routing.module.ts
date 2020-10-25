@@ -5,26 +5,84 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 
+// Mainflux - User
+import { UsersComponent } from './users/users.component';
+import { UsersDetailsComponent } from './users/details/users.details.component';
+// Mainflux - Things
+import { ThingsComponent } from './things/things.component';
+import { ThingsDetailsComponent } from './things/details/things.details.component';
+// Mainflux - Channels
+import { ChannelsComponent } from './channels/channels.component';
+import { ChannelsDetailsComponent } from './channels/details/channels.details.component';
+// Mainflux - Twins
+import { TwinsComponent } from './twins/twins.component';
+import { TwinsDetailsComponent } from './twins/details/twins.details.component';
+import { TwinsStatesComponent } from './twins/states/twins.states.component';
+import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
+
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
-  children: [{
-    path: 'dashboard',
-    component: DashboardComponent,
-    }, {
+  children: [
+    {
+      path: 'dashboard',
+      component: DashboardComponent,
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',
-    }, {
+    },
+    {
+      path: 'users',
+      component: UsersComponent,
+    },
+    {
+      path: 'users/details/:id',
+      component: UsersDetailsComponent,
+    },
+    {
       path: 'things',
-      loadChildren: 'app/pages/things/things.module#ThingsModule',
-    }, {
-      path: 'admin',
-      loadChildren: 'app/pages/admin/admin.module#AdminModule',
-    }, {
+      component: ThingsComponent,
+    },
+    {
+      path: 'things/details/:id',
+      component: ThingsDetailsComponent,
+    },
+    {
+      path: 'channels',
+      component: ChannelsComponent,
+    },
+    {
+      path: 'channels/details/:id',
+      component: ChannelsDetailsComponent,
+    },
+    {
+      path: 'twins',
+      component: TwinsComponent,
+    },
+    {
+      path: 'twins/details/:id',
+      component: TwinsDetailsComponent,
+    },
+    {
+      path: 'twins/states/:id',
+      component: TwinsStatesComponent,
+    },
+    {
+      path: 'twins/definitions/:id',
+      component: TwinsDefinitionsComponent,
+    },
+    {
       path: 'profile',
       component: ProfileComponent,
-    }],
+    },
+    {
+      path: 'services',
+      loadChildren: () => import('./services/services.module')
+        .then(m => m.ServicesModule),
+    },
+  ],
 }];
 
 @NgModule({

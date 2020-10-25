@@ -33,8 +33,9 @@ a:hover {
 
 .dash-top-text {
   color: #dfdee9;
-  padding-left: 250px;
-  padding-right: 250px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .dash-top-button {
@@ -42,8 +43,9 @@ a:hover {
 }
 
 .dash-bottom-text {
-  padding-left: 30px;
-  padding-right: 30px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
   vertical-align: middle;
 }
 

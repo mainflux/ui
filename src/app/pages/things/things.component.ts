@@ -1,24 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 
 import { NbDialogService } from '@nebular/theme';
-import { LocalDataSource } from 'ng2-smart-table';
 
-import { Channel } from 'app/common/interfaces/mainflux.interface';
-import { ChannelsService } from 'app/common/services/channels/channels.service';
-import { NotificationsService } from 'app/common/services/notifications/notifications.service';
+import { LocalDataSource } from 'ng2-smart-table';
+import { Thing } from 'app/common/interfaces/mainflux.interface';
+
+import { ThingsService } from 'app/common/services/things/things.service';
 import { FsService } from 'app/common/services/fs/fs.service';
+import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 
-const defSearchBardMs: number = 100;
+const defFreq: number = 100;
 
 @Component({
-  selector: 'ngx-smart-table',
-  templateUrl: './channels.component.html',
-  styleUrls: ['./channels.component.scss'],
+  selector: 'ngx-things-component',
+  templateUrl: './things.component.html',
+  styleUrls: ['./things.component.scss'],
 })
-
-export class ChannelsComponent implements OnInit {
+export class ThingsComponent implements OnInit {
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -70,40 +70,39 @@ export class ChannelsComponent implements OnInit {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  channels: Channel[];
-
-  chansNum = 0;
+  things: Thing[] = [];
 
   offset = 0;
   limit = 100;
+  total = 0;
 
-  searchTime = 0;
+  searchFreq = 0;
   columnChar = '|';
 
   constructor(
     private dialogService: NbDialogService,
-    private channelsService: ChannelsService,
-    private notificationsService: NotificationsService,
+    private thingsService: ThingsService,
     private fsService: FsService,
+    private notificationsService: NotificationsService,
   ) { }
 
   ngOnInit() {
-    this.getChannels();
+    this.getThings();
   }
 
-  getChannels(name?: string): void {
-    this.channelsService.getChannels(this.offset, this.limit, '', '', name).subscribe(
+  getThings(name?: string): void {
+    this.thingsService.getThings(this.offset, this.limit, '', '', name).subscribe(
       (resp: any) => {
-        this.channels = resp.channels;
-        this.chansNum = resp.total;
+        this.total = resp.total;
+        this.things = resp.things;
 
         // Check if there is a type defined in the metadata
-        this.channels.forEach( (chann: Channel) => {
-          chann.type = chann.metadata ? chann.metadata.type : 'undefined';
+        this.things.forEach( (thing: Thing) => {
+          thing.type = thing.metadata ? thing.metadata.type : 'undefined';
         });
 
-        // Load and refresh Channels table
-        this.source.load(resp.channels);
+        // Load and refresh Things table
+        this.source.load(this.things);
         this.source.refresh();
       },
     );
@@ -113,10 +112,10 @@ export class ChannelsComponent implements OnInit {
     // close edditable row
     event.confirm.resolve();
 
-    this.channelsService.addChannel(event.newData).subscribe(
+    this.thingsService.addThing(event.newData).subscribe(
       resp => {
-        this.notificationsService.success('Channel successfully created', '');
-        this.getChannels();
+        this.notificationsService.success('Thing successfully created', '');
+        this.getThings();
       },
     );
   }
@@ -125,23 +124,24 @@ export class ChannelsComponent implements OnInit {
     // close edditable row
     event.confirm.resolve();
 
-    this.channelsService.editChannel(event.newData).subscribe(
+    this.thingsService.editThing(event.newData).subscribe(
       resp => {
-        this.notificationsService.success('Channel successfully edited', '');
+        this.notificationsService.success('Thing successfully edited', '');
       },
     );
   }
 
   onDeleteConfirm(event): void {
-    this.dialogService.open(ConfirmationComponent, { context: { type: 'channel' } }).onClose.subscribe(
+    this.dialogService.open(ConfirmationComponent, { context: { type: 'Thing' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close edit row
+          // close edditable row
           event.confirm.resolve();
 
-          this.channelsService.deleteChannel(event.data.id).subscribe(
+          this.thingsService.deleteThing(event.data.id).subscribe(
             resp => {
-              this.notificationsService.success('Channel successfully deleted', '');
+              this.things = this.things.filter(t => t.id !== event.data.id);
+              this.notificationsService.success('Thing successfully deleted', '');
             },
           );
         }
@@ -149,16 +149,16 @@ export class ChannelsComponent implements OnInit {
     );
   }
 
-  searchChannel(input) {
+  searchThing(input) {
     const t = new Date().getTime();
-    if ((t - this.searchTime) > defSearchBardMs) {
-      this.getChannels(input);
-      this.searchTime = t;
+    if ((t - this.searchFreq) > defFreq) {
+      this.getThings(input);
+      this.searchFreq = t;
     }
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_channels.csv', this.channels);
+    this.fsService.exportToCsv('mfx_things.csv', this.things);
   }
 
   onFileSelected(files: FileList) {
@@ -169,7 +169,7 @@ export class ChannelsComponent implements OnInit {
       reader.onload = () => {
         const csv: string = reader.result as string;
         const lines = csv.split('\n');
-        const channels: Channel[] = [];
+        const things: Thing[] = [];
 
         lines.forEach( line => {
           const col = line.split(this.columnChar);
@@ -183,18 +183,17 @@ export class ChannelsComponent implements OnInit {
                 this.notificationsService.warn('Wrong metadata format', '');
               }
             }
-
-            const chann = {
+            const thing = {
               name: name,
               metadata: metadata,
             };
-            channels.push(chann);
+            things.push(thing);
           }
         });
 
-        this.channelsService.addChannels(channels).subscribe(
+        this.thingsService.addThings(things).subscribe(
           resp => {
-            this.getChannels();
+            this.getThings();
           },
         );
       };

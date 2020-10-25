@@ -8,49 +8,43 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
+    title: 'Users',
+    icon: 'people-outline',
+    link: '/pages/users',
+  },
+  {
     title: 'Things',
-    icon: 'keypad-outline',
+    icon: 'film-outline',
+    link: '/pages/things',
+  },
+  {
+    title: 'Channels',
+    icon: 'flip-2-outline',
+    link: '/pages/channels',
+  },
+  {
+    title: 'Twins',
+    icon: 'copy-outline',
+    link: '/pages/twins',
+  },
+  {
+    title: 'Services',
+    icon: 'layers-outline',
     children: [
-      {
-        title: 'Devices',
-        icon: 'film-outline',
-        link: '/pages/things/devices',
-      },
-      {
-        title: 'Channels',
-        icon: 'flip-2-outline',
-        link: '/pages/things/channels',
-      },
       {
         title: 'LoRa',
         icon: 'radio-outline',
-        link: '/pages/things/lora',
+        link: '/pages/services/lora',
       },
       {
         title: 'OPC-UA',
         icon: 'globe-outline',
-        link: '/pages/things/opcua',
+        link: '/pages/services/opcua',
       },
       {
         title: 'Gateways',
         icon: 'hard-drive-outline',
-        link: '/pages/things/gateways',
-      },
-    ],
-  },
-  {
-    title: 'Admin',
-    icon: 'shield-outline',
-    children: [
-      {
-        title: 'Users',
-        icon: 'people-outline',
-        link: '/pages/admin/users',
-      },
-      {
-        title: 'Twins',
-        icon: 'copy-outline',
-        link: '/pages/admin/twins',
+        link: '/pages/services/gateways',
       },
     ],
   },

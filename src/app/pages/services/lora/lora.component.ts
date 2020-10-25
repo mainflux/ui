@@ -98,11 +98,10 @@ export class LoraComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
 
   loraDevices = [];
-  loraDevsNumber = 0;
-  loraAppsNumber = 0;
 
   offset = 0;
-  limit = 20;
+  limit = 100;
+  total = 0;
 
   searchTime = 0;
 
@@ -123,7 +122,7 @@ export class LoraComponent implements OnInit {
 
     this.loraService.getDevices(this.offset, this.limit, name).subscribe(
       (resp: any) => {
-        this.loraDevsNumber = resp.total;
+        this.total = resp.total;
 
         resp.things.forEach(thing => {
           thing.devEUI = thing.metadata.lora.dev_eui;
@@ -183,14 +182,14 @@ export class LoraComponent implements OnInit {
   }
 
   onDeleteConfirm(event): void {
-    this.dialogService.open(ConfirmationComponent, { context: { type: 'device' } }).onClose.subscribe(
+    this.dialogService.open(ConfirmationComponent, { context: { type: 'LoRa Device' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
           event.confirm.resolve();
 
           this.loraService.deleteDevice(event.data).subscribe(
             resp => {
-              this.loraDevsNumber--;
+              this.total--;
             },
           );
         }

@@ -9,11 +9,11 @@ import { Thing, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 
 
 @Component({
-  selector: 'ngx-devices-details-component',
-  templateUrl: './devices.details.component.html',
-  styleUrls: ['./devices.details.component.scss'],
+  selector: 'ngx-things-details-component',
+  templateUrl: './things.details.component.html',
+  styleUrls: ['./things.details.component.scss'],
 })
-export class DevicesDetailsComponent implements OnInit {
+export class ThingsDetailsComponent implements OnInit {
   offset = 0;
   limit = 20;
 
@@ -58,7 +58,7 @@ export class DevicesDetailsComponent implements OnInit {
 
     this.thingsService.editThing(this.thing).subscribe(
       resp => {
-        this.notificationsService.success('Device metadata successfully edited', '');
+        this.notificationsService.success('Thing metadata successfully edited', '');
       },
     );
   }

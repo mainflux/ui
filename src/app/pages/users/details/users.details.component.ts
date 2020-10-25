@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
 import { GroupsService } from 'app/common/services/users/groups.service';
@@ -23,7 +22,6 @@ export class UsersDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private usersService: UsersService,
     private groupsService: GroupsService,
-    private notificationsService: NotificationsService,
   ) {}
 
   ngOnInit() {
