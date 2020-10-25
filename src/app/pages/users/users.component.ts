@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-
-import { LocalDataSource } from 'ng2-smart-table';
 
 import { NbDialogService } from '@nebular/theme';
+
+import { LocalDataSource } from 'ng2-smart-table';
+import { User } from 'app/common/interfaces/mainflux.interface';
+
+import { UsersService } from 'app/common/services/users/users.service';
+import { FsService } from 'app/common/services/fs/fs.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 
-import { TwinsService } from 'app/common/services/twins/twins.service';
-import { FsService } from 'app/common/services/fs/fs.service';
-import { Twin } from 'app/common/interfaces/mainflux.interface';
+const defFreq: number = 100;
 
 @Component({
-  selector: 'ngx-twins',
-  templateUrl: './twins.component.html',
-  styleUrls: ['./twins.component.scss'],
+  selector: 'ngx-users-component',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss'],
 })
-export class TwinsComponent implements OnInit {
+export class UsersComponent implements OnInit {
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -45,32 +46,12 @@ export class TwinsComponent implements OnInit {
         addable: false,
         filter: false,
       },
-      name: {
-        title: 'Name',
-        editable: true,
-        addable: true,
+      email: {
+        title: 'Email',
         filter: false,
       },
-      created: {
-        title: 'Created',
-        editable: false,
-        addable: false,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          return new Date(cell).toLocaleString();
-        },
-      },
-      updated: {
-        title: 'Updated',
-        editable: false,
-        addable: false,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          return new Date(cell).toLocaleString();
-        },
-      },
-      revision: {
-        title: 'Revision',
+      id: {
+        title: 'ID',
         editable: false,
         addable: false,
         filter: false,
@@ -83,30 +64,35 @@ export class TwinsComponent implements OnInit {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  twins: Observable<Twin[]>;
+  users: User[] = [];
+  user: User;
 
-  twinsNumber = 0;
+  offset = 0;
+  limit = 100;
+  total = 0;
 
-  searchTime = 0;
+
+  searchFreq = 0;
 
   constructor(
     private dialogService: NbDialogService,
-    private twinsService: TwinsService,
+    private usersService: UsersService,
     private fsService: FsService,
   ) { }
 
   ngOnInit() {
-    this.getTwins();
+    // Fetch all useers
+    this.getUsers();
   }
 
-  getTwins(): void {
-    this.twinsService.getTwins().subscribe(
+  getUsers(email?: string): void {
+    this.usersService.getUsers(this.offset, this.limit, email).subscribe(
       (resp: any) => {
-        this.twins = resp.twins;
-        this.twinsNumber = resp.total;
+        this.total = resp.total;
+        this.users = resp.Users;
 
-        // Load and refresh Twins table
-        this.source.load(resp.twins);
+        // Load and refresh Users table
+        this.source.load(this.users);
         this.source.refresh();
       },
     );
@@ -115,44 +101,37 @@ export class TwinsComponent implements OnInit {
   onCreateConfirm(event): void {
     // close edditable row
     event.confirm.resolve();
-
-    this.twinsService.addTwin(event.newData).subscribe(
-      resp => {
-        this.getTwins();
-      },
-    );
   }
 
   onEditConfirm(event): void {
     // close edditable row
     event.confirm.resolve();
 
-    this.twinsService.editTwin(event.newData).subscribe();
+  }
+
+  searchUsersbyEmail(input) {
+    const t = new Date().getTime();
+    if ((t - this.searchFreq) > defFreq) {
+      this.getUsers(input);
+      this.searchFreq = t;
+    }
+  }
+
+  onClickSave() {
+    this.fsService.exportToCsv('mfx_users.csv', this.users);
   }
 
   onDeleteConfirm(event): void {
-    this.dialogService.open(ConfirmationComponent, { context: { type: 'twin' } }).onClose.subscribe(
+    this.dialogService.open(ConfirmationComponent, { context: { type: 'User' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
           // close edditable row
           event.confirm.resolve();
-          this.twinsService.deleteTwin(event.data.id).subscribe(
-            resp => {
-              this.getTwins();
-            },
-          );
         }
       },
     );
   }
 
-  onSaveFile() {
-    this.fsService.exportToCsv('twins.csv', this.twins);
-  }
-
   onFileSelected(files: FileList) {
-  }
-
-  searchThing(input) {
   }
 }

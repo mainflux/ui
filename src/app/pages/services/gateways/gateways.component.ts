@@ -100,7 +100,7 @@ export class GatewaysComponent implements OnInit {
   prefixLength = 3;
 
   offset = 0;
-  limit = 20;
+  limit = 100;
   total = 0;
 
   searchTime = 0;

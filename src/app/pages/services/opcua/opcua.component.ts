@@ -129,6 +129,7 @@ export class OpcuaComponent implements OnInit {
 
   offset = 0;
   limit = 20;
+  total = 0;
 
   searchTime = 0;
   columnChar = '|';
@@ -150,9 +151,11 @@ export class OpcuaComponent implements OnInit {
   }
 
   getOpcuaNodes(name?: string): void {
+    this.opcuaNodes = [];
+
     this.opcuaService.getNodes(this.offset, this.limit, name).subscribe(
       (resp: any) => {
-        this.opcuaNodes = [];
+        this.total = resp.total;
 
         resp.things.forEach(node => {
           node.serverURI = node.metadata.opcua.server_uri;
@@ -219,7 +222,7 @@ export class OpcuaComponent implements OnInit {
   }
 
   onDeleteConfirm(event): void {
-    this.dialogService.open(ConfirmationComponent, { context: { type: 'device' } }).onClose.subscribe(
+    this.dialogService.open(ConfirmationComponent, { context: { type: 'OPC-UA Node' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
           event.confirm.resolve();

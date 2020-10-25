@@ -2,11 +2,11 @@
   <nb-card-header class="header-tabs">
     <div class="row">
       <div class="col-md-4">
-        {{ loraDevsNumber }} &nbsp; LoRa Devices
+        {{ total }} &nbsp; Channels
       </div>
       <div class="col-md-4">
         <input nbInput fullWidth placeholder="Search..." fieldSize="small"
-               (input)="searchLora($event.target.value)">
+               (input)="searchChannel($event.target.value)">
       </div>
       <div class="col-md-2">
         <button nbButton size="small" class="button-blue"
@@ -25,6 +25,7 @@
       </div>
     </div>
   </nb-card-header>
+
   <nb-card-body>
     <ng2-smart-table [settings]="settings"
                      [source]="source"
