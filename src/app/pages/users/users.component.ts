@@ -7,6 +7,7 @@ import { User } from 'app/common/interfaces/mainflux.interface';
 
 import { UsersService } from 'app/common/services/users/users.service';
 import { FsService } from 'app/common/services/fs/fs.service';
+import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 
@@ -50,6 +51,11 @@ export class UsersComponent implements OnInit {
         title: 'Email',
         filter: false,
       },
+      password: {
+        title: 'Password',
+        filter: false,
+        editable: false,
+      },
       id: {
         title: 'ID',
         editable: false,
@@ -65,12 +71,10 @@ export class UsersComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
   users: User[] = [];
-  user: User;
 
   offset = 0;
   limit = 100;
   total = 0;
-
 
   searchFreq = 0;
 
@@ -78,10 +82,11 @@ export class UsersComponent implements OnInit {
     private dialogService: NbDialogService,
     private usersService: UsersService,
     private fsService: FsService,
+    private notificationsService: NotificationsService,
   ) { }
 
   ngOnInit() {
-    // Fetch all useers
+    // Fetch all Users
     this.getUsers();
   }
 
@@ -99,12 +104,19 @@ export class UsersComponent implements OnInit {
   }
 
   onCreateConfirm(event): void {
-    // close edditable row
-    event.confirm.resolve();
+    this.usersService.addUser(event.newData).subscribe(
+      resp => {
+        // close create row
+        event.confirm.resolve();
+
+        this.notificationsService.success('User successfully created', '');
+        this.getUsers();
+      },
+    );
   }
 
   onEditConfirm(event): void {
-    // close edditable row
+    // close edit row
     event.confirm.resolve();
 
   }
@@ -125,7 +137,7 @@ export class UsersComponent implements OnInit {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'User' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close edditable row
+          // close delete row
           event.confirm.resolve();
         }
       },

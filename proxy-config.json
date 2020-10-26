@@ -7,6 +7,10 @@
     "target": "http://localhost:8180",
     "secure": false
   },
+  "/groups": {
+    "target": "http://localhost:8180",
+    "secure": false
+  },
   "/version": {
     "target": "http://localhost:8180",
     "secure": false

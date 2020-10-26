@@ -225,6 +225,7 @@ export class OpcuaComponent implements OnInit {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'OPC-UA Node' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
+          // close delete row
           event.confirm.resolve();
 
           this.opcuaService.deleteNode(event.data).subscribe(

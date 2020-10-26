@@ -3,19 +3,21 @@ import { Component, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 
-import { Twin } from 'app/common/interfaces/mainflux.interface';
-import { TwinsService } from 'app/common/services/twins/twins.service';
-import { NotificationsService } from 'app/common/services/notifications/notifications.service';
+import { Organisation } from 'app/common/interfaces/mainflux.interface';
+import { OrganisationsService } from 'app/common/services/users/organisations.service';
 import { FsService } from 'app/common/services/fs/fs.service';
+import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
 
+const defFreq: number = 100;
+
 @Component({
-  selector: 'ngx-twins',
-  templateUrl: './twins.component.html',
-  styleUrls: ['./twins.component.scss'],
+  selector: 'ngx-organisations-component',
+  templateUrl: './organisations.component.html',
+  styleUrls: ['./organisations.component.scss'],
 })
-export class TwinsComponent implements OnInit {
+export class OrganisationsComponent implements OnInit {
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -46,30 +48,14 @@ export class TwinsComponent implements OnInit {
       },
       name: {
         title: 'Name',
-        editable: true,
-        addable: true,
         filter: false,
       },
-      created: {
-        title: 'Created',
-        editable: false,
-        addable: false,
+      description: {
+        title: 'Description',
         filter: false,
-        valuePrepareFunction: (cell, row) => {
-          return new Date(cell).toLocaleString();
-        },
       },
-      updated: {
-        title: 'Updated',
-        editable: false,
-        addable: false,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          return new Date(cell).toLocaleString();
-        },
-      },
-      revision: {
-        title: 'Revision',
+      id: {
+        title: 'ID',
         editable: false,
         addable: false,
         filter: false,
@@ -82,28 +68,34 @@ export class TwinsComponent implements OnInit {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  twins: Twin[] = [];
+  organisations: Organisation[] = [];
 
-  searchTime = 0;
+  offset = 0;
+  limit = 100;
+  total = 0;
+
+  searchFreq = 0;
 
   constructor(
     private dialogService: NbDialogService,
-    private twinsService: TwinsService,
-    private notificationsService: NotificationsService,
+    private organisationsService: OrganisationsService,
     private fsService: FsService,
+    private notificationsService: NotificationsService,
   ) { }
 
   ngOnInit() {
-    this.getTwins();
+    // Fetch all Organisations
+    this.getOrganisations();
   }
 
-  getTwins(): void {
-    this.twinsService.getTwins().subscribe(
+  getOrganisations(name?: string): void {
+    this.organisationsService.getOrganisations(this.offset, this.limit, name).subscribe(
       (resp: any) => {
-        this.twins = resp.twins;
+        this.total = resp.total;
+        this.organisations = resp.Groups;
 
-        // Load and refresh Twins table
-        this.source.load(resp.twins);
+        // Load and refresh Organisations table
+        this.source.load(this.organisations);
         this.source.refresh();
       },
     );
@@ -113,9 +105,10 @@ export class TwinsComponent implements OnInit {
     // close create row
     event.confirm.resolve();
 
-    this.twinsService.addTwin(event.newData).subscribe(
+    this.organisationsService.addOrganisation(event.newData).subscribe(
       resp => {
-        this.getTwins();
+        this.notificationsService.success('Organisation successfully created', '');
+        this.getOrganisations();
       },
     );
   }
@@ -124,19 +117,36 @@ export class TwinsComponent implements OnInit {
     // close edit row
     event.confirm.resolve();
 
-    this.twinsService.editTwin(event.newData).subscribe();
+    this.organisationsService.editOrganisation(event.newData).subscribe(
+      resp => {
+        this.notificationsService.success('Organisation successfully edited', '');
+      },
+    );
+  }
+
+  searchOrgsbyName(input) {
+    const t = new Date().getTime();
+    if ((t - this.searchFreq) > defFreq) {
+      this.getOrganisations(input);
+      this.searchFreq = t;
+    }
+  }
+
+  onClickSave() {
+    this.fsService.exportToCsv('mfx_organisations.csv', this.organisations);
   }
 
   onDeleteConfirm(event): void {
-    this.dialogService.open(ConfirmationComponent, { context: { type: 'twin' } }).onClose.subscribe(
+    this.dialogService.open(ConfirmationComponent, { context: { type: 'Organisation' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
           // close delete row
           event.confirm.resolve();
-          this.twinsService.deleteTwin(event.data.id).subscribe(
+
+          this.organisationsService.deleteOrganisation(event.data.id).subscribe(
             resp => {
-              this.twins = this.twins.filter(t => t.id !== event.data.id);
-              this.notificationsService.success('Twin successfully deleted', '');
+              this.organisations = this.organisations.filter(o => o.id !== event.data.id);
+              this.notificationsService.success('Organisation successfully deleted', '');
             },
           );
         }
@@ -144,13 +154,6 @@ export class TwinsComponent implements OnInit {
     );
   }
 
-  onSaveFile() {
-    this.fsService.exportToCsv('twins.csv', this.twins);
-  }
-
   onFileSelected(files: FileList) {
-  }
-
-  searchThing(input) {
   }
 }

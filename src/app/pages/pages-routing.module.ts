@@ -5,6 +5,9 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 
+// Mainflux - Organisations
+import { OrganisationsComponent } from './organisations/organisations.component';
+import { OrganisationsDetailsComponent } from './organisations/details/organisations.details.component';
 // Mainflux - User
 import { UsersComponent } from './users/users.component';
 import { UsersDetailsComponent } from './users/details/users.details.component';
@@ -32,6 +35,14 @@ const routes: Routes = [{
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',
+    },
+    {
+      path: 'organisations',
+      component: OrganisationsComponent,
+    },
+    {
+      path: 'organisations/details/:id',
+      component: OrganisationsDetailsComponent,
     },
     {
       path: 'users',

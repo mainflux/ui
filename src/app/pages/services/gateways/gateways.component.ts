@@ -180,7 +180,7 @@ export class GatewaysComponent implements OnInit {
       return;
     }
 
-    // close edditable row
+    // close create row
     event.confirm.resolve();
 
     this.gatewaysService.addGateway(event.newData.name, event.newData.external_id).subscribe(
@@ -199,7 +199,7 @@ export class GatewaysComponent implements OnInit {
     const extIDs = this.gateways.map(g => g.metadata.external_id);
     const names = this.gateways.map(g => g.name);
     if (extIDs.includes(event.newData.external_id) && names.includes(event.newData.name)) {
-      // close edditable row
+      // close edit row
       event.confirm.resolve();
       return;
     }
@@ -209,7 +209,7 @@ export class GatewaysComponent implements OnInit {
       return;
     }
 
-    // close edditable row
+    // close edit row
     event.confirm.resolve();
 
     const name = event.newData.name;
@@ -227,6 +227,7 @@ export class GatewaysComponent implements OnInit {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'gateway' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
+          // close delete row
           event.confirm.resolve();
 
           const gw = this.gateways.find(g => {

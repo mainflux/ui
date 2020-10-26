@@ -20,6 +20,22 @@ export class UsersService {
     private notificationsService: NotificationsService,
   ) { }
 
+  addUser(user: User) {
+    return this.http.post(environment.usersUrl, user, { observe: 'response' })
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to create User',
+            `Error: ${err.status} - ${err.statusText}`);
+          return Observable.throw(err);
+        },
+      );
+  }
+
   getProfile(): any {
     return this.getUser('profile');
   }
@@ -104,5 +120,21 @@ export class UsersService {
 
   getUserPicture(): any {
     return this.picture;
+  }
+
+  getMemberships(userID?: string): any {
+    return this.http.get(`${environment.usersUrl}/${userID}/groups`)
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to fetch memberships to groups',
+            `Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
+        },
+      );
   }
 }
