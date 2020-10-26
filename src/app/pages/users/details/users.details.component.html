@@ -21,7 +21,7 @@
               Memberships
             </div>
             <div class="col-md-7">
-              <nb-select multiple placeholder="Select Users" [(selected)]="selectedOrgs" size="tiny">
+              <nb-select multiple placeholder="Select Organisation(s)" [(selected)]="selectedOrgs" size="tiny">
                 <nb-option *ngFor="let org of this.organisations" [value]="org">
                   {{ org.name }}
                 </nb-option>

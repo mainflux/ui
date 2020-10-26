@@ -49,7 +49,7 @@
               Connections
             </div>
             <div class="col-md-7">
-              <nb-select multiple placeholder="Select Things" [(selected)]="selectedThings" size="tiny">
+              <nb-select multiple placeholder="Select Thing(s)" [(selected)]="selectedThings" size="tiny">
                 <nb-option *ngFor="let thing of this.things" [value]="thing.id">
                   {{thing.name}}
                 </nb-option>

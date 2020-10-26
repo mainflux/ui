@@ -24,7 +24,7 @@
               Members
             </div>
             <div class="col-md-7">
-              <nb-select multiple placeholder="Select Users" [(selected)]="selectedUsers" size="tiny">
+              <nb-select multiple placeholder="Select User(s)" [(selected)]="selectedUsers" size="tiny">
                 <nb-option *ngFor="let user of this.users" [value]="user">
                   {{user.email}}
                 </nb-option>

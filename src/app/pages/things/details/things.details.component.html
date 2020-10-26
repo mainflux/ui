@@ -50,7 +50,7 @@
               Connections
             </div>
             <div class="col-md-7">
-              <nb-select multiple placeholder="Select Channels" [(selected)]="selectedChannels" size="tiny">
+              <nb-select multiple placeholder="Select Channel(s)" [(selected)]="selectedChannels" size="tiny">
                 <nb-option *ngFor="let channel of this.channels" [value]="channel.id">
                   {{channel.name}}
                 </nb-option>
