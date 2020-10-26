@@ -110,7 +110,7 @@ export class TwinsComponent implements OnInit {
   }
 
   onCreateConfirm(event): void {
-    // close edditable row
+    // close create row
     event.confirm.resolve();
 
     this.twinsService.addTwin(event.newData).subscribe(
@@ -121,7 +121,7 @@ export class TwinsComponent implements OnInit {
   }
 
   onEditConfirm(event): void {
-    // close edditable row
+    // close edit row
     event.confirm.resolve();
 
     this.twinsService.editTwin(event.newData).subscribe();
@@ -131,7 +131,7 @@ export class TwinsComponent implements OnInit {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'twin' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close edditable row
+          // close delete row
           event.confirm.resolve();
           this.twinsService.deleteTwin(event.data.id).subscribe(
             resp => {

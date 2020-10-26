@@ -106,7 +106,7 @@ export class UsersComponent implements OnInit {
   onCreateConfirm(event): void {
     this.usersService.addUser(event.newData).subscribe(
       resp => {
-        // close add row
+        // close create row
         event.confirm.resolve();
 
         this.notificationsService.success('User successfully created', '');
@@ -116,7 +116,7 @@ export class UsersComponent implements OnInit {
   }
 
   onEditConfirm(event): void {
-    // close edditable row
+    // close edit row
     event.confirm.resolve();
 
   }
@@ -137,7 +137,7 @@ export class UsersComponent implements OnInit {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'User' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close edditable row
+          // close delete row
           event.confirm.resolve();
         }
       },

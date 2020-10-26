@@ -109,7 +109,7 @@ export class ThingsComponent implements OnInit {
   }
 
   onCreateConfirm(event): void {
-    // close add row
+    // close create row
     event.confirm.resolve();
 
     this.thingsService.addThing(event.newData).subscribe(
@@ -121,7 +121,7 @@ export class ThingsComponent implements OnInit {
   }
 
   onEditConfirm(event): void {
-    // close edditable row
+    // close edit row
     event.confirm.resolve();
 
     this.thingsService.editThing(event.newData).subscribe(
@@ -135,7 +135,7 @@ export class ThingsComponent implements OnInit {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'Thing' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close edditable row
+          // close delete row
           event.confirm.resolve();
 
           this.thingsService.deleteThing(event.data.id).subscribe(

@@ -185,6 +185,7 @@ export class LoraComponent implements OnInit {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'LoRa Device' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
+          // close delete row
           event.confirm.resolve();
 
           this.loraService.deleteDevice(event.data).subscribe(

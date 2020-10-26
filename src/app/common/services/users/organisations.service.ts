@@ -48,6 +48,22 @@ export class OrganisationsService {
       );
   }
 
+  deleteOrganisation(orgID: string) {
+    return this.http.delete(`${environment.groupsUrl}/${orgID}`)
+      .map(
+        resp => {
+          return resp;
+        },
+      )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to delete Organisation',
+            `Error: ${err.status} - ${err.statusText}`);
+          return Observable.throw(err);
+        },
+      );
+  }
+
   assignUser(groupID: string, userID: string): any {
     return this.http.put(`${environment.groupsUrl}/${groupID}/users/${userID}`, {})
       .map(

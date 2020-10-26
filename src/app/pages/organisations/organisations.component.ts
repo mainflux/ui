@@ -102,7 +102,7 @@ export class OrganisationsComponent implements OnInit {
   }
 
   onCreateConfirm(event): void {
-    // close edditable row
+    // close create row
     event.confirm.resolve();
 
     this.organisationsService.addOrganisation(event.newData).subscribe(
@@ -114,7 +114,7 @@ export class OrganisationsComponent implements OnInit {
   }
 
   onEditConfirm(event): void {
-    // close edditable row
+    // close edit row
     event.confirm.resolve();
 
     const orgReq = {
@@ -145,8 +145,15 @@ export class OrganisationsComponent implements OnInit {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'Organisation' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close edditable row
+          // close delete row
           event.confirm.resolve();
+
+          this.organisationsService.deleteOrganisation(event.data.id).subscribe(
+            resp => {
+              this.organisations = this.organisations.filter(o => o.id !== event.data.id);
+              this.notificationsService.success('Organisation successfully deleted', '');
+            },
+          );
         }
       },
     );

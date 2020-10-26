@@ -109,7 +109,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   onCreateConfirm(event): void {
-    // close edditable row
+    // close create row
     event.confirm.resolve();
 
     this.channelsService.addChannel(event.newData).subscribe(
@@ -121,7 +121,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   onEditConfirm(event): void {
-    // close edditable row
+    // close edit row
     event.confirm.resolve();
 
     this.channelsService.editChannel(event.newData).subscribe(
@@ -135,7 +135,7 @@ export class ChannelsComponent implements OnInit {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'Channel' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close edit row
+          // close delete row
           event.confirm.resolve();
 
           this.channelsService.deleteChannel(event.data.id).subscribe(
