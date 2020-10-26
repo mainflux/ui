@@ -1,3 +1,13 @@
+export interface Organisation {
+  id?: string;
+  name?: string;
+  description?: string;
+  metadata?: Object;
+  owner_id?: string;
+  parent_id?: string;
+  users?: User[];
+}
+
 export interface User {
   id?: string;
   email?: string;

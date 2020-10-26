@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
-import { GroupsService } from 'app/common/services/users/groups.service';
+import { OrganisationsService } from 'app/common/services/users/organisations.service';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class UsersDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private usersService: UsersService,
-    private groupsService: GroupsService,
+    private organisationsService: OrganisationsService,
   ) {}
 
   ngOnInit() {
@@ -33,7 +33,7 @@ export class UsersDetailsComponent implements OnInit {
       },
     );
 
-    this.groupsService.getMemberships(id).subscribe(
+    this.usersService.getMemberships(id).subscribe(
       (resp: any) => {
         this.groups = resp.groups;
       },

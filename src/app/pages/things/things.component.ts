@@ -109,7 +109,7 @@ export class ThingsComponent implements OnInit {
   }
 
   onCreateConfirm(event): void {
-    // close edditable row
+    // close add row
     event.confirm.resolve();
 
     this.thingsService.addThing(event.newData).subscribe(

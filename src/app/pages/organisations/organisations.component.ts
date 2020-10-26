@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { NbDialogService } from '@nebular/theme';
-
 import { LocalDataSource } from 'ng2-smart-table';
-import { User } from 'app/common/interfaces/mainflux.interface';
 
-import { UsersService } from 'app/common/services/users/users.service';
+import { Organisation } from 'app/common/interfaces/mainflux.interface';
+import { OrganisationsService } from 'app/common/services/users/organisations.service';
 import { FsService } from 'app/common/services/fs/fs.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
@@ -14,11 +13,11 @@ import { DetailsComponent } from 'app/shared/details/details.component';
 const defFreq: number = 100;
 
 @Component({
-  selector: 'ngx-users-component',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
+  selector: 'ngx-organisations-component',
+  templateUrl: './organisations.component.html',
+  styleUrls: ['./organisations.component.scss'],
 })
-export class UsersComponent implements OnInit {
+export class OrganisationsComponent implements OnInit {
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -47,14 +46,13 @@ export class UsersComponent implements OnInit {
         addable: false,
         filter: false,
       },
-      email: {
-        title: 'Email',
+      name: {
+        title: 'Name',
         filter: false,
       },
-      password: {
-        title: 'Password',
+      description: {
+        title: 'Description',
         filter: false,
-        editable: false,
       },
       id: {
         title: 'ID',
@@ -70,7 +68,7 @@ export class UsersComponent implements OnInit {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  users: User[] = [];
+  organisations: Organisation[] = [];
 
   offset = 0;
   limit = 100;
@@ -80,37 +78,37 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private dialogService: NbDialogService,
-    private usersService: UsersService,
+    private organisationsService: OrganisationsService,
     private fsService: FsService,
     private notificationsService: NotificationsService,
   ) { }
 
   ngOnInit() {
-    // Fetch all Users
-    this.getUsers();
+    // Fetch all Organisations
+    this.getOrganisations();
   }
 
-  getUsers(email?: string): void {
-    this.usersService.getUsers(this.offset, this.limit, email).subscribe(
+  getOrganisations(name?: string): void {
+    this.organisationsService.getOrganisations(this.offset, this.limit, name).subscribe(
       (resp: any) => {
         this.total = resp.total;
-        this.users = resp.Users;
+        this.organisations = resp.Groups;
 
-        // Load and refresh Users table
-        this.source.load(this.users);
+        // Load and refresh Organisations table
+        this.source.load(this.organisations);
         this.source.refresh();
       },
     );
   }
 
   onCreateConfirm(event): void {
-    this.usersService.addUser(event.newData).subscribe(
-      resp => {
-        // close add row
-        event.confirm.resolve();
+    // close edditable row
+    event.confirm.resolve();
 
-        this.notificationsService.success('User successfully created', '');
-        this.getUsers();
+    this.organisationsService.addOrganisation(event.newData).subscribe(
+      resp => {
+        this.notificationsService.success('Organisation successfully created', '');
+        this.getOrganisations();
       },
     );
   }
@@ -119,22 +117,32 @@ export class UsersComponent implements OnInit {
     // close edditable row
     event.confirm.resolve();
 
+    const orgReq = {
+      name: event.newData.name,
+      description: event.newData.description,
+    };
+
+    this.organisationsService.editOrganisation(event.newData).subscribe(
+      resp => {
+        this.notificationsService.success('Organisation successfully edited', '');
+      },
+    );
   }
 
-  searchUsersbyEmail(input) {
+  searchOrgsbyName(input) {
     const t = new Date().getTime();
     if ((t - this.searchFreq) > defFreq) {
-      this.getUsers(input);
+      this.getOrganisations(input);
       this.searchFreq = t;
     }
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_users.csv', this.users);
+    this.fsService.exportToCsv('mfx_organisations.csv', this.organisations);
   }
 
   onDeleteConfirm(event): void {
-    this.dialogService.open(ConfirmationComponent, { context: { type: 'User' } }).onClose.subscribe(
+    this.dialogService.open(ConfirmationComponent, { context: { type: 'Organisation' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
           // close edditable row
