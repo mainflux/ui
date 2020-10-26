@@ -117,11 +117,6 @@ export class OrganisationsComponent implements OnInit {
     // close edit row
     event.confirm.resolve();
 
-    const orgReq = {
-      name: event.newData.name,
-      description: event.newData.description,
-    };
-
     this.organisationsService.editOrganisation(event.newData).subscribe(
       resp => {
         this.notificationsService.success('Organisation successfully edited', '');

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { User } from 'app/common/interfaces/mainflux.interface';
+import { Organisation, User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
 import { OrganisationsService } from 'app/common/services/users/organisations.service';
+import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 
 @Component({
@@ -16,12 +17,16 @@ export class UsersDetailsComponent implements OnInit {
   limit = 20;
 
   user: User = {};
-  groups = [];
+  organisations: Organisation[] = [];
+  memberships: Organisation[] = [];
+
+  selectedOrgs = [];
 
   constructor(
     private route: ActivatedRoute,
     private usersService: UsersService,
     private organisationsService: OrganisationsService,
+    private notificationsService: NotificationsService,
   ) {}
 
   ngOnInit() {
@@ -30,12 +35,53 @@ export class UsersDetailsComponent implements OnInit {
     this.usersService.getUser(id).subscribe(
       (resp: any) => {
         this.user = resp;
+
+        this.getMemberships();
       },
     );
+  }
 
-    this.usersService.getMemberships(id).subscribe(
+  getMemberships() {
+    this.organisationsService.getOrganisations().subscribe(
       (resp: any) => {
-        this.groups = resp.groups;
+        this.organisations = resp.Groups;
+
+        this.usersService.getMemberships(this.user.id).subscribe(
+          (respMemb: any) => {
+            this.memberships = respMemb.Groups;
+
+            // Remove memberships from available Organisations
+            this.memberships.forEach(m => {
+              this.organisations = this.organisations.filter(o => o.id !== m.id);
+            });
+          },
+        );
+      },
+    );
+  }
+
+  onAssign() {
+    this.selectedOrgs.forEach(o => {
+      this.organisationsService.assignUser(o.id, this.user.id).subscribe(
+        resp => {
+          this.notificationsService.success('Successfully assigned User to Organisation', '');
+          this.selectedOrgs = [];
+          this.getMemberships();
+        },
+      );
+    });
+
+    if (this.selectedOrgs.length === 0) {
+      this.notificationsService.warn('Oorganisation(s) must be provided', '');
+    }
+  }
+
+  onUnassign(memberhip: any) {
+    this.organisationsService.unassignUser(memberhip.id, this.user.id).subscribe(
+      resp => {
+        this.notificationsService.success('Successfully unassigned User from Organisation', '');
+        this.selectedOrgs = [];
+        this.getMemberships();
       },
     );
   }

@@ -17,14 +17,14 @@ export class OrganisationsDetailsComponent implements OnInit {
 
   organisation: Organisation = {};
   users: User[] = [];
-  members = [];
+  members: User[] = [];
 
   selectedUsers = [];
 
   constructor(
     private route: ActivatedRoute,
-    private organisationsService: OrganisationsService,
     private usersService: UsersService,
+    private organisationsService: OrganisationsService,
     private notificationsService: NotificationsService,
   ) {}
 
@@ -49,6 +49,7 @@ export class OrganisationsDetailsComponent implements OnInit {
           respMemb => {
             this.members = respMemb.Users;
 
+            // Remove members from available Users
             this.members.forEach(m => {
               this.users = this.users.filter(u => u.id !== m.id);
             });

@@ -14,21 +14,46 @@
   </div>
 
   <div class="col-md-6">
-    <nb-card size="tiny">
+    <nb-card size="small">
       <nb-card-header class="header-details">
-        User Groups
+        <div class="row">
+            <div class="col-md-3">
+              Memberships
+            </div>
+            <div class="col-md-7">
+              <nb-select multiple placeholder="Select Users" [(selected)]="selectedOrgs" size="tiny">
+                <nb-option *ngFor="let org of this.organisations" [value]="org">
+                  {{ org.name }}
+                </nb-option>
+              </nb-select>
+            </div>
+            <div class="col-md-2">
+              <button nbButton size="tiny" class="button-green"
+                      (click)="onAssign()">
+                Assign
+              </button>
+            </div>
+        </div>
       </nb-card-header>
       <nb-card-body>
-        <nb-list>
-          <nb-list-item *ngFor="let g of groups">
-            <div class="col-md-6">
-              {{ g.name }}
+        <div *ngIf="memberships.length === 0">
+          <div style="text-align: center">
+            No memberships
+          </div>
+        </div>
+        <div *ngIf="memberships.length !== 0">
+          <div *ngFor="let mem of memberships;" class="row" style="padding: 2.6px;">
+            <div class="col-md-9">
+              <nb-icon status="info" icon="arrow-right-outline"></nb-icon>
+              {{ mem.name }}
             </div>
-            <div class="col-md-6">
-              {{ g.id }}
+            <div class="col-md-3">
+              <button (click)="onUnassign(mem)" nbButton size="tiny" class="button-red">
+                x
+              </button>
             </div>
-          </nb-list-item>
-        </nb-list>
+          </div>
+        </div>
       </nb-card-body>
     </nb-card>
   </div>
