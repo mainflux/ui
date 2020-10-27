@@ -25,7 +25,7 @@ export class UserGroupsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to create Users Group',
+          this.notificationsService.error('Failed to create User Group',
             `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
         },
@@ -41,7 +41,7 @@ export class UserGroupsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to edit Users Group',
+          this.notificationsService.error('Failed to edit User Group',
             `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
         },
@@ -57,7 +57,7 @@ export class UserGroupsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to delete Users Group',
+          this.notificationsService.error('Failed to delete User Group',
             `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
         },
@@ -105,7 +105,7 @@ export class UserGroupsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to fetch Users Group',
+          this.notificationsService.error('Failed to fetch User Group',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
@@ -132,7 +132,7 @@ export class UserGroupsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to fetch Users Group',
+          this.notificationsService.error('Failed to fetch User Group',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },

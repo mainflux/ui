@@ -131,7 +131,7 @@ export class UsersService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to fetch memberships to User Groups',
+          this.notificationsService.error('Failed to fetch Group memberships',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
