@@ -132,7 +132,7 @@ export class UserGroupsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to fetch User Group',
+          this.notificationsService.error('Failed to fetch User Groups',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
