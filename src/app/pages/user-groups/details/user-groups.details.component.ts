@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Organisation, User } from 'app/common/interfaces/mainflux.interface';
+import { UserGroup, User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
-import { OrganisationsService } from 'app/common/services/users/organisations.service';
+import { UserGroupsService } from 'app/common/services/users/groups.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 @Component({
-  selector: 'ngx-organisations-details-component',
-  templateUrl: './organisations.details.component.html',
-  styleUrls: ['./organisations.details.component.scss'],
+  selector: 'ngx-user-groups-details-component',
+  templateUrl: './user-groups.details.component.html',
+  styleUrls: ['./user-groups.details.component.scss'],
 })
-export class OrganisationsDetailsComponent implements OnInit {
+export class UserGroupsDetailsComponent implements OnInit {
   offset = 0;
   limit = 20;
 
-  organisation: Organisation = {};
+  userGroup: UserGroup = {};
   users: User[] = [];
   members: User[] = [];
 
@@ -24,16 +24,16 @@ export class OrganisationsDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private usersService: UsersService,
-    private organisationsService: OrganisationsService,
+    private userGroupsService: UserGroupsService,
     private notificationsService: NotificationsService,
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
 
-    this.organisationsService.getOrganisation(id).subscribe(
+    this.userGroupsService.getGroups(id).subscribe(
       (resp: any) => {
-        this.organisation = resp;
+        this.userGroup = resp;
 
         this.getMembers();
       },
@@ -45,7 +45,7 @@ export class OrganisationsDetailsComponent implements OnInit {
       (resp: any) => {
         this.users = resp.Users;
 
-        this.organisationsService.getMembers(this.organisation.id).subscribe(
+        this.userGroupsService.getMembers(this.userGroup.id).subscribe(
           respMemb => {
             this.members = respMemb.Users;
 
@@ -61,9 +61,9 @@ export class OrganisationsDetailsComponent implements OnInit {
 
   onAssign() {
     this.selectedUsers.forEach(u => {
-      this.organisationsService.assignUser(this.organisation.id, u.id).subscribe(
+      this.userGroupsService.assignUser(this.userGroup.id, u.id).subscribe(
         resp => {
-          this.notificationsService.success('Successfully assigned User to Organisation', '');
+          this.notificationsService.success('Successfully assigned User to Group', '');
           this.selectedUsers = [];
           this.getMembers();
         },
@@ -76,9 +76,9 @@ export class OrganisationsDetailsComponent implements OnInit {
   }
 
   onUnassign(member: any) {
-    this.organisationsService.unassignUser(this.organisation.id, member.id).subscribe(
+    this.userGroupsService.unassignUser(this.userGroup.id, member.id).subscribe(
       resp => {
-        this.notificationsService.success('Successfully unassigned User from Organisation', '');
+        this.notificationsService.success('Successfully unassigned User from Group', '');
         this.selectedUsers = [];
         this.getMembers();
       },

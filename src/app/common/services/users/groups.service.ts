@@ -3,20 +3,20 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from 'environments/environment';
-import { Organisation } from 'app/common/interfaces/mainflux.interface';
+import { UserGroup } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 const defLimit: number = 20;
 
 @Injectable()
-export class OrganisationsService {
+export class UserGroupsService {
 
   constructor(
     private http: HttpClient,
     private notificationsService: NotificationsService,
   ) { }
 
-  addOrganisation(org: Organisation) {
+  addGroup(org: UserGroup) {
     return this.http.post(environment.groupsUrl, org, { observe: 'response' })
       .map(
         resp => {
@@ -25,14 +25,14 @@ export class OrganisationsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to create Organisation',
+          this.notificationsService.error('Failed to create Users Group',
             `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
         },
       );
   }
 
-  editOrganisation(org: Organisation) {
+  editGroup(org: UserGroup) {
     return this.http.patch(`${environment.groupsUrl}/${org.id}`, org)
       .map(
         resp => {
@@ -41,14 +41,14 @@ export class OrganisationsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to edit Organisation',
+          this.notificationsService.error('Failed to edit Users Group',
             `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
         },
       );
   }
 
-  deleteOrganisation(orgID: string) {
+  deleteGroup(orgID: string) {
     return this.http.delete(`${environment.groupsUrl}/${orgID}`)
       .map(
         resp => {
@@ -57,7 +57,7 @@ export class OrganisationsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to delete Organisation',
+          this.notificationsService.error('Failed to delete Users Group',
             `Error: ${err.status} - ${err.statusText}`);
           return Observable.throw(err);
         },
@@ -73,7 +73,7 @@ export class OrganisationsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to Assing User to Organisation',
+          this.notificationsService.error('Failed to Assing User to Group',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
@@ -89,14 +89,14 @@ export class OrganisationsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to Unassing User from Organisation',
+          this.notificationsService.error('Failed to Unassing User from Group',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
   }
 
-  getOrganisation(groupID: string): any {
+  getGroups(groupID: string): any {
     return this.http.get(`${environment.groupsUrl}/${groupID}`)
       .map(
         resp => {
@@ -105,14 +105,14 @@ export class OrganisationsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to fetch Organisation',
+          this.notificationsService.error('Failed to fetch Users Group',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
       );
   }
 
-  getOrganisations(offset?: number, limit?: number, name?: string): any {
+  getUserGroups(offset?: number, limit?: number, name?: string): any {
     offset = offset || 0;
     limit = limit || defLimit;
 
@@ -132,7 +132,7 @@ export class OrganisationsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to fetch Organisations',
+          this.notificationsService.error('Failed to fetch Users Group',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
@@ -148,7 +148,7 @@ export class OrganisationsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to fetch Organisation members',
+          this.notificationsService.error('Failed to fetch Group members',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
