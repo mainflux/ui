@@ -24,9 +24,9 @@ import { SharedModule } from 'app/shared/shared.module';
 import { CommonModule } from 'app/common/common.module';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
-// Mainflux - Organisations
-import { OrganisationsComponent } from './organisations/organisations.component';
-import { OrganisationsDetailsComponent } from './organisations/details/organisations.details.component';
+// Mainflux - User Groups
+import { UserGroupsComponent } from './user-groups/user-groups.component';
+import { UserGroupsDetailsComponent } from './user-groups/details/user-groups.details.component';
 // Mainflux - User
 import { UsersComponent } from 'app/pages/users/users.component';
 import { UsersDetailsComponent } from 'app/pages/users/details/users.details.component';
@@ -74,9 +74,9 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
   ],
   declarations: [
     PagesComponent,
-    // Organisations
-    OrganisationsComponent,
-    OrganisationsDetailsComponent,
+    // User Groups
+    UserGroupsComponent,
+    UserGroupsDetailsComponent,
     // Users
     UsersComponent,
     UsersDetailsComponent,

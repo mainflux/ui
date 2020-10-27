@@ -96,7 +96,7 @@ export class UserGroupsService {
       );
   }
 
-  getGroups(groupID: string): any {
+  getGroup(groupID: string): any {
     return this.http.get(`${environment.groupsUrl}/${groupID}`)
       .map(
         resp => {
@@ -112,7 +112,7 @@ export class UserGroupsService {
       );
   }
 
-  getUserGroups(offset?: number, limit?: number, name?: string): any {
+  getGroups(offset?: number, limit?: number, name?: string): any {
     offset = offset || 0;
     limit = limit || defLimit;
 

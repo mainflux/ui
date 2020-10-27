@@ -31,7 +31,7 @@ export class UserGroupsDetailsComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
 
-    this.userGroupsService.getGroups(id).subscribe(
+    this.userGroupsService.getGroup(id).subscribe(
       (resp: any) => {
         this.userGroup = resp;
 

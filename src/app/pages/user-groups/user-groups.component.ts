@@ -85,11 +85,11 @@ export class UserGroupsComponent implements OnInit {
 
   ngOnInit() {
     // Fetch all User Groups
-    this.getUserGroups();
+    this.getGroups();
   }
 
-  getUserGroups(name?: string): void {
-    this.userGroupsService.getUserGroups(this.offset, this.limit, name).subscribe(
+  getGroups(name?: string): void {
+    this.userGroupsService.getGroups(this.offset, this.limit, name).subscribe(
       (resp: any) => {
         this.total = resp.total;
         this.userGroups = resp.Groups;
@@ -108,7 +108,7 @@ export class UserGroupsComponent implements OnInit {
     this.userGroupsService.addGroup(event.newData).subscribe(
       resp => {
         this.notificationsService.success('User Group successfully created', '');
-        this.getUserGroups();
+        this.getGroups();
       },
     );
   }
@@ -127,7 +127,7 @@ export class UserGroupsComponent implements OnInit {
   searchOrgsbyName(input) {
     const t = new Date().getTime();
     if ((t - this.searchFreq) > defFreq) {
-      this.getUserGroups(input);
+      this.getGroups(input);
       this.searchFreq = t;
     }
   }

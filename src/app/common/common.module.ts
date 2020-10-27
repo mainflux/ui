@@ -17,7 +17,7 @@ import { NotificationsService } from './services/notifications/notifications.ser
 import { ThingsService } from './services/things/things.service';
 import { TwinsService } from './services/twins/twins.service';
 import { UsersService } from './services/users/users.service';
-import { OrganisationsService } from './services/users/organisations.service';
+import { UserGroupsService } from './services/users/groups.service';
 import { FsService } from './services/fs/fs.service';
 
 import { TokenInterceptor } from 'app/auth/auth.token.interceptor.service';
@@ -37,7 +37,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     ThingsService,
     TwinsService,
     UsersService,
-    OrganisationsService,
+    UserGroupsService,
     FsService,
     {
       provide: HTTP_INTERCEPTORS,
