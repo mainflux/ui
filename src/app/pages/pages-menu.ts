@@ -8,9 +8,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
-    title: 'Organisations',
+    title: 'User Groups',
     icon: 'shield-outline',
-    link: '/pages/organisations',
+    link: '/pages/users/groups',
   },
   {
     title: 'Users',

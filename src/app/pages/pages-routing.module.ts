@@ -5,9 +5,9 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 
-// Mainflux - Organisations
-import { OrganisationsComponent } from './organisations/organisations.component';
-import { OrganisationsDetailsComponent } from './organisations/details/organisations.details.component';
+// Mainflux - User Groups
+import { UserGroupsComponent } from './user-groups/user-groups.component';
+import { UserGroupsDetailsComponent } from './user-groups/details/user-groups.details.component';
 // Mainflux - User
 import { UsersComponent } from './users/users.component';
 import { UsersDetailsComponent } from './users/details/users.details.component';
@@ -37,12 +37,12 @@ const routes: Routes = [{
       pathMatch: 'full',
     },
     {
-      path: 'organisations',
-      component: OrganisationsComponent,
+      path: 'users/groups',
+      component: UserGroupsComponent,
     },
     {
-      path: 'organisations/details/:id',
-      component: OrganisationsDetailsComponent,
+      path: 'users/groups/details/:id',
+      component: UserGroupsDetailsComponent,
     },
     {
       path: 'users',

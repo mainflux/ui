@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 
-import { Organisation } from 'app/common/interfaces/mainflux.interface';
-import { OrganisationsService } from 'app/common/services/users/organisations.service';
+import { UserGroup } from 'app/common/interfaces/mainflux.interface';
+import { UserGroupsService } from 'app/common/services/users/groups.service';
 import { FsService } from 'app/common/services/fs/fs.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
@@ -13,11 +13,11 @@ import { DetailsComponent } from 'app/shared/details/details.component';
 const defFreq: number = 100;
 
 @Component({
-  selector: 'ngx-organisations-component',
-  templateUrl: './organisations.component.html',
-  styleUrls: ['./organisations.component.scss'],
+  selector: 'ngx-user-groups-component',
+  templateUrl: './user-groups.component.html',
+  styleUrls: ['./user-groups.component.scss'],
 })
-export class OrganisationsComponent implements OnInit {
+export class UserGroupsComponent implements OnInit {
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -68,7 +68,7 @@ export class OrganisationsComponent implements OnInit {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  organisations: Organisation[] = [];
+  userGroups: UserGroup[] = [];
 
   offset = 0;
   limit = 100;
@@ -78,24 +78,24 @@ export class OrganisationsComponent implements OnInit {
 
   constructor(
     private dialogService: NbDialogService,
-    private organisationsService: OrganisationsService,
+    private userGroupsService: UserGroupsService,
     private fsService: FsService,
     private notificationsService: NotificationsService,
   ) { }
 
   ngOnInit() {
-    // Fetch all Organisations
-    this.getOrganisations();
+    // Fetch all User Groups
+    this.getGroups();
   }
 
-  getOrganisations(name?: string): void {
-    this.organisationsService.getOrganisations(this.offset, this.limit, name).subscribe(
+  getGroups(name?: string): void {
+    this.userGroupsService.getGroups(this.offset, this.limit, name).subscribe(
       (resp: any) => {
         this.total = resp.total;
-        this.organisations = resp.Groups;
+        this.userGroups = resp.Groups;
 
-        // Load and refresh Organisations table
-        this.source.load(this.organisations);
+        // Load and refresh User Groups table
+        this.source.load(this.userGroups);
         this.source.refresh();
       },
     );
@@ -105,10 +105,10 @@ export class OrganisationsComponent implements OnInit {
     // close create row
     event.confirm.resolve();
 
-    this.organisationsService.addOrganisation(event.newData).subscribe(
+    this.userGroupsService.addGroup(event.newData).subscribe(
       resp => {
-        this.notificationsService.success('Organisation successfully created', '');
-        this.getOrganisations();
+        this.notificationsService.success('User Group successfully created', '');
+        this.getGroups();
       },
     );
   }
@@ -117,9 +117,9 @@ export class OrganisationsComponent implements OnInit {
     // close edit row
     event.confirm.resolve();
 
-    this.organisationsService.editOrganisation(event.newData).subscribe(
+    this.userGroupsService.editGroup(event.newData).subscribe(
       resp => {
-        this.notificationsService.success('Organisation successfully edited', '');
+        this.notificationsService.success('User Group successfully edited', '');
       },
     );
   }
@@ -127,26 +127,26 @@ export class OrganisationsComponent implements OnInit {
   searchOrgsbyName(input) {
     const t = new Date().getTime();
     if ((t - this.searchFreq) > defFreq) {
-      this.getOrganisations(input);
+      this.getGroups(input);
       this.searchFreq = t;
     }
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_organisations.csv', this.organisations);
+    this.fsService.exportToCsv('mfx_user_groups.csv', this.userGroups);
   }
 
   onDeleteConfirm(event): void {
-    this.dialogService.open(ConfirmationComponent, { context: { type: 'Organisation' } }).onClose.subscribe(
+    this.dialogService.open(ConfirmationComponent, { context: { type: 'User Group' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
           // close delete row
           event.confirm.resolve();
 
-          this.organisationsService.deleteOrganisation(event.data.id).subscribe(
+          this.userGroupsService.deleteGroup(event.data.id).subscribe(
             resp => {
-              this.organisations = this.organisations.filter(o => o.id !== event.data.id);
-              this.notificationsService.success('Organisation successfully deleted', '');
+              this.userGroups = this.userGroups.filter(o => o.id !== event.data.id);
+              this.notificationsService.success('User Group successfully deleted', '');
             },
           );
         }

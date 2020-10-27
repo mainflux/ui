@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Organisation, User } from 'app/common/interfaces/mainflux.interface';
+import { UserGroup, User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
-import { OrganisationsService } from 'app/common/services/users/organisations.service';
+import { UserGroupsService } from 'app/common/services/users/groups.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 
@@ -17,15 +17,15 @@ export class UsersDetailsComponent implements OnInit {
   limit = 20;
 
   user: User = {};
-  organisations: Organisation[] = [];
-  memberships: Organisation[] = [];
+  userGroups: UserGroup[] = [];
+  memberships: UserGroup[] = [];
 
-  selectedOrgs = [];
+  selectedGroups = [];
 
   constructor(
     private route: ActivatedRoute,
     private usersService: UsersService,
-    private organisationsService: OrganisationsService,
+    private userGroupsService: UserGroupsService,
     private notificationsService: NotificationsService,
   ) {}
 
@@ -42,17 +42,17 @@ export class UsersDetailsComponent implements OnInit {
   }
 
   getMemberships() {
-    this.organisationsService.getOrganisations().subscribe(
+    this.userGroupsService.getGroups().subscribe(
       (resp: any) => {
-        this.organisations = resp.Groups;
+        this.userGroups = resp.Groups;
 
         this.usersService.getMemberships(this.user.id).subscribe(
           (respMemb: any) => {
             this.memberships = respMemb.Groups;
 
-            // Remove memberships from available Organisations
+            // Remove memberships from available User Groups
             this.memberships.forEach(m => {
-              this.organisations = this.organisations.filter(o => o.id !== m.id);
+              this.userGroups = this.userGroups.filter(o => o.id !== m.id);
             });
           },
         );
@@ -61,26 +61,26 @@ export class UsersDetailsComponent implements OnInit {
   }
 
   onAssign() {
-    this.selectedOrgs.forEach(o => {
-      this.organisationsService.assignUser(o.id, this.user.id).subscribe(
+    this.selectedGroups.forEach(o => {
+      this.userGroupsService.assignUser(o.id, this.user.id).subscribe(
         resp => {
-          this.notificationsService.success('Successfully assigned User to Organisation', '');
-          this.selectedOrgs = [];
+          this.notificationsService.success('Successfully assigned User to Group', '');
+          this.selectedGroups = [];
           this.getMemberships();
         },
       );
     });
 
-    if (this.selectedOrgs.length === 0) {
-      this.notificationsService.warn('Oorganisation(s) must be provided', '');
+    if (this.selectedGroups.length === 0) {
+      this.notificationsService.warn('User Group(s) must be provided', '');
     }
   }
 
   onUnassign(memberhip: any) {
-    this.organisationsService.unassignUser(memberhip.id, this.user.id).subscribe(
+    this.userGroupsService.unassignUser(memberhip.id, this.user.id).subscribe(
       resp => {
-        this.notificationsService.success('Successfully unassigned User from Organisation', '');
-        this.selectedOrgs = [];
+        this.notificationsService.success('Successfully unassigned User from Group', '');
+        this.selectedGroups = [];
         this.getMemberships();
       },
     );
