@@ -1,6 +1,6 @@
 @import 'xterm/css/xterm.css';
 
-.terminal {
-  width: 100%;
-  height: 100%;
+.xterm .xterm-screen canvas {
+  // fix bug where 1px white stripe appears in Firefox
+  border-right: 1px solid transparent;
 }

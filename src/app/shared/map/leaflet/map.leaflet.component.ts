@@ -81,42 +81,36 @@ export class MapComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    if (this.gateways) {
-      this.gateways.forEach((gw) => {
-        const channelID: string = gw.metadata ? gw.metadata.data_channel_id : '';
+    this.gateways.forEach((gw) => {
+      const channelID: string = gw.metadata ? gw.metadata.data_channel_id : '';
 
-        if (gw.key !== '' && channelID !== '') {
-          this.msgService.getMessages(channelID, gw.key, gw.id).subscribe(
-            (resp: any) => {
-              let lon: Number;
-              let lat: Number;
-              if (resp.messages) {
-                resp.messages.forEach(msg => {
-                  // Store lon and lat fields chronologically
-                  if (msg.name.includes('lon') && !lon) {
-                    lon = msg.value;
-                  }
-                  if (msg.name.includes('lat') && !lat) {
-                    lat = msg.value;
-                  }
-                  // Stop for loop if both values are set
-                  if (lon && lat) {
-                    this.addMarker(lon, lat, gw);
-                    return;
-                  }
-                });
+      if (gw.key !== undefined && channelID !== '') {
+        this.msgService.getMessages(channelID, gw.key, gw.id).subscribe(
+          (resp: any) => {
+            let lon: Number;
+            let lat: Number;
+            if (resp.messages) {
+              resp.messages.forEach(msg => {
+                // Store lon and lat fields chronologically
+                if (msg.name.includes('lon') && !lon) {
+                  lon = msg.value;
+                }
+                if (msg.name.includes('lat') && !lat) {
+                  lat = msg.value;
+                }
+                // Stop for loop if both values are set
+                if (lon && lat) {
+                  this.addMarker(lon, lat, gw);
+                  return;
+                }
+              });
 
-                this.focusMap();
-              }
-            },
-            err => {
-              this.notificationsService.error('Failed to fetch gateway configuration',
-                `Error: ${err.status} - ${err.statusText}`);
-            },
-          );
-        }
-      });
-    }
+              this.focusMap();
+            }
+          },
+        );
+      }
+    });
   }
 
   onMapReady(map: L.Map) {
