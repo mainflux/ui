@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
 import { Config, ConfigContent, Route, ConfigUpdate } from 'app/common/interfaces/bootstrap.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
@@ -10,7 +10,7 @@ import { BootstrapService } from 'app/common/services/bootstrap/bootstrap.servic
   templateUrl: './gateways.config.component.html',
   styleUrls: ['./gateways.config.component.scss'],
 })
-export class GatewaysConfigComponent implements OnInit, OnChanges {
+export class GatewaysConfigComponent implements OnChanges {
   @Input() gateway: Gateway;
 
   content: ConfigContent = {
@@ -32,11 +32,8 @@ export class GatewaysConfigComponent implements OnInit, OnChanges {
     private notificationsService: NotificationsService,
   ) {}
 
-  ngOnInit() {
-  }
-
   ngOnChanges() {
-    if (!this.gateway.metadata.external_key) {
+    if (this.gateway.metadata.external_key === '') {
       return;
     }
 

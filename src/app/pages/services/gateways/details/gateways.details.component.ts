@@ -13,8 +13,9 @@ import { Gateway } from 'app/common/interfaces/gateway.interface';
 })
 export class GatewaysDetailsComponent implements OnInit {
   gateway: Gateway = {
-    name: '',
-    metadata: {},
+    metadata: {
+      external_key: '',
+    },
   };
 
   mfxAgent = false;
@@ -28,8 +29,8 @@ export class GatewaysDetailsComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     this.gatewaysService.getGateway(id).subscribe(
-      gw => {
-        this.gateway = <Gateway>gw;
+      (gw: Gateway) => {
+        this.gateway = gw;
       },
       err => {
         this.notificationsService.error('Failed to fetch gateway',
