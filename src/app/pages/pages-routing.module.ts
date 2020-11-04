@@ -28,12 +28,12 @@ const routes: Routes = [{
   component: PagesComponent,
   children: [
     {
-      path: 'dashboard',
+      path: 'home',
       component: DashboardComponent,
     },
     {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: 'home',
       pathMatch: 'full',
     },
     {
