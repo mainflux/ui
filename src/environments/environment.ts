@@ -29,6 +29,7 @@ export const environment = {
 
   writerChannelsUrl: '/writer/channels',
   readerChannelsUrl: '/reader/channels',
+  messagesSufix: 'messages',
 
   mqttWsUrl: window['env']['mqttWsUrl'] || 'ws://localhost/mqtt',
   exportConfigFile: '/configs/export/config.toml',
