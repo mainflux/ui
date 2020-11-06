@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { MessagesService } from 'app/common/services/messages/messages.service';
-import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import * as L from 'leaflet';
 import { MqttService, IMqttMessage } from 'ngx-mqtt';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
@@ -47,7 +46,6 @@ export class MapComponent implements OnChanges {
   @Input('gateways') gateways: Map<any, any>;
   constructor(
     private msgService: MessagesService,
-    private notificationsService: NotificationsService,
     private mqttService: MqttService,
   ) {}
 

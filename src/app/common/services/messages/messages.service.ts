@@ -26,7 +26,7 @@ export class MessagesService {
       'Authorization': thingKey,
     });
 
-    let url = `${environment.readerChannelsUrl}/${channel}/messages`;
+    let url = `${environment.readerChannelsUrl}/${channel}/${environment.messagesSufix}`;
     url += `?offset=${offset}&limit=${limit}`;
     url = thingID ? url += `&publisher=${thingID}` : url;
     url = subtopic ? url += `&subtopic=${encodeURIComponent(subtopic)}` : url;
@@ -51,7 +51,7 @@ export class MessagesService {
       'Authorization': key,
     });
 
-    return this.http.post(`${environment.writerChannelsUrl}/${channel}/messages`, msg, { headers: headers })
+    return this.http.post(`${environment.writerChannelsUrl}/${channel}/${environment.messagesSufix}`, msg, { headers: headers })
       .map(
         resp => {
           return resp;
