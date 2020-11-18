@@ -1,22 +1,48 @@
 # Mainflux IoT Admin UI based on Angular 8+ and <a href="https://github.com/akveo/nebular">Nebular</a>
 
-## Install
-Build Docker image:
+## Installation
+
+### Quick Setup
+For a quick setup, pre-built images from Docker Hub can be used.
+
+First, make sure that `docker` and `docker-compose` are installed. Also, stop existing Mainflux containers if any.
+
+Then, use the following instructions:
 ```
-make ui
+$ git clone https://github.com/mainflux/ui.git
+$ cd ui
+$ make run
+```
+UI should be now up and running at `http://localhost/`.
+
+*(Note that `http://localhost:3000/` is for internal use only, and is not intended to be used by the end-user.)*
+
+More configuration (port numbers, etc.) can be done by editing the `.env` file before `$ make run`.
+
+### Developer Setup
+For setting up a developer environment, Mainflux UI docker image must be built using the following command:
+```
+$ git clone https://github.com/mainflux/ui.git
+$ cd ui
+$ make ui
+```
+Then, to start the Mainflux UI as well as other Mainflux services, use the following command which internally uses `docker-compose`:
+```
+$ make run
+```
+For more developer tools, run `angular-cli`:
+```
+$ cd ui
+$ npm install
+$ npm start
+```
+### Cleaning Installation
+To remove the installed containers and volumes, run:
+```
+$ make clean
 ```
 
-Run docker-compose:
-```
-make run
-```
-
-Run angular-cli:
-```
-cd ui
-npm install
-npm start
-```
+## Preview
 
 ##
 ![dashboard][dashboard]
