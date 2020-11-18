@@ -20,8 +20,6 @@ More configuration (port numbers, etc.) can be done by editing the `.env` file b
 ## Usage
 A developer build from the source can be achieved using the following command:
 ```
-$ git clone https://github.com/mainflux/ui.git
-$ cd ui
 $ make ui
 ```
 Then, to start the Mainflux UI as well as other Mainflux services:
