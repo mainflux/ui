@@ -27,6 +27,8 @@ services:
     image: mainflux/ui:latest
     container_name: mainflux-ui
     restart: on-failure
+    volumes:
+      - ./nginx/entrypoint.sh:/entrypoint.sh
     ports:
       - ${MF_UI_PORT}:${MF_UI_PORT}
     networks:
@@ -34,6 +36,7 @@ services:
     environment:
       MF_UI_PORT: ${MF_UI_PORT}
       MF_UI_MQTT_WS_URL: ${MF_UI_MQTT_WS_URL}
+    command: /entrypoint.sh
 
   nginx:
     image: nginx:1.16.0-alpine
