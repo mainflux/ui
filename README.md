@@ -6,36 +6,36 @@ For a quick setup, pre-built images from Docker Hub can be used.
 First, make sure that `docker` and `docker-compose` are installed. Also, stop existing Mainflux containers if any.
 
 Then, use the following instructions:
-```
-$ git clone https://github.com/mainflux/ui.git
-$ cd ui
-$ make run
+```bash
+git clone https://github.com/mainflux/ui.git
+cd ui
+make run
 ```
 UI should be now up and running at `http://localhost/`.
 
 *(Note that `http://localhost:3000/` is for internal use only, and is not intended to be used by the end-user.)*
 
-More configuration (port numbers, etc.) can be done by editing the `.env` file before `$ make run`.
+More configuration (port numbers, etc.) can be done by editing the `.env` file before `make run`.
 
 ## Usage
 A developer build from the source can be achieved using the following command:
-```
-$ make ui
+```bash
+make ui
 ```
 Then, to start the Mainflux UI as well as other Mainflux services:
-```
-$ make run
+```bash
+make run
 ```
 For more developer tools, run `angular-cli`:
-```
-$ cd ui
-$ npm install
-$ npm start
+```bash
+cd ui
+npm install
+npm start
 ```
 ## Uninstall
 To remove the installed containers and volumes, run:
-```
-$ make clean
+```bash
+make clean
 ```
 
 ## Preview
