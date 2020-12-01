@@ -9,7 +9,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  experimental: false,
+  experimental: true,
   production: false,
   
   usersUrl: '/users',

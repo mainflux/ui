@@ -53,7 +53,24 @@
             ]
           },
           "configurations": {
-            "production": {
+            "basic": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "extractCss": false,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": false
+            },
+            "basic-prod": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -72,10 +89,56 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/environment.basic-prod.ts"
                 }
               ]
-            }
+            },
+            "experimental": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": false,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.experimental.ts"
+                }
+              ]
+            },
+            "experimental-prod": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.experimental-prod.ts"
+                }
+              ]
+            }            
           }
         },
         "serve": {
@@ -84,8 +147,11 @@
             "browserTarget": "ngx-admin-demo:build"
           },
           "configurations": {
-            "production": {
-              "browserTarget": "ngx-admin-demo:build:production"
+            "basic": {
+              "browserTarget": "ngx-admin-demo:build:basic"
+            },
+            "experimental": {
+              "browserTarget": "ngx-admin-demo:build:experimental"
             }
           }
         },
