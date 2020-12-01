@@ -85,7 +85,7 @@
       </nb-card-body>
     </nb-card>
 
-    <nb-card size="large">
+    <nb-card size="large" *ngIf="experimental">
       <nb-card-body>
         <div *ngIf="messages.length < 2" style="text-align: center;">
           No charts to display

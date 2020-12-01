@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { environment } from 'environments/environment'
+
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
@@ -13,6 +15,8 @@ import { Channel, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
   styleUrls: ['./channels.details.component.scss'],
 })
 export class ChannelsDetailsComponent implements OnInit {
+  experimental = environment.experimental;
+  
   offset = 0;
   limit = 20;
 
@@ -33,6 +37,8 @@ export class ChannelsDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.experimental = environment.experimental;
+    
     const chanID = this.route.snapshot.paramMap.get('id');
 
     this.channelsService.getChannel(chanID).subscribe(

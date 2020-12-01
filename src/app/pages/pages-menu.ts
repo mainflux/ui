@@ -1,3 +1,4 @@
+import {environment} from 'environments/environment'
 import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
@@ -6,16 +7,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'home-outline',
     link: '/pages/home',
     home: true,
-  },
-  {
-    title: 'User Groups',
-    icon: 'shield-outline',
-    link: '/pages/users/groups',
-  },
-  {
-    title: 'Users',
-    icon: 'people-outline',
-    link: '/pages/users',
   },
   {
     title: 'Things',
@@ -32,25 +23,40 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'copy-outline',
     link: '/pages/twins',
   },
-  {
-    title: 'Services',
-    icon: 'layers-outline',
-    children: [
-      {
-        title: 'LoRa',
-        icon: 'radio-outline',
-        link: '/pages/services/lora',
-      },
-      {
-        title: 'OPC-UA',
-        icon: 'globe-outline',
-        link: '/pages/services/opcua',
-      },
-      {
-        title: 'Gateways',
-        icon: 'hard-drive-outline',
-        link: '/pages/services/gateways',
-      },
-    ],
-  },
 ];
+
+if (environment.experimental) {
+  MENU_ITEMS.push(
+    {
+      title: 'User Groups',
+      icon: 'shield-outline',
+      link: '/pages/users/groups',
+    },
+    {     
+      title: 'Users',
+      icon: 'people-outline',
+      link: '/pages/users',
+    },
+    {
+      title: 'Services',
+      icon: 'layers-outline',
+      children: [
+        {
+          title: 'LoRa',
+          icon: 'radio-outline',
+          link: '/pages/services/lora',
+        },
+        {
+          title: 'OPC-UA',
+          icon: 'globe-outline',
+          link: '/pages/services/opcua',
+        },
+        {
+          title: 'Gateways',
+          icon: 'hard-drive-outline',
+          link: '/pages/services/gateways',
+        },
+      ],
+    },    
+  ) 
+}

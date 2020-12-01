@@ -5,6 +5,7 @@
  */
 export const environment = {
   production: true,
+  experimental: false,
 
   usersUrl: '/users',
   groupsUrl: '/groups',

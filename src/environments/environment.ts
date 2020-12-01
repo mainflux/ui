@@ -10,7 +10,8 @@
 
 export const environment = {
   production: false,
-
+  experimental: false,
+  
   usersUrl: '/users',
   groupsUrl: '/groups',
   usersVersionUrl: '/version',
