@@ -53,24 +53,7 @@
             ]
           },
           "configurations": {
-            "basic": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": false,
-              "outputHashing": "none",
-              "sourceMap": true,
-              "extractCss": false,
-              "namedChunks": false,
-              "aot": false,
-              "extractLicenses": false,
-              "vendorChunk": false,
-              "buildOptimizer": false
-            },
-            "basic-prod": {
+            "production": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -89,26 +72,11 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.basic-prod.ts"
+                  "with": "src/environments/environment.prod.ts"
                 }
               ]
             },
             "experimental": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": true,
-              "extractCss": false,
-              "namedChunks": false,
-              "aot": false,
-              "extractLicenses": false,
-              "vendorChunk": false,
-              "buildOptimizer": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -147,8 +115,8 @@
             "browserTarget": "ngx-admin-demo:build"
           },
           "configurations": {
-            "basic": {
-              "browserTarget": "ngx-admin-demo:build:basic"
+            "production": {
+              "browserTarget": "ngx-admin-demo:build:production"
             },
             "experimental": {
               "browserTarget": "ngx-admin-demo:build:experimental"
