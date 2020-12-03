@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { environment } from 'environments/environment'
+import { environment } from 'environments/environment';
 
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
@@ -15,8 +15,8 @@ import { Thing, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
   styleUrls: ['./things.details.component.scss'],
 })
 export class ThingsDetailsComponent implements OnInit {
-  experimental : Boolean = false;
-  
+  experimental: Boolean = environment.experimental;
+
   offset = 0;
   limit = 20;
 
@@ -38,8 +38,6 @@ export class ThingsDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.experimental = environment.experimental;
-
     const id = this.route.snapshot.paramMap.get('id');
 
     this.thingsService.getThing(id).subscribe(

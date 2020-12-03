@@ -1,4 +1,4 @@
-import {environment} from 'environments/environment'
+import {environment} from 'environments/environment';
 import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = environment.experimental ?
