@@ -26,7 +26,7 @@ export class MessagesService {
       'Authorization': thingKey,
     });
 
-    let url = `${environment.readerChannelsUrl}/${channel}/${environment.messagesSufix}`;
+    let url = `${environment.readerChannelsUrl}/${channel}/msg/vega`;
     url += `?offset=${offset}&limit=${limit}`;
     url = thingID ? url += `&publisher=${thingID}` : url;
     url = subtopic ? url += `&subtopic=${encodeURIComponent(subtopic)}` : url;
