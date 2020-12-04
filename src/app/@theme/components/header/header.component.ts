@@ -7,8 +7,10 @@ import { Subject, Observable } from 'rxjs';
 import { RippleService } from '../../../@core/utils/ripple.service';
 
 // Mainflux - Users
- import { User } from 'app/common/interfaces/mainflux.interface';
- import { UsersService } from 'app/common/services/users/users.service';
+import { User } from 'app/common/interfaces/mainflux.interface';
+import { UsersService } from 'app/common/services/users/users.service';
+
+import { STRINGS } from 'assets/text/strings';
 
 @Component({
   selector: 'ngx-header',
@@ -16,11 +18,11 @@ import { RippleService } from '../../../@core/utils/ripple.service';
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
   private destroy$: Subject<void> = new Subject<void>();
   public readonly materialTheme$: Observable<boolean>;
   userPictureOnly: boolean = false;
   user: User;
+  logotype: string = STRINGS.header.logotype;
 
   themes = [
     {
