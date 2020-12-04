@@ -79,5 +79,3 @@ export const MENU_ITEMS: NbMenuItem[] = environment.experimental ?
     link: '/pages/twins',
   },
 ];
-
-
