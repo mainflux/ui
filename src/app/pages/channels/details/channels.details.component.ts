@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { environment } from 'environments/environment';
+
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
@@ -13,6 +15,8 @@ import { Channel, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
   styleUrls: ['./channels.details.component.scss'],
 })
 export class ChannelsDetailsComponent implements OnInit {
+  experimental: Boolean = environment.experimental;
+
   offset = 0;
   limit = 20;
 
