@@ -12,6 +12,7 @@ export class FsService {
     }
     const separator = ',';
     const keys = Object.keys(rows[0]);
+    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM
     const csvContent =
       keys.join(separator) +
       '\n' +
@@ -29,7 +30,7 @@ export class FsService {
         }).join(separator);
       }).join('\n');
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' });
     if (navigator.msSaveBlob) { // IE 10+
       navigator.msSaveBlob(blob, filename);
     } else {
