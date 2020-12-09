@@ -70,7 +70,9 @@ export class ChannelsService {
 
     let params = new HttpParams()
       .set('offset', offset.toString())
-      .set('limit', limit.toString());
+      .set('limit', limit.toString())
+      .set('order', 'name')
+      .set('dir', 'asc');
 
     if (type) {
       if (metaValue) {
