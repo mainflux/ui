@@ -1,6 +1,9 @@
 ui:
 	docker build --tag=mainflux/ui -f docker/Dockerfile .
 
+ui-experimental:
+	docker build --tag=mainflux/ui-experimental -f docker/Dockerfile.experimental .
+
 run:
 	docker-compose -f docker/docker-compose.yml up
 
