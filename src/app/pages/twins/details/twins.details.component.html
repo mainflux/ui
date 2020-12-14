@@ -163,7 +163,7 @@
         <div class="col-md-1">
         </div>
       </nb-list-item>
-      <nb-list-item *ngFor="let attr of editAttrs">
+      <nb-list-item *ngFor="let attr of editAttrs" class="pickable" (click)="selectAttribute(attr)">
         <div class="col-md-2">
           {{ attr.name }}
         </div>
