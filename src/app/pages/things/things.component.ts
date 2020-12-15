@@ -54,7 +54,7 @@ export class ThingsComponent implements OnInit {
       type: {
         title: 'Type',
         filter: false,
-        addable: false,
+        addable: true,
       },
       id: {
         title: 'ID',
@@ -98,7 +98,7 @@ export class ThingsComponent implements OnInit {
 
         // Check if there is a type defined in the metadata
         this.things.forEach( (thing: Thing) => {
-          thing.type = thing.metadata ? thing.metadata.type : 'undefined';
+          thing.type = thing.metadata ? thing.metadata.type : '';
         });
 
         // Load and refresh Things table
@@ -112,6 +112,7 @@ export class ThingsComponent implements OnInit {
     // close create row
     event.confirm.resolve();
 
+    event.newData.type && (event.newData.metadata = {'type': event.newData.type});
     this.thingsService.addThing(event.newData).subscribe(
       resp => {
         this.notificationsService.success('Thing successfully created', '');
@@ -123,6 +124,12 @@ export class ThingsComponent implements OnInit {
   onEditConfirm(event): void {
     // close edit row
     event.confirm.resolve();
+
+    const type = event.newData.type;
+    if (type) {
+      event.newData.metadata = event.newData.metadata || {};
+      event.newData.metadata.type = type;
+    }
 
     this.thingsService.editThing(event.newData).subscribe(
       resp => {

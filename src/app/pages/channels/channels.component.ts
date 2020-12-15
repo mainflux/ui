@@ -54,7 +54,7 @@ export class ChannelsComponent implements OnInit {
       type: {
         title: 'Type',
         filter: false,
-        addable: false,
+        addable: true,
       },
       id: {
         title: 'ID',
@@ -98,7 +98,7 @@ export class ChannelsComponent implements OnInit {
 
         // Check if there is a type defined in the metadata
         this.channels.forEach( (chann: Channel) => {
-          chann.type = chann.metadata ? chann.metadata.type : 'undefined';
+          chann.type = chann.metadata ? chann.metadata.type : '';
         });
 
         // Load and refresh Channels table
@@ -112,6 +112,7 @@ export class ChannelsComponent implements OnInit {
     // close create row
     event.confirm.resolve();
 
+    event.newData.type && (event.newData.metadata = {'type': event.newData.type});
     this.channelsService.addChannel(event.newData).subscribe(
       resp => {
         this.notificationsService.success('Channel successfully created', '');
@@ -123,6 +124,12 @@ export class ChannelsComponent implements OnInit {
   onEditConfirm(event): void {
     // close edit row
     event.confirm.resolve();
+
+    const type = event.newData.type;
+    if (type) {
+      event.newData.metadata = event.newData.metadata || {};
+      event.newData.metadata.type = type;
+    }
 
     this.channelsService.editChannel(event.newData).subscribe(
       resp => {
