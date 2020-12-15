@@ -4,11 +4,10 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'ngx-details-access',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent {
-  // Depends on valuePrepareFunction
-  value: any;
+  // Depends on valuePrepareFunction in ng2-smart-table
+  value: {id: string};
 
   constructor(
     private router: Router,
