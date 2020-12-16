@@ -8,7 +8,6 @@ import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Channel, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 
-
 @Component({
   selector: 'ngx-channels-details-component',
   templateUrl: './channels.details.component.html',

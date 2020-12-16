@@ -1,20 +1,3 @@
-nb-icon {
-  vertical-align: middle;
-}
-
-nb-select {
-  width: 100%;
-}
-
-button {
-  float: right;
-}
-
-textarea {
-  width: 100%;
-  height: 100%;
-}
-
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -29,4 +12,8 @@ td, th {
 
 tr:nth-child(even) {
   background-color: #e3e6ec;
+}
+
+.right {
+  float: right;
 }
