@@ -5,7 +5,6 @@ import { LocalDataSource } from 'ng2-smart-table';
 
 import { Twin } from 'app/common/interfaces/mainflux.interface';
 import { TwinsService } from 'app/common/services/twins/twins.service';
-import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { FsService } from 'app/common/services/fs/fs.service';
 import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
 import { DetailsComponent } from 'app/shared/details/details.component';
@@ -89,7 +88,6 @@ export class TwinsComponent implements OnInit {
   constructor(
     private dialogService: NbDialogService,
     private twinsService: TwinsService,
-    private notificationsService: NotificationsService,
     private fsService: FsService,
   ) { }
 
@@ -136,7 +134,6 @@ export class TwinsComponent implements OnInit {
           this.twinsService.deleteTwin(event.data.id).subscribe(
             resp => {
               this.twins = this.twins.filter(t => t.id !== event.data.id);
-              this.notificationsService.success('Twin successfully deleted', '');
             },
           );
         }
@@ -151,6 +148,6 @@ export class TwinsComponent implements OnInit {
   onFileSelected(files: FileList) {
   }
 
-  searchThing(input) {
+  searchTwin(input) {
   }
 }

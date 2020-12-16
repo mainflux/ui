@@ -1,0 +1,38 @@
+<nb-card size="small">
+  <nb-card-header class="header-details">
+    Messages
+    <nb-select class="right" placeholder="table" [(selected)]="mode" size="tiny">
+      <nb-option *ngFor="let mode of this.modes" [value]="mode">{{mode}}</nb-option>
+    </nb-select>
+  </nb-card-header>
+  <nb-card-body>
+    <div *ngIf="messages.length == 0" style="text-align: center;">
+      No messages to display
+    </div>
+    <div *ngIf="mode == 'table'">      
+      <table>
+        <tr>
+          <th>name</th>
+          <th>value</th>
+          <th>time</th>
+          <th>subtopic</th>
+          <th>channel</th>
+          <th>publisher</th>
+          <th>protocol</th>
+        </tr>
+        <tr *ngFor="let message of messages">
+          <td>{{message.name}}</td>
+          <td>{{message | valuePipe}}</td>
+          <td>{{message.time*1000 | date:'medium'}}</td>
+          <td>{{message.subtopic}}</td>
+          <td>{{message.channel}}</td>
+          <td>{{message.publisher}}</td>
+          <td>{{message.protocol}}</td>
+        </tr>
+      </table>
+    </div>        
+    <div *ngIf="mode == 'json'">
+      <pre  *ngFor="let message of messages">{{ message | json }}</pre>
+    </div>
+  </nb-card-body>
+</nb-card>

@@ -29,17 +29,6 @@
       </nb-card-body>
     </nb-card>
 
-    <nb-card size="small">
-      <nb-card-header class="header-details">
-        Raw Messages
-      </nb-card-header>
-      <nb-card-body>
-        <div *ngIf="messages.length == 0" style="text-align: center;">
-          No messages to display
-        </div>
-        <pre *ngFor="let message of messages">{{ message | json }}</pre>
-      </nb-card-body>
-    </nb-card>
   </div>
 
   <div class="col-md-6">
@@ -96,5 +85,9 @@
         </div>
       </nb-card-body>
     </nb-card>
+  </div>
+  
+  <div class="col-md-12">  
+    <ngx-message-table [messages]="messages"></ngx-message-table>
   </div>
 </div>
