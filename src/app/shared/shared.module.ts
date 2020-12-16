@@ -13,7 +13,7 @@ import { DetailsModule } from './details/details.module';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ChartModule } from './chart/chart.module';
 import { MessageTableComponent } from './message-table/message-table.component';
-import { ValuePipe } from './message-table/value.pipe';
+import { MessageValuePipe } from './pipes/message-value.pipe';
 
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ import { ValuePipe } from './message-table/value.pipe';
   declarations: [
     ConfirmationComponent,
     MessageTableComponent,
-    ValuePipe,
+    MessageValuePipe,
   ],
   exports: [
     ThemeModule,
@@ -41,7 +41,7 @@ import { ValuePipe } from './message-table/value.pipe';
     MessageTableComponent,
   ],
   providers: [
-    ValuePipe,
+    MessageValuePipe,
   ],
 })
 
