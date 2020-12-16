@@ -78,4 +78,5 @@ export interface MainfluxMsg {
   bool_value: boolean;
   data_value: string;
   sum: number;
+  protocol: string;
 }
