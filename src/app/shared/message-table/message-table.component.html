@@ -22,7 +22,7 @@
         </tr>
         <tr *ngFor="let message of messages">
           <td>{{message.name}}</td>
-          <td>{{message | valuePipe}}</td>
+          <td>{{message | value}}</td>
           <td>{{message.time*1000 | date:'medium'}}</td>
           <td>{{message.subtopic}}</td>
           <td>{{message.channel}}</td>

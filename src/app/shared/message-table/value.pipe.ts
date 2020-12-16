@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import { MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 
-@Pipe({name: 'valuePipe'})
+@Pipe({name: 'value'})
 export class ValuePipe implements PipeTransform {
   transform(msg: MainfluxMsg): any {
     if (typeof(msg.value) !== 'undefined') return msg.value;
