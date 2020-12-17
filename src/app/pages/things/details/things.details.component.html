@@ -28,39 +28,38 @@
         </textarea>
       </nb-card-body>
     </nb-card>
-
   </div>
 
   <div class="col-md-6">
     <nb-card size="small">
       <nb-card-header class="header-details">
         <div class="row">
-            <div class="col-md-3">
-              Connections
-            </div>
-            <div class="col-md-7">
-              <nb-select multiple placeholder="Select Channel(s)" [(selected)]="selectedChannels" size="tiny">
-                <nb-option *ngFor="let channel of this.channels" [value]="channel.id">
-                  {{channel.name}}
-                </nb-option>
-              </nb-select>
-            </div>
-            <div class="col-md-2">
-              <button nbButton size="tiny" class="button-green"
-                      (click)="onConnect()">
-                Connect
-              </button>
-            </div>
+          <div class="col-md-3">
+            Connections
+          </div>
+          <div class="col-md-7">
+            <nb-select multiple placeholder="Select Channel(s)" [(selected)]="selectedChannels" size="tiny">
+              <nb-option *ngFor="let channel of disconnectedChans" [value]="channel.id">
+                {{channel.name}}
+              </nb-option>
+            </nb-select>
+          </div>
+          <div class="col-md-2">
+            <button nbButton size="tiny" class="button-green"
+                    (click)="onConnect()">
+              Connect
+            </button>
+          </div>
         </div>
       </nb-card-header>
       <nb-card-body>
-        <div *ngIf="connections.length === 0">
+        <div *ngIf="connectedChans.length === 0">
           <div style="text-align: center">
             No connections
           </div>
         </div>
-        <div *ngIf="connections.length !== 0">
-          <div *ngFor="let con of connections;" class="row" style="padding: 2.6px;">
+        <div *ngIf="connectedChans.length !== 0">
+          <div *ngFor="let con of connectedChans;" class="row" style="padding: 2.6px;">
             <div class="col-md-9">
               <nb-icon status="info" icon="arrow-right-outline"></nb-icon>
               {{con.name}}

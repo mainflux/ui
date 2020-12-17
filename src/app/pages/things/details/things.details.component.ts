@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { environment } from 'environments/environment';
 
+import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Thing, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
-
+import { Thing, MainfluxMsg, Channel } from 'app/common/interfaces/mainflux.interface';
+import { IntervalService } from 'app/common/services/interval/interval.service';
 
 @Component({
   selector: 'ngx-things-details-component',
   templateUrl: './things.details.component.html',
   styleUrls: ['./things.details.component.scss'],
+  providers: [IntervalService]
 })
-export class ThingsDetailsComponent implements OnInit {
+export class ThingsDetailsComponent implements OnInit, OnDestroy {
   experimental: Boolean = environment.experimental;
 
   offset = 0;
@@ -22,8 +23,8 @@ export class ThingsDetailsComponent implements OnInit {
 
   thing: Thing = {};
 
-  connections = [];
-  channels = [];
+  connectedChans: Channel[] = [];
+  disconnectedChans: Channel[] = [];
   messages: MainfluxMsg[] = [];
 
   selectedChannels = [];
@@ -31,6 +32,7 @@ export class ThingsDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private interval: IntervalService,    
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
     private messagesService: MessagesService,
@@ -41,12 +43,13 @@ export class ThingsDetailsComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     this.thingsService.getThing(id).subscribe(
-      resp => {
-        this.thing = <Thing>resp;
-
-        this.findDisconnectedChans();
+      (th: Thing) => {
+        this.thing = th;
+        this.updateConnections();
       },
     );
+
+    this.interval.set(this, this.getChannelMessages);
   }
 
   onEdit() {
@@ -71,8 +74,7 @@ export class ThingsDetailsComponent implements OnInit {
       this.channelsService.connectThings(this.selectedChannels, [this.thing.id]).subscribe(
         resp => {
           this.notificationsService.success('Successfully connected to Channel(s)', '');
-          this.selectedChannels = [];
-          this.findDisconnectedChans();
+          this.updateConnections();
         },
       );
     } else {
@@ -84,37 +86,48 @@ export class ThingsDetailsComponent implements OnInit {
     this.channelsService.disconnectThing(chanID, this.thing.id).subscribe(
       resp => {
         this.notificationsService.success('Successfully disconnected from Channel', '');
-        this.channels.push(this.connections.find(c => c.id === chanID));
-        this.connections = this.connections.filter(c => c.id !== chanID);
+        this.updateConnections();
       },
     );
   }
 
+  updateConnections() {
+    this.selectedChannels = [];    
+    this.findConnectedChans();
+    this.findDisconnectedChans();
+  }
+  
+  findConnectedChans() {
+    this.thingsService.connectedChannels(this.thing.id).subscribe(
+      (respConns: any) => {
+        this.connectedChans = respConns.channels;
+        this.getChannelMessages();
+      },
+    );
+  }
+
+  findDisconnectedChans() {
+    this.thingsService.disconnectedChannels(this.thing.id).subscribe(
+      (respDisconn: any) => {
+        this.disconnectedChans = respDisconn.channels;
+      },
+    );
+  }
+  
   getChannelMessages() {
-    this.connections.forEach(chan => {
+    this.messages = [];
+    this.connectedChans.forEach(chan => {
       this.messagesService.getMessages(chan.id, this.thing.key, this.thing.id).subscribe(
         (respMsg: any) => {
-          this.messages = respMsg.messages || this.messages;
+          if (respMsg.messages) {
+            this.messages = this.messages.concat(respMsg.messages)
+          };
         },
       );
     });
   }
 
-  findDisconnectedChans() {
-    this.messages = [];
-
-    this.thingsService.connectedChannels(this.thing.id).subscribe(
-      (respConns: any) => {
-        this.connections = respConns.channels;
-
-        this.getChannelMessages();
-      },
-    );
-
-    this.thingsService.disconnectedChannels(this.thing.id).subscribe(
-      (respDisconn: any) => {
-        this.channels = respDisconn.channels;
-      },
-    );
-  }
+  ngOnDestroy(): void {
+    this.interval.remove();
+  }  
 }
