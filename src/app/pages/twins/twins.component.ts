@@ -6,8 +6,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { Twin } from 'app/common/interfaces/mainflux.interface';
 import { TwinsService } from 'app/common/services/twins/twins.service';
 import { FsService } from 'app/common/services/fs/fs.service';
-import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
-import { DetailsComponent } from 'app/shared/details/details.component';
+import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
+import { DetailsComponent } from 'app/shared/components/details/details.component';
 
 @Component({
   selector: 'ngx-twins',
