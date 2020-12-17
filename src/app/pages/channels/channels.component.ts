@@ -7,8 +7,8 @@ import { Channel } from 'app/common/interfaces/mainflux.interface';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { FsService } from 'app/common/services/fs/fs.service';
-import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
-import { DetailsComponent } from 'app/shared/details/details.component';
+import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
+import { DetailsComponent } from 'app/shared/components/details/details.component';
 
 const defSearchBardMs: number = 100;
 

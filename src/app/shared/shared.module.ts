@@ -8,11 +8,11 @@ import {
   NbSelectModule,
  } from '@nebular/theme';
 
-import { MapModule } from './map/map.module';
-import { DetailsModule } from './details/details.module';
-import { ConfirmationComponent } from './confirmation/confirmation.component';
-import { ChartModule } from './chart/chart.module';
-import { MessageTableComponent } from './message-table/message-table.component';
+import { MapModule } from './components/map/map.module';
+import { DetailsModule } from './components/details/details.module';
+import { ConfirmationComponent } from './components/confirmation/confirmation.component';
+import { ChartModule } from './components/chart/chart.module';
+import { MessageTableComponent } from './components/message-table/message-table.component';
 import { MessageValuePipe } from './pipes/message-value.pipe';
 
 @NgModule({

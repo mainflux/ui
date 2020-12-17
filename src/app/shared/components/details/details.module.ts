@@ -5,7 +5,7 @@ import {
   NbButtonModule,
  } from '@nebular/theme';
 
-import { DetailsComponent } from 'app/shared/details/details.component';
+import { DetailsComponent } from 'app/shared/components/details/details.component';
 
 @NgModule({
   imports: [

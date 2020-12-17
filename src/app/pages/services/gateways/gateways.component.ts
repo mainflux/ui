@@ -9,8 +9,8 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { FsService } from 'app/common/services/fs/fs.service';
 
-import { DetailsComponent } from 'app/shared/details/details.component';
-import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
+import { DetailsComponent } from 'app/shared/components/details/details.component';
+import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
 
 const defSearchBardMs: number = 100;
 

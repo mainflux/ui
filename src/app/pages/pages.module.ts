@@ -22,8 +22,8 @@ import { FormsModule } from '@angular/forms';
 // Mainflux - Common and Shared
 import { SharedModule } from 'app/shared/shared.module';
 import { CommonModule } from 'app/common/common.module';
-import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
-import { DetailsComponent } from 'app/shared/details/details.component';
+import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
+import { DetailsComponent } from 'app/shared/components/details/details.component';
 // Mainflux - User Groups
 import { UserGroupsComponent } from './user-groups/user-groups.component';
 import { UserGroupsDetailsComponent } from './user-groups/details/user-groups.details.component';

@@ -13,7 +13,7 @@ import { GatewaysInfoComponent } from 'app/pages/services/gateways/details/info/
 import { GatewaysConfigComponent } from 'app/pages/services/gateways/details/config/gateways.config.component';
 import { GatewaysXtermComponent } from 'app/pages/services/gateways/details/xterm/gateways.xterm.component';
 
-import { ConfirmationComponent } from 'app/shared/confirmation/confirmation.component';
+import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
 
 @NgModule({
   imports: [
