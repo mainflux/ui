@@ -12,7 +12,7 @@ import { IntervalService } from 'app/common/services/interval/interval.service';
   selector: 'ngx-channels-details-component',
   templateUrl: './channels.details.component.html',
   styleUrls: ['./channels.details.component.scss'],
-  providers: [IntervalService]
+  providers: [IntervalService],
 })
 export class ChannelsDetailsComponent implements OnInit, OnDestroy {
   experimental: Boolean = environment.experimental;
@@ -46,7 +46,7 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
         this.updateConnections();
       },
     );
-    
+
     this.interval.set(this, this.getChannelMessages);
   }
 
@@ -103,7 +103,7 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
         },
     );
   }
-  
+
   findDisconnectedThings() {
     this.channelsService.disconnectedThings(this.channel.id).subscribe(
       (respDisconns: any) => {
@@ -113,8 +113,6 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
   }
 
   getChannelMessages() {
-    console.log("get chan msg"  );
-
     if (this.connectedThings.length) {
       this.messagesService.getMessages(this.channel.id, this.connectedThings[0].key).subscribe(
         (respMsg: any) => {

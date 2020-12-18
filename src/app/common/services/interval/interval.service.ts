@@ -9,10 +9,10 @@ export class IntervalService {
 
   set(context: any, callback: { bind: (arg0: any) => TimerHandler; }, interval?: number) {
     interval = interval || this.defaultInterval;
-    
+
     if (!this.id) {
       this.id = window.setInterval(callback.bind(context), interval);
-    }    
+    }
   }
 
   remove() {

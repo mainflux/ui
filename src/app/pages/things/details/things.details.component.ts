@@ -13,7 +13,7 @@ import { IntervalService } from 'app/common/services/interval/interval.service';
   selector: 'ngx-things-details-component',
   templateUrl: './things.details.component.html',
   styleUrls: ['./things.details.component.scss'],
-  providers: [IntervalService]
+  providers: [IntervalService],
 })
 export class ThingsDetailsComponent implements OnInit, OnDestroy {
   experimental: Boolean = environment.experimental;
@@ -32,7 +32,7 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private interval: IntervalService,    
+    private interval: IntervalService,
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
     private messagesService: MessagesService,
@@ -92,11 +92,11 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateConnections() {
-    this.selectedChannels = [];    
+    this.selectedChannels = [];
     this.findConnectedChans();
     this.findDisconnectedChans();
   }
-  
+
   findConnectedChans() {
     this.thingsService.connectedChannels(this.thing.id).subscribe(
       (respConns: any) => {
@@ -113,15 +113,20 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
       },
     );
   }
-  
+
   getChannelMessages() {
-    this.messages = [];
+    let messages: MainfluxMsg[] = [];
+    let counter = 0;
     this.connectedChans.forEach(chan => {
       this.messagesService.getMessages(chan.id, this.thing.key, this.thing.id).subscribe(
         (respMsg: any) => {
           if (respMsg.messages) {
-            this.messages = this.messages.concat(respMsg.messages)
-          };
+            messages = messages.concat(respMsg.messages);
+            counter++;
+            if (counter === this.connectedChans.length - 1) {
+              this.messages = messages;
+            }
+          }
         },
       );
     });
@@ -129,5 +134,5 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.interval.remove();
-  }  
+  }
 }
