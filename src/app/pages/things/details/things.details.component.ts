@@ -115,17 +115,13 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
   }
 
   getChannelMessages() {
-    let messages: MainfluxMsg[] = [];
-    let counter = 0;
-    this.connectedChans.forEach(chan => {
+    const messages: MainfluxMsg[] = [];
+    this.connectedChans.forEach((chan, i) => {
       this.messagesService.getMessages(chan.id, this.thing.key, this.thing.id).subscribe(
         (respMsg: any) => {
-          if (respMsg.messages) {
-            messages = messages.concat(respMsg.messages);
-            counter++;
-            if (counter === this.connectedChans.length - 1) {
-              this.messages = messages;
-            }
+          respMsg.messages.forEach((msg: MainfluxMsg) => messages.push(msg));
+          if (i === this.connectedChans.length - 1) {
+            this.messages = messages;
           }
         },
       );
@@ -133,6 +129,6 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.intervalService.remove();
+    this.intervalService.clear();
   }
 }

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
 type Callback = () => void;
+const defaultInterval: number = 1000 * 5; // ms * sec
 
 @Injectable()
 export class IntervalService {
   ids: number[] = [];
   callbacks: Callback[] = [];
-  defaultInterval: number = 1000 * 5; // ms * sec
 
   constructor() {}
 
@@ -16,13 +16,12 @@ export class IntervalService {
     }
     this.callbacks.push(callback);
 
-    interval = interval || this.defaultInterval;
-
+    interval = interval || defaultInterval;
     const id = window.setInterval(callback.bind(context), interval);
     this.ids.push(id);
   }
 
-  remove() {
+  clear() {
     this.ids.forEach(id => window.clearInterval(id));
   }
 }

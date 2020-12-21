@@ -203,6 +203,6 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.intervalService.remove();
+    this.intervalService.clear();
   }
 }

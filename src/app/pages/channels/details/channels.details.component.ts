@@ -100,7 +100,7 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
       (resp: any) => {
         this.connectedThings = resp.things;
         this.getChannelMessages();
-        },
+      },
     );
   }
 
@@ -125,6 +125,6 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.intervalService.remove();
+    this.intervalService.clear();
   }
 }
