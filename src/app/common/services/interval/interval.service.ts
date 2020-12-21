@@ -1,21 +1,28 @@
 import { Injectable } from '@angular/core';
 
+type Callback = () => void;
+
 @Injectable()
 export class IntervalService {
-  id: number;
+  ids: number[] = [];
+  callbacks: Callback[] = [];
   defaultInterval: number = 1000 * 5; // ms * sec
 
   constructor() {}
 
-  set(context: any, callback: { bind: (arg0: any) => TimerHandler; }, interval?: number) {
+  set(context: any, callback: Callback, interval?: number) {
+    if (this.callbacks.indexOf(callback) > -1) {
+      return;
+    }
+    this.callbacks.push(callback);
+
     interval = interval || this.defaultInterval;
 
-    if (!this.id) {
-      this.id = window.setInterval(callback.bind(context), interval);
-    }
+    const id = window.setInterval(callback.bind(context), interval);
+    this.ids.push(id);
   }
 
   remove() {
-    this.id && window.clearInterval(this.id);
+    this.ids.forEach(id => window.clearInterval(id));
   }
 }
