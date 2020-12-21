@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { environment } from 'environments/environment';
-
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
+import { Channel, MainfluxMsg, Thing } from 'app/common/interfaces/mainflux.interface';
+import { IntervalService } from 'app/common/services/interval/interval.service';
 
 @Component({
   selector: 'ngx-channels-details-component',
   templateUrl: './channels.details.component.html',
   styleUrls: ['./channels.details.component.scss'],
+  providers: [IntervalService],
 })
-export class ChannelsDetailsComponent implements OnInit {
+export class ChannelsDetailsComponent implements OnInit, OnDestroy {
   experimental: Boolean = environment.experimental;
 
   offset = 0;
@@ -21,15 +22,16 @@ export class ChannelsDetailsComponent implements OnInit {
 
   channel: Channel = {};
 
-  connections = [];
-  things = [];
+  connectedThings: Thing[] = [];
+  disconnectedThings: Thing[] = [];
   messages: MainfluxMsg[] = [];
 
-  selectedThings = [];
+  selectedThings: string[] = [];
   editorMetadata = '';
 
   constructor(
     private route: ActivatedRoute,
+    private intervalService: IntervalService,
     private channelsService: ChannelsService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
@@ -39,12 +41,13 @@ export class ChannelsDetailsComponent implements OnInit {
     const chanID = this.route.snapshot.paramMap.get('id');
 
     this.channelsService.getChannel(chanID).subscribe(
-      resp => {
-        this.channel = <Channel>resp;
-
-        this.findDisconnectedThings();
+      (ch: Channel) => {
+        this.channel = ch;
+        this.updateConnections();
       },
     );
+
+    this.intervalService.set(this, this.getChannelMessages);
   }
 
   onEdit() {
@@ -68,9 +71,8 @@ export class ChannelsDetailsComponent implements OnInit {
     if (this.selectedThings.length > 0) {
       this.channelsService.connectThings([this.channel.id], this.selectedThings).subscribe(
         resp => {
+          this.updateConnections();
           this.notificationsService.success('Thing(s) successfully connected', '');
-          this.selectedThings = [];
-          this.findDisconnectedThings();
         },
       );
     } else {
@@ -81,32 +83,38 @@ export class ChannelsDetailsComponent implements OnInit {
   onDisconnect(thingID: any) {
     this.channelsService.disconnectThing(this.channel.id, thingID).subscribe(
       resp => {
+        this.updateConnections();
         this.notificationsService.success('Thing successfully disconnected', '');
-        this.things.push(this.connections.find(c => c.id === thingID));
-        this.connections = this.connections.filter(c => c.id !== thingID);
+      },
+    );
+  }
+
+  updateConnections() {
+    this.selectedThings = [];
+    this.findConnectedThings();
+    this.findDisconnectedThings();
+  }
+
+  findConnectedThings() {
+    this.channelsService.connectedThings(this.channel.id).subscribe(
+      (resp: any) => {
+        this.connectedThings = resp.things;
+        this.getChannelMessages();
       },
     );
   }
 
   findDisconnectedThings() {
-    this.channelsService.connectedThings(this.channel.id).subscribe(
-      (respConns: any) => {
-        this.connections = respConns.things;
-
-        this.getChannelMessages();
-      },
-    );
-
     this.channelsService.disconnectedThings(this.channel.id).subscribe(
       (respDisconns: any) => {
-        this.things = respDisconns.things;
+        this.disconnectedThings = respDisconns.things;
       },
     );
   }
 
   getChannelMessages() {
-    if (this.connections.length) {
-      this.messagesService.getMessages(this.channel.id, this.connections[0].key).subscribe(
+    if (this.connectedThings.length) {
+      this.messagesService.getMessages(this.channel.id, this.connectedThings[0].key).subscribe(
         (respMsg: any) => {
           if (respMsg.messages) {
             this.messages = respMsg.messages;
@@ -114,5 +122,9 @@ export class ChannelsDetailsComponent implements OnInit {
         },
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.intervalService.clear();
   }
 }
