@@ -6,8 +6,7 @@ import { TwinsService } from 'app/common/services/twins/twins.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { Thing, Channel, Attribute, Definition, Twin, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
-
-const stateInterval: number = 5 * 1000;
+import { IntervalService } from 'app/common/services/interval/interval.service';
 
 @Component({
   selector: 'ngx-twins-details-component',
@@ -36,11 +35,11 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   };
 
   state = {};
-  stateIntervalID: number;
   stateTime: Date;
 
   constructor(
     private route: ActivatedRoute,
+    private interval: IntervalService,    
     private router: Router,
     private channelsService: ChannelsService,
     private twinsService: TwinsService,
@@ -52,9 +51,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get('id');
     this.getTwin(id);
     this.getChannels();
-    if (!this.stateIntervalID) {
-      this.stateIntervalID = window.setInterval(this.getState.bind(this), stateInterval);
-    }
+    this.interval.set(this, this.getState);
   }
 
   getTwin(id: string) {
@@ -206,6 +203,6 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    window.clearInterval(this.stateIntervalID);
+    this.interval.remove();
   }
 }

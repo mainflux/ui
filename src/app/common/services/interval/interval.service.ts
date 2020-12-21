@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class IntervalService {
   id: number;
-  defaultInterval: number = 1000 * 2; // ms * sec
+  defaultInterval: number = 1000 * 5; // ms * sec
 
   constructor() {}
 
