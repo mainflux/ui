@@ -32,7 +32,7 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private interval: IntervalService,
+    private intervalService: IntervalService,
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
     private messagesService: MessagesService,
@@ -49,7 +49,7 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
       },
     );
 
-    this.interval.set(this, this.getChannelMessages);
+    this.intervalService.set(this, this.getChannelMessages);
   }
 
   onEdit() {
@@ -133,6 +133,6 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.interval.remove();
+    this.intervalService.remove();
   }
 }

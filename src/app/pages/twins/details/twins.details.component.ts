@@ -39,7 +39,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private interval: IntervalService,    
+    private intervalService: IntervalService,
     private router: Router,
     private channelsService: ChannelsService,
     private twinsService: TwinsService,
@@ -51,7 +51,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get('id');
     this.getTwin(id);
     this.getChannels();
-    this.interval.set(this, this.getState);
+    this.intervalService.set(this, this.getState);
   }
 
   getTwin(id: string) {
@@ -203,6 +203,6 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.interval.remove();
+    this.intervalService.remove();
   }
 }

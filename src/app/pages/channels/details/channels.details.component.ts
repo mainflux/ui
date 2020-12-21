@@ -31,7 +31,7 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private interval: IntervalService,
+    private intervalService: IntervalService,
     private channelsService: ChannelsService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
@@ -47,7 +47,7 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
       },
     );
 
-    this.interval.set(this, this.getChannelMessages);
+    this.intervalService.set(this, this.getChannelMessages);
   }
 
   onEdit() {
@@ -125,6 +125,6 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.interval.remove();
+    this.intervalService.remove();
   }
 }
