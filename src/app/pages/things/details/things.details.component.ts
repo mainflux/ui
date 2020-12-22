@@ -128,6 +128,19 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  onChangeDate(event) {
+    const from = new Date(event.from).getTime() / 1000;
+    const to = new Date(event.to).getTime() / 1000;
+
+    if (from && to) {
+      this.messagesService.getMessages(this.connectedChans[0].id, this.thing.key, this.thing.id, '', 0 , 100, from, to).subscribe(
+        (resp: any) => {
+          this.messages = resp.total ? resp.messages : [];
+        },
+      );
+    }
+  }
+
   ngOnDestroy(): void {
     this.intervalService.clear();
   }

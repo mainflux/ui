@@ -18,7 +18,8 @@ export class MessagesService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getMessages(channel: string, thingKey: string, thingID?: string, subtopic?: string, offset?: number, limit?: number) {
+  getMessages(channel: string, thingKey: string, thingID?: string, subtopic?: string,
+    offset?: number, limit?: number,  from?: number, to?: number) {
     offset = offset || 0;
     limit = limit || defLimit;
 
@@ -30,6 +31,8 @@ export class MessagesService {
     url += `?offset=${offset}&limit=${limit}`;
     url = thingID ? url += `&publisher=${thingID}` : url;
     url = subtopic ? url += `&subtopic=${encodeURIComponent(subtopic)}` : url;
+    url = from ? url += `&from=${from}` : url;
+    url = to ? url += `&to=${to}` : url;
 
     return this.http.get(url, { headers: headers })
       .map(

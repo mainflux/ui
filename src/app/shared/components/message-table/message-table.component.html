@@ -4,12 +4,13 @@
     <nb-select class="right" placeholder="table" [(selected)]="mode" size="tiny">
       <nb-option *ngFor="let mode of this.modes" [value]="mode">{{mode}}</nb-option>
     </nb-select>
+    <div class="right">
+      <input nbInput placeholder="Select date" [nbDatepicker]="rangepicker" fullWidth fieldSize="tiny" shape="semi-round">
+      <nb-rangepicker #rangepicker (rangeChange)="getRangeDate($event)"></nb-rangepicker>
+    </div>
   </nb-card-header>
   <nb-card-body>
-    <div *ngIf="messages.length == 0" style="text-align: center;">
-      No messages to display
-    </div>
-    <div *ngIf="mode == 'table'">      
+    <div *ngIf="mode == 'table'">
       <table>
         <tr>
           <th>name</th>
@@ -30,7 +31,11 @@
           <td>{{message.protocol}}</td>
         </tr>
       </table>
-    </div>        
+
+      <div *ngIf="messages.length == 0" class="no-msg">
+        No messages to display
+      </div>
+    </div>
     <div *ngIf="mode == 'json'">
       <pre  *ngFor="let message of messages">{{ message | json }}</pre>
     </div>

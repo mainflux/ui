@@ -6,6 +6,7 @@ import {
   NbIconModule,
   NbButtonModule,
   NbSelectModule,
+  NbDatepickerModule,
  } from '@nebular/theme';
 
 import { MapModule } from './components/map/map.module';
@@ -24,6 +25,7 @@ import { MessageValuePipe } from './pipes/message-value.pipe';
     DetailsModule,
     ChartModule,
     NbSelectModule,
+    NbDatepickerModule,
   ],
   declarations: [
     ConfirmationComponent,

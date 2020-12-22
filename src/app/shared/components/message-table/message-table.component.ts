@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 
@@ -9,7 +9,12 @@ import { MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 })
 export class MessageTableComponent {
   @Input() messages: MainfluxMsg[];
+  @Output() dateEvent: EventEmitter<any> = new EventEmitter();
 
   mode: string = 'table';
   modes: string[] = ['json', 'table'];
+
+  getRangeDate(event) {
+    this.dateEvent.emit({from: event.start, to: event.end});
+  }
 }
