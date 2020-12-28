@@ -82,9 +82,10 @@ export interface MainfluxMsg {
 }
 
 export interface MsgFilters {
-  subtopic?: string;
   offset?: number;
   limit?: number;
+  publisher?: string;
+  subtopic?: string;
   from?: number;
   to?: number;
 }

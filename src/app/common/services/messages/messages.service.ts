@@ -6,6 +6,8 @@ import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
+import { MsgFilters } from 'app/common/interfaces/mainflux.interface';
+
 const defLimit: number = 100;
 
 @Injectable()
@@ -18,21 +20,20 @@ export class MessagesService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getMessages(channel: string, thingKey: string, thingID?: string, subtopic?: string,
-    offset?: number, limit?: number,  from?: number, to?: number) {
-    offset = offset || 0;
-    limit = limit || defLimit;
+  getMessages(channel: string, thingKey: string, filters: MsgFilters) {
+    filters.offset = filters.offset || 0;
+    filters.limit = filters.limit || defLimit;
 
     const headers = new HttpHeaders({
       'Authorization': thingKey,
     });
 
     let url = `${environment.readerChannelsUrl}/${channel}/${environment.messagesSufix}`;
-    url += `?offset=${offset}&limit=${limit}`;
-    url = thingID ? url += `&publisher=${thingID}` : url;
-    url = subtopic ? url += `&subtopic=${encodeURIComponent(subtopic)}` : url;
-    url = from ? url += `&from=${from}` : url;
-    url = to ? url += `&to=${to}` : url;
+    url += `?offset=${filters.offset}&limit=${filters.limit}`;
+    url = filters.publisher ? url += `&publisher=${filters.publisher}` : url;
+    url = filters.subtopic ? url += `&subtopic=${encodeURIComponent(filters.subtopic)}` : url;
+    url = filters.from ? url += `&from=${filters.from}` : url;
+    url = filters.to ? url += `&to=${filters.to}` : url;
 
     return this.http.get(url, { headers: headers })
       .map(

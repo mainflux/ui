@@ -7,6 +7,7 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { Thing, Channel, Attribute, Definition, Twin, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
+import { MsgFilters } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-twins-details-component',
@@ -108,7 +109,13 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   setStateAttribute(name: string, chan: string, key: string, subtopic: string) {
-    this.messagesService.getMessages(chan, key, undefined, subtopic, 0, 1).subscribe(
+    const msgFilters: MsgFilters = {
+      publisher: undefined,
+      subtopic: subtopic,
+      offset: 0,
+      limit: 1,
+    };
+    this.messagesService.getMessages(chan, key, msgFilters).subscribe(
       (msgs: any) => {
         if (!msgs.messages) {
           return;

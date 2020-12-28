@@ -86,7 +86,7 @@
     </nb-card>
   </div>
 
-  <div class="col-md-12">
+  <div class="col-md-12" *ngIf="experimental">
     <ngx-message-table [messages]="messages"
                        (dateEvent)=onChangeDate($event)>
     </ngx-message-table>

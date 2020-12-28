@@ -6,7 +6,7 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel, Thing, MainfluxMsg, MsgFilters } from 'app/common/interfaces/mainflux.interface';
+import { Channel, Thing, MainfluxMsg, MsgFilters, DateFilter } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 
 @Component({
@@ -30,7 +30,10 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
   filters: MsgFilters = {
     offset: 0,
     limit: 20,
+    publisher: '',
     subtopic: '',
+    from: 0,
+    to: 0,
   };
 
   constructor(
@@ -48,6 +51,7 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
     this.thingsService.getThing(id).subscribe(
       (th: Thing) => {
         this.thing = th;
+        this.filters.publisher = this.thing.id;
         this.updateConnections();
       },
     );
@@ -120,8 +124,7 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
   getChannelMessages() {
     const messages: MainfluxMsg[] = [];
     this.connectedChans.forEach((chan, i) => {
-      this.messagesService.getMessages(chan.id, this.thing.key, this.thing.id,
-        this.filters.subtopic, this.filters.offset, this.filters.limit, this.filters.from, this.filters.to).subscribe(
+      this.messagesService.getMessages(chan.id, this.thing.key, this.filters).subscribe(
         (respMsg: any) => {
           if (respMsg.messages) {
             respMsg.messages.forEach((msg: MainfluxMsg) => messages.push(msg));
@@ -134,7 +137,7 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onChangeDate(event) {
+  onChangeDate(event: DateFilter) {
     this.filters.from = event.from;
     this.filters.to = event.to;
     this.getChannelMessages();
