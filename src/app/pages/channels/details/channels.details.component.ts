@@ -131,8 +131,6 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
   }
 
   onChangeDate(event: DateFilter) {
-    console.log(event);
-
     this.filters.from = event.from;
     this.filters.to = event.to;
     this.getChannelMessages();
