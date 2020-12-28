@@ -80,3 +80,16 @@ export interface MainfluxMsg {
   sum: number;
   protocol: string;
 }
+
+export interface MsgFilters {
+  subtopic?: string;
+  offset?: number;
+  limit?: number;
+  from?: number;
+  to?: number;
+}
+
+export interface DateFilter {
+  from: number;
+  to: number;
+}
