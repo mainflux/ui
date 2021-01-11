@@ -5,7 +5,7 @@ import { environment } from 'environments/environment';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel, MainfluxMsg, Thing } from 'app/common/interfaces/mainflux.interface';
+import { Channel, Thing, MainfluxMsg, MsgFilters, DateFilter } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 
 @Component({
@@ -17,9 +17,6 @@ import { IntervalService } from 'app/common/services/interval/interval.service';
 export class ChannelsDetailsComponent implements OnInit, OnDestroy {
   experimental: Boolean = environment.experimental;
 
-  offset = 0;
-  limit = 20;
-
   channel: Channel = {};
 
   connectedThings: Thing[] = [];
@@ -28,6 +25,15 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
 
   selectedThings: string[] = [];
   editorMetadata = '';
+
+  filters: MsgFilters = {
+    offset: 0,
+    limit: 20,
+    publisher: '',
+    subtopic: '',
+    from: 0,
+    to: 0,
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -114,7 +120,7 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
 
   getChannelMessages() {
     if (this.connectedThings.length) {
-      this.messagesService.getMessages(this.channel.id, this.connectedThings[0].key).subscribe(
+      this.messagesService.getMessages(this.channel.id, this.connectedThings[0].key, this.filters).subscribe(
         (respMsg: any) => {
           if (respMsg.messages) {
             this.messages = respMsg.messages;
@@ -122,6 +128,12 @@ export class ChannelsDetailsComponent implements OnInit, OnDestroy {
         },
       );
     }
+  }
+
+  onChangeDate(event: DateFilter) {
+    this.filters.from = event.from;
+    this.filters.to = event.to;
+    this.getChannelMessages();
   }
 
   ngOnDestroy(): void {

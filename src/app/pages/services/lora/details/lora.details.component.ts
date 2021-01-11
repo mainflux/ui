@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LoraService } from 'app/common/services/lora/lora.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { LoraDevice } from 'app/common/interfaces/lora.interface';
+import { MsgFilters } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-lora-details-component',
@@ -15,6 +16,15 @@ export class LoraDetailsComponent implements OnInit {
     name: '',
   };
   messages = [];
+
+  filters: MsgFilters = {
+    offset: 0,
+    limit: 20,
+    publisher: '',
+    subtopic: '',
+    from: 0,
+    to: 0,
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -28,9 +38,10 @@ export class LoraDetailsComponent implements OnInit {
     this.loraService.getDevice(id).subscribe(
       resp => {
         this.loraDevice = resp;
+        this.filters.publisher = this.loraDevice.id;
 
         this.messagesService.getMessages(
-          this.loraDevice.metadata.channel_id, this.loraDevice.key, this.loraDevice.id).subscribe(
+          this.loraDevice.metadata.channel_id, this.loraDevice.key, this.filters).subscribe(
           (msgResp: any) => {
             if (msgResp.messages) {
               this.messages = msgResp.messages;

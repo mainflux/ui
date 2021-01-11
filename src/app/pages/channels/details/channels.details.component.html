@@ -82,10 +82,12 @@
           <ngx-chart [messages]="messages"></ngx-chart>
         </div>
       </nb-card-body>
-    </nb-card>    
+    </nb-card>
   </div>
 
-  <div class="col-md-12">  
-    <ngx-message-table [messages]="messages"></ngx-message-table>
+  <div class="col-md-12">
+    <ngx-message-table [messages]="messages"
+                       (dateEvent)=onChangeDate($event)>
+    </ngx-message-table>
   </div>
 </div>

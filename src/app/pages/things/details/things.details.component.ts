@@ -6,7 +6,7 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Thing, MainfluxMsg, Channel } from 'app/common/interfaces/mainflux.interface';
+import { Channel, Thing, MainfluxMsg, MsgFilters, DateFilter } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 
 @Component({
@@ -18,9 +18,6 @@ import { IntervalService } from 'app/common/services/interval/interval.service';
 export class ThingsDetailsComponent implements OnInit, OnDestroy {
   experimental: Boolean = environment.experimental;
 
-  offset = 0;
-  limit = 20;
-
   thing: Thing = {};
 
   connectedChans: Channel[] = [];
@@ -29,6 +26,15 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
 
   selectedChannels = [];
   editorMetadata = '';
+
+  filters: MsgFilters = {
+    offset: 0,
+    limit: 20,
+    publisher: '',
+    subtopic: '',
+    from: 0,
+    to: 0,
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -45,6 +51,7 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
     this.thingsService.getThing(id).subscribe(
       (th: Thing) => {
         this.thing = th;
+        this.filters.publisher = this.thing.id;
         this.updateConnections();
       },
     );
@@ -117,15 +124,23 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
   getChannelMessages() {
     const messages: MainfluxMsg[] = [];
     this.connectedChans.forEach((chan, i) => {
-      this.messagesService.getMessages(chan.id, this.thing.key, this.thing.id).subscribe(
+      this.messagesService.getMessages(chan.id, this.thing.key, this.filters).subscribe(
         (respMsg: any) => {
-          respMsg.messages.forEach((msg: MainfluxMsg) => messages.push(msg));
-          if (i === this.connectedChans.length - 1) {
-            this.messages = messages;
+          if (respMsg.messages) {
+            respMsg.messages.forEach((msg: MainfluxMsg) => messages.push(msg));
+            if (i === this.connectedChans.length - 1) {
+              this.messages = messages;
+            }
           }
         },
       );
     });
+  }
+
+  onChangeDate(event: DateFilter) {
+    this.filters.from = event.from;
+    this.filters.to = event.to;
+    this.getChannelMessages();
   }
 
   ngOnDestroy(): void {
