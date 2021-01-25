@@ -79,7 +79,7 @@ services:
 
   ## AUTH SERVICE
   auth-db:
-    image: postgres:10.8-alpine
+    image: postgres:13.1
     container_name: mainflux-auth-db
     restart: on-failure
     environment:
@@ -118,7 +118,7 @@ services:
 
   ## USERS SERVICE
   users-db:
-    image: postgres:10.8-alpine
+    image: postgres:13.1
     container_name: mainflux-users-db
     restart: on-failure
     environment:
@@ -168,7 +168,7 @@ services:
 
   ## THINGS SERVICE
   things-db:
-    image: postgres:10.8-alpine
+    image: postgres:13.1
     container_name: mainflux-things-db
     restart: on-failure
     environment:
@@ -337,7 +337,7 @@ services:
 
   ## INFLUX DB
   influxdb:
-    image: influxdb:1.6.4-alpine
+    image: influxdb:1.7
     container_name: mainflux-influxdb
     restart: on-failure
     environment:
@@ -441,7 +441,7 @@ services:
 
   ## BOOTSTRAP
   bootstrap-db:
-    image: postgres:10.2-alpine
+    image: postgres:13.1
     container_name: mainflux-bootstrap-db
     restart: on-failure
     environment:
