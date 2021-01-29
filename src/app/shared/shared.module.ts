@@ -9,12 +9,13 @@ import {
   NbDatepickerModule,
   NbInputModule,
  } from '@nebular/theme';
+ import { FormsModule } from '@angular/forms';
 
 import { MapModule } from './components/map/map.module';
 import { DetailsModule } from './components/details/details.module';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { ChartModule } from './components/chart/chart.module';
-import { MessageTableComponent } from './components/message-table/message-table.component';
+import { MessageMonitorComponent } from './components/message-monitor/message-monitor.component';
 import { MessageValuePipe } from './pipes/message-value.pipe';
 
 @NgModule({
@@ -28,10 +29,11 @@ import { MessageValuePipe } from './pipes/message-value.pipe';
     NbSelectModule,
     NbDatepickerModule,
     NbInputModule,
+    FormsModule,
   ],
   declarations: [
     ConfirmationComponent,
-    MessageTableComponent,
+    MessageMonitorComponent,
     MessageValuePipe,
   ],
   exports: [
@@ -42,7 +44,7 @@ import { MessageValuePipe } from './pipes/message-value.pipe';
     DetailsModule,
     ChartModule,
     ConfirmationComponent,
-    MessageTableComponent,
+    MessageMonitorComponent,
   ],
   providers: [
     MessageValuePipe,

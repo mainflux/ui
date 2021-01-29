@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartType, ChartOptions, ChartPoint } from 'chart.js';
 import { BaseChartDirective, Color } from 'ng2-charts';
 import { COLORS } from './chart.colors';
-import { MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
+import { Dataset } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-chart',
@@ -17,66 +17,53 @@ export class ChartComponent implements OnChanges {
     maintainAspectRatio: false,
     elements: {
       line: {
-        tension: 0.6,
+        tension: 0.5,
       },
       point: {
-        radius: 1,
+        radius: 3,
       },
-    },
-    animation: {
-      easing: 'linear',
     },
     scales: {
       xAxes: [{
         type: 'time',
         distribution: 'series',
+        ticks: {
+          fontSize: 12,
+          minRotation: 30,
+        },
       }],
     },
   };
 
-  datasetsList: any[] = [];
+  chartDataSets: ChartDataSets[] = [];
   chartType: ChartType = 'scatter';
 
-  @Input() messages: MainfluxMsg[];
+  @Input() msgDatasets: Dataset[] = [];
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
   constructor(
   ) { }
 
   ngOnChanges() {
-    if (this.messages.length < 1) {
-      return;
-    }
+    this.chartDataSets = [];
 
-    // Create list of all messages names
-    const msgsNames = this.messages.map(msg => msg.name);
-    // Remove duplicated names
-    const msgsNamesUnique = msgsNames.filter((item, index) => msgsNames.indexOf(item) === index);
-
-    // Create charts by name
-    msgsNamesUnique.forEach( (name, i) => {
-      const chartDataSets: ChartDataSets[] = [{
+    this.msgDatasets.forEach( dataset => {
+      const dataSet: ChartDataSets = {
         data: [],
         showLine: true,
-      }];
+        label: dataset.label,
+      };
 
-      const result = this.messages.filter(msg => msg.name === name);
-      result.forEach( msg => {
+      // Create charts by name
+      dataset.messages.forEach( msg => {
         const point: ChartPoint = {
-          x: msg.time * 1000,
-          y: this.parseValue(msg),
+          x: msg.time,
+          y: msg.value,
         };
-        chartDataSets[0].label = `${msg.name}`,
-
-        (chartDataSets[0].data as ChartPoint[]).push(point);
+        (dataSet.data as ChartPoint[]).push(point);
       });
 
-      this.datasetsList.push(chartDataSets);
+      this.chartDataSets.push(dataSet);
       this.chart && this.chart.update();
     });
-  }
-
-  parseValue(message: MainfluxMsg): any {
-    return message.value || message.bool_value ||
-      message.string_value || message.data_value || message.sum;
   }
 }

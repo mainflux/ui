@@ -58,17 +58,21 @@
           </div>
         </div>
         <div *ngIf="connectedThings.length !== 0">
-          <div *ngFor="let con of connectedThings;" class="row" style="padding: 2.6px;">
-            <div class="col-md-9">
-              <nb-icon status="info" icon="arrow-right-outline"></nb-icon>
-              {{con.name}}
-            </div>
-            <div class="col-md-3">
-              <button (click)="onDisconnect(con.id)" nbButton size="tiny" class="button-red">
-                x
-              </button>
-            </div>
-          </div>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Thing ID</th>
+            </tr>
+            <tr *ngFor="let conn of connectedThings">
+              <td>{{conn.name}}</td>
+              <td>{{conn.id}}</td>
+              <td>
+                <button (click)="onDisconnect(conn.id)" nbButton size="tiny" class="button-red">
+                  x
+                </button>
+              </td>
+            </tr>
+          </table>
         </div>
       </nb-card-body>
     </nb-card>
@@ -84,10 +88,9 @@
       </nb-card-body>
     </nb-card>
   </div>
-
-  <div class="col-md-12">
-    <ngx-message-table [messages]="messages"
-                       (dateEvent)=onChangeDate($event)>
-    </ngx-message-table>
-  </div>
 </div>
+
+<!-- Message Reader Monitor -->
+<ngx-message-monitor [channels]="[channel]"
+                     [thingKey]="thingKey">
+</ngx-message-monitor>

@@ -4,16 +4,6 @@ table {
   width: 100%;
 }
 
-td, th {
-  border: 1px solid #c7cdd9;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #e3e6ec;
-}
-
 .right {
   float: right;
   padding-left: 10px;

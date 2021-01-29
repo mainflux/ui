@@ -79,7 +79,7 @@ services:
 
   ## AUTH SERVICE
   auth-db:
-    image: postgres:13.1
+    image: postgres:13.1-alpine
     container_name: mainflux-auth-db
     restart: on-failure
     environment:
@@ -118,7 +118,7 @@ services:
 
   ## USERS SERVICE
   users-db:
-    image: postgres:13.1
+    image: postgres:13.1-alpine
     container_name: mainflux-users-db
     restart: on-failure
     environment:
@@ -168,7 +168,7 @@ services:
 
   ## THINGS SERVICE
   things-db:
-    image: postgres:13.1
+    image: postgres:13.1-alpine
     container_name: mainflux-things-db
     restart: on-failure
     environment:
@@ -337,7 +337,7 @@ services:
 
   ## INFLUX DB
   influxdb:
-    image: influxdb:1.7
+    image: influxdb:1.8.3
     container_name: mainflux-influxdb
     restart: on-failure
     environment:
@@ -377,7 +377,7 @@ services:
       - ./subjects.toml:/config/subjects.toml
 
   grafana:
-    image: grafana/grafana:5.1.3
+    image: grafana/grafana:7.3.7
     container_name: mainflux-grafana
     depends_on:
       - influxdb
@@ -441,7 +441,7 @@ services:
 
   ## BOOTSTRAP
   bootstrap-db:
-    image: postgres:13.1
+    image: postgres:13.1-alpine
     container_name: mainflux-bootstrap-db
     restart: on-failure
     environment:

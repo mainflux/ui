@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { environment } from 'environments/environment';
@@ -6,39 +6,34 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel, Thing, MainfluxMsg, MsgFilters, DateFilter } from 'app/common/interfaces/mainflux.interface';
-import { IntervalService } from 'app/common/services/interval/interval.service';
+import { Channel, Thing } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-things-details-component',
   templateUrl: './things.details.component.html',
   styleUrls: ['./things.details.component.scss'],
-  providers: [IntervalService],
 })
-export class ThingsDetailsComponent implements OnInit, OnDestroy {
+export class ThingsDetailsComponent implements OnInit {
   experimental: Boolean = environment.experimental;
 
   thing: Thing = {};
 
   connectedChans: Channel[] = [];
   disconnectedChans: Channel[] = [];
-  messages: MainfluxMsg[] = [];
 
   selectedChannels = [];
   editorMetadata = '';
 
-  filters: MsgFilters = {
-    offset: 0,
-    limit: 20,
-    publisher: '',
+  httpMsg = {
+    name: '',
+    value: '',
+    chanID: '',
     subtopic: '',
-    from: 0,
-    to: 0,
+    time: '',
   };
 
   constructor(
     private route: ActivatedRoute,
-    private intervalService: IntervalService,
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
     private messagesService: MessagesService,
@@ -51,12 +46,9 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
     this.thingsService.getThing(id).subscribe(
       (th: Thing) => {
         this.thing = th;
-        this.filters.publisher = this.thing.id;
         this.updateConnections();
       },
     );
-
-    this.intervalService.set(this, this.getChannelMessages);
   }
 
   onEdit() {
@@ -108,7 +100,6 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
     this.thingsService.connectedChannels(this.thing.id).subscribe(
       (respConns: any) => {
         this.connectedChans = respConns.channels;
-        this.getChannelMessages();
       },
     );
   }
@@ -121,29 +112,20 @@ export class ThingsDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  getChannelMessages() {
-    const messages: MainfluxMsg[] = [];
-    this.connectedChans.forEach((chan, i) => {
-      this.messagesService.getMessages(chan.id, this.thing.key, this.filters).subscribe(
-        (respMsg: any) => {
-          if (respMsg.messages) {
-            respMsg.messages.forEach((msg: MainfluxMsg) => messages.push(msg));
-            if (i === this.connectedChans.length - 1) {
-              this.messages = messages;
-            }
-          }
-        },
-      );
-    });
-  }
+  onSendMessage() {
+    if (this.httpMsg.chanID === '' ||
+      this.httpMsg.name === '' || this.httpMsg.value === '') {
+      this.notificationsService.warn('Channel, Name and Value must be provided', '');
+      return;
+    }
 
-  onChangeDate(event: DateFilter) {
-    this.filters.from = event.from;
-    this.filters.to = event.to;
-    this.getChannelMessages();
-  }
+    const time = this.httpMsg.time ? `"t": ${this.httpMsg.time},` : '';
+    const msg = `[{${time} "n":"${this.httpMsg.name}", "v": ${this.httpMsg.value}}]`;
 
-  ngOnDestroy(): void {
-    this.intervalService.clear();
+    this.messagesService.sendMessage(this.httpMsg.chanID, this.thing.key, msg, this.httpMsg.subtopic).subscribe(
+      resp => {
+        this.notificationsService.success('Message succefully sent', '');
+      },
+    );
   }
 }
