@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 type Callback = () => void;
-const defaultInterval: number = 1000 * 5; // ms * sec
+const defaultInterval: number = 1000 * 20; // ms * sec
 
 @Injectable()
 export class IntervalService {

@@ -86,11 +86,18 @@ export interface MsgFilters {
   limit?: number;
   publisher?: string;
   subtopic?: string;
+  name?: string;
+  value?: string;
   from?: number;
   to?: number;
 }
 
-export interface DateFilter {
-  from: number;
-  to: number;
+export interface Message {
+  value: number;
+  time: number;
+}
+
+export interface Dataset {
+  label?: string;
+  messages?: Message[];
 }

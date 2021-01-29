@@ -59,36 +59,71 @@
           </div>
         </div>
         <div *ngIf="connectedChans.length !== 0">
-          <div *ngFor="let con of connectedChans;" class="row" style="padding: 2.6px;">
-            <div class="col-md-9">
-              <nb-icon status="info" icon="arrow-right-outline"></nb-icon>
-              {{con.name}}
-            </div>
-            <div class="col-md-3">
-              <button (click)="onDisconnect(con.id)" nbButton size="tiny" class="button-red">
-                x
-              </button>
-            </div>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Channel ID</th>
+            </tr>
+            <tr *ngFor="let conn of connectedChans">
+              <td>{{conn.name}}</td>
+              <td>{{conn.id}}</td>
+              <td>
+                <button (click)="onDisconnect(conn.id)" nbButton size="tiny" class="button-red">
+                  x
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card size="tiny">
+      <nb-card-header class="header-details">
+        HTTP Adapter
+        <button (click)="onSendMessage()" nbButton size="tiny" class="button-green">
+          Send Message
+        </button>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row form-row">
+          <div class="col-md-2 info-details"> Channel: </div>
+          <div class="col-md-10">
+            <nb-select [(selected)]="httpMsg.chanID" size="tiny">
+              <nb-option *ngFor="let ch of this.connectedChans" [value]="ch.id">{{ch.name}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-2 info-details"> Subtopic: </div>
+          <div class="col-md-3">
+            <input nbInput fullWidth fieldSize="tiny"
+                   [(ngModel)]='httpMsg.subtopic'>
+          </div>
+          <div class="col-md-2 info-details"> Time: </div>
+          <div class="col-md-3">
+            <input nbInput  fullWidth fieldSize="tiny"
+                   [(ngModel)]='httpMsg.time'>
+          </div>
+        </div>
+        <div class="row form-row">
+          <div class="col-md-2 info-details"> Name: </div>
+          <div class="col-md-3">
+            <input nbInput fullWidth fieldSize="tiny"
+                   [(ngModel)]='httpMsg.name'>
+          </div>
+          <div class="col-md-2 info-details"> Value: </div>
+          <div class="col-md-3">
+            <input nbInput fullWidth fieldSize="tiny"
+                   [(ngModel)]='httpMsg.value'>
           </div>
         </div>
       </nb-card-body>
     </nb-card>
-
-    <nb-card size="large" *ngIf="experimental">
-      <nb-card-body>
-        <div *ngIf="messages.length < 2" style="text-align: center;">
-          No charts to display
-        </div>
-        <div *ngIf="messages.length >= 2" style="height:100%">
-          <ngx-chart [messages]="messages"></ngx-chart>
-        </div>
-      </nb-card-body>
-    </nb-card>
-  </div>
-
-  <div class="col-md-12">
-    <ngx-message-table [messages]="messages"
-                       (dateEvent)=onChangeDate($event)>
-    </ngx-message-table>
   </div>
 </div>
+
+<!-- Message Reader Monitor -->
+<ngx-message-monitor [channels]="connectedChans"
+                     [thingKey]="thing.key">
+</ngx-message-monitor>

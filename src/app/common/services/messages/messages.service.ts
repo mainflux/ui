@@ -32,6 +32,8 @@ export class MessagesService {
     url += `?offset=${filters.offset}&limit=${filters.limit}`;
     url = filters.publisher ? url += `&publisher=${filters.publisher}` : url;
     url = filters.subtopic ? url += `&subtopic=${encodeURIComponent(filters.subtopic)}` : url;
+    url = filters.name ? url += `&name=${filters.name}` : url;
+    url = filters.value ? url += `&v=${filters.value}` : url;
     url = filters.from ? url += `&from=${filters.from}` : url;
     url = filters.to ? url += `&to=${filters.to}` : url;
 
@@ -50,12 +52,15 @@ export class MessagesService {
       );
   }
 
-  sendMessage(channel: string, key: string, msg: string) {
+  sendMessage(channel: string, key: string, msg: string, subtopic?: string) {
     const headers = new HttpHeaders({
       'Authorization': key,
     });
 
-    return this.http.post(`${environment.writerChannelsUrl}/${channel}/${environment.messagesSufix}`, msg, { headers: headers })
+    let url = `${environment.writerChannelsUrl}/${channel}/${environment.messagesSufix}`;
+    url = subtopic ? url += `/${encodeURIComponent(subtopic)}` : url;
+
+    return this.http.post(url, msg, { headers: headers })
       .map(
         resp => {
           return resp;
