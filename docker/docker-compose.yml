@@ -28,7 +28,7 @@ services:
     container_name: mainflux-ui
     restart: on-failure
     volumes:
-      - ./nginx/entrypoint.sh:/entrypoint.sh
+      - ./nginx/entrypoint-ui.sh:/entrypoint.sh
     ports:
       - ${MF_UI_PORT}:${MF_UI_PORT}
     networks:
