@@ -19,6 +19,4 @@ envsubst '
     ${MF_TWINS_HTTP_PORT}
     ${MF_OPCUA_ADAPTER_HTTP_PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
-envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js
-
 exec nginx -g "daemon off;"
