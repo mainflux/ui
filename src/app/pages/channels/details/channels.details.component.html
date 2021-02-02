@@ -52,28 +52,12 @@
         </div>
       </nb-card-header>
       <nb-card-body>
-        <div *ngIf="connectedThings.length === 0">
-          <div style="text-align: center">
-            No connections
-          </div>
-        </div>
-        <div *ngIf="connectedThings.length !== 0">
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Thing ID</th>
-            </tr>
-            <tr *ngFor="let conn of connectedThings">
-              <td>{{conn.name}}</td>
-              <td>{{conn.id}}</td>
-              <td>
-                <button (click)="onDisconnect(conn.id)" nbButton size="tiny" class="button-red">
-                  x
-                </button>
-              </td>
-            </tr>
-          </table>
-        </div>
+        <ngx-table-component [colNames]="['Name', 'Thing ID']"
+                             [keys]="['name', 'id', 'delete']"
+                             [page]="tablePage"
+                             (delEvent)=onDisconnect($event)
+                             (changePageEvent)=onChangePage($event)>
+        </ngx-table-component>
       </nb-card-body>
     </nb-card>
 

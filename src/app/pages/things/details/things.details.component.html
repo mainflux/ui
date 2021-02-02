@@ -53,28 +53,12 @@
         </div>
       </nb-card-header>
       <nb-card-body>
-        <div *ngIf="connectedChans.length === 0">
-          <div style="text-align: center">
-            No connections
-          </div>
-        </div>
-        <div *ngIf="connectedChans.length !== 0">
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Channel ID</th>
-            </tr>
-            <tr *ngFor="let conn of connectedChans">
-              <td>{{conn.name}}</td>
-              <td>{{conn.id}}</td>
-              <td>
-                <button (click)="onDisconnect(conn.id)" nbButton size="tiny" class="button-red">
-                  x
-                </button>
-              </td>
-            </tr>
-          </table>
-        </div>
+        <ngx-table-component [colNames]="['Name', 'Channel ID']"
+                             [keys]="['name', 'id', 'delete']"
+                             [page]="connChansPage"
+                             (delEvent)=onDisconnect($event)
+                             (changePageEvent)=onChangePage($event)>
+        </ngx-table-component>
       </nb-card-body>
     </nb-card>
 
@@ -90,7 +74,7 @@
           <div class="col-md-2 info-details"> Channel: </div>
           <div class="col-md-10">
             <nb-select [(selected)]="httpMsg.chanID" size="tiny">
-              <nb-option *ngFor="let ch of this.connectedChans" [value]="ch.id">{{ch.name}}</nb-option>
+              <nb-option *ngFor="let ch of this.connChansPage.rows" [value]="ch.id">{{ch.name}}</nb-option>
             </nb-select>
           </div>
         </div>
@@ -117,6 +101,11 @@
             <input nbInput fullWidth fieldSize="tiny"
                    [(ngModel)]='httpMsg.value'>
           </div>
+          <div class="col-1">
+            <nb-select class="right" [(selected)]="httpMsg.valType" size="tiny">
+              <nb-option *ngFor="let type of this.valTypes" [value]="type">{{type}}</nb-option>
+            </nb-select>
+          </div>
         </div>
       </nb-card-body>
     </nb-card>
@@ -124,6 +113,6 @@
 </div>
 
 <!-- Message Reader Monitor -->
-<ngx-message-monitor [channels]="connectedChans"
+<ngx-message-monitor [channels]="connChansPage.rows"
                      [thingKey]="thing.key">
 </ngx-message-monitor>

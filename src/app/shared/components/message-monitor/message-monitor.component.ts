@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
-import { Channel, Thing, MainfluxMsg, Message, MsgFilters, Dataset } from 'app/common/interfaces/mainflux.interface';
+import { Channel, Thing, MainfluxMsg, Message, MsgFilters, Dataset, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
@@ -15,6 +15,9 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
 
   mode: string = 'table';
   modes: string[] = ['json', 'table', 'chart'];
+  valType: string = 'float';
+  valTypes: string[] = ['float', 'bool', 'string', 'data'];
+
   msgDatasets: Dataset[] = [];
 
   filters: MsgFilters = {
@@ -23,13 +26,16 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     publisher: '',
     subtopic: '',
     name: '',
+    value: '',
     from: 0,
     to: 0,
   };
 
   publishers: Thing[] = [];
 
-  @Input() channels: Channel[];
+  messagesPage: TablePage = {};
+
+  @Input() channels: Channel[] = [];
   @Input() thingKey: string;
   constructor(
     private intervalService: IntervalService,
@@ -53,6 +59,10 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
+    if (this.channels === undefined) {
+        return;
+    }
+
     if (this.channels.length > 0 && this.channels[0].id && this.thingKey !== '') {
       this.chanID = this.channels[0].id;
       this.getChannelMessages();
@@ -60,7 +70,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   createChart() {
-    const messages = this.messages.map(msg => {
+    const messages = this.messagesPage.rows.map((msg: Message) => {
       const m: Message = {time: msg.time, value: msg.value};
       return m;
     });
@@ -74,12 +84,17 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getChannelMessages() {
-    this.messages = [];
+    this.messagesPage.rows = [];
 
     this.messagesService.getMessages(this.chanID, this.thingKey, this.filters).subscribe(
       (resp: any) => {
         if (resp.messages) {
-          this.messages = resp.messages;
+          this.messagesPage = {
+            offset: resp.offset,
+            limit: resp.limit,
+            total: resp.total,
+            rows: resp.messages,
+          };
           this.createChart();
         }
       },
@@ -92,6 +107,16 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
         }
       },
     );
+  }
+
+  onChangePage(dir: any) {
+    if (dir === 'prev') {
+      this.filters.offset = this.messagesPage.offset - this.messagesPage.limit;
+    }
+    if (dir === 'next') {
+      this.filters.offset = this.messagesPage.offset + this.messagesPage.limit;
+    }
+    this.getChannelMessages();
   }
 
   ngOnDestroy(): void {

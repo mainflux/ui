@@ -1,0 +1,29 @@
+table {
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #c7cdd9;
+  text-align: left;
+  padding: 6px;
+}
+
+tr {
+  background-color: #f5f6f6;
+}
+
+tr:first-child {
+  background-color: white;
+}
+
+tr:hover td {
+  background-color: #e0e2e5;
+}
+
+tr:nth-child(even) {
+  background-color: #fafafb;
+}
+
+.page-button {
+  margin: 6px;
+}

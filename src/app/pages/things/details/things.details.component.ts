@@ -6,7 +6,7 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel, Thing } from 'app/common/interfaces/mainflux.interface';
+import { Channel, Thing, TablePage } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-things-details-component',
@@ -18,7 +18,7 @@ export class ThingsDetailsComponent implements OnInit {
 
   thing: Thing = {};
 
-  connectedChans: Channel[] = [];
+  connChansPage: TablePage = {};
   disconnectedChans: Channel[] = [];
 
   selectedChannels = [];
@@ -30,7 +30,9 @@ export class ThingsDetailsComponent implements OnInit {
     chanID: '',
     subtopic: '',
     time: '',
+    valType: 'float',
   };
+  valTypes: string[] = ['float', 'bool', 'string', 'data'];
 
   constructor(
     private route: ActivatedRoute,
@@ -81,8 +83,8 @@ export class ThingsDetailsComponent implements OnInit {
     }
   }
 
-  onDisconnect(chanID: any) {
-    this.channelsService.disconnectThing(chanID, this.thing.id).subscribe(
+  onDisconnect(row: any) {
+    this.channelsService.disconnectThing(row.id, this.thing.id).subscribe(
       resp => {
         this.notificationsService.success('Successfully disconnected from Channel', '');
         this.updateConnections();
@@ -96,10 +98,15 @@ export class ThingsDetailsComponent implements OnInit {
     this.findDisconnectedChans();
   }
 
-  findConnectedChans() {
-    this.thingsService.connectedChannels(this.thing.id).subscribe(
-      (respConns: any) => {
-        this.connectedChans = respConns.channels;
+  findConnectedChans(offset?: number, limit?: number) {
+    this.thingsService.connectedChannels(this.thing.id, offset, limit).subscribe(
+      (resp: any) => {
+        this.connChansPage = {
+          offset: resp.offset,
+          limit: resp.limit,
+          total: resp.total,
+          rows: resp.channels,
+        };
       },
     );
   }
@@ -110,6 +117,17 @@ export class ThingsDetailsComponent implements OnInit {
         this.disconnectedChans = respDisconn.channels;
       },
     );
+  }
+
+  onChangePage(dir: any) {
+    if (dir === 'prev') {
+      const offset = this.connChansPage.offset - this.connChansPage.limit;
+      this.findConnectedChans(offset, this.connChansPage.limit);
+    }
+    if (dir === 'next') {
+      const offset = this.connChansPage.offset + this.connChansPage.limit;
+      this.findConnectedChans(offset, this.connChansPage.limit);
+    }
   }
 
   onSendMessage() {
