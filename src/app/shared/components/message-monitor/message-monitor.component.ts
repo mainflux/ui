@@ -109,6 +109,11 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
+  onChangeLimit(lim: number) {
+    this.filters.limit = lim;
+    this.getChannelMessages();
+  }
+
   onChangePage(dir: any) {
     if (dir === 'prev') {
       this.filters.offset = this.messagesPage.offset - this.messagesPage.limit;

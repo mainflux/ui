@@ -105,6 +105,11 @@ export class ChannelsDetailsComponent implements OnInit {
     );
   }
 
+
+    onChangeLimit(lim: number) {
+      this.findConnectedThings(0, lim);
+    }
+
   onChangePage(dir: any) {
     if (dir === 'prev') {
       const offset = this.tablePage.offset - this.tablePage.limit;
