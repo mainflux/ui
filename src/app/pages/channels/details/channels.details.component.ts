@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from 'environments/environment';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel, Thing } from 'app/common/interfaces/mainflux.interface';
+import { Channel, Thing, TablePage } from 'app/common/interfaces/mainflux.interface';
+
 
 @Component({
   selector: 'ngx-channels-details-component',
@@ -22,6 +23,8 @@ export class ChannelsDetailsComponent implements OnInit {
 
   selectedThings: string[] = [];
   editorMetadata = '';
+
+  tablePage: TablePage = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -70,8 +73,8 @@ export class ChannelsDetailsComponent implements OnInit {
     }
   }
 
-  onDisconnect(thingID: any) {
-    this.channelsService.disconnectThing(this.channel.id, thingID).subscribe(
+  onDisconnect(row: any) {
+    this.channelsService.disconnectThing(this.channel.id, row.id).subscribe(
       resp => {
         this.updateConnections();
         this.notificationsService.success('Thing successfully disconnected', '');
@@ -85,15 +88,32 @@ export class ChannelsDetailsComponent implements OnInit {
     this.findDisconnectedThings();
   }
 
-  findConnectedThings() {
-    this.channelsService.connectedThings(this.channel.id).subscribe(
+  findConnectedThings(offset?: number, limit?: number) {
+    this.channelsService.connectedThings(this.channel.id, offset, limit).subscribe(
       (resp: any) => {
         this.connectedThings = resp.things;
+        this.tablePage = {
+          offset: resp.offset,
+          limit: resp.limit,
+          total: resp.total,
+          rows: resp.things,
+        };
         if (this.connectedThings.length > 0) {
           this.thingKey = this.connectedThings[0].key;
         }
       },
     );
+  }
+
+  onChangePage(dir: any) {
+    if (dir === 'prev') {
+      const offset = this.tablePage.offset - this.tablePage.limit;
+      this.findConnectedThings(offset, this.tablePage.limit);
+    }
+    if (dir === 'next') {
+      const offset = this.tablePage.offset + this.tablePage.limit;
+      this.findConnectedThings(offset, this.tablePage.limit);
+    }
   }
 
   findDisconnectedThings() {

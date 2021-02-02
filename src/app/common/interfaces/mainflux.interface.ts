@@ -101,3 +101,10 @@ export interface Dataset {
   label?: string;
   messages?: Message[];
 }
+
+export interface TablePage {
+  limit?: number;
+  offset?: number;
+  total?: number;
+  rows?: Object[];
+}

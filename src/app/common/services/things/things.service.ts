@@ -7,6 +7,7 @@ import { Thing } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 const defLimit: number = 20;
+const defConnLimit: number = 5;
 
 @Injectable()
 export class ThingsService {
@@ -133,8 +134,15 @@ export class ThingsService {
       );
   }
 
-  connectedChannels(thingID: string) {
-    return this.http.get(`${environment.thingsUrl}/${thingID}/channels/`)
+  connectedChannels(thingID: string, offset?: number, limit?: number) {
+    offset = offset || 0;
+    limit = limit || defConnLimit;
+
+    const params = new HttpParams()
+      .set('offset', offset.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get(`${environment.thingsUrl}/${thingID}/channels/`,  { params })
     .map(
       resp => {
         return resp;

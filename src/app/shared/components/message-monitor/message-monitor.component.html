@@ -8,37 +8,22 @@
   <nb-card-body style="height:100%">
     <div [ngSwitch]="mode">
       <div *ngSwitchCase="'table'">
-        <table>
-          <tr>
-            <th>name</th>
-            <th>value</th>
-            <th>time</th>
-            <th>subtopic</th>
-            <th>channel</th>
-            <th>publisher</th>
-            <th>protocol</th>
-          </tr>
-          <tr *ngFor="let message of messages">
-            <td>{{message.name}}</td>
-            <td>{{message | messageValue}}</td>
-            <td>{{message.time*1000 | date:'medium'}}</td>
-            <td>{{message.subtopic}}</td>
-            <td>{{message.channel}}</td>
-            <td>{{message.publisher}}</td>
-            <td>{{message.protocol}}</td>
-          </tr>
-        </table>
+        <ngx-table-component [colNames]="['Name', 'Value', 'Time', 'Subtopic', 'Channel', 'Publisher', 'Protocol']"
+                             [keys]="['name', 'value', 'time', 'subtopic', 'channel', 'publisher', 'protocol']"
+                             [page]="messagesPage"
+                             (changePageEvent)=onChangePage($event)>
+        </ngx-table-component>
       </div>
       <div *ngSwitchCase="'json'">
-        <pre  *ngFor="let message of messages">{{ message | json }}</pre>
+        <pre  *ngFor="let message of messagesPage.rows">{{ message | json }}</pre>
       </div>
       <div *ngSwitchCase="'chart'" style="height:100%">
-        <div *ngIf="messages.length != 0">
+        <div *ngIf="messagesPage.total != 0">
           <ngx-chart [msgDatasets]="msgDatasets"></ngx-chart>
         </div>
       </div>
     </div>
-    <div *ngIf="messages.length == 0" class="no-msg">
+    <div *ngIf="messagesPage.total == 0" class="no-msg">
       No messages to display
     </div>
   </nb-card-body>
@@ -89,6 +74,11 @@
       <div class="col-2">
         <input nbInput fullWidth fieldSize="tiny"
                [(ngModel)]='filters.value'>
+      </div>
+      <div class="col-1">
+        <nb-select class="right" [(selected)]="valType" size="tiny">
+          <nb-option *ngFor="let type of this.valTypes" [value]="type">{{type}}</nb-option>
+        </nb-select>
       </div>
     </div>
     <div class="right">
