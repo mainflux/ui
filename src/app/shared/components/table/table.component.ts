@@ -10,12 +10,14 @@ import { TablePage } from 'app/common/interfaces/mainflux.interface';
 export class TableComponent implements OnChanges {
   currentPage = 0;
   totalPages = 0;
+  limits = [5, 10, 20, 50, 100];
 
   @Input() colNames: string[] = [];
   @Input() keys: string[] = [];
   @Input() page: TablePage = {};
   @Input() options: any[] = [];
   @Output() delEvent: EventEmitter<any> = new EventEmitter();
+  @Output() changeLimitEvent: EventEmitter<any> = new EventEmitter();
   @Output() changePageEvent: EventEmitter<any> = new EventEmitter();
   constructor(
   ) { }
@@ -34,11 +36,15 @@ export class TableComponent implements OnChanges {
     this.delEvent.emit(row);
   }
 
+  onChangeLimit(lim: number) {
+    this.changeLimitEvent.emit(lim);
+  }
+
   onChangePage(dir: any) {
-    if (dir === 'prev') {
+    if (dir === 'prev' && this.currentPage > 1) {
       this.changePageEvent.emit(dir);
     }
-    if (dir === 'next') {
+    if (dir === 'next' && this.totalPages > this.currentPage) {
       this.changePageEvent.emit(dir);
     }
   }

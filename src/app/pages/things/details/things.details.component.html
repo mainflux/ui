@@ -57,6 +57,7 @@
                              [keys]="['name', 'id', 'delete']"
                              [page]="connChansPage"
                              (delEvent)=onDisconnect($event)
+                             (changeLimitEvent)=onChangeLimit($event)
                              (changePageEvent)=onChangePage($event)>
         </ngx-table-component>
       </nb-card-body>

@@ -11,6 +11,7 @@
         <ngx-table-component [colNames]="['Name', 'Value', 'Time', 'Subtopic', 'Channel', 'Publisher', 'Protocol']"
                              [keys]="['name', 'value', 'time', 'subtopic', 'channel', 'publisher', 'protocol']"
                              [page]="messagesPage"
+                             (changeLimitEvent)=onChangeLimit($event)
                              (changePageEvent)=onChangePage($event)>
         </ngx-table-component>
       </div>

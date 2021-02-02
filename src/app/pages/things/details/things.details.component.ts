@@ -119,6 +119,10 @@ export class ThingsDetailsComponent implements OnInit {
     );
   }
 
+  onChangeLimit(lim: number) {
+    this.findConnectedChans(0, lim);
+  }
+
   onChangePage(dir: any) {
     if (dir === 'prev') {
       const offset = this.connChansPage.offset - this.connChansPage.limit;
