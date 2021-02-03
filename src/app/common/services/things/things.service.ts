@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from 'environments/environment';
-import { Thing } from 'app/common/interfaces/mainflux.interface';
+import { Thing, PageFilters } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
-const defLimit: number = 20;
+const defLimit: number = 10;
 const defConnLimit: number = 5;
 
 @Injectable()
@@ -65,26 +65,26 @@ export class ThingsService {
       );
   }
 
-  getThings(offset?: number, limit?: number, type?: string, metaValue?: string, name?: string) {
-    offset = offset || 0;
-    limit = limit || defLimit;
+  getThings(filters: PageFilters) {
+    filters.offset = filters.offset || 0;
+    filters.limit = filters.limit || defLimit;
 
     let params = new HttpParams()
-      .set('offset', offset.toString())
-      .set('limit', limit.toString())
+      .set('offset', filters.offset.toString())
+      .set('limit', filters.limit.toString())
       .set('order', 'name')
       .set('dir', 'asc');
 
-    if (type) {
-      if (metaValue) {
-        params = params.append('metadata', `{"${type}": ${metaValue}}`);
+    if (filters.type) {
+      if (filters.metadata) {
+        params = params.append('metadata', `{"${filters.type}": ${filters.metadata}}`);
       } else {
-        params = params.append('metadata', `{"type":"${type}"}`);
+        params = params.append('metadata', `{"type":"${filters.type}"}`);
       }
     }
 
-    if (name) {
-      params = params.append('name', name);
+    if (filters.name) {
+      params = params.append('name', filters.name);
     }
 
     return this.http.get(environment.thingsUrl, { params })

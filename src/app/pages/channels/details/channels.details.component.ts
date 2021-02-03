@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from 'environments/environment';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel, Thing, TablePage } from 'app/common/interfaces/mainflux.interface';
+import { Channel, Thing, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 
 
 @Component({
@@ -24,6 +24,10 @@ export class ChannelsDetailsComponent implements OnInit {
   selectedThings: string[] = [];
   editorMetadata = '';
 
+  tableConfig: TableConfig = {
+    colNames: ['Name', 'Thing ID'],
+    keys: ['name', 'id', 'delete'],
+  };
   tablePage: TablePage = {};
 
   constructor(

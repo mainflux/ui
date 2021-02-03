@@ -81,6 +81,14 @@ export interface MainfluxMsg {
   protocol: string;
 }
 
+export interface PageFilters {
+  offset?: number;
+  limit?: number;
+  name?: string;
+  type?: string;
+  metadata?: string;
+}
+
 export interface MsgFilters {
   offset?: number;
   limit?: number;
@@ -100,6 +108,11 @@ export interface Message {
 export interface Dataset {
   label?: string;
   messages?: Message[];
+}
+
+export interface TableConfig {
+  keys?: string[];
+  colNames?: string[];
 }
 
 export interface TablePage {

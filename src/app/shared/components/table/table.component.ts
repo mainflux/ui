@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
-import { TablePage } from 'app/common/interfaces/mainflux.interface';
+import { TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-table-component',
@@ -12,13 +12,13 @@ export class TableComponent implements OnChanges {
   totalPages = 0;
   limits = [5, 10, 20, 50, 100];
 
-  @Input() colNames: string[] = [];
-  @Input() keys: string[] = [];
+  @Input() config: TableConfig = {};
   @Input() page: TablePage = {};
-  @Input() options: any[] = [];
+  @Output() editEvent: EventEmitter<any> = new EventEmitter();
   @Output() delEvent: EventEmitter<any> = new EventEmitter();
   @Output() changeLimitEvent: EventEmitter<any> = new EventEmitter();
   @Output() changePageEvent: EventEmitter<any> = new EventEmitter();
+  @Output() detailsEvent: EventEmitter<any> = new EventEmitter();
   constructor(
   ) { }
 
@@ -30,6 +30,14 @@ export class TableComponent implements OnChanges {
       // Calculate the number of pages
       this.totalPages = this.page.total / this.page.limit;
     }
+  }
+
+  onClickDetails(row: any) {
+    this.detailsEvent.emit(row);
+  }
+
+  onEdit(row: any) {
+    this.editEvent.emit(row);
   }
 
   onDelete(row: any) {

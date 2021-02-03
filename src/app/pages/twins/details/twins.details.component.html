@@ -56,7 +56,7 @@
 <nb-card size="tiny">
   <nb-card-header class="header-details">
     State <em>{{ stateTime | date: 'long' }}</em>
-    <button nbButton size="small" class="button-green"
+    <button nbButton size="tiny" class="button-green"
             (click)="showStates()">
       History
     </button>
@@ -80,7 +80,7 @@
         delta (ms): {{this.defDelta / 1e6}}
       </div>
       <div class="col-2">
-        <button nbButton size="small" class="button-green"
+        <button nbButton size="tiny" class="button-green"
                 (click)="showDefinitions()">
           History
         </button>
@@ -133,11 +133,11 @@
       </div>
 
       <div class="col-4">
-        delta (ms): <input type="text" nbInput value="{{this.defDelta / 1e6}}" (change)="delta($event)" fieldSize="small">
+        delta (ms): <input type="text" nbInput value="{{this.defDelta / 1e6}}" (change)="delta($event)" fieldSize="tiny">
       </div>
 
       <div class="col-2">
-        <button nbButton size="small" class="button-green"
+        <button nbButton size="tiny" class="button-green"
                 (click)="updateDefinition()">
           Update definition
         </button>
@@ -187,19 +187,15 @@
   </nb-card-body>
 
   <nb-card-footer>
-    <div class="row">
-      <div class="col-md-1">
-        <b>Name:</b>
-      </div>
+    <div class="row form-row">
+      <div class="col-md-1 info-details"> Name: </div>
       <div class="col-md-3">
-        <input type="text" nbInput [(ngModel)]="editAttr.name" fieldSize="small">
+        <input type="text" nbInput [(ngModel)]="editAttr.name" fieldSize="tiny">
       </div>
 
-      <div class="col-md-1">
-        <b>Channel:</b>
-      </div>
+      <div class="col-md-1 info-details">Channel: </div>
       <div class="col-md-6">
-        <nb-select placeholder="Select channel" [(selected)]="editAttr.channel" size="small">
+        <nb-select placeholder="Select channel" [(selected)]="editAttr.channel" size="tiny">
           <nb-option *ngFor="let channel of this.channels" [value]="channel.id">
             {{channel.name}}
           </nb-option>
@@ -207,22 +203,18 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-1">
-        <b>Subtopic:</b>
-      </div>
+    <div class="row form-row">
+      <div class="col-md-1 info-details"> Subtopic: </div>
       <div class="col-md-3">
-        <input type="text" nbInput [(ngModel)]="editAttr.subtopic" fieldSize="small">
+        <input type="text" nbInput [(ngModel)]="editAttr.subtopic" fieldSize="tiny">
       </div>
-      <div class="col-md-1">
-        <b>Persisted:</b>
-      </div>
+      <div class="col-md-1 info-details"> Persisted: </div>
       <div class="col-md-2">
         <nb-checkbox (checkedChange)="togglePersist($event)" [checked]="editAttr.persist_state"></nb-checkbox>
       </div>
     </div>
 
-    <button nbButton size="small" class="button-blue"
+    <button nbButton size="tiny" class="button-blue"
             (click)="addAttribute()">
       Add / Update attribute
     </button>

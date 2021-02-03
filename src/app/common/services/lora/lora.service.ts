@@ -6,12 +6,11 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 const defLimit: number = 20;
+const typeLora = 'lora';
+const typeLoraApp = 'loraApp';
 
 @Injectable()
 export class LoraService {
-  typeLora = 'lora';
-  typeLoraApp = 'loraApp';
-
   constructor(
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
@@ -23,25 +22,42 @@ export class LoraService {
   }
 
   getDevices(offset?: number, limit?: number, name?: string) {
-    offset = offset || 0;
-    limit = limit || defLimit;
+    const filters = {
+      offset: offset || 0,
+      limit: limit || defLimit,
+      type: typeLora,
+      name: name,
+    };
 
-    return this.thingsService.getThings(offset, limit, this.typeLora, '', name);
+    return this.thingsService.getThings(filters);
   }
 
   getChannels(offset: number, limit: number) {
-    return this.channelsService.getChannels(offset, limit, this.typeLora);
+    const filters = {
+      offset: offset || 0,
+      limit: limit || defLimit,
+      type: typeLora,
+    };
+
+    return this.channelsService.getChannels(filters);
   }
 
   addDevice(row: LoraTableRow) {
+    const filters = {
+      offset: 0,
+      limit: 1,
+      type: typeLora,
+      metadata: `{"app_id": "${row.appID}"}`,
+    };
+
     // Check if a channel exist for row appID
-    return this.channelsService.getChannels(0, 1, 'lora', `{"app_id": "${row.appID}"}`).map(
+    return this.channelsService.getChannels(filters).map(
       (resp: any) => {
         if (resp.total === 0) {
           const chanReq = {
-            name: `${this.typeLoraApp}-${row.appID}`,
+            name: `${typeLoraApp}-${row.appID}`,
             metadata: {
-              type: this.typeLora,
+              type: typeLora,
               lora: {
                 app_id: row.appID,
               },
@@ -66,7 +82,7 @@ export class LoraService {
     const devReq: LoraDevice = {
       name: row.name,
       metadata: {
-        type: this.typeLora,
+        type: typeLora,
         channel_id: chanID,
         lora: {
           dev_eui: row.devEUI,

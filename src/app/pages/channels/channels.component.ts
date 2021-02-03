@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
-import { LocalDataSource } from 'ng2-smart-table';
 
-import { Channel } from 'app/common/interfaces/mainflux.interface';
+import { Channel, PageFilters, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { FsService } from 'app/common/services/fs/fs.service';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
-import { DetailsComponent } from 'app/shared/components/details/details.component';
+import { ChannelsAddComponent } from './add/channels.add.component';
 
 const defSearchBardMs: number = 100;
 
@@ -19,67 +18,18 @@ const defSearchBardMs: number = 100;
 })
 
 export class ChannelsComponent implements OnInit {
-  settings = {
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate: true,
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmSave: true,
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      details: {
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          return row;
-        },
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-      name: {
-        title: 'Name',
-        filter: false,
-      },
-      type: {
-        title: 'Type',
-        filter: false,
-        addable: true,
-      },
-      id: {
-        title: 'ID',
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-    },
-    pager: {
-      display: true,
-      perPage: 6,
-    },
+  tableConfig: TableConfig = {
+    colNames: ['', '', '', 'Name', 'Type', 'ID'],
+    keys: ['edit', 'delete', 'details', 'name', 'type', 'id'],
   };
-
-  source: LocalDataSource = new LocalDataSource();
-  channels: Channel[] = [];
-
-  offset = 0;
-  limit = 100;
-  total = 0;
+  channelsPage: TablePage = {};
+  pageFilters: PageFilters = {};
 
   searchTime = 0;
   columnChar = '|';
 
   constructor(
+    private router: Router,
     private dialogService: NbDialogService,
     private channelsService: ChannelsService,
     private notificationsService: NotificationsService,
@@ -91,69 +41,78 @@ export class ChannelsComponent implements OnInit {
   }
 
   getChannels(name?: string): void {
-    this.channelsService.getChannels(this.offset, this.limit, '', '', name).subscribe(
+    this.pageFilters.name = name;
+    this.channelsService.getChannels(this.pageFilters).subscribe(
       (resp: any) => {
-        this.total = resp.total;
-        this.channels = resp.channels;
+        this.channelsPage = {
+          offset: resp.offset,
+          limit: resp.limit,
+          total: resp.total,
+          rows: resp.channels,
+        };
 
         // Check if there is a type defined in the metadata
-        this.channels.forEach( (chann: Channel) => {
-          chann.type = chann.metadata ? chann.metadata.type : '';
+        this.channelsPage.rows.forEach( (chan: Channel) => {
+          chan.type = chan.metadata ? chan.metadata.type : '';
         });
-
-        // Load and refresh Channels table
-        this.source.load(resp.channels);
-        this.source.refresh();
       },
     );
   }
 
-  onCreateConfirm(event): void {
-    // close create row
-    event.confirm.resolve();
-
-    event.newData.type && (event.newData.metadata = {'type': event.newData.type});
-    this.channelsService.addChannel(event.newData).subscribe(
-      resp => {
-        this.notificationsService.success('Channel successfully created', '');
-        this.getChannels();
-      },
-    );
-  }
-
-  onEditConfirm(event): void {
-    // close edit row
-    event.confirm.resolve();
-
-    const type = event.newData.type;
-    if (type) {
-      event.newData.metadata = event.newData.metadata || {};
-      event.newData.metadata.type = type;
+  onChangePage(dir: any) {
+    if (dir === 'prev') {
+      this.pageFilters.offset = this.channelsPage.offset - this.channelsPage.limit;
     }
+    if (dir === 'next') {
+      this.pageFilters.offset = this.channelsPage.offset + this.channelsPage.limit;
+    }
+    this.getChannels();
+  }
 
-    this.channelsService.editChannel(event.newData).subscribe(
-      resp => {
-        this.notificationsService.success('Channel successfully edited', '');
+  onChangeLimit(lim: number) {
+    this.pageFilters.limit = lim;
+    this.getChannels();
+  }
+
+  openAddModal() {
+    this.dialogService.open(ChannelsAddComponent, { context: { action: 'Add' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.getChannels();
+        }
       },
     );
   }
 
-  onDeleteConfirm(event): void {
+  openEditModal(row: any) {
+    this.dialogService.open(ChannelsAddComponent, { context: { formData: row, action: 'Edit' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.getChannels();
+        }
+      },
+    );
+  }
+
+  openDeleteModal(row: any) {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'Channel' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close delete row
-          event.confirm.resolve();
-
-          this.channelsService.deleteChannel(event.data.id).subscribe(
+          this.channelsService.deleteChannel(row.id).subscribe(
             resp => {
-              this.channels = this.channels.filter(c => c.id !== event.data.id);
+              this.channelsPage.rows = this.channelsPage.rows.filter((c: Channel) => c.id !== row.id);
               this.notificationsService.success('Channel successfully deleted', '');
             },
           );
         }
       },
     );
+  }
+
+  onOpenDetails(row: any) {
+    if (row.id) {
+      this.router.navigate([`${this.router.routerState.snapshot.url}/details/${row.id}`]);
+    }
   }
 
   searchChannel(input) {
@@ -165,7 +124,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_channels.csv', this.channels);
+    this.fsService.exportToCsv('mfx_channels.csv', this.channelsPage.rows);
   }
 
   onFileSelected(files: FileList) {

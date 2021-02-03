@@ -53,8 +53,7 @@
         </div>
       </nb-card-header>
       <nb-card-body>
-        <ngx-table-component [colNames]="['Name', 'Channel ID']"
-                             [keys]="['name', 'id', 'delete']"
+        <ngx-table-component [config]="tableConfig"
                              [page]="connChansPage"
                              (delEvent)=onDisconnect($event)
                              (changeLimitEvent)=onChangeLimit($event)

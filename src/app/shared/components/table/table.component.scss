@@ -3,25 +3,25 @@ table {
 }
 
 td, th {
-  border: 1px solid #c7cdd9;
+  border: 1px solid #edf1f7;
   text-align: left;
   padding: 6px;
 }
 
 tr {
-  background-color: #f5f6f6;
+  background-color: #ffffff;
 }
 
 tr:first-child {
-  background-color: white;
+  background-color: #ffffff;
 }
 
 tr:hover td {
-  background-color: #e0e2e5;
+  background-color: #edf1f7;
 }
 
 tr:nth-child(even) {
-  background-color: #fafafb;
+  background-color: #f7f9fc;
 }
 
 .page-button {
@@ -32,4 +32,19 @@ tr:nth-child(even) {
 
 nb-select {
   margin-top: 6px;
+}
+
+.edit-button {
+  text-align: center;
+  color: #5f8ecf;
+}
+
+.del-button {
+  text-align: center;
+  color: #e14a25;
+}
+
+.no-msg {
+  text-align: center;
+  padding-top: 50px;
 }

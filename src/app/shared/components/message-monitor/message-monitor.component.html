@@ -8,8 +8,7 @@
   <nb-card-body style="height:100%">
     <div [ngSwitch]="mode">
       <div *ngSwitchCase="'table'">
-        <ngx-table-component [colNames]="['Name', 'Value', 'Time', 'Subtopic', 'Channel', 'Publisher', 'Protocol']"
-                             [keys]="['name', 'value', 'time', 'subtopic', 'channel', 'publisher', 'protocol']"
+        <ngx-table-component [config]="tableConfig"
                              [page]="messagesPage"
                              (changeLimitEvent)=onChangeLimit($event)
                              (changePageEvent)=onChangePage($event)>
@@ -23,9 +22,6 @@
           <ngx-chart [msgDatasets]="msgDatasets"></ngx-chart>
         </div>
       </div>
-    </div>
-    <div *ngIf="messagesPage.total == 0" class="no-msg">
-      No messages to display
     </div>
   </nb-card-body>
   <nb-card-footer>

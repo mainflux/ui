@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 
-import { LocalDataSource } from 'ng2-smart-table';
-import { Thing } from 'app/common/interfaces/mainflux.interface';
-
+import { Thing, PageFilters, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { FsService } from 'app/common/services/fs/fs.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
-import { DetailsComponent } from 'app/shared/components/details/details.component';
+import { ThingsAddComponent } from './add/things.add.component';
 
-const defFreq: number = 100;
+const defSearchBardMs: number = 100;
 
 @Component({
   selector: 'ngx-things-component',
@@ -19,67 +17,18 @@ const defFreq: number = 100;
   styleUrls: ['./things.component.scss'],
 })
 export class ThingsComponent implements OnInit {
-  settings = {
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate: true,
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmSave: true,
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      details: {
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          return row;
-        },
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-      name: {
-        title: 'Name',
-        filter: false,
-      },
-      type: {
-        title: 'Type',
-        filter: false,
-        addable: true,
-      },
-      id: {
-        title: 'ID',
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-    },
-    pager: {
-      display: true,
-      perPage: 6,
-    },
+  tableConfig: TableConfig = {
+    colNames: ['', '', '', 'Name', 'Type', 'ID', 'Key'],
+    keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'key'],
   };
+  thingsPage: TablePage = {};
+  pageFilters: PageFilters = {};
 
-  source: LocalDataSource = new LocalDataSource();
-  things: Thing[] = [];
-
-  offset = 0;
-  limit = 100;
-  total = 0;
-
-  searchFreq = 0;
+  searchTime = 0;
   columnChar = '|';
 
   constructor(
+    private router: Router,
     private dialogService: NbDialogService,
     private thingsService: ThingsService,
     private fsService: FsService,
@@ -91,63 +40,66 @@ export class ThingsComponent implements OnInit {
   }
 
   getThings(name?: string): void {
-    this.thingsService.getThings(this.offset, this.limit, '', '', name).subscribe(
+    this.pageFilters.name = name;
+    this.thingsService.getThings(this.pageFilters).subscribe(
       (resp: any) => {
-        this.total = resp.total;
-        this.things = resp.things;
+        this.thingsPage = {
+          offset: resp.offset,
+          limit: resp.limit,
+          total: resp.total,
+          rows: resp.things,
+        };
 
         // Check if there is a type defined in the metadata
-        this.things.forEach( (thing: Thing) => {
+        this.thingsPage.rows.forEach( (thing: Thing) => {
           thing.type = thing.metadata ? thing.metadata.type : '';
         });
-
-        // Load and refresh Things table
-        this.source.load(this.things);
-        this.source.refresh();
       },
     );
   }
 
-  onCreateConfirm(event): void {
-    // close create row
-    event.confirm.resolve();
-
-    event.newData.type && (event.newData.metadata = {'type': event.newData.type});
-    this.thingsService.addThing(event.newData).subscribe(
-      resp => {
-        this.notificationsService.success('Thing successfully created', '');
-        this.getThings();
-      },
-    );
-  }
-
-  onEditConfirm(event): void {
-    // close edit row
-    event.confirm.resolve();
-
-    const type = event.newData.type;
-    if (type) {
-      event.newData.metadata = event.newData.metadata || {};
-      event.newData.metadata.type = type;
+  onChangePage(dir: any) {
+    if (dir === 'prev') {
+      this.pageFilters.offset = this.thingsPage.offset - this.thingsPage.limit;
     }
+    if (dir === 'next') {
+      this.pageFilters.offset = this.thingsPage.offset + this.thingsPage.limit;
+    }
+    this.getThings();
+  }
 
-    this.thingsService.editThing(event.newData).subscribe(
-      resp => {
-        this.notificationsService.success('Thing successfully edited', '');
+  onChangeLimit(lim: number) {
+    this.pageFilters.limit = lim;
+    this.getThings();
+  }
+
+  openAddModal() {
+    this.dialogService.open(ThingsAddComponent, { context: { action: 'Add' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.getThings();
+        }
       },
     );
   }
 
-  onDeleteConfirm(event): void {
+  openEditModal(row: any) {
+    this.dialogService.open(ThingsAddComponent, { context: { formData: row, action: 'Edit' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.getThings();
+        }
+      },
+    );
+  }
+
+  openDeleteModal(row: any) {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'Thing' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close delete row
-          event.confirm.resolve();
-
-          this.thingsService.deleteThing(event.data.id).subscribe(
+          this.thingsService.deleteThing(row.id).subscribe(
             resp => {
-              this.things = this.things.filter(t => t.id !== event.data.id);
+              this.thingsPage.rows = this.thingsPage.rows.filter((t: Thing) => t.id !== row.id);
               this.notificationsService.success('Thing successfully deleted', '');
             },
           );
@@ -156,16 +108,22 @@ export class ThingsComponent implements OnInit {
     );
   }
 
+  onOpenDetails(row: any) {
+    if (row.id) {
+      this.router.navigate([`${this.router.routerState.snapshot.url}/details/${row.id}`]);
+    }
+  }
+
   searchThing(input) {
     const t = new Date().getTime();
-    if ((t - this.searchFreq) > defFreq) {
+    if ((t - this.searchTime) > defSearchBardMs) {
       this.getThings(input);
-      this.searchFreq = t;
+      this.searchTime = t;
     }
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_things.csv', this.things);
+    this.fsService.exportToCsv('mfx_things.csv', this.thingsPage.rows);
   }
 
   onFileSelected(files: FileList) {

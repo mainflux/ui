@@ -11,14 +11,13 @@ import { MqttService } from 'ngx-mqtt';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 const defLimit: number = 20;
+const typeGateway = 'gateway';
+const typeCtrlChan = 'control-channel';
+const typeDataChan = 'data-channel';
+const typeExportChan = 'export-channel';
 
 @Injectable()
 export class GatewaysService {
-  typeGateway = 'gateway';
-  typeCtrlChan = 'control-channel';
-  typeDataChan = 'data-channel';
-  typeExportChan = 'export-channel';
-
   constructor(
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
@@ -29,25 +28,41 @@ export class GatewaysService {
   ) { }
 
   getGateways(offset?: number, limit?: number, name?: string) {
-    offset = offset || 0;
-    limit = limit || defLimit;
+    const filters = {
+      offset: offset || 0,
+      limit: limit || defLimit,
+      type: typeGateway,
+      name: name,
+    };
 
-    return this.thingsService.getThings(offset, limit, this.typeGateway, '', name);
+    return this.thingsService.getThings(filters);
   }
 
   getCtrlChannels(offset: number, limit: number) {
-    return this.channelsService.getChannels(offset, limit, this.typeCtrlChan);
+    const filters = {
+      offset: offset || 0,
+      limit: limit || defLimit,
+      type: typeCtrlChan,
+    };
+
+    return this.channelsService.getChannels(filters);
   }
 
   getDataChannels(offset: number, limit: number) {
-    return this.channelsService.getChannels(offset, limit, this.typeDataChan);
+    const filters = {
+      offset: offset || 0,
+      limit: limit || defLimit,
+      type: typeDataChan,
+    };
+
+    return this.channelsService.getChannels(filters);
   }
 
   addGateway(name: string, externalID: string) {
     const gateway: Gateway = {
       name: name,
       metadata: {
-        type: this.typeGateway,
+        type: typeGateway,
         external_id: externalID,
       },
     };
@@ -59,9 +74,9 @@ export class GatewaysService {
           (respGetThing: Thing) => {
             gateway.key = respGetThing.key;
             const ctrlChan: Channel = {
-              name: `${gateway.name}-${this.typeCtrlChan}`,
+              name: `${gateway.name}-${typeCtrlChan}`,
               metadata: {
-                type: this.typeCtrlChan,
+                type: typeCtrlChan,
               },
             };
             this.channelsService.addChannel(ctrlChan).subscribe(
@@ -69,9 +84,9 @@ export class GatewaysService {
                 const ctrlChanID = respAddCtrl.headers.get('location').replace('/channels/', '');
 
                 const dataChannel: Channel = {
-                  name: `${gateway.name}-${this.typeDataChan}`,
+                  name: `${gateway.name}-${typeDataChan}`,
                   metadata: {
-                    type: this.typeDataChan,
+                    type: typeDataChan,
                   },
                 };
                 this.channelsService.addChannel(dataChannel).subscribe(
@@ -79,9 +94,9 @@ export class GatewaysService {
                     const dataChanID = respAddData.headers.get('location').replace('/channels/', '');
 
                     const exportChannel: Channel = {
-                      name: `${gateway.name}-${this.typeExportChan}`,
+                      name: `${gateway.name}-${typeExportChan}`,
                       metadata: {
-                        type: this.typeExportChan,
+                        type: typeExportChan,
                       },
                     };
                     this.channelsService.addChannel(exportChannel).subscribe(
