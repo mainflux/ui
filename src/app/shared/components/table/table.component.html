@@ -1,22 +1,44 @@
 <table>
   <tr>
-    <th *ngFor="let cn of colNames">{{cn}}</th>
+    <th *ngFor="let colName of config.colNames"> {{ colName }} </th>
   </tr>
   <tr *ngFor="let row of page.rows">
-      <td  *ngFor="let key of keys">
-        <div *ngIf="key === 'delete'" style="text-align: center;">
-          <button (click)="onDelete(row)" nbButton size="tiny" class="button-red">
-            x
-          </button>
+      <td  *ngFor="let key of config.keys">
+        <div *ngIf="key === 'edit'" class="edit-button">
+          <nb-icon nbButton size="tiny" icon="edit-outline"
+                   (click)="onEdit(row)">
+          </nb-icon>
         </div>
-        {{row[key]}}
+        <div *ngIf="key === 'delete'" class="del-button">
+          <nb-icon nbButton size="tiny" icon="trash-2-outline"
+                   (click)="onDelete(row)">
+          </nb-icon>
+        </div>
+        <div *ngIf="key === 'details'" class="del-button">
+          <nb-icon nbButton size="tiny" icon="search-outline" status="warning"
+                   (click)="onClickDetails(row)">
+          </nb-icon>
+        </div>
+        <div *ngIf="key === 'time'">
+          {{ row[key] * 1000 | date:'medium' }}
+        </div>
+        <div *ngIf="key !== 'time' && key !== 'edit' && key !== 'delete' && key !== 'details'">
+          {{ row[key] }}
+        </div>
       </td>
   </tr>
 </table>
+
+<div *ngIf="page.total === 0" class="row no-msg">
+  <div class="col-12">
+    No content
+  </div>
+</div>
+
 <div class="row">
-  <div class="col-1">
+  <div  *ngIf="page.total > 0" class="col-1">
     <nb-select size="tiny" [(selected)]="page.limit" (selectedChange)="onChangeLimit($event)">
-      <nb-option *ngFor="let lim of limits" [value]="lim">{{lim}}</nb-option>
+      <nb-option *ngFor="let lim of limits" [value]="lim"> {{ lim }} </nb-option>
     </nb-select>
   </div>
   <div *ngIf="totalPages > 1" class="col-10" style="text-align: center;">
@@ -24,7 +46,7 @@
       <<
     </button>
     <button (click)="onChangePage('current')" nbButton size="tiny" class="button-blue page-button">
-      {{currentPage}}
+      {{ currentPage }}
     </button>
     <button (click)="onChangePage('next')" nbButton size="tiny" class="button-blue page-button">
       >>

@@ -28,15 +28,26 @@ export class OpcuaService {
   }
 
   getNodes(offset?: number, limit?: number, name?: string) {
-    offset = offset || 0;
-    limit = limit || defLimit;
+    const filters = {
+      offset: offset || 0,
+      limit: limit || defLimit,
+      type: this.typeOpcua,
+      name: name,
+    };
 
-    return this.thingsService.getThings(offset, limit, this.typeOpcua, '', name);
+    return this.thingsService.getThings(filters);
   }
 
   addNodes(serverURI: string, nodes: any) {
+    const filters = {
+      offset: 0,
+      limit: 1,
+      type: this.typeOpcua,
+      metadata: `{"server_uri": "${serverURI}"}`,
+    };
+
     // Check if a channel exist for serverURI
-    return this.channelsService.getChannels(0, 1, 'opcua', `{"server_uri": "${serverURI}"}`).map(
+    return this.channelsService.getChannels(filters).map(
       (resp: any) => {
         if (resp.total === 0) {
           const chanReq = {
@@ -123,7 +134,13 @@ export class OpcuaService {
     return this.thingsService.deleteThing(node.id).map(
       respThing => {
         const serverURI = node.metadata.opcua.server_uri;
-        this.thingsService.getThings(0, 1, 'opcua', `{"server_uri": "${serverURI}"}`).subscribe(
+        const filters = {
+          offset: 0,
+          limit: 1,
+          type: this.typeOpcua,
+          metadata: `{"server_uri": "${serverURI}"}`,
+        };
+        this.thingsService.getThings(filters).subscribe(
           (respChan: any) => {
             if (respChan.total === 0) {
               const channelID = node.metadata.channel_id;

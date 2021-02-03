@@ -31,6 +31,7 @@ import { TableComponent } from './components/table/table.component';
     NbDatepickerModule,
     NbInputModule,
     FormsModule,
+    NbIconModule,
   ],
   declarations: [
     ConfirmationComponent,

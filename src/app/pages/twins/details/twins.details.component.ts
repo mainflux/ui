@@ -87,7 +87,12 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
   }
 
   getChannels() {
-    this.channelsService.getChannels(0, 100).subscribe(
+    const filters = {
+      offset: 0,
+      limit: 100,
+    };
+
+    this.channelsService.getChannels(filters).subscribe(
       (chans: any) => {
         this.channels = chans.channels;
       },

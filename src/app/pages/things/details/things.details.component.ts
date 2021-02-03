@@ -6,7 +6,7 @@ import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Channel, Thing, TablePage } from 'app/common/interfaces/mainflux.interface';
+import { Channel, Thing, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 
 @Component({
   selector: 'ngx-things-details-component',
@@ -18,6 +18,10 @@ export class ThingsDetailsComponent implements OnInit {
 
   thing: Thing = {};
 
+  tableConfig: TableConfig = {
+    colNames: ['Name', 'Channel ID'],
+    keys: ['name', 'id', 'delete'],
+  };
   connChansPage: TablePage = {};
   disconnectedChans: Channel[] = [];
 

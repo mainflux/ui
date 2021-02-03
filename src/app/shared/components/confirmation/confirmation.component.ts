@@ -7,9 +7,11 @@ import { NbDialogRef } from '@nebular/theme';
   styleUrls: ['./confirmation.component.scss'],
 })
 export class ConfirmationComponent {
-  constructor(protected dialogRef: NbDialogRef<ConfirmationComponent>) { }
 
   @Input() type: string;
+  constructor(
+    protected dialogRef: NbDialogRef<ConfirmationComponent>,
+  ) { }
 
   cancel() {
     this.dialogRef.close(false);

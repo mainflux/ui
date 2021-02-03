@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
-import { Channel, Thing, MainfluxMsg, Message, MsgFilters, Dataset, TablePage } from 'app/common/interfaces/mainflux.interface';
+import { Channel, Thing, MainfluxMsg, Message, MsgFilters, Dataset,
+  TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
@@ -33,6 +34,10 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
 
   publishers: Thing[] = [];
 
+  tableConfig: TableConfig = {
+    colNames: ['Name', 'Value', 'Time', 'Subtopic', 'Channel', 'Publisher', 'Protocol'],
+    keys: ['name', 'value', 'time', 'subtopic', 'channel', 'publisher', 'protocol'],
+  };
   messagesPage: TablePage = {};
 
   @Input() channels: Channel[] = [];
@@ -84,8 +89,11 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getChannelMessages() {
-    this.messagesPage.rows = [];
+    if (this.chanID === '' || this.thingKey === '') {
+      return;
+    }
 
+    this.messagesPage.rows = [];
     this.messagesService.getMessages(this.chanID, this.thingKey, this.filters).subscribe(
       (resp: any) => {
         if (resp.messages) {
