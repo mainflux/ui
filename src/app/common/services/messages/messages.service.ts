@@ -6,7 +6,7 @@ import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
-import { MsgFilters } from 'app/common/interfaces/mainflux.interface';
+import { MsgFilters, ReaderUrl } from 'app/common/interfaces/mainflux.interface';
 
 const defLimit: number = 100;
 
@@ -20,7 +20,7 @@ export class MessagesService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getMessages(channel: string, thingKey: string, filters: MsgFilters) {
+  getMessages(channel: string, thingKey: string, filters: MsgFilters, readerUrl?: ReaderUrl) {
     filters.offset = filters.offset || 0;
     filters.limit = filters.limit || defLimit;
 
@@ -28,7 +28,12 @@ export class MessagesService {
       'Authorization': thingKey,
     });
 
-    let url = `${environment.readerChannelsUrl}/${channel}/${environment.messagesSufix}`;
+    const prefix = readerUrl.prefix ?
+      `${environment.readerUrl}/${readerUrl.prefix}` :
+      `${environment.readerUrl}/${environment.readerPrefix}`;
+    const sufix  = readerUrl.sufix || environment.readerSufix;
+
+    let url = `${prefix}/${channel}/${sufix}`;
     url += `?offset=${filters.offset}&limit=${filters.limit}`;
     url = filters.publisher ? url += `&publisher=${filters.publisher}` : url;
     url = filters.subtopic ? url += `&subtopic=${encodeURIComponent(filters.subtopic)}` : url;
@@ -57,7 +62,7 @@ export class MessagesService {
       'Authorization': key,
     });
 
-    let url = `${environment.writerChannelsUrl}/${channel}/${environment.messagesSufix}`;
+    let url = `${environment.httpAdapterUrl}/${environment.readerPrefix}/${channel}/${environment.readerSufix}`;
     url = subtopic ? url += `/${encodeURIComponent(subtopic)}` : url;
 
     return this.http.post(url, msg, { headers: headers })

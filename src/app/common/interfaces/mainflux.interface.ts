@@ -100,6 +100,11 @@ export interface MsgFilters {
   to?: number;
 }
 
+export interface ReaderUrl {
+  prefix?: string;
+  sufix?: string;
+}
+
 export interface Message {
   value: number;
   time: number;

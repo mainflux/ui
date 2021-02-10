@@ -31,8 +31,8 @@ export class TokenInterceptor implements HttpInterceptor {
     return this.authService.getToken().pipe(switchMap(
       (token: NbAuthJWTToken) => {
         if (token && token.getValue() &&
-          !request.url.startsWith(environment.writerChannelsUrl) &&
-          !request.url.startsWith(environment.readerChannelsUrl) &&
+          !request.url.startsWith(environment.httpAdapterUrl) &&
+          !request.url.startsWith(environment.readerUrl) &&
           !request.url.startsWith(environment.bootstrapUrl) &&
           !request.url.startsWith(environment.browseUrl)
         ) {
@@ -48,8 +48,8 @@ export class TokenInterceptor implements HttpInterceptor {
           err => {
             // Status 403 - Forbiden
             if (err instanceof HttpErrorResponse && err.status === 403 &&
-              !request.url.startsWith(environment.writerChannelsUrl) &&
-              !request.url.startsWith(environment.readerChannelsUrl)) {
+              !request.url.startsWith(environment.httpAdapterUrl) &&
+              !request.url.startsWith(environment.readerUrl)) {
               localStorage.removeItem('auth_app_token');
               this.router.navigateByUrl('/auth/login');
             }
