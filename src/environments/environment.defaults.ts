@@ -15,9 +15,10 @@ export const environment = {
   connectUrl: '/connect',
   browseUrl: '/browse',
 
-  writerChannelsUrl: '/writer/channels',
-  readerChannelsUrl: '/reader/channels',
-  messagesSufix: 'messages',
+  httpAdapterUrl: '/http',
+  readerUrl: '/reader',
+  readerPrefix: 'channels',
+  readerSufix: 'messages',
 
   mqttWsUrl: window['env']['mqttWsUrl'] || 'ws://localhost/mqtt',
   exportConfigFile: '/configs/export/config.toml',

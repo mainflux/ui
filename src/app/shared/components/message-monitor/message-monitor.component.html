@@ -1,9 +1,29 @@
 <nb-card size="large">
   <nb-card-header class="header-details">
-    Messages
-    <nb-select class="right" [(selected)]="mode" size="tiny">
-      <nb-option *ngFor="let mode of this.modes" [value]="mode">{{mode}}</nb-option>
-    </nb-select>
+    <div class="row">
+      <div class="col-2">
+        Messages Reader:
+      </div>
+      <div *ngIf="mode == 'json'" class="col-1 info-details">
+        Prefix:
+      </div>
+      <div *ngIf="mode == 'json'" class="col-2">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='readerUrl.prefix'>
+      </div>
+      <div *ngIf="mode == 'json'" class="col-1 info-details">
+        Suffix:
+      </div>
+      <div *ngIf="mode == 'json'" class="col-2">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='readerUrl.sufix'>
+      </div>
+      <div class="col">
+        <nb-select class="right" [(selected)]="mode" size="tiny">
+          <nb-option *ngFor="let mode of this.modes" [value]="mode">{{mode}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
   </nb-card-header>
   <nb-card-body style="height:100%">
     <div [ngSwitch]="mode">

@@ -1,9 +1,10 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { Channel, Thing, MainfluxMsg, Message, MsgFilters, Dataset,
-  TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
+  TableConfig, TablePage, ReaderUrl } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'ngx-message-monitor',
@@ -14,7 +15,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   messages: MainfluxMsg[] = [];
   chanID = '';
 
-  mode: string = 'table';
+  mode: string = 'json';
   modes: string[] = ['json', 'table', 'chart'];
   valType: string = 'float';
   valTypes: string[] = ['float', 'bool', 'string', 'data'];
@@ -30,6 +31,11 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     value: '',
     from: 0,
     to: 0,
+  };
+
+  readerUrl: ReaderUrl = {
+    prefix: environment.readerPrefix,
+    sufix: environment.readerSufix,
   };
 
   publishers: Thing[] = [];
@@ -94,7 +100,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.messagesPage.rows = [];
-    this.messagesService.getMessages(this.chanID, this.thingKey, this.filters).subscribe(
+    this.messagesService.getMessages(this.chanID, this.thingKey, this.filters, this.readerUrl).subscribe(
       (resp: any) => {
         if (resp.messages) {
           this.messagesPage = {

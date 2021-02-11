@@ -31,11 +31,11 @@
     "target": "http://localhost:8182",
     "secure": false
   },
-  "/writer/*": {
+  "/http/*": {
     "target": "http://localhost:8185",
     "secure": false,
     "pathRewrite": {
-      "^/writer": ""
+      "^/http": ""
     }
   },
   "/reader/*": {
