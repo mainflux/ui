@@ -140,7 +140,9 @@ export class ThingsService {
 
     const params = new HttpParams()
       .set('offset', offset.toString())
-      .set('limit', limit.toString());
+      .set('limit', limit.toString())
+      .set('order', 'name')
+      .set('dir', 'asc');
 
     return this.http.get(`${environment.thingsUrl}/${thingID}/channels/`,  { params })
     .map(
@@ -164,7 +166,9 @@ export class ThingsService {
     const params = new HttpParams()
       .set('offset', offset.toString())
       .set('limit', limit.toString())
-      .set('connected', 'false');
+      .set('connected', 'false')
+      .set('order', 'name')
+      .set('dir', 'asc');
 
     return this.http.get(`${environment.thingsUrl}/${thingID}/channels`, { params })
     .map(
