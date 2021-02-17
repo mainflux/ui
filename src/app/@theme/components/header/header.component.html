@@ -10,8 +10,8 @@
     >
       <nb-icon [icon]="(materialTheme$ | async) ? 'menu-outline' : 'menu-2-outline'"></nb-icon>
     </a>
-    <a class="logo" href="#" (click)="navigateHome()" style="font-family: 'Montserrat', sans-serif; font-weight: 700;">{{logotype}}</a>
-    <div style="font-family: 'Montserrat', sans-se rif; font-weight: 10;">v{{version}}</div>
+    <a class="logo header-logo" href="#" (click)="navigateHome()">{{logotype}}</a>
+    <div class="header-version">v{{version}}</div>
   </div>
 </div>
 

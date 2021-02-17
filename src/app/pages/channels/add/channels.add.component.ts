@@ -33,7 +33,7 @@ export class ChannelsAddComponent {
   submit() {
     if (this.editorMetadata !== '') {
       try {
-        this.formData.metadata = JSON.parse(this.editorMetadata) || {};
+        this.formData.metadata = JSON.parse(this.editorMetadata);
       } catch (e) {
         this.notificationsService.error('Wrong metadata format', '');
         return;
@@ -42,7 +42,7 @@ export class ChannelsAddComponent {
 
     this.formData.type && (this.formData.metadata.type = this.formData.type);
 
-    if (this.action === 'Add') {
+    if (this.action === 'Create') {
       this.channelsService.addChannel(this.formData).subscribe(
         resp => {
           this.notificationsService.success('Channel successfully created', '');

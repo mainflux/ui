@@ -33,7 +33,7 @@ export class ThingsAddComponent {
   submit() {
     if (this.editorMetadata !== '') {
       try {
-        this.formData.metadata = JSON.parse(this.editorMetadata) || {};
+        this.formData.metadata = JSON.parse(this.editorMetadata);
       } catch (e) {
         this.notificationsService.error('Wrong metadata format', '');
         return;
@@ -42,7 +42,7 @@ export class ThingsAddComponent {
 
     this.formData.type && (this.formData.metadata.type = this.formData.type);
 
-    if (this.action === 'Add') {
+    if (this.action === 'Create') {
       this.thingsService.addThing(this.formData).subscribe(
         resp => {
           this.notificationsService.success('Thing successfully created', '');

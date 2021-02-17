@@ -27,7 +27,7 @@ export class TwinsAddComponent {
   }
 
   submit() {
-    if (this.action === 'Add') {
+    if (this.action === 'Create') {
       this.twinsService.addTwin(this.formData).subscribe(
         resp => {
           this.notificationsService.success('Twin successfully created', '');

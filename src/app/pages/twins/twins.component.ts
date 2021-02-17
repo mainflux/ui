@@ -63,7 +63,7 @@ export class TwinsComponent implements OnInit {
   }
 
   openAddModal() {
-    this.dialogService.open(TwinsAddComponent, { context: { action: 'Add' } }).onClose.subscribe(
+    this.dialogService.open(TwinsAddComponent, { context: { action: 'Create' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
           this.getTwins();

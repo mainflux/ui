@@ -1,17 +1,17 @@
 <nb-card size="large">
-  <nb-card-header class="header-details">
+  <nb-card-header class="card-header">
     <div class="row">
       <div class="col-2">
         Messages Reader:
       </div>
-      <div *ngIf="mode == 'json'" class="col-1 info-details">
+      <div *ngIf="mode == 'json'" class="col-1 form-key">
         Prefix:
       </div>
       <div *ngIf="mode == 'json'" class="col-2">
         <input nbInput fullWidth fieldSize="tiny"
                [(ngModel)]='readerUrl.prefix'>
       </div>
-      <div *ngIf="mode == 'json'" class="col-1 info-details">
+      <div *ngIf="mode == 'json'" class="col-1 form-key">
         Suffix:
       </div>
       <div *ngIf="mode == 'json'" class="col-2">
@@ -46,7 +46,7 @@
   </nb-card-body>
   <nb-card-footer>
     <div class="row form-row">
-      <div class="col-1 info-details">
+      <div class="col-1 form-key">
         Channels:
       </div>
       <div class="col-4">
@@ -54,14 +54,14 @@
           <nb-option *ngFor="let ch of channels" [value]="ch.id">{{ch.id}}</nb-option>
         </nb-select>
       </div>
-      <div class="col-1 info-details">
+      <div class="col-1 form-key">
         Subtopic:
       </div>
       <div class="col-2">
         <input nbInput fullWidth fieldSize="tiny"
                [(ngModel)]='filters.subtopic'>
       </div>
-      <div class="col-1 info-details">
+      <div class="col-1 form-key">
         Time:
       </div>
       <div class="col-2">
@@ -70,7 +70,7 @@
       </div>
     </div>
     <div class="row form-row">
-      <div class="col-1 info-details">
+      <div class="col-1 form-key">
         Publisher:
       </div>
       <div class="col-4">
@@ -78,14 +78,14 @@
           <nb-option *ngFor="let pub of publishers" [value]="pub.id">{{pub.id}}</nb-option>
         </nb-select>
       </div>
-      <div class="col-1 info-details">
+      <div class="col-1 form-key">
         Name:
       </div>
       <div class="col-2">
         <input nbInput fullWidth fieldSize="tiny"
                [(ngModel)]='filters.name'>
       </div>
-      <div class="col-1 info-details">
+      <div class="col-1 form-key">
         Value:
       </div>
       <div class="col-2">
