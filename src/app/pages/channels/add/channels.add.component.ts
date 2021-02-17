@@ -33,7 +33,7 @@ export class ChannelsAddComponent {
   submit() {
     if (this.editorMetadata !== '') {
       try {
-        this.formData.metadata = JSON.parse(this.editorMetadata);
+        this.formData.metadata = JSON.parse(this.editorMetadata) || {};
       } catch (e) {
         this.notificationsService.error('Wrong metadata format', '');
         return;
