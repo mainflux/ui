@@ -28,6 +28,10 @@ tr:nth-child(even) {
   margin-top: 6px;
   margin-left: 2px;
   margin-right: 2px;
+  background-color: #f7f9fc !important;
+}
+.page-button:hover {
+  background-color: #edf1f7 !important;
 }
 
 nb-select {
@@ -36,12 +40,23 @@ nb-select {
 
 .edit-button {
   text-align: center;
-  color: #5f8ecf;
+}
+.edit-button:hover {
+  color: #ffc720;
 }
 
 .del-button {
   text-align: center;
+}
+.del-button:hover {
   color: #e14a25;
+}
+
+.detail-button {
+  text-align: center;
+}
+.detail-button:hover {
+  color: #5f8ecf;
 }
 
 .no-msg {

@@ -74,7 +74,7 @@ export class ThingsComponent implements OnInit {
   }
 
   openAddModal() {
-    this.dialogService.open(ThingsAddComponent, { context: { action: 'Add' } }).onClose.subscribe(
+    this.dialogService.open(ThingsAddComponent, { context: { action: 'Create' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
           this.getThings();

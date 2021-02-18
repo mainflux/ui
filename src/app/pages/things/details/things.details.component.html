@@ -1,20 +1,20 @@
 <div class="row">
   <div class="col-md-6">
     <nb-card size="tiny">
-      <nb-card-header class="header-details">
+      <nb-card-header class="card-header">
         Thing Info
       </nb-card-header>
       <nb-card-body>
         <div class="row">
-          <div class="col-md-2 info-details"> Name: </div><div class="col-md-10"> {{ thing.name }} </div>
-          <div class="col-md-2 info-details"> ID: </div><div class="col-md-10"> {{ thing.id }} </div>
-          <div class="col-md-2 info-details"> Key: </div><div class="col-md-10"> {{ thing.key }} </div>
+          <div class="col-md-2 form-key"> Name: </div><div class="col-md-10"> {{ thing.name }} </div>
+          <div class="col-md-2 form-key"> ID: </div><div class="col-md-10"> {{ thing.id }} </div>
+          <div class="col-md-2 form-key"> Key: </div><div class="col-md-10"> {{ thing.key }} </div>
         </div>
       </nb-card-body>
     </nb-card>
 
     <nb-card size="small">
-      <nb-card-header class="header-details">
+      <nb-card-header class="card-header">
         Metadata
         <button nbButton size="tiny" class="button-green"
                 (click)="onEdit()">
@@ -32,7 +32,7 @@
 
   <div class="col-md-6">
     <nb-card size="small">
-      <nb-card-header class="header-details">
+      <nb-card-header class="card-header">
         <div class="row">
           <div class="col-md-3">
             Connections
@@ -63,7 +63,7 @@
     </nb-card>
 
     <nb-card size="tiny">
-      <nb-card-header class="header-details">
+      <nb-card-header class="card-header">
         HTTP Adapter
         <button (click)="onSendMessage()" nbButton size="tiny" class="button-green">
           Send Message
@@ -71,7 +71,7 @@
       </nb-card-header>
       <nb-card-body>
         <div class="row form-row">
-          <div class="col-md-2 info-details"> Channel: </div>
+          <div class="col-md-2 form-key"> Channel: </div>
           <div class="col-md-10">
             <nb-select [(selected)]="httpMsg.chanID" size="tiny">
               <nb-option *ngFor="let ch of this.connChansPage.rows" [value]="ch.id">{{ch.name}}</nb-option>
@@ -79,24 +79,24 @@
           </div>
         </div>
         <div class="row form-row">
-          <div class="col-md-2 info-details"> Subtopic: </div>
+          <div class="col-md-2 form-key"> Subtopic: </div>
           <div class="col-md-3">
             <input nbInput fullWidth fieldSize="tiny"
                    [(ngModel)]='httpMsg.subtopic'>
           </div>
-          <div class="col-md-2 info-details"> Time: </div>
+          <div class="col-md-2 form-key"> Time: </div>
           <div class="col-md-3">
             <input nbInput  fullWidth fieldSize="tiny"
                    [(ngModel)]='httpMsg.time'>
           </div>
         </div>
         <div class="row form-row">
-          <div class="col-md-2 info-details"> Name: </div>
+          <div class="col-md-2 form-key"> Name: </div>
           <div class="col-md-3">
             <input nbInput fullWidth fieldSize="tiny"
                    [(ngModel)]='httpMsg.name'>
           </div>
-          <div class="col-md-2 info-details"> Value: </div>
+          <div class="col-md-2 form-key"> Value: </div>
           <div class="col-md-3">
             <input nbInput fullWidth fieldSize="tiny"
                    [(ngModel)]='httpMsg.value'>

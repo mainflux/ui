@@ -1,5 +1,5 @@
 <nb-card size="tiny">
-  <nb-card-header class="header-details">
+  <nb-card-header class="card-header">
     Twin Info
   </nb-card-header>
   <nb-card-body>
@@ -54,7 +54,7 @@
 </nb-card>
 
 <nb-card size="tiny">
-  <nb-card-header class="header-details">
+  <nb-card-header class="card-header">
     State <em>{{ stateTime | date: 'long' }}</em>
     <button nbButton size="tiny" class="button-green"
             (click)="showStates()">
@@ -71,7 +71,7 @@
 </nb-card>
 
 <nb-card size="normal">
-  <nb-card-header class="header-details">
+  <nb-card-header class="card-header">
     <div class="row">
       <div class="col-6">
         Definition <em *ngIf="def">{{def.created | date: 'long'}}</em>
@@ -126,10 +126,10 @@
 </nb-card>
 
 <nb-card size="large">
-  <nb-card-header class="header-details">
+  <nb-card-header class="card-header">
     <div class="row">
       <div class="col-6">
-        Add definition
+        Create definition
       </div>
 
       <div class="col-4">
@@ -188,12 +188,12 @@
 
   <nb-card-footer>
     <div class="row form-row">
-      <div class="col-md-1 info-details"> Name: </div>
+      <div class="col-md-1 form-key"> Name: </div>
       <div class="col-md-3">
         <input type="text" nbInput [(ngModel)]="editAttr.name" fieldSize="tiny">
       </div>
 
-      <div class="col-md-1 info-details">Channel: </div>
+      <div class="col-md-1 form-key">Channel: </div>
       <div class="col-md-6">
         <nb-select placeholder="Select channel" [(selected)]="editAttr.channel" size="tiny">
           <nb-option *ngFor="let channel of this.channels" [value]="channel.id">
@@ -204,11 +204,11 @@
     </div>
 
     <div class="row form-row">
-      <div class="col-md-1 info-details"> Subtopic: </div>
+      <div class="col-md-1 form-key"> Subtopic: </div>
       <div class="col-md-3">
         <input type="text" nbInput [(ngModel)]="editAttr.subtopic" fieldSize="tiny">
       </div>
-      <div class="col-md-1 info-details"> Persisted: </div>
+      <div class="col-md-1 form-key"> Persisted: </div>
       <div class="col-md-2">
         <nb-checkbox (checkedChange)="togglePersist($event)" [checked]="editAttr.persist_state"></nb-checkbox>
       </div>
@@ -216,7 +216,7 @@
 
     <button nbButton size="tiny" class="button-blue"
             (click)="addAttribute()">
-      Add / Update attribute
+      Create / Update attribute
     </button>
   </nb-card-footer>
 </nb-card>

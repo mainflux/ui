@@ -75,7 +75,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   openAddModal() {
-    this.dialogService.open(ChannelsAddComponent, { context: { action: 'Add' } }).onClose.subscribe(
+    this.dialogService.open(ChannelsAddComponent, { context: { action: 'Create' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
           this.getChannels();

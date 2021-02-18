@@ -14,8 +14,8 @@
                    (click)="onDelete(row)">
           </nb-icon>
         </div>
-        <div *ngIf="key === 'details'" class="del-button">
-          <nb-icon nbButton size="tiny" icon="search-outline" status="warning"
+        <div *ngIf="key === 'details'" class="detail-button">
+          <nb-icon nbButton size="tiny" icon="search-outline"
                    (click)="onClickDetails(row)">
           </nb-icon>
         </div>
@@ -42,13 +42,13 @@
     </nb-select>
   </div>
   <div *ngIf="totalPages > 1" class="col-10" style="text-align: center;">
-    <button (click)="onChangePage('prev')" nbButton size="tiny" class="button-blue page-button">
+    <button (click)="onChangePage('prev')" nbButton size="tiny" class="page-button">
       <<
     </button>
-    <button (click)="onChangePage('current')" nbButton size="tiny" class="button-blue page-button">
+    <button (click)="onChangePage('current')" nbButton size="tiny" class="page-button">
       {{ currentPage }}
     </button>
-    <button (click)="onChangePage('next')" nbButton size="tiny" class="button-blue page-button">
+    <button (click)="onChangePage('next')" nbButton size="tiny" class="page-button">
       >>
     </button>
   </div>
