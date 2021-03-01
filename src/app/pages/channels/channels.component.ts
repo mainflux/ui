@@ -9,7 +9,7 @@ import { FsService } from 'app/common/services/fs/fs.service';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
 import { ChannelsAddComponent } from './add/channels.add.component';
 
-const defSearchBardMs: number = 100;
+const defSearchBarMs: number = 100;
 
 @Component({
   selector: 'ngx-smart-table',
@@ -117,7 +117,7 @@ export class ChannelsComponent implements OnInit {
 
   searchChannel(input) {
     const t = new Date().getTime();
-    if ((t - this.searchTime) > defSearchBardMs) {
+    if ((t - this.searchTime) > defSearchBarMs) {
       this.getChannels(input);
       this.searchTime = t;
     }

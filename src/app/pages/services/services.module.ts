@@ -4,6 +4,7 @@ import { PagesModule } from 'app/pages/pages.module';
 import { ServicesRoutingModule } from './services.routing.module';
 
 import { LoraComponent } from 'app/pages/services/lora/lora.component';
+import { LoraAddComponent } from 'app/pages/services/lora/add/lora.add.component';
 import { LoraDetailsComponent } from 'app/pages/services/lora/details/lora.details.component';
 import { OpcuaComponent } from 'app/pages/services/opcua/opcua.component';
 import { OpcuaDetailsComponent } from 'app/pages/services/opcua/details/opcua.details.component';
@@ -22,6 +23,7 @@ import { ConfirmationComponent } from 'app/shared/components/confirmation/confir
   ],
   declarations: [
     LoraComponent,
+    LoraAddComponent,
     LoraDetailsComponent,
     OpcuaComponent,
     OpcuaDetailsComponent,
@@ -33,6 +35,7 @@ import { ConfirmationComponent } from 'app/shared/components/confirmation/confir
   ],
   entryComponents: [
     ConfirmationComponent,
+    LoraAddComponent,
   ],
 })
 export class ServicesModule { }

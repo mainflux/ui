@@ -35,7 +35,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
 
   readerUrl: ReaderUrl = {
     prefix: environment.readerPrefix,
-    sufix: environment.readerSufix,
+    suffix: environment.readerSuffix,
   };
 
   publishers: Thing[] = [];

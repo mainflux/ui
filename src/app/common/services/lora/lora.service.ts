@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { LoraDevice, LoraTableRow } from 'app/common/interfaces/lora.interface';
+import { LoraDevice } from 'app/common/interfaces/lora.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
@@ -42,7 +42,7 @@ export class LoraService {
     return this.channelsService.getChannels(filters);
   }
 
-  addDevice(row: LoraTableRow) {
+  addDevice(row: LoraDevice) {
     const filters = {
       offset: 0,
       limit: 1,
@@ -78,7 +78,7 @@ export class LoraService {
     );
   }
 
-  addAndConnect(chanID: string, row: LoraTableRow) {
+  addAndConnect(chanID: string, row: LoraDevice) {
     const devReq: LoraDevice = {
       name: row.name,
       metadata: {
@@ -111,7 +111,7 @@ export class LoraService {
     );
   }
 
-  editDevice(row: LoraTableRow) {
+  editDevice(row: LoraDevice) {
     const devReq: LoraDevice = {
       id: row.id,
       name: row.name,
@@ -130,7 +130,7 @@ export class LoraService {
     );
   }
 
-  deleteDevice(loraDev: LoraTableRow) {
+  deleteDevice(loraDev: LoraDevice) {
     const channelID = loraDev.metadata.channel_id;
     return this.channelsService.deleteChannel(channelID).map(
       () => {

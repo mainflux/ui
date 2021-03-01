@@ -12,7 +12,7 @@ import { FsService } from 'app/common/services/fs/fs.service';
 import { DetailsComponent } from 'app/shared/components/details/details.component';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
 
-const defSearchBardMs: number = 100;
+const defSearchBarMs: number = 100;
 
 @Component({
   selector: 'ngx-gateways-component',
@@ -245,7 +245,7 @@ export class GatewaysComponent implements OnInit {
 
   searchGW(input) {
     const t = new Date().getTime();
-    if ((t - this.searchTime) > defSearchBardMs) {
+    if ((t - this.searchTime) > defSearchBarMs) {
       this.getGateways(input);
       this.searchTime = t;
     }

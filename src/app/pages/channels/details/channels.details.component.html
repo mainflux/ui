@@ -60,17 +60,6 @@
         </ngx-table-component>
       </nb-card-body>
     </nb-card>
-
-    <nb-card size="large" *ngIf="experimental">
-      <nb-card-body>
-        <div *ngIf="messages.length < 2" style="text-align: center;">
-          No charts to display
-        </div>
-        <div *ngIf="messages.length >= 2" style="height:100%">
-          <ngx-chart [messages]="messages"></ngx-chart>
-        </div>
-      </nb-card-body>
-    </nb-card>
   </div>
 </div>
 

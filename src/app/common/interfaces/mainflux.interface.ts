@@ -102,7 +102,7 @@ export interface MsgFilters {
 
 export interface ReaderUrl {
   prefix?: string;
-  sufix?: string;
+  suffix?: string;
 }
 
 export interface Message {
