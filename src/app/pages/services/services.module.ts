@@ -9,6 +9,7 @@ import { LoraDetailsComponent } from 'app/pages/services/lora/details/lora.detai
 import { OpcuaComponent } from 'app/pages/services/opcua/opcua.component';
 import { OpcuaDetailsComponent } from 'app/pages/services/opcua/details/opcua.details.component';
 import { GatewaysComponent } from 'app/pages/services/gateways/gateways.component';
+import { GatewaysAddComponent } from 'app/pages/services/gateways/add/gateways.add.component';
 import { GatewaysDetailsComponent } from 'app/pages/services/gateways/details/gateways.details.component';
 import { GatewaysInfoComponent } from 'app/pages/services/gateways/details/info/gateways.info.component';
 import { GatewaysConfigComponent } from 'app/pages/services/gateways/details/config/gateways.config.component';
@@ -28,6 +29,7 @@ import { ConfirmationComponent } from 'app/shared/components/confirmation/confir
     OpcuaComponent,
     OpcuaDetailsComponent,
     GatewaysComponent,
+    GatewaysAddComponent,
     GatewaysDetailsComponent,
     GatewaysInfoComponent,
     GatewaysConfigComponent,
@@ -36,6 +38,7 @@ import { ConfirmationComponent } from 'app/shared/components/confirmation/confir
   entryComponents: [
     ConfirmationComponent,
     LoraAddComponent,
+    GatewaysAddComponent,
   ],
 })
 export class ServicesModule { }

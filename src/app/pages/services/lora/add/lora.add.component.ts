@@ -29,6 +29,7 @@ export class LoraAddComponent {
   submit() {
     if (this.formData.devEUI === '' || this.formData.appID === '') {
       this.notificationsService.warn('Application ID and Device EUI are required', '');
+      return false;
     }
 
     if (this.action === 'Create') {

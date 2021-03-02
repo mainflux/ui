@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 
-import { LocalDataSource } from 'ng2-smart-table';
-
+import { PageFilters, TableConfig, TablePage, MsgFilters } from 'app/common/interfaces/mainflux.interface';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
 import { GatewaysService } from 'app/common/services/gateways/gateways.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { FsService } from 'app/common/services/fs/fs.service';
-
-import { DetailsComponent } from 'app/shared/components/details/details.component';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
+import { GatewaysAddComponent } from './add/gateways.add.component';
 
 const defSearchBarMs: number = 100;
 
@@ -20,92 +19,17 @@ const defSearchBarMs: number = 100;
   styleUrls: ['./gateways.component.scss'],
 })
 export class GatewaysComponent implements OnInit {
-  settings = {
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate: true,
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmSave: true,
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      details: {
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          row.type = 'gateways';
-          return row;
-        },
-        editable: 'false',
-        addable: false,
-        filter: false,
-      },
-      name: {
-        title: 'Name',
-        type: 'string',
-        filter: false,
-      },
-      external_id: {
-        title: 'External ID',
-        type: 'text',
-        editable: true,
-        addable: true,
-        filter: false,
-      },
-      messages: {
-        title: 'Messages',
-        type: 'text',
-        editable: 'false',
-        addable: false,
-        filter: false,
-        valuePrepareFunction: cell => {
-          if (cell > 0) {
-            return cell;
-          }
-          return '0';
-        },
-      },
-      seen: {
-        title: 'Last Seen',
-        type: 'text',
-        editable: false,
-        addable: false,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          if (cell > 0) {
-            return new Date(cell * 1000).toLocaleString();
-          }
-          return 'undefined';
-        },
-      },
-    },
-    pager: {
-      display: true,
-      perPage: 6,
-    },
+  tableConfig: TableConfig = {
+    colNames: ['', '', '', 'Name', 'External ID', 'Messages', 'Last Seen'],
+    keys: ['edit', 'delete', 'details', 'name', 'externalID', 'messages', 'seen'],
   };
-
-  source: LocalDataSource = new LocalDataSource();
-  gateways: Gateway[];
-
-  prefixLength = 3;
-
-  offset = 0;
-  limit = 100;
-  total = 0;
+  gatewaysPage: TablePage = {};
+  pageFilters: PageFilters = {};
 
   searchTime = 0;
 
   constructor(
+    private router: Router,
     private gatewaysService: GatewaysService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
@@ -118,31 +42,30 @@ export class GatewaysComponent implements OnInit {
   }
 
   getGateways(name?: string): void {
-    this.gateways = [];
-
-    this.gatewaysService.getGateways(this.offset, this.limit, name).subscribe(
+    this.pageFilters.name = name;
+    this.gatewaysService.getGateways(this.pageFilters).subscribe(
       (resp: any) => {
-        this.total = resp.total;
+        this.gatewaysPage = {
+          offset: resp.offset,
+          limit: resp.limit,
+          total: resp.total,
+          rows: resp.things,
+        };
 
-        resp.things.forEach(gw => {
-          gw.external_id = gw.metadata.external_id;
+        this.gatewaysPage.rows.forEach((gw: Gateway) => {
+          gw.externalID = gw.metadata.external_id;
 
-          const data_channel_id: string = gw.metadata ? gw.metadata.data_channel_id : '';
-          this.messagesService.getMessages(data_channel_id, gw.key, gw.id).subscribe(
+          const dataChannID: string = gw.metadata ? gw.metadata.data_channel_id : '';
+          const msgFilters: MsgFilters = {
+            publisher: gw.id,
+          };
+
+          this.messagesService.getMessages(dataChannID, gw.key, msgFilters).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
                 gw.seen = msgResp.messages[0].time;
                 gw.messages = msgResp.total;
               }
-
-              this.gateways.push(gw);
-              this.source.load(this.gateways);
-              this.source.refresh();
-            },
-            err => {
-              this.gateways.push(gw);
-              this.source.load(this.gateways);
-              this.source.refresh();
             },
           );
         });
@@ -150,97 +73,64 @@ export class GatewaysComponent implements OnInit {
     );
   }
 
-
-  validate(row: any): boolean {
-    const gws = this.gateways.map(g => g.metadata.external_id);
-    if (gws.includes(row.external_id)) {
-      this.notificationsService.warn(
-        'External ID already exist.', '');
-      return false;
+  onChangePage(dir: any) {
+    if (dir === 'prev') {
+      this.pageFilters.offset = this.gatewaysPage.offset - this.gatewaysPage.limit;
     }
-    if (row.name === '' || row.name.length > 32) {
-      this.notificationsService.warn(
-        'Name is required and must be maximum 32 characters long.', '');
-      return false;
+    if (dir === 'next') {
+      this.pageFilters.offset = this.gatewaysPage.offset + this.gatewaysPage.limit;
     }
-
-    if (row.external_id === '' || row.external_id.length < 8) {
-      this.notificationsService.warn(
-        'External ID is required and must be at least 8 characters long.', '');
-      return false;
-    }
-
-    return true;
+    this.getGateways();
   }
 
-
-  onCreateConfirm(event): void {
-    // Form validation
-    if (!this.validate(event.newData)) {
-      return;
-    }
-
-    // close create row
-    event.confirm.resolve();
-
-    this.gatewaysService.addGateway(event.newData.name, event.newData.external_id).subscribe(
-      resp => {
-        setTimeout(
-          () => {
-            this.getGateways();
-          }, 3000,
-        );
-      },
-    );
+  onChangeLimit(lim: number) {
+    this.pageFilters.limit = lim;
+    this.getGateways();
   }
 
-  onEditConfirm(event): void {
-    // Check if the row have been modified
-    const extIDs = this.gateways.map(g => g.metadata.external_id);
-    const names = this.gateways.map(g => g.name);
-    if (extIDs.includes(event.newData.external_id) && names.includes(event.newData.name)) {
-      // close edit row
-      event.confirm.resolve();
-      return;
-    }
-
-    // Formulaire Validator
-    if (!this.validate(event.newData)) {
-      return;
-    }
-
-    // close edit row
-    event.confirm.resolve();
-
-    const name = event.newData.name;
-    const external_id = event.newData.external_id;
-    const gw = event.newData;
-
-    this.gatewaysService.editGateway(name, external_id, gw).subscribe(
-      resp => {
-        this.getGateways();
-      },
-    );
-  }
-
-  onDeleteConfirm(event): void {
-    this.dialogService.open(ConfirmationComponent, { context: { type: 'gateway' } }).onClose.subscribe(
+  openAddModal() {
+    this.dialogService.open(GatewaysAddComponent, { context: { action: 'Create' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close delete row
-          event.confirm.resolve();
+          setTimeout(
+            () => {
+              this.getGateways();
+            }, 3000,
+          );
+        }
+      },
+    );
+  }
 
-          const gw = this.gateways.find(g => {
-            return g.id === event.data.id;
-          });
+  openEditModal(row: any) {
+    this.dialogService.open(GatewaysAddComponent, { context: { formData: row, action: 'Edit' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.getGateways();
+        }
+      },
+    );
+  }
 
-          this.gatewaysService.deleteGateway(gw).subscribe(
+  openDeleteModal(row: any) {
+    this.dialogService.open(ConfirmationComponent, { context: { type: 'Gateway' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.gatewaysService.deleteGateway(row).subscribe(
             resp => {
+              this.gatewaysPage.rows = this.gatewaysPage.rows.filter((g: Gateway) => g.id !== row.id);
+              this.notificationsService.success('Gateway successfully deleted', '');
             },
           );
         }
       },
     );
+  }
+
+  onOpenDetails(row: any) {
+    if (row.id) {
+      this.router.navigate([`${this.router.routerState.snapshot.url}/details/${row.id}`]);
+    }
   }
 
   searchGW(input) {
@@ -252,7 +142,7 @@ export class GatewaysComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('gateways.csv', this.gateways);
+    this.fsService.exportToCsv('gateways.csv', this.gatewaysPage.rows);
   }
 
   onFileSelected(files: FileList) {
