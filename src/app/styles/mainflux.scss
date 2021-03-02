@@ -74,17 +74,16 @@
 nb-sidebar {
   background-color: #272739 !important;
 }
-
 .nb-theme-default nb-menu .menu-item {
   border-bottom: 1px solid #151a30;
   background-color: #272739 !important;
 }
 
+// Menu items
 .nb-theme-default nb-menu .menu-item a,
 .nb-theme-default nb-menu .menu-item a .menu-icon {
   color: #7677a6;
 }
-
 .nb-theme-default nb-menu .menu-item a:hover {
   background-color: #414259 !important;
 }
@@ -95,4 +94,19 @@ nb-sidebar {
 }
 .nb-theme-default nb-menu .menu-item a.active .menu-icon {
   color: white !important;
+}
+
+// First sub menu child
+.nb-theme-default nb-menu .menu-item {
+  border: 0 !important;
+}
+.nb-theme-default nb-menu .menu-item:first-child a.active {
+  color: white !important;
+  border-top: 0 !important;
+  border-bottom: 1px solid  #888ea6 !important;
+}
+
+// Pages padding
+.nb-theme-default nb-layout .layout .layout-container .content .columns nb-layout-column {
+  padding: 1.25rem 2.25rem 0.75rem;
 }
