@@ -11,7 +11,7 @@ import { MessagesService } from 'app/common/services/messages/messages.service';
 import { OpcuaStore } from 'app/common/store/opcua.store';
 import { FsService } from 'app/common/services/fs/fs.service';
 
-const defSearchBardMs: number = 100;
+const defSearchBarMs: number = 100;
 
 @Component({
   selector: 'ngx-opcua-component',
@@ -303,7 +303,7 @@ export class OpcuaComponent implements OnInit {
 
   searchNode(input) {
     const t = new Date().getTime();
-    if ((t - this.searchTime) > defSearchBardMs) {
+    if ((t - this.searchTime) > defSearchBarMs) {
       this.getOpcuaNodes(input);
       this.searchTime = t;
     }

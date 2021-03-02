@@ -11,13 +11,9 @@ export interface LoraDevice {
   name?: string;
   id?: string;
   key?: string;
+  appID?: string;
+  devEUI?: string;
+  seen?: string;
+  messages?: string;
   metadata?: LoraMetadata;
-}
-
-export interface LoraTableRow {
-  name: string;
-  id: string;
-  devEUI: string;
-  appID: string;
-  metadata: LoraMetadata;
 }

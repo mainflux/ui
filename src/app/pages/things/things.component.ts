@@ -9,7 +9,7 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
 import { ThingsAddComponent } from './add/things.add.component';
 
-const defSearchBardMs: number = 100;
+const defSearchBarMs: number = 100;
 
 @Component({
   selector: 'ngx-things-component',
@@ -116,7 +116,7 @@ export class ThingsComponent implements OnInit {
 
   searchThing(input) {
     const t = new Date().getTime();
-    if ((t - this.searchTime) > defSearchBardMs) {
+    if ((t - this.searchTime) > defSearchBarMs) {
       this.getThings(input);
       this.searchTime = t;
     }

@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
-
-import { LocalDataSource } from 'ng2-smart-table';
 
 import { LoraService } from 'app/common/services/lora/lora.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
-import { DetailsComponent } from 'app/shared/components/details/details.component';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { FsService } from 'app/common/services/fs/fs.service';
+import { LoraDevice } from 'app/common/interfaces/lora.interface';
+import { MsgFilters, PageFilters, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
+import { LoraAddComponent } from './add/lora.add.component';
 
-const defSearchBardMs: number = 100;
+const defSearchBarMs: number = 100;
 
 @Component({
   selector: 'ngx-lora-component',
@@ -18,94 +19,17 @@ const defSearchBardMs: number = 100;
   styleUrls: ['./lora.component.scss'],
 })
 export class LoraComponent implements OnInit {
-  settings = {
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate: true,
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmSave: true,
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      details: {
-        title: '',
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          row.type = 'lora';
-          return row;
-        },
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-      name: {
-        title: 'Name',
-        filter: false,
-      },
-      appID: {
-        title: 'ApplicationID',
-        editable: true,
-        addable: true,
-        filter: false,
-      },
-      devEUI: {
-        title: 'DeviceEUI',
-        editable: true,
-        addable: true,
-        filter: false,
-      },
-      messages: {
-        title: 'Messages',
-        editable: false,
-        addable: false,
-        filter: false,
-        valuePrepareFunction: cell => {
-          if (cell > 0) {
-            return cell;
-          }
-          return '0';
-        },
-      },
-      seen: {
-        title: 'Last Seen',
-        editable: false,
-        addable: false,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          if (cell > 0) {
-            return new Date(cell * 1000).toLocaleString();
-          }
-          return ' undefined ';
-        },
-      },
-    },
-    pager: {
-      display: true,
-      perPage: 6,
-    },
+  tableConfig: TableConfig = {
+    colNames: ['', '', '', 'Name', 'Application ID', 'Device EUI', 'Messages', 'Last Seen'],
+    keys: ['edit', 'delete', 'details', 'name', 'appID', 'devEUI', 'messages', 'seen'],
   };
-
-  source: LocalDataSource = new LocalDataSource();
-
-  loraDevices = [];
-
-  offset = 0;
-  limit = 100;
-  total = 0;
+  loraPage: TablePage = {};
+  pageFilters: PageFilters = {};
 
   searchTime = 0;
 
   constructor(
+    private router: Router,
     private loraService: LoraService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
@@ -118,79 +42,82 @@ export class LoraComponent implements OnInit {
   }
 
   getLoraDevices(name?: string): void {
-    this.loraDevices = [];
-
-    this.loraService.getDevices(this.offset, this.limit, name).subscribe(
+    this.loraService.getDevices(this.pageFilters.offset, this.pageFilters.limit, name).subscribe(
       (resp: any) => {
-        this.total = resp.total;
+        this.loraPage = {
+          offset: resp.offset,
+          limit: resp.limit,
+          total: resp.total,
+          rows: resp.things,
+        };
 
-        resp.things.forEach(thing => {
-          thing.devEUI = thing.metadata.lora.dev_eui;
-          thing.appID = thing.metadata.lora.app_id;
+        this.loraPage.rows.forEach((lora: LoraDevice) => {
+          if (lora.metadata.lora !== undefined) {
+            lora.devEUI = lora.metadata.lora.dev_eui;
+            lora.appID = lora.metadata.lora.app_id;
 
-          const chanID: string = thing.metadata ? thing.metadata.channel_id : '';
-          this.messagesService.getMessages(chanID, thing.key, thing.id).subscribe(
-            (msgResp: any) => {
-              if (msgResp.messages) {
-                thing.seen = msgResp.messages[0].time;
-                thing.messages = msgResp.total;
-              }
+            const chanID: string = lora.metadata.channel_id;
+            const msgFilters: MsgFilters = {
+              publisher: lora.id,
+            };
 
-              this.loraDevices.push(thing);
-              this.source.load(this.loraDevices);
-              this.source.refresh();
-            },
-          );
+            this.messagesService.getMessages(chanID, lora.key, msgFilters).subscribe(
+              (msgResp: any) => {
+                if (msgResp.messages) {
+                  lora.seen = msgResp.messages[0].time;
+                  lora.messages = msgResp.total;
+                }
+              },
+            );
+          }
         });
       },
     );
   }
 
-  onCreateConfirm(event): void {
-    // Check appID and devEUI
-    if (event.newData.devEUI !== '' && event.newData.appID !== '') {
-      // close create row
-      event.confirm.resolve();
-
-      this.loraService.addDevice(event.newData).subscribe(
-        resp => {
-          setTimeout(
-            () => {
-              this.getLoraDevices();
-            }, 3000,
-          );
-        },
-      );
-    } else {
-      this.notificationsService.warn('AppID and DeviceEUI are required', '');
+  onChangePage(dir: any) {
+    if (dir === 'prev') {
+      this.pageFilters.offset = this.loraPage.offset - this.loraPage.limit;
     }
+    if (dir === 'next') {
+      this.pageFilters.offset = this.loraPage.offset + this.loraPage.limit;
+    }
+    this.getLoraDevices();
   }
 
-  onEditConfirm(event): void {
-    // Check appID and devEUI
-    if (event.newData.devEUI !== '' && event.newData.appID !== '') {
-      // close edit row
-      event.confirm.resolve();
-
-      this.loraService.editDevice(event.newData).subscribe(
-        resp => {
-        },
-      );
-    } else {
-      this.notificationsService.warn('AppID and DeviceEUI are required', '');
-    }
+  onChangeLimit(lim: number) {
+    this.pageFilters.limit = lim;
+    this.getLoraDevices();
   }
 
-  onDeleteConfirm(event): void {
+  openAddModal() {
+    this.dialogService.open(LoraAddComponent, { context: { action: 'Create' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.getLoraDevices();
+        }
+      },
+    );
+  }
+
+  openEditModal(row: any) {
+    this.dialogService.open(LoraAddComponent, { context: { formData: row, action: 'Edit' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.getLoraDevices();
+        }
+      },
+    );
+  }
+
+  openDeleteModal(row: any) {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'LoRa Device' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close delete row
-          event.confirm.resolve();
-
-          this.loraService.deleteDevice(event.data).subscribe(
+          this.loraService.deleteDevice(row).subscribe(
             resp => {
-              this.total--;
+              this.loraPage.rows = this.loraPage.rows.filter((t: LoraDevice) => t.id !== row.id);
+              this.notificationsService.success('LoRa device successfully deleted', '');
             },
           );
         }
@@ -198,16 +125,22 @@ export class LoraComponent implements OnInit {
     );
   }
 
+  onOpenDetails(row: any) {
+    if (row.id) {
+      this.router.navigate([`${this.router.routerState.snapshot.url}/details/${row.id}`]);
+    }
+  }
+
   searchLora(input) {
     const t = new Date().getTime();
-    if ((t - this.searchTime) > defSearchBardMs) {
+    if ((t - this.searchTime) > defSearchBarMs) {
       this.getLoraDevices(input);
       this.searchTime = t;
     }
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('lora_devices.csv', this.loraDevices);
+    this.fsService.exportToCsv('lora_devices.csv', this.loraPage.rows);
   }
 
   onFileSelected(files: FileList) {

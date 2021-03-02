@@ -1,22 +1,28 @@
+<button nbButton size="medium" class="button-add"
+        (click)="openAddModal()"
+        shape="semi-round">
+  Create LoRa Device
+</button>
+
 <nb-card>
   <nb-card-header class="table-header">
     <div class="row">
       <div class="col-md-4">
-        {{ total }} &nbsp; LoRa Devices
+        {{ loraPage.total }} &nbsp; LoRa Devices
       </div>
       <div class="col-md-4">
         <input nbInput fullWidth placeholder="Search..." fieldSize="small"
                (input)="searchLora($event.target.value)">
       </div>
       <div class="col-md-2">
-        <button nbButton size="small" class="button-blue"
+        <button nbButton size="small" class="button-blue button-header"
                 (click)="onClickSave()">
           <nb-icon icon="save-outline"></nb-icon>
           Save
         </button>
       </div>
       <div class="col-md-2">
-        <button nbButton size="small" class="button-green"
+        <button nbButton size="small" class="button-green button-header"
                 (click)="fileInput.click()">
           <nb-icon icon="file-add-outline"></nb-icon>
           Upload
@@ -26,11 +32,13 @@
     </div>
   </nb-card-header>
   <nb-card-body>
-    <ng2-smart-table [settings]="settings"
-                     [source]="source"
-                     (createConfirm)="onCreateConfirm($event)"
-                     (editConfirm)="onEditConfirm($event)"
-                     (deleteConfirm)="onDeleteConfirm($event)">
-    </ng2-smart-table>
+    <ngx-table-component [config]="tableConfig"
+                         [page]="loraPage"
+                         (editEvent)=openEditModal($event)
+                         (delEvent)=openDeleteModal($event)
+                         (changeLimitEvent)=onChangeLimit($event)
+                         (changePageEvent)=onChangePage($event)
+                         (detailsEvent)=onOpenDetails($event)>
+    </ngx-table-component>
   </nb-card-body>
 </nb-card>
