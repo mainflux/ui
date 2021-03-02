@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 
 import { Gateway } from 'app/common/interfaces/gateway.interface';
-import { Thing, Channel } from 'app/common/interfaces/mainflux.interface';
+import { Thing, Channel, PageFilters } from 'app/common/interfaces/mainflux.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { BootstrapService } from 'app/common/services/bootstrap/bootstrap.service';
@@ -27,14 +27,8 @@ export class GatewaysService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getGateways(offset?: number, limit?: number, name?: string) {
-    const filters = {
-      offset: offset || 0,
-      limit: limit || defLimit,
-      type: typeGateway,
-      name: name,
-    };
-
+  getGateways(filters: PageFilters) {
+    filters.type = typeGateway;
     return this.thingsService.getThings(filters);
   }
 
@@ -58,12 +52,12 @@ export class GatewaysService {
     return this.channelsService.getChannels(filters);
   }
 
-  addGateway(name: string, externalID: string) {
+  addGateway(row: Gateway) {
     const gateway: Gateway = {
-      name: name,
+      name: row.name,
       metadata: {
         type: typeGateway,
-        external_id: externalID,
+        external_id: row.externalID,
       },
     };
 
@@ -162,8 +156,16 @@ export class GatewaysService {
     );
   }
 
-  editGateway(name: string, externalID: string, gateway: Gateway) {
-    gateway.metadata.external_id = externalID;
+  editGateway(row: Gateway) {
+    const gateway: Gateway = {
+      id: row.id,
+      name: row.name,
+      metadata: row.metadata,
+    };
+
+    gateway.metadata = {
+      external_id: row.externalID,
+    };
 
     return this.thingsService.editThing(gateway).map(
       resp => {

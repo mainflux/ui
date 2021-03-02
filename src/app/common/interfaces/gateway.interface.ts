@@ -13,5 +13,8 @@ export interface Gateway {
   id?: string;
   key?: string;
   name?: string;
+  externalID?: string;
   metadata?: GatewayMetadata;
+  seen?: string;
+  messages?: string;
 }
