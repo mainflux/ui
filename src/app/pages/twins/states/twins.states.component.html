@@ -3,18 +3,32 @@
     <nb-card size="big">
       <nb-card-header class="card-header">
         <div class="row">
-          <div class="col-md-2"> {{ total }} states of {{ twin.name }}</div>
-          <div class="col-md-10">
-            from: <input type="text" nbInput value="{{this.lowerLimit}}" (change)="lower($event)" fieldSize="small">
-            to: <input type="text" nbInput value="{{this.upperLimit}}" (change)="upper($event)" fieldSize="small">
+          <div class="col-md-6"> {{ statesPage.total }} states of {{ twin.name }}</div>
+          <div class="col-1 form-key">
+            From:
+          </div>
+          <div class="col-2">
+            <input nbInput fieldSize="tiny" fullWidth
+                   value="{{this.lowerLimit}}"
+                   (change)="lower($event)">
+          </div>
+          <div class="col-1 form-key">
+            To:
+          </div>
+          <div class="col-2">
+            <input nbInput fieldSize="tiny" fullWidth
+                   value="{{this.upperLimit}}"
+                   (change)="upper($event)">
           </div>
         </div>
       </nb-card-header>
 
       <nb-card-body>
-        <ng2-smart-table [settings]="settings"
-                         [source]="source">
-        </ng2-smart-table>
+        <ngx-table-component [config]="tableConfig"
+                             [page]="statesPage"
+                             (changeLimitEvent)=onChangeLimit($event)
+                             (changePageEvent)=onChangePage($event)>
+        </ngx-table-component>
       </nb-card-body>
     </nb-card>
   </div>

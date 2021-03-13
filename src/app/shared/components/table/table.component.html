@@ -22,7 +22,21 @@
         <div *ngIf="key === 'time'">
           {{ row[key] * 1000 | date:'medium' }}
         </div>
-        <div *ngIf="key !== 'time' && key !== 'edit' && key !== 'delete' && key !== 'details'">
+        <div *ngIf="key === 'created'">
+          {{ row[key] | date:'long' }}
+        </div>
+        <div *ngIf="key === 'payload'">
+          <div class="row" *ngFor="let v of row[key] | keyvalue">
+            <div class="col-md-2"><b>{{v.key}}</b></div>
+            <div class="col">{{v.value}}</div>
+          </div>
+        </div>
+        <div *ngIf="key !== 'time' &&
+                    key !== 'edit' &&
+                    key !== 'delete' &&
+                    key !== 'details' &&
+                    key !== 'payload' &&
+                    key !== 'created'">
           {{ row[key] }}
         </div>
       </td>
