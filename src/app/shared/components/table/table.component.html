@@ -20,7 +20,7 @@
           </nb-icon>
         </div>
         <div *ngIf="key === 'time'">
-          {{ row[key] * 1000 | date:'medium' }}
+          {{ row[key] | toMillisecs | date:'medium' }}
         </div>
         <div *ngIf="key !== 'time' && key !== 'edit' && key !== 'delete' && key !== 'details'">
           {{ row[key] }}

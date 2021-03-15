@@ -8,6 +8,7 @@ import { MessagesService } from 'app/common/services/messages/messages.service';
 import { Thing, Channel, Attribute, Definition, Twin, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MsgFilters } from 'app/common/interfaces/mainflux.interface';
+import { ToMillisecsPipe } from 'app/shared/pipes/time.pipe';
 
 @Component({
   selector: 'ngx-twins-details-component',
@@ -46,6 +47,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     private twinsService: TwinsService,
     private notificationsService: NotificationsService,
     private messagesService: MessagesService,
+    private toMillisecsPipe: ToMillisecsPipe,
   ) { }
 
   ngOnInit() {
@@ -131,7 +133,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
 
         this.state[name] = this.state[name] || {};
         this.state[name].value = value;
-        this.state[name].time = msgs.messages[0].time * 1000;
+        this.state[name].time = this.toMillisecsPipe.transform(msgs.messages[0].time);
       },
     );
   }

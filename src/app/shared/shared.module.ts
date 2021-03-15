@@ -17,6 +17,7 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
 import { ChartModule } from './components/chart/chart.module';
 import { MessageMonitorComponent } from './components/message-monitor/message-monitor.component';
 import { MessageValuePipe } from './pipes/message-value.pipe';
+import { ToMillisecsPipe } from './pipes/time.pipe';
 import { TableComponent } from './components/table/table.component';
 
 @NgModule({
@@ -37,6 +38,7 @@ import { TableComponent } from './components/table/table.component';
     ConfirmationComponent,
     MessageMonitorComponent,
     MessageValuePipe,
+    ToMillisecsPipe,
     TableComponent,
   ],
   exports: [
