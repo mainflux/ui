@@ -19,6 +19,7 @@ import { MessageMonitorComponent } from './components/message-monitor/message-mo
 import { MessageValuePipe } from './pipes/message-value.pipe';
 import { ToMillisecsPipe } from './pipes/time.pipe';
 import { TableComponent } from './components/table/table.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { TableComponent } from './components/table/table.component';
     MessageValuePipe,
     ToMillisecsPipe,
     TableComponent,
+    PaginationComponent,
   ],
   exports: [
     ThemeModule,
@@ -51,6 +53,7 @@ import { TableComponent } from './components/table/table.component';
     ConfirmationComponent,
     MessageMonitorComponent,
     TableComponent,
+    PaginationComponent,
   ],
   providers: [
     MessageValuePipe,
