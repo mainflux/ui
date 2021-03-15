@@ -22,7 +22,7 @@ export class ChannelsComponent implements OnInit {
     colNames: ['', '', '', 'Name', 'Type', 'ID'],
     keys: ['edit', 'delete', 'details', 'name', 'type', 'id'],
   };
-  channelsPage: TablePage = {};
+  page: TablePage = {};
   pageFilters: PageFilters = {};
 
   searchTime = 0;
@@ -44,7 +44,7 @@ export class ChannelsComponent implements OnInit {
     this.pageFilters.name = name;
     this.channelsService.getChannels(this.pageFilters).subscribe(
       (resp: any) => {
-        this.channelsPage = {
+        this.page = {
           offset: resp.offset,
           limit: resp.limit,
           total: resp.total,
@@ -52,7 +52,7 @@ export class ChannelsComponent implements OnInit {
         };
 
         // Check if there is a type defined in the metadata
-        this.channelsPage.rows.forEach( (chan: Channel) => {
+        this.page.rows.forEach( (chan: Channel) => {
           chan.type = chan.metadata ? chan.metadata.type : '';
         });
       },
@@ -61,10 +61,10 @@ export class ChannelsComponent implements OnInit {
 
   onChangePage(dir: any) {
     if (dir === 'prev') {
-      this.pageFilters.offset = this.channelsPage.offset - this.channelsPage.limit;
+      this.pageFilters.offset = this.page.offset - this.page.limit;
     }
     if (dir === 'next') {
-      this.pageFilters.offset = this.channelsPage.offset + this.channelsPage.limit;
+      this.pageFilters.offset = this.page.offset + this.page.limit;
     }
     this.getChannels();
   }
@@ -100,7 +100,7 @@ export class ChannelsComponent implements OnInit {
         if (confirm) {
           this.channelsService.deleteChannel(row.id).subscribe(
             resp => {
-              this.channelsPage.rows = this.channelsPage.rows.filter((c: Channel) => c.id !== row.id);
+              this.page.rows = this.page.rows.filter((c: Channel) => c.id !== row.id);
               this.notificationsService.success('Channel successfully deleted', '');
             },
           );
@@ -124,7 +124,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_channels.csv', this.channelsPage.rows);
+    this.fsService.exportToCsv('mfx_channels.csv', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

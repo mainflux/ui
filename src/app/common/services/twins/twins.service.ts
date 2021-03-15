@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from 'environments/environment';
-import { Twin } from 'app/common/interfaces/mainflux.interface';
+import { Twin, PageFilters } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 @Injectable()
@@ -14,9 +14,9 @@ export class TwinsService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getTwins(offset?: number, limit?: number) {
-    offset = offset || 0;
-    limit = limit || 10;
+  getTwins(filters: PageFilters) {
+    const offset = filters.offset || 0;
+    const limit = filters.limit || 10;
 
     const params = new HttpParams()
       .set('offset', offset.toString())

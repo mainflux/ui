@@ -29,9 +29,7 @@
     <div [ngSwitch]="mode">
       <div *ngSwitchCase="'table'">
         <ngx-table-component [config]="tableConfig"
-                             [page]="messagesPage"
-                             (changeLimitEvent)=onChangeLimit($event)
-                             (changePageEvent)=onChangePage($event)>
+                             [page]="messagesPage">
         </ngx-table-component>
       </div>
       <div *ngSwitchCase="'json'">
@@ -45,6 +43,12 @@
     </div>
   </nb-card-body>
   <nb-card-footer>
+    <div>
+      <ngx-pagination-component [page]="messagesPage"
+                                (changeLimitEvent)=onChangeLimit($event)
+                                (changePageEvent)=onChangePage($event)>
+      </ngx-pagination-component>
+    </div>
     <div class="row form-row">
       <div class="col-1 form-key">
         Channels:

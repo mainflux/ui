@@ -21,7 +21,7 @@ export class ThingsComponent implements OnInit {
     colNames: ['', '', '', 'Name', 'Type', 'ID', 'Key'],
     keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'key'],
   };
-  thingsPage: TablePage = {};
+  page: TablePage = {};
   pageFilters: PageFilters = {};
 
   searchTime = 0;
@@ -43,7 +43,7 @@ export class ThingsComponent implements OnInit {
     this.pageFilters.name = name;
     this.thingsService.getThings(this.pageFilters).subscribe(
       (resp: any) => {
-        this.thingsPage = {
+        this.page = {
           offset: resp.offset,
           limit: resp.limit,
           total: resp.total,
@@ -51,7 +51,7 @@ export class ThingsComponent implements OnInit {
         };
 
         // Check if there is a type defined in the metadata
-        this.thingsPage.rows.forEach( (thing: Thing) => {
+        this.page.rows.forEach( (thing: Thing) => {
           thing.type = thing.metadata ? thing.metadata.type : '';
         });
       },
@@ -60,10 +60,10 @@ export class ThingsComponent implements OnInit {
 
   onChangePage(dir: any) {
     if (dir === 'prev') {
-      this.pageFilters.offset = this.thingsPage.offset - this.thingsPage.limit;
+      this.pageFilters.offset = this.page.offset - this.page.limit;
     }
     if (dir === 'next') {
-      this.pageFilters.offset = this.thingsPage.offset + this.thingsPage.limit;
+      this.pageFilters.offset = this.page.offset + this.page.limit;
     }
     this.getThings();
   }
@@ -99,7 +99,7 @@ export class ThingsComponent implements OnInit {
         if (confirm) {
           this.thingsService.deleteThing(row.id).subscribe(
             resp => {
-              this.thingsPage.rows = this.thingsPage.rows.filter((t: Thing) => t.id !== row.id);
+              this.page.rows = this.page.rows.filter((t: Thing) => t.id !== row.id);
               this.notificationsService.success('Thing successfully deleted', '');
             },
           );
@@ -123,7 +123,7 @@ export class ThingsComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_things.csv', this.thingsPage.rows);
+    this.fsService.exportToCsv('mfx_things.csv', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

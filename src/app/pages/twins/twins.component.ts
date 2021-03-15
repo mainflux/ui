@@ -18,7 +18,7 @@ export class TwinsComponent implements OnInit {
     colNames: ['', '', '', 'Name', 'Created', 'Updated', 'Revision'],
     keys: ['edit', 'delete', 'details', 'name', 'created', 'updated', 'revision'],
   };
-  twinsPage: TablePage = {};
+  page: TablePage = {};
   pageFilters: PageFilters = {};
 
   searchTime = 0;
@@ -35,9 +35,9 @@ export class TwinsComponent implements OnInit {
   }
 
   getTwins(): void {
-    this.twinsService.getTwins().subscribe(
+    this.twinsService.getTwins(this.pageFilters).subscribe(
       (resp: any) => {
-        this.twinsPage = {
+        this.page = {
           offset: resp.offset,
           limit: resp.limit,
           total: resp.total,
@@ -49,10 +49,10 @@ export class TwinsComponent implements OnInit {
 
   onChangePage(dir: any) {
     if (dir === 'prev') {
-      this.pageFilters.offset = this.twinsPage.offset - this.twinsPage.limit;
+      this.pageFilters.offset = this.page.offset - this.page.limit;
     }
     if (dir === 'next') {
-      this.pageFilters.offset = this.twinsPage.offset + this.twinsPage.limit;
+      this.pageFilters.offset = this.page.offset + this.page.limit;
     }
     this.getTwins();
   }
@@ -88,7 +88,7 @@ export class TwinsComponent implements OnInit {
         if (confirm) {
           this.twinsService.deleteTwin(row.id).subscribe(
             resp => {
-              this.twinsPage.rows = this.twinsPage.rows.filter((t: Twin) => t.id !== row.id);
+              this.page.rows = this.page.rows.filter((t: Twin) => t.id !== row.id);
             },
           );
         }
@@ -110,7 +110,7 @@ export class TwinsComponent implements OnInit {
   }
 
   onSaveFile() {
-    this.fsService.exportToCsv('twins.csv', this.twinsPage.rows);
+    this.fsService.exportToCsv('twins.csv', this.page.rows);
   }
 
   onFileSelected(files: FileList) {
