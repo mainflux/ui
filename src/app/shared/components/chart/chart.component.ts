@@ -4,6 +4,7 @@ import { ChartDataSets, ChartType, ChartOptions, ChartPoint } from 'chart.js';
 import { BaseChartDirective, Color } from 'ng2-charts';
 import { COLORS } from './chart.colors';
 import { Dataset } from 'app/common/interfaces/mainflux.interface';
+import { ToMillisecsPipe } from 'app/shared/pipes/time.pipe';
 
 @Component({
   selector: 'ngx-chart',
@@ -41,6 +42,7 @@ export class ChartComponent implements OnChanges {
   @Input() msgDatasets: Dataset[] = [];
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
   constructor(
+    private toMillisecsPipe: ToMillisecsPipe,
   ) { }
 
   ngOnChanges() {
@@ -56,7 +58,8 @@ export class ChartComponent implements OnChanges {
       // Create charts by name
       dataset.messages.forEach( msg => {
         const point: ChartPoint = {
-          x: msg.time,
+          // Convert from seconds to milliseconds
+          x: this.toMillisecsPipe.transform(msg.time),
           y: msg.value,
         };
         (dataSet.data as ChartPoint[]).push(point);
