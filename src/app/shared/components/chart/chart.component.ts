@@ -56,7 +56,7 @@ export class ChartComponent implements OnChanges {
       // Create charts by name
       dataset.messages.forEach( msg => {
         const point: ChartPoint = {
-          x: msg.time,
+          x: msg.time * 1000,
           y: msg.value,
         };
         (dataSet.data as ChartPoint[]).push(point);
