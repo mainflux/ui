@@ -43,7 +43,6 @@ import { TwinsComponent } from './twins/twins.component';
 import { TwinsAddComponent } from './twins/add/twins.add.component';
 import { TwinsDetailsComponent } from './twins/details/twins.details.component';
 import { TwinsStatesComponent } from './twins/states/twins.states.component';
-import { TwinsPayloadComponent } from './twins/states/payload/twins.payload.component';
 import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
 
 @NgModule({
@@ -96,7 +95,6 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     TwinsAddComponent,
     TwinsDetailsComponent,
     TwinsStatesComponent,
-    TwinsPayloadComponent,
     TwinsDefinitionsComponent,
   ],
   providers: [
@@ -107,7 +105,6 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     ThingsAddComponent,
     ConfirmationComponent,
     DetailsComponent,
-    TwinsPayloadComponent,
   ],
 })
 export class PagesModule {
