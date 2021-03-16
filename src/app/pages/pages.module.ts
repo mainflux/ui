@@ -9,6 +9,7 @@ import {
   NbSelectModule,
   NbCheckboxModule,
   NbListModule,
+  NbTabsetModule,
 } from '@nebular/theme';
 
 import { ThemeModule } from '../@theme/theme.module';
@@ -61,6 +62,7 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     NbSelectModule,
     NbCheckboxModule,
     NbListModule,
+    NbTabsetModule,
   ],
   exports: [
     Ng2SmartTableModule,

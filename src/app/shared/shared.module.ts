@@ -8,6 +8,7 @@ import {
   NbSelectModule,
   NbDatepickerModule,
   NbInputModule,
+  NbCheckboxModule,
  } from '@nebular/theme';
  import { FormsModule } from '@angular/forms';
 
@@ -34,6 +35,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     NbInputModule,
     FormsModule,
     NbIconModule,
+    NbCheckboxModule,
   ],
   declarations: [
     ConfirmationComponent,

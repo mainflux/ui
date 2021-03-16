@@ -161,7 +161,7 @@ export class ThingsService {
 
   disconnectedChannels(thingID: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || defLimit;
+    limit = limit || defConnLimit;
 
     const params = new HttpParams()
       .set('offset', offset.toString())
