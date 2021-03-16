@@ -23,7 +23,7 @@ export class GatewaysComponent implements OnInit {
     colNames: ['', '', '', 'Name', 'External ID', 'Messages', 'Last Seen'],
     keys: ['edit', 'delete', 'details', 'name', 'externalID', 'messages', 'seen'],
   };
-  gatewaysPage: TablePage = {};
+  page: TablePage = {};
   pageFilters: PageFilters = {};
 
   searchTime = 0;
@@ -45,14 +45,14 @@ export class GatewaysComponent implements OnInit {
     this.pageFilters.name = name;
     this.gatewaysService.getGateways(this.pageFilters).subscribe(
       (resp: any) => {
-        this.gatewaysPage = {
+        this.page = {
           offset: resp.offset,
           limit: resp.limit,
           total: resp.total,
           rows: resp.things,
         };
 
-        this.gatewaysPage.rows.forEach((gw: Gateway) => {
+        this.page.rows.forEach((gw: Gateway) => {
           gw.externalID = gw.metadata.external_id;
 
           const dataChannID: string = gw.metadata ? gw.metadata.data_channel_id : '';
@@ -75,10 +75,10 @@ export class GatewaysComponent implements OnInit {
 
   onChangePage(dir: any) {
     if (dir === 'prev') {
-      this.pageFilters.offset = this.gatewaysPage.offset - this.gatewaysPage.limit;
+      this.pageFilters.offset = this.page.offset - this.page.limit;
     }
     if (dir === 'next') {
-      this.pageFilters.offset = this.gatewaysPage.offset + this.gatewaysPage.limit;
+      this.pageFilters.offset = this.page.offset + this.page.limit;
     }
     this.getGateways();
   }
@@ -118,7 +118,7 @@ export class GatewaysComponent implements OnInit {
         if (confirm) {
           this.gatewaysService.deleteGateway(row).subscribe(
             resp => {
-              this.gatewaysPage.rows = this.gatewaysPage.rows.filter((g: Gateway) => g.id !== row.id);
+              this.page.rows = this.page.rows.filter((g: Gateway) => g.id !== row.id);
               this.notificationsService.success('Gateway successfully deleted', '');
             },
           );
@@ -142,7 +142,7 @@ export class GatewaysComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('gateways.csv', this.gatewaysPage.rows);
+    this.fsService.exportToCsv('gateways.csv', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

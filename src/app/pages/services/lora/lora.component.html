@@ -8,7 +8,7 @@
   <nb-card-header class="table-header">
     <div class="row">
       <div class="col-md-4">
-        {{ loraPage.total }} &nbsp; LoRa Devices
+        {{ page.total }} &nbsp; LoRa Devices
       </div>
       <div class="col-md-4">
         <input nbInput fullWidth placeholder="Search..." fieldSize="small"
@@ -33,12 +33,16 @@
   </nb-card-header>
   <nb-card-body>
     <ngx-table-component [config]="tableConfig"
-                         [page]="loraPage"
+                         [page]="page"
                          (editEvent)=openEditModal($event)
                          (delEvent)=openDeleteModal($event)
-                         (changeLimitEvent)=onChangeLimit($event)
-                         (changePageEvent)=onChangePage($event)
                          (detailsEvent)=onOpenDetails($event)>
     </ngx-table-component>
   </nb-card-body>
+  <nb-card-footer>
+    <ngx-pagination-component [page]="page"
+                              (changeLimitEvent)=onChangeLimit($event)
+                              (changePageEvent)=onChangePage($event)>
+    </ngx-pagination-component>
+  </nb-card-footer>  
 </nb-card>
