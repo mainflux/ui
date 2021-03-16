@@ -16,8 +16,11 @@ export interface OpcuaNode {
 
 export interface OpcuaTableRow {
   name: string;
-  id: string;
+  id?: string;
+  key?: string;
   serverURI: string;
   nodeID: string;
-  metadata: OpcuaMetadata;
+  messages?: number;
+  metadata?: OpcuaMetadata;
+  seen?: any;
 }

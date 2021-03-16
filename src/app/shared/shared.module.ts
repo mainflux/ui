@@ -57,6 +57,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
   ],
   providers: [
     MessageValuePipe,
+    ToMillisecsPipe,
   ],
 })
 

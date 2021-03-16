@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 
-import { LocalDataSource } from 'ng2-smart-table';
-
+import { PageFilters, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { OpcuaService } from 'app/common/services/opcua/opcua.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
-import { DetailsComponent } from 'app/shared/components/details/details.component';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { OpcuaStore } from 'app/common/store/opcua.store';
 import { FsService } from 'app/common/services/fs/fs.service';
+import { OpcuaTableRow } from 'app/common/interfaces/opcua.interface';
+import { OpcuaAddComponent } from 'app/pages/services/opcua/add/opcua.add.component';
 
 const defSearchBarMs: number = 100;
 
@@ -19,104 +20,12 @@ const defSearchBarMs: number = 100;
   styleUrls: ['./opcua.component.scss'],
 })
 export class OpcuaComponent implements OnInit {
-  settings = {
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate: true,
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmSave: true,
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      details: {
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          row.type = 'opcua';
-          return row;
-        },
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-      name: {
-        title: 'Name',
-        addable: true,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          if (cell.length > 20) {
-            return `${cell.substring(0, 19)}...`;
-          }
-          return cell;
-        },
-      },
-      serverURI: {
-        title: 'Server URI',
-        editable: false,
-        addable: true,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          if (cell.length > 30) {
-            return `${cell.substring(10, 39)}...`;
-          }
-          return cell;
-        },
-      },
-      nodeID: {
-        title: 'Node ID',
-        editable: true,
-        addable: true,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          if (cell.length > 20) {
-            return `${cell.substring(0, 19)}...`;
-          }
-          return cell;
-        },
-      },
-      messages: {
-        title: 'Messages',
-        editable: false,
-        addable: false,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          if (cell > 0) {
-            return cell;
-          }
-          return '0';
-        },
-      },
-      seen: {
-        title: 'Last Seen',
-        editable: false,
-        addable: false,
-        filter: false,
-        valuePrepareFunction: (cell, row) => {
-          if (cell > 0) {
-            return new Date(cell * 1000).toLocaleString();
-          }
-          return ' undefined ';
-        },
-      },
-    },
-    pager: {
-      display: true,
-      perPage: 6,
-    },
+  tableConfig: TableConfig = {
+    colNames: ['', '', '', 'Name', 'Server URI', 'Node ID', 'Messages', 'Last Seen'],
+    keys: ['edit', 'delete', 'details', 'name', 'serverURI', 'nodeID', 'messages', 'seen'],
   };
-
-  source: LocalDataSource = new LocalDataSource();
-
-  opcuaNodes = [];
+  page: TablePage = {};
+  pageFilters: PageFilters = {};
 
   browseServerURI = '';
   // Standard root OPC-UA server NodeID (ns=0;i=84)
@@ -135,6 +44,7 @@ export class OpcuaComponent implements OnInit {
   columnChar = '|';
 
   constructor(
+    private router: Router,
     private opcuaService: OpcuaService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
@@ -151,32 +61,26 @@ export class OpcuaComponent implements OnInit {
   }
 
   getOpcuaNodes(name?: string): void {
-    this.opcuaNodes = [];
-
     this.opcuaService.getNodes(this.offset, this.limit, name).subscribe(
       (resp: any) => {
-        this.total = resp.total;
+        this.page = {
+          offset: resp.offset,
+          limit: resp.limit,
+          total: resp.total,
+          rows: resp.things,
+        };
 
-        resp.things.forEach(node => {
+        this.page.rows.forEach((node: OpcuaTableRow) => {
           node.serverURI = node.metadata.opcua.server_uri;
           node.nodeID = node.metadata.opcua.node_id;
 
           const chanID: string = node.metadata ? node.metadata.channel_id : '';
-          this.messagesService.getMessages(chanID, node.key, node.id).subscribe(
+          this.messagesService.getMessages(chanID, node.key, {publisher: node.id}).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
                 node.seen = msgResp.messages[0].time;
                 node.messages = msgResp.total;
               }
-
-              this.opcuaNodes.push(node);
-              this.source.load(this.opcuaNodes);
-              this.source.refresh();
-            },
-            err => {
-              this.opcuaNodes.push(node);
-              this.source.load(this.opcuaNodes);
-              this.source.refresh();
             },
           );
         });
@@ -184,52 +88,56 @@ export class OpcuaComponent implements OnInit {
     );
   }
 
-  onCreateConfirm(event): void {
-    // Check if subscription already exist
-    if (this.isSubscribed(event.newData.serverURI, event.newData.nodeID)) {
-      return;
+  onChangePage(dir: any) {
+    if (dir === 'prev') {
+      this.pageFilters.offset = this.page.offset - this.page.limit;
     }
+    if (dir === 'next') {
+      this.pageFilters.offset = this.page.offset + this.page.limit;
+    }
+    this.getOpcuaNodes();
+  }
 
-    // Check ServerURI and NodeID
-    if (event.newData.serverURI !== '' && event.newData.nodeID !== '') {
-      // close create row
-      event.confirm.resolve();
+  onChangeLimit(lim: number) {
+    this.pageFilters.limit = lim;
+    this.getOpcuaNodes();
+  }
 
-      this.opcuaService.addNodes(event.newData.serverURI, [event.newData]).subscribe(
-        resp => {
+  openAddModal() {
+    this.dialogService.open(OpcuaAddComponent, { context: { action: 'Create' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
           setTimeout(
             () => {
               this.getOpcuaNodes();
             }, 3000,
           );
-        },
-      );
-    } else {
-      this.notificationsService.warn('Server URI and Node ID are required', '');
-    }
+        }
+      },
+    );
   }
 
-  onEditConfirm(event): void {
-    // Check ServerURI and NodeID
-    if (event.newData.serverURI !== '' && event.newData.nodeID !== '') {
-      // close edit row
-      event.confirm.resolve();
-
-      this.opcuaService.editNode(event.newData).subscribe();
-    } else {
-      this.notificationsService.warn('Server URI and Node ID are required', '');
-    }
+  openEditModal(row: any) {
+    this.dialogService.open(OpcuaAddComponent, { context: { formData: row, action: 'Edit' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          setTimeout(
+            () => {
+              this.getOpcuaNodes();
+            }, 3000,
+          );
+        }
+      },
+    );
   }
 
-  onDeleteConfirm(event): void {
+  openDeleteModal(row: any) {
     this.dialogService.open(ConfirmationComponent, { context: { type: 'OPC-UA Node' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          // close delete row
-          event.confirm.resolve();
-
-          this.opcuaService.deleteNode(event.data).subscribe(
+          this.opcuaService.deleteNode(row).subscribe(
             resp => {
+              this.notificationsService.success('OPC-UA Node successfully deleted', '');
               setTimeout(
                 () => {
                   this.getOpcuaNodes();
@@ -240,6 +148,12 @@ export class OpcuaComponent implements OnInit {
         }
       },
     );
+  }
+
+  onOpenDetails(row: any) {
+    if (row.id) {
+      this.router.navigate([`${this.router.routerState.snapshot.url}/details/${row.id}`]);
+    }
   }
 
   browseOpcuaNodes() {
@@ -292,7 +206,7 @@ export class OpcuaComponent implements OnInit {
   }
 
   isSubscribed(serverURI: string, nodeID: string) {
-    const subs = this.opcuaNodes.filter(n => n.serverURI === serverURI && n.nodeID === nodeID);
+    const subs = this.page.rows.filter((n: OpcuaTableRow) => n.serverURI === serverURI && n.nodeID === nodeID);
     if (subs.length !== 0) {
       this.notificationsService.warn(`Subscribtion to server ${serverURI} and nodeID ${nodeID} already exist`, '');
       return true;
@@ -319,7 +233,7 @@ export class OpcuaComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('opcua_nodes.csv', this.opcuaNodes);
+    this.fsService.exportToCsv('opcua_nodes.csv', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

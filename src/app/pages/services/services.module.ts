@@ -7,6 +7,7 @@ import { LoraComponent } from 'app/pages/services/lora/lora.component';
 import { LoraAddComponent } from 'app/pages/services/lora/add/lora.add.component';
 import { LoraDetailsComponent } from 'app/pages/services/lora/details/lora.details.component';
 import { OpcuaComponent } from 'app/pages/services/opcua/opcua.component';
+import { OpcuaAddComponent } from 'app/pages/services/opcua/add/opcua.add.component';
 import { OpcuaDetailsComponent } from 'app/pages/services/opcua/details/opcua.details.component';
 import { GatewaysComponent } from 'app/pages/services/gateways/gateways.component';
 import { GatewaysAddComponent } from 'app/pages/services/gateways/add/gateways.add.component';
@@ -27,6 +28,7 @@ import { ConfirmationComponent } from 'app/shared/components/confirmation/confir
     LoraAddComponent,
     LoraDetailsComponent,
     OpcuaComponent,
+    OpcuaAddComponent,
     OpcuaDetailsComponent,
     GatewaysComponent,
     GatewaysAddComponent,
