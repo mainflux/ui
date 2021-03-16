@@ -5,6 +5,8 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 
+import { environment } from 'environments/environment';
+
 // Mainflux - User Groups
 import { UserGroupsComponent } from './user-groups/user-groups.component';
 import { UserGroupsDetailsComponent } from './user-groups/details/user-groups.details.component';
@@ -23,10 +25,54 @@ import { TwinsDetailsComponent } from './twins/details/twins.details.component';
 import { TwinsStatesComponent } from './twins/states/twins.states.component';
 import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
 
-const routes: Routes = [{
-  path: '',
-  component: PagesComponent,
-  children: [
+const children = environment.production ?
+[
+    {
+      path: 'home',
+      component: DashboardComponent,
+    },
+    {
+      path: '',
+      redirectTo: 'home',
+      pathMatch: 'full',
+    },
+    {
+      path: 'things',
+      component: ThingsComponent,
+    },
+    {
+      path: 'things/details/:id',
+      component: ThingsDetailsComponent,
+    },
+    {
+      path: 'channels',
+      component: ChannelsComponent,
+    },
+    {
+      path: 'channels/details/:id',
+      component: ChannelsDetailsComponent,
+    },
+    {
+      path: 'twins',
+      component: TwinsComponent,
+    },
+    {
+      path: 'twins/details/:id',
+      component: TwinsDetailsComponent,
+    },
+    {
+      path: 'twins/states/:id',
+      component: TwinsStatesComponent,
+    },
+    {
+      path: 'twins/definitions/:id',
+      component: TwinsDefinitionsComponent,
+    },
+    {
+      path: 'profile',
+      component: ProfileComponent,
+    },
+  ] : [
     {
       path: 'home',
       component: DashboardComponent,
@@ -93,7 +139,12 @@ const routes: Routes = [{
       loadChildren: () => import('./services/services.module')
         .then(m => m.ServicesModule),
     },
-  ],
+];
+
+const routes: Routes = [{
+  path: '',
+  component: PagesComponent,
+  children: children,
 }];
 
 @NgModule({
