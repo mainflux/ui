@@ -42,7 +42,6 @@ export class OpcuaAddComponent {
     if (this.action === 'Create') {
       this.opcuaService.addNodes(this.formData.serverURI, nodes).subscribe(
         resp => {
-          this.notificationsService.success('OPC-UA device successfully created', '');
           this.dialogRef.close(true);
         },
       );
@@ -50,7 +49,6 @@ export class OpcuaAddComponent {
     if (this.action === 'Edit') {
       this.opcuaService.editNode(this.formData).subscribe(
         resp => {
-          this.notificationsService.success('OPC-UA device successfully edited', '');
           this.dialogRef.close(true);
         },
       );

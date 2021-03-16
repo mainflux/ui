@@ -41,7 +41,6 @@ export class GatewaysAddComponent {
     if (this.action === 'Create') {
       this.gatewaysService.addGateway(this.formData).subscribe(
         resp => {
-          this.notificationsService.success('LoRa device successfully created', '');
           this.dialogRef.close(true);
         },
       );
@@ -49,7 +48,6 @@ export class GatewaysAddComponent {
     if (this.action === 'Edit') {
       this.gatewaysService.editGateway(this.formData).subscribe(
         resp => {
-          this.notificationsService.success('LoRa device successfully edited', '');
           this.dialogRef.close(true);
         },
       );
