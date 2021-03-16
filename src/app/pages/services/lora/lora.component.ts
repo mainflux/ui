@@ -23,7 +23,7 @@ export class LoraComponent implements OnInit {
     colNames: ['', '', '', 'Name', 'Application ID', 'Device EUI', 'Messages', 'Last Seen'],
     keys: ['edit', 'delete', 'details', 'name', 'appID', 'devEUI', 'messages', 'seen'],
   };
-  loraPage: TablePage = {};
+  page: TablePage = {};
   pageFilters: PageFilters = {};
 
   searchTime = 0;
@@ -44,14 +44,14 @@ export class LoraComponent implements OnInit {
   getLoraDevices(name?: string): void {
     this.loraService.getDevices(this.pageFilters.offset, this.pageFilters.limit, name).subscribe(
       (resp: any) => {
-        this.loraPage = {
+        this.page = {
           offset: resp.offset,
           limit: resp.limit,
           total: resp.total,
           rows: resp.things,
         };
 
-        this.loraPage.rows.forEach((lora: LoraDevice) => {
+        this.page.rows.forEach((lora: LoraDevice) => {
           if (lora.metadata.lora !== undefined) {
             lora.devEUI = lora.metadata.lora.dev_eui;
             lora.appID = lora.metadata.lora.app_id;
@@ -77,10 +77,10 @@ export class LoraComponent implements OnInit {
 
   onChangePage(dir: any) {
     if (dir === 'prev') {
-      this.pageFilters.offset = this.loraPage.offset - this.loraPage.limit;
+      this.pageFilters.offset = this.page.offset - this.page.limit;
     }
     if (dir === 'next') {
-      this.pageFilters.offset = this.loraPage.offset + this.loraPage.limit;
+      this.pageFilters.offset = this.page.offset + this.page.limit;
     }
     this.getLoraDevices();
   }
@@ -116,7 +116,7 @@ export class LoraComponent implements OnInit {
         if (confirm) {
           this.loraService.deleteDevice(row).subscribe(
             resp => {
-              this.loraPage.rows = this.loraPage.rows.filter((t: LoraDevice) => t.id !== row.id);
+              this.page.rows = this.page.rows.filter((t: LoraDevice) => t.id !== row.id);
               this.notificationsService.success('LoRa device successfully deleted', '');
             },
           );
@@ -140,7 +140,7 @@ export class LoraComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('lora_devices.csv', this.loraPage.rows);
+    this.fsService.exportToCsv('lora_devices.csv', this.page.rows);
   }
 
   onFileSelected(files: FileList) {
