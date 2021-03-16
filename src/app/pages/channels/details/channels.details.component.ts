@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { environment } from 'environments/environment';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Channel, Thing, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
@@ -13,8 +12,6 @@ import { Channel, Thing, TableConfig, TablePage } from 'app/common/interfaces/ma
   styleUrls: ['./channels.details.component.scss'],
 })
 export class ChannelsDetailsComponent implements OnInit {
-  experimental: Boolean = environment.experimental;
-
   channel: Channel = {};
   thingKey = '';
 

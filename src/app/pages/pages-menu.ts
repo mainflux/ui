@@ -1,7 +1,30 @@
-import {environment} from 'environments/environment';
+import { environment } from 'environments/environment';
 import { NbMenuItem } from '@nebular/theme';
 
-export const MENU_ITEMS: NbMenuItem[] = environment.experimental ?
+export const MENU_ITEMS: NbMenuItem[] = environment.production ?
+  [
+    {
+      title: 'Home',
+      icon: 'home-outline',
+      link: '/pages/home',
+      home: true,
+    },
+    {
+      title: 'Things',
+      icon: 'film-outline',
+      link: '/pages/things',
+    },
+    {
+      title: 'Channels',
+      icon: 'flip-2-outline',
+      link: '/pages/channels',
+    },
+    {
+      title: 'Twins',
+      icon: 'copy-outline',
+      link: '/pages/twins',
+    },
+  ] :
   [
     {
       title: 'Home',
@@ -55,27 +78,5 @@ export const MENU_ITEMS: NbMenuItem[] = environment.experimental ?
         },
       ],
     },
-  ] :
-[
-  {
-    title: 'Home',
-    icon: 'home-outline',
-    link: '/pages/home',
-    home: true,
-  },
-  {
-    title: 'Things',
-    icon: 'film-outline',
-    link: '/pages/things',
-  },
-  {
-    title: 'Channels',
-    icon: 'flip-2-outline',
-    link: '/pages/channels',
-  },
-  {
-    title: 'Twins',
-    icon: 'copy-outline',
-    link: '/pages/twins',
-  },
-];
+  ];
+

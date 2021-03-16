@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
@@ -14,8 +13,6 @@ import { Channel, Thing, TableConfig, TablePage } from 'app/common/interfaces/ma
   styleUrls: ['./things.details.component.scss'],
 })
 export class ThingsDetailsComponent implements OnInit {
-  experimental: Boolean = environment.experimental;
-
   thing: Thing = {};
 
   tableConfig: TableConfig = {
