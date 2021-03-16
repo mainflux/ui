@@ -88,7 +88,7 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onDisconnect() {
-    this.selectedToDisconn.forEach(chanID => {
+    this.chansToDisconnect.forEach(chanID => {
       this.channelsService.disconnectThing(chanID, this.thing.id).subscribe(
         resp => {
           this.notificationsService.success('Successfully disconnected from Channel', '');
@@ -162,19 +162,13 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onCheckboxConns(row: any) {
-    if (this.chansToConnect.includes(row.id)) {
-      this.chansToConnect = this.chansToConnect.filter(id => id !== row.id);
-    } else {
-      this.chansToConnect.push(row.id);
-    }
+    const index = this.chansToConnect.indexOf(row.id);
+    (index > -1) ? this.chansToConnect.splice(index, 1) : this.chansToConnect.push(row.id);
   }
 
   onCheckboxDisconns(row: any) {
-    if (this.chansToDisconnect.includes(row.id)) {
-      this.chansToDisconnect = this.chansToDisconnect.filter(id => id !== row.id);
-    } else {
-      this.chansToDisconnect.push(row.id);
-    }
+    const index = this.chansToDisconnect.indexOf(row.id);
+    (index > -1) ? this.chansToDisconnect.splice(index, 1) : this.chansToDisconnect.push(row.id);
   }
 
   onSendMessage() {

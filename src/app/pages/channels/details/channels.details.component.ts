@@ -154,18 +154,12 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   onCheckboxConns(row: any) {
-    if (this.thingsToConnect.includes(row.id)) {
-      this.thingsToConnect = this.thingsToConnect.filter(id => id !== row.id);
-    } else {
-      this.thingsToConnect.push(row.id);
-    }
+    const index = this.thingsToConnect.indexOf(row.id);
+    (index > -1) ? this.thingsToConnect.splice(index, 1) : this.thingsToConnect.push(row.id);
   }
 
   onCheckboxDisconns(row: any) {
-    if (this.thingsToDisconnect.includes(row.id)) {
-      this.thingsToDisconnect = this.thingsToDisconnect.filter(id => id !== row.id);
-    } else {
-      this.thingsToDisconnect.push(row.id);
-    }
+    const index = this.thingsToDisconnect.indexOf(row.id);
+    (index > -1) ? this.thingsToDisconnect.splice(index, 1) : this.thingsToDisconnect.push(row.id);
   }
 }
