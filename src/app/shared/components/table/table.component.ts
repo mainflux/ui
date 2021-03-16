@@ -8,9 +8,6 @@ import { TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements OnChanges {
-  currentPage = 0;
-  totalPages = 0;
-
   @Input() config: TableConfig = {};
   @Input() page: TablePage = {};
   @Output() editEvent: EventEmitter<any> = new EventEmitter();
@@ -20,13 +17,6 @@ export class TableComponent implements OnChanges {
   ) { }
 
   ngOnChanges() {
-    if (this.page !== undefined) {
-      // Ceil offset by limit ratio
-      const pageNum = (this.page.offset + 1) / this.page.limit;
-      this.currentPage = Math.ceil(pageNum);
-      // Calculate the number of pages
-      this.totalPages = this.page.total / this.page.limit;
-    }
   }
 
   onClickDetails(row: any) {

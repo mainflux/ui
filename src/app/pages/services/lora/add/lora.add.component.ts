@@ -35,7 +35,6 @@ export class LoraAddComponent {
     if (this.action === 'Create') {
       this.loraService.addDevice(this.formData).subscribe(
         resp => {
-          this.notificationsService.success('LoRa device successfully created', '');
           this.dialogRef.close(true);
         },
       );
@@ -43,7 +42,6 @@ export class LoraAddComponent {
     if (this.action === 'Edit') {
       this.loraService.editDevice(this.formData).subscribe(
         resp => {
-          this.notificationsService.success('LoRa device successfully edited', '');
           this.dialogRef.close(true);
         },
       );
