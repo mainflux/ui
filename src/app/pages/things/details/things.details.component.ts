@@ -23,8 +23,8 @@ export class ThingsDetailsComponent implements OnInit {
   connChansPage: TablePage = {};
   disconnChansPage: TablePage = {};
 
-  selectedToConn: string[] = [];
-  selectedToDisconn: string[] = [];
+  chansToConnect: string[] = [];
+  chansToDisconnect: string[] = [];
 
   editorMetadata = '';
 
@@ -75,8 +75,8 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onConnect() {
-    if (this.selectedToConn.length > 0) {
-      this.channelsService.connectThings(this.selectedToConn, [this.thing.id]).subscribe(
+    if (this.chansToConnect.length > 0) {
+      this.channelsService.connectThings(this.chansToConnect, [this.thing.id]).subscribe(
         resp => {
           this.notificationsService.success('Successfully connected to Channel(s)', '');
           this.updateConnections();
@@ -99,8 +99,8 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   updateConnections() {
-    this.selectedToConn = [];
-    this.selectedToDisconn = [];
+    this.chansToConnect = [];
+    this.chansToDisconnect = [];
     this.findConnectedChans();
     this.findDisconnectedChans();
   }
@@ -146,14 +146,14 @@ export class ThingsDetailsComponent implements OnInit {
     }
   }
 
-  onChangeLimitDisc(limit: number) {
+  onChangeLimitDisconn(limit: number) {
     this.findDisconnectedChans(0, limit);
   }
 
   onChangePageDisc(dir: any) {
     if (dir === 'prev') {
       const offset = this.disconnChansPage.offset - this.disconnChansPage.limit;
-      this.findDisconnectedChans(offset, this.disconnChansPage.limit);
+      this.findDisconnectedChans(offset, this.connChansPage.limit);
     }
     if (dir === 'next') {
       const offset = this.disconnChansPage.offset + this.disconnChansPage.limit;
@@ -162,18 +162,18 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onCheckboxConns(row: any) {
-    if (this.selectedToConn.includes(row.id)) {
-      this.selectedToConn = this.selectedToConn.filter(id => id !== row.id);
+    if (this.chansToConnect.includes(row.id)) {
+      this.chansToConnect = this.chansToConnect.filter(id => id !== row.id);
     } else {
-      this.selectedToConn.push(row.id);
+      this.chansToConnect.push(row.id);
     }
   }
 
   onCheckboxDisconns(row: any) {
-    if (this.selectedToDisconn.includes(row.id)) {
-      this.selectedToDisconn = this.selectedToDisconn.filter(id => id !== row.id);
+    if (this.chansToDisconnect.includes(row.id)) {
+      this.chansToDisconnect = this.chansToDisconnect.filter(id => id !== row.id);
     } else {
-      this.selectedToDisconn.push(row.id);
+      this.chansToDisconnect.push(row.id);
     }
   }
 
