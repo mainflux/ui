@@ -75,38 +75,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
-            },
-            "experimental": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.experimental.ts"
-                }
-              ]
-            },
-            "experimental-prod": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.experimental-prod.ts"
-                }
-              ]
-            }            
+            }
           }
         },
         "serve": {
@@ -117,9 +86,6 @@
           "configurations": {
             "production": {
               "browserTarget": "ngx-admin-demo:build:production"
-            },
-            "experimental": {
-              "browserTarget": "ngx-admin-demo:build:experimental"
             }
           }
         },
