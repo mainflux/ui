@@ -142,7 +142,7 @@ export class ChannelsDetailsComponent implements OnInit {
     }
   }
 
-  onChangePageDisc(dir: any) {
+  onChangePageDisconn(dir: any) {
     if (dir === 'prev') {
       const offset = this.disconnThingsPage.offset - this.disconnThingsPage.limit;
       this.findDisconnectedThings(offset, this.disconnThingsPage.limit);

@@ -150,7 +150,7 @@ export class ThingsDetailsComponent implements OnInit {
     this.findDisconnectedChans(0, limit);
   }
 
-  onChangePageDisc(dir: any) {
+  onChangePageDisconn(dir: any) {
     if (dir === 'prev') {
       const offset = this.disconnChansPage.offset - this.disconnChansPage.limit;
       this.findDisconnectedChans(offset, this.connChansPage.limit);
