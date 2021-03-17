@@ -19,6 +19,9 @@
                    (click)="onClickDetails(row)">
           </nb-icon>
         </div>
+        <div *ngIf="key === 'checkbox'">
+          <nb-checkbox (checkedChange)="onToggleCheckbox(row)"></nb-checkbox>
+        </div>
         <div *ngIf="key === 'time'">
           {{ row[key] | toMillisecs | date:'medium' }}
         </div>
@@ -36,7 +39,8 @@
                     key !== 'delete' &&
                     key !== 'details' &&
                     key !== 'payload' &&
-                    key !== 'created'">
+                    key !== 'created' &&
+                    key !== 'checkbox'">
           {{ row[key] }}
         </div>
       </td>

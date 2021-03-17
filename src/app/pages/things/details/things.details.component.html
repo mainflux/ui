@@ -31,32 +31,50 @@
   </div>
 
   <div class="col-md-6">
-    <nb-card size="small">
-      <nb-card-header class="card-header">
-        <div class="row">
-          <div class="col-md-3">
-            Connections
-          </div>
-          <div class="col-md-7">
-            <nb-select multiple placeholder="Select Channel(s)" [(selected)]="selectedChannels" size="tiny">
-              <nb-option *ngFor="let channel of disconnectedChans" [value]="channel.id">
-                {{channel.name}}
-              </nb-option>
-            </nb-select>
-          </div>
-          <div class="col-md-2">
-            <button nbButton size="tiny" class="button-green"
-                    (click)="onConnect()">
-              Connect
-            </button>
-          </div>
-        </div>
-      </nb-card-header>
-      <nb-card-body>
-        <ngx-table-component [config]="tableConfig"
-                             [page]="connChansPage"
-                             (delEvent)=onDisconnect($event)>
-        </ngx-table-component>
+    <nb-card>
+      <nb-card-body style="padding:0; margin:0;">
+        <nb-tabset>
+          <nb-tab tabTitle="Connect">
+            <nb-card size="medium"  style="padding:0; margin:0;">
+              <nb-card-body>
+                <ngx-table-component [config]="tableConfig"
+                                     [page]="disconnChansPage"
+                                     (checkEvent)=onCheckboxConns($event)>
+                </ngx-table-component>
+              </nb-card-body>
+              <nb-card-footer>
+                <ngx-pagination-component [page]="disconnChansPage"
+                                          (changeLimitEvent)=onChangeLimitDisconn($event)
+                                          (changePageEvent)=onChangePageDisconn($event)>
+                </ngx-pagination-component>
+                <button nbButton size="tiny" class="button-green"
+                        (click)="onConnect()">
+                  Connect
+                </button>
+              </nb-card-footer>
+            </nb-card>
+          </nb-tab>
+          <nb-tab tabTitle="Disconnect">
+            <nb-card size="medium"  style="padding:0; margin:0;">
+              <nb-card-body>
+                <ngx-table-component [config]="tableConfig"
+                                     [page]="connChansPage"
+                                     (checkEvent)=onCheckboxDisconns($event)>
+                </ngx-table-component>
+              </nb-card-body>
+              <nb-card-footer>
+                <ngx-pagination-component [page]="connChansPage"
+                                          (changeLimitEvent)=onChangeLimit($event)
+                                          (changePageEvent)=onChangePage($event)>
+                </ngx-pagination-component>
+                <button nbButton size="tiny" class="button-red"
+                        (click)="onDisconnect()">
+                  Disconnect
+                </button>
+              </nb-card-footer>
+            </nb-card>
+          </nb-tab>
+        </nb-tabset>
       </nb-card-body>
     </nb-card>
 

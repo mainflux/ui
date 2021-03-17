@@ -13,6 +13,7 @@ export class TableComponent implements OnChanges {
   @Output() editEvent: EventEmitter<any> = new EventEmitter();
   @Output() delEvent: EventEmitter<any> = new EventEmitter();
   @Output() detailsEvent: EventEmitter<any> = new EventEmitter();
+  @Output() checkEvent: EventEmitter<any> = new EventEmitter();
   constructor(
   ) { }
 
@@ -29,5 +30,9 @@ export class TableComponent implements OnChanges {
 
   onDelete(row: any) {
     this.delEvent.emit(row);
+  }
+
+  onToggleCheckbox(row: any) {
+    this.checkEvent.emit(row);
   }
 }
