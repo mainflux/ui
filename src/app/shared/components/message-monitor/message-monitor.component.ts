@@ -5,6 +5,7 @@ import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { environment } from 'environments/environment';
+import { MessageValuePipe } from 'app/shared/pipes/message-value.pipe';
 
 @Component({
   selector: 'ngx-message-monitor',
@@ -52,6 +53,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     private intervalService: IntervalService,
     private messagesService: MessagesService,
     private channelsService: ChannelsService,
+    private messageValuePipe: MessageValuePipe,
   ) {}
 
   ngOnInit() {
@@ -107,8 +109,16 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
             offset: resp.offset,
             limit: resp.limit,
             total: resp.total,
-            rows: resp.messages,
+            rows: [],
           };
+
+          if (resp.messages) {
+            this.messagesPage.rows = resp.messages.map((msg: MainfluxMsg) => {
+              msg.value = this.messageValuePipe.transform(msg);
+              return msg;
+            });
+          }
+
           this.createChart();
         }
       },
