@@ -66,6 +66,8 @@ export interface SenMLRec {
   t: number;
   u: string;
   v: number;
+  vd: number;
+  vb: number;
   vs: string;
 }
 

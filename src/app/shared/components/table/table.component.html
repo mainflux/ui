@@ -3,47 +3,43 @@
     <th *ngFor="let colName of config.colNames"> {{ colName }} </th>
   </tr>
   <tr *ngFor="let row of page.rows">
-      <td  *ngFor="let key of config.keys">
-        <div *ngIf="key === 'edit'" class="edit-button">
+    <td  *ngFor="let key of config.keys">
+      <div [ngSwitch]="key">
+        <div *ngSwitchCase="'edit'" class="edit-button">
           <nb-icon nbButton size="tiny" icon="edit-outline"
                    (click)="onEdit(row)">
           </nb-icon>
         </div>
-        <div *ngIf="key === 'delete'" class="del-button">
+        <div *ngSwitchCase="'delete'" class="del-button">
           <nb-icon nbButton size="tiny" icon="trash-2-outline"
                    (click)="onDelete(row)">
           </nb-icon>
         </div>
-        <div *ngIf="key === 'details'" class="detail-button">
+        <div *ngSwitchCase="'details'" class="detail-button">
           <nb-icon nbButton size="tiny" icon="search-outline"
                    (click)="onClickDetails(row)">
           </nb-icon>
         </div>
-        <div *ngIf="key === 'checkbox'">
+        <div *ngSwitchCase="'checkbox'">
           <nb-checkbox (checkedChange)="onToggleCheckbox(row)"></nb-checkbox>
         </div>
-        <div *ngIf="key === 'time'">
+        <div *ngSwitchCase="'time'">
           {{ row[key] | toMillisecs | date:'medium' }}
         </div>
-        <div *ngIf="key === 'created'">
+        <div *ngSwitchCase="'created'">
           {{ row[key] | date:'long' }}
         </div>
-        <div *ngIf="key === 'payload'">
+        <div *ngSwitchCase="'payload'">
           <div class="row" *ngFor="let v of row[key] | keyvalue">
             <div class="col-md-2"><b>{{v.key}}</b></div>
             <div class="col">{{v.value}}</div>
           </div>
         </div>
-        <div *ngIf="key !== 'time' &&
-                    key !== 'edit' &&
-                    key !== 'delete' &&
-                    key !== 'details' &&
-                    key !== 'payload' &&
-                    key !== 'created' &&
-                    key !== 'checkbox'">
+        <div *ngSwitchDefault>
           {{ row[key] }}
         </div>
-      </td>
+      </div>
+    </td>
   </tr>
 </table>
 
