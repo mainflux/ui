@@ -82,20 +82,6 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  createChart() {
-    const messages = this.messagesPage.rows.map((msg: Message) => {
-      const m: Message = {time: msg.time, value: msg.value};
-      return m;
-    });
-
-    const ds: Dataset = {
-      label: `Channel: ${this.chanID}`,
-      messages: messages,
-    };
-
-    this.msgDatasets = [ds];
-  }
-
   getChannelMessages() {
     if (this.chanID === '' || this.thingKey === '') {
       return;
@@ -109,17 +95,15 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
             offset: resp.offset,
             limit: resp.limit,
             total: resp.total,
-            rows: [],
-          };
-
-          if (resp.messages) {
-            this.messagesPage.rows = resp.messages.map((msg: MainfluxMsg) => {
+            rows: resp.messages.map((msg: MainfluxMsg) => {
               msg.value = this.messageValuePipe.transform(msg);
               return msg;
-            });
-          }
-
-          this.createChart();
+            }),
+          };
+          this.msgDatasets = [{
+            label: `Channel: ${this.chanID}`,
+            messages: <Message[]>this.messagesPage.rows,
+          }];
         }
       },
     );
