@@ -4,8 +4,8 @@ import { Channel, Thing, MainfluxMsg, Message, MsgFilters, Dataset,
 import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
-import { MessageValuePipe } from 'app/shared/pipes/message-value.pipe';
 import { environment } from 'environments/environment';
+import { MessageValuePipe } from 'app/shared/pipes/message-value.pipe';
 
 @Component({
   selector: 'ngx-message-monitor',

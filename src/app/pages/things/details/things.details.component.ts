@@ -179,7 +179,23 @@ export class ThingsDetailsComponent implements OnInit {
     }
 
     const time = this.httpMsg.time ? `"t": ${this.httpMsg.time},` : '';
-    const msg = `[{${time} "n":"${this.httpMsg.name}", "v": ${this.httpMsg.value}}]`;
+    let msg: string = '';
+    switch (this.httpMsg.valType) {
+      case 'string':
+        msg = `[{${time} "n":"${this.httpMsg.name}", "vs": "${this.httpMsg.value}"}]`;
+        break;
+      case 'data':
+        msg = `[{${time} "n":"${this.httpMsg.name}", "vd": "${this.httpMsg.value}"}]`;
+        break;
+      case 'bool':
+        msg = `[{${time} "n":"${this.httpMsg.name}", "vb": ${this.httpMsg.value}}]`;
+        break;
+      case 'float':
+      default:
+        msg = `[{${time} "n":"${this.httpMsg.name}", "v": ${this.httpMsg.value}}]`;
+        break;
+    }
+
 
     this.messagesService.sendMessage(this.httpMsg.chanID, this.thing.key, msg, this.httpMsg.subtopic).subscribe(
       resp => {
