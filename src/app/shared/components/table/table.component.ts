@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 
@@ -7,7 +7,9 @@ import { TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent implements OnChanges {
+export class TableComponent {
+  isObject(val: any): boolean { return typeof val === 'object'; }
+
   @Input() config: TableConfig = {};
   @Input() page: TablePage = {};
   @Output() editEvent: EventEmitter<any> = new EventEmitter();
@@ -16,9 +18,6 @@ export class TableComponent implements OnChanges {
   @Output() checkEvent: EventEmitter<any> = new EventEmitter();
   constructor(
   ) { }
-
-  ngOnChanges() {
-  }
 
   onClickDetails(row: any) {
     this.detailsEvent.emit(row);
