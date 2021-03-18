@@ -29,14 +29,15 @@
         <div *ngSwitchCase="'created'">
           {{ row[key] | date:'long' }}
         </div>
-        <div *ngSwitchCase="'payload'">
-          <div class="row" *ngFor="let v of row[key] | keyvalue">
-            <div class="col-md-2"><b>{{v.key}}</b></div>
-            <div class="col">{{v.value}}</div>
-          </div>
-        </div>
         <div *ngSwitchDefault>
-          {{ row[key] }}
+          <div [ngSwitch]="isObject(row[key])">
+            <div *ngSwitchCase="true">
+              <pre>{{row[key] | json}}</pre>
+            </div>
+            <div *ngSwitchDefault>
+              {{ row[key] }}
+            </div>
+          </div>
         </div>
       </div>
     </td>
