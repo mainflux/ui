@@ -4,6 +4,7 @@ import { Channel, Thing, MainfluxMsg, Message, MsgFilters, Dataset,
 import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
+import { MessageValuePipe } from 'app/shared/pipes/message-value.pipe';
 import { environment } from 'environments/environment';
 
 @Component({
@@ -52,6 +53,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     private intervalService: IntervalService,
     private messagesService: MessagesService,
     private channelsService: ChannelsService,
+    private messageValuePipe: MessageValuePipe,
   ) {}
 
   ngOnInit() {
@@ -80,20 +82,6 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  createChart() {
-    const messages = this.messagesPage.rows.map((msg: Message) => {
-      const m: Message = {time: msg.time, value: msg.value};
-      return m;
-    });
-
-    const ds: Dataset = {
-      label: `Channel: ${this.chanID}`,
-      messages: messages,
-    };
-
-    this.msgDatasets = [ds];
-  }
-
   getChannelMessages() {
     if (this.chanID === '' || this.thingKey === '') {
       return;
@@ -107,9 +95,15 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
             offset: resp.offset,
             limit: resp.limit,
             total: resp.total,
-            rows: resp.messages,
+            rows: resp.messages.map((msg: MainfluxMsg) => {
+              msg.value = this.messageValuePipe.transform(msg);
+              return msg;
+            }),
           };
-          this.createChart();
+          this.msgDatasets = [{
+            label: `Channel: ${this.chanID}`,
+            messages: <Message[]>this.messagesPage.rows,
+          }];
         }
       },
     );
