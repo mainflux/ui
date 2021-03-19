@@ -87,20 +87,8 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    switch (this.valType) {
-      case 'string':
-        this.filters.stringValue = this.valHttp;
-        break;
-      case 'data':
-        this.filters.dataValue = this.valHttp;
-        break;
-      case 'bool':
-        this.filters.boolValue = this.valHttp;
-        break;
-      case 'float':
-        this.filters.value = this.valHttp;
-        break;
-    }
+    // Copy value to proper field depending on the selected type
+    this.filters[this.valType] = this.valHttp;
 
     this.messagesPage.rows = [];
     this.messagesService.getMessages(this.chanID, this.thingKey, this.filters, this.readerUrl).subscribe(

@@ -38,10 +38,10 @@ export class MessagesService {
     url = filters.name ? url += `&name=${filters.name}` : url;
     url = filters.from ? url += `&from=${filters.from}` : url;
     url = filters.to ? url += `&to=${filters.to}` : url;
-    url = filters.value ? url += `&v=${filters.value}` : url;
-    url = filters.boolValue ? url += `&vb=${filters.boolValue}` : url;
-    url = filters.dataValue ? url += `&vd=${filters.dataValue}` : url;
-    url = filters.stringValue ? url += `&vs=${filters.stringValue}` : url;
+    url = filters.float ? url += `&v=${filters.float}` : url;
+    url = filters.bool ? url += `&vb=${filters.bool}` : url;
+    url = filters.data ? url += `&vd=${filters.data}` : url;
+    url = filters.string ? url += `&vs=${filters.string}` : url;
 
     return this.http.get(url, { headers: headers })
       .map(
