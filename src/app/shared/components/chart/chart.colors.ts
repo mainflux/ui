@@ -1,4 +1,4 @@
-export const COLORS = [
+export const CHART_COLORS = [
   {
     backgroundColor: 'transparent',
     borderColor: '#35A7FF',
