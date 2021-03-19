@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
-import { Channel, Thing, MainfluxMsg, Message, MsgFilters, Dataset,
+import { Channel, Thing, MainfluxMsg, MsgFilters, Dataset,
   TableConfig, TablePage, ReaderUrl } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
@@ -16,8 +16,9 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   messages: MainfluxMsg[] = [];
   chanID = '';
 
-  mode: string = 'json';
+  mode: string = 'chart';
   modes: string[] = ['json', 'table', 'chart'];
+
   valType: string = 'float';
   valTypes: string[] = ['float', 'bool', 'string', 'data'];
 
@@ -102,7 +103,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
           };
           this.msgDatasets = [{
             label: `Channel: ${this.chanID}`,
-            messages: <Message[]>this.messagesPage.rows,
+            messages: <MainfluxMsg[]>this.messagesPage.rows,
           }];
         }
       },
