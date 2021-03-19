@@ -94,11 +94,11 @@
       </div>
       <div class="col-2">
         <input nbInput fullWidth fieldSize="tiny"
-               [(ngModel)]='valHttp'>
+               [(ngModel)]='httpAdaptVal'>
       </div>
       <div class="col-1">
-        <nb-select class="right" [(selected)]="valType" size="tiny">
-          <nb-option *ngFor="let type of this.valTypes" [value]="type">{{type}}</nb-option>
+        <nb-select class="right" [(selected)]="httpAdaptType" size="tiny">
+          <nb-option *ngFor="let type of this.httpAdaptTypes" [value]="type">{{type}}</nb-option>
         </nb-select>
       </div>
     </div>

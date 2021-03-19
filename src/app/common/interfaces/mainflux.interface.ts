@@ -97,10 +97,10 @@ export interface MsgFilters {
   publisher?: string;
   subtopic?: string;
   name?: string;
-  float?: string;
-  string?: string;
-  data?: string;
-  bool?: string;
+  v?: string;
+  vs?: string;
+  vd?: string;
+  vb?: string;
   from?: number;
   to?: number;
 }

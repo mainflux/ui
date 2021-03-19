@@ -32,16 +32,10 @@ export class MessagesService {
     const suffix  = readerUrl ? readerUrl.suffix : environment.readerSuffix;
 
     let url = `${environment.readerUrl}/${prefix}/${channel}/${suffix}`;
-    url += `?offset=${filters.offset}&limit=${filters.limit}`;
-    url = filters.publisher ? url += `&publisher=${filters.publisher}` : url;
-    url = filters.subtopic ? url += `&subtopic=${encodeURIComponent(filters.subtopic)}` : url;
-    url = filters.name ? url += `&name=${filters.name}` : url;
-    url = filters.from ? url += `&from=${filters.from}` : url;
-    url = filters.to ? url += `&to=${filters.to}` : url;
-    url = filters.float ? url += `&v=${filters.float}` : url;
-    url = filters.bool ? url += `&vb=${filters.bool}` : url;
-    url = filters.data ? url += `&vd=${filters.data}` : url;
-    url = filters.string ? url += `&vs=${filters.string}` : url;
+
+    Object.keys(filters).forEach(key => {
+      url = filters[key] ? url += `&${key}=${filters[key]}` : url;
+    });
 
     return this.http.get(url, { headers: headers })
       .map(

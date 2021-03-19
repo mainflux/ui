@@ -18,9 +18,9 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
 
   mode: string = 'json';
   modes: string[] = ['json', 'table', 'chart'];
-  valType: string = 'float';
-  valHttp: any;
-  valTypes: string[] = ['float', 'bool', 'string', 'data'];
+  httpAdaptType: string = 'float';
+  httpAdaptVal: any;
+  httpAdaptTypes: string[] = ['float', 'bool', 'string', 'data'];
 
   msgDatasets: Dataset[] = [];
 
@@ -87,8 +87,20 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    // Copy value to proper field depending on the selected type
-    this.filters[this.valType] = this.valHttp;
+    switch (this.httpAdaptType) {
+      case 'string':
+        this.filters.vs = this.httpAdaptVal;
+        break;
+      case 'data':
+        this.filters.vd = this.httpAdaptVal;
+        break;
+      case 'bool':
+        this.filters.vb = this.httpAdaptVal;
+        break;
+      case 'float':
+        this.filters.v = this.httpAdaptVal;
+        break;
+    }
 
     this.messagesPage.rows = [];
     this.messagesService.getMessages(this.chanID, this.thingKey, this.filters, this.readerUrl).subscribe(
