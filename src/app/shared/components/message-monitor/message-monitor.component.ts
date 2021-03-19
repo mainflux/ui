@@ -19,6 +19,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   mode: string = 'json';
   modes: string[] = ['json', 'table', 'chart'];
   valType: string = 'float';
+  valHttp: any;
   valTypes: string[] = ['float', 'bool', 'string', 'data'];
 
   msgDatasets: Dataset[] = [];
@@ -29,7 +30,6 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     publisher: '',
     subtopic: '',
     name: '',
-    value: '',
     from: 0,
     to: 0,
   };
@@ -85,6 +85,21 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   getChannelMessages() {
     if (this.chanID === '' || this.thingKey === '') {
       return;
+    }
+
+    switch (this.valType) {
+      case 'string':
+        this.filters.stringValue = this.valHttp;
+        break;
+      case 'data':
+        this.filters.dataValue = this.valHttp;
+        break;
+      case 'bool':
+        this.filters.boolValue = this.valHttp;
+        break;
+      case 'float':
+        this.filters.value = this.valHttp;
+        break;
     }
 
     this.messagesPage.rows = [];

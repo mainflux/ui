@@ -98,6 +98,9 @@ export interface MsgFilters {
   subtopic?: string;
   name?: string;
   value?: string;
+  stringValue?: string;
+  dataValue?: string;
+  boolValue?: string;
   from?: number;
   to?: number;
 }

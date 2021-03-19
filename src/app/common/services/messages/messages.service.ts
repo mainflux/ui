@@ -36,9 +36,12 @@ export class MessagesService {
     url = filters.publisher ? url += `&publisher=${filters.publisher}` : url;
     url = filters.subtopic ? url += `&subtopic=${encodeURIComponent(filters.subtopic)}` : url;
     url = filters.name ? url += `&name=${filters.name}` : url;
-    url = filters.value ? url += `&v=${filters.value}` : url;
     url = filters.from ? url += `&from=${filters.from}` : url;
     url = filters.to ? url += `&to=${filters.to}` : url;
+    url = filters.value ? url += `&v=${filters.value}` : url;
+    url = filters.boolValue ? url += `&vb=${filters.boolValue}` : url;
+    url = filters.dataValue ? url += `&vd=${filters.dataValue}` : url;
+    url = filters.stringValue ? url += `&vs=${filters.stringValue}` : url;
 
     return this.http.get(url, { headers: headers })
       .map(
