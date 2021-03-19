@@ -5,10 +5,11 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { TwinsService } from 'app/common/services/twins/twins.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
-import { Thing, Channel, Attribute, Definition, Twin, MainfluxMsg } from 'app/common/interfaces/mainflux.interface';
+import { Thing, Channel, Attribute, Definition, Twin } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MsgFilters } from 'app/common/interfaces/mainflux.interface';
 import { ToMillisecsPipe } from 'app/shared/pipes/time.pipe';
+import { MessageValuePipe } from 'app/shared/pipes/message-value.pipe';
 
 @Component({
   selector: 'ngx-twins-details-component',
@@ -48,6 +49,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
     private notificationsService: NotificationsService,
     private messagesService: MessagesService,
     private toMillisecsPipe: ToMillisecsPipe,
+    private messageValuePipe: MessageValuePipe,
   ) { }
 
   ngOnInit() {
@@ -128,19 +130,14 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const value = this.parseValue(msgs.messages[0]);
-        if (!value) return;
+        const value = this.messageValuePipe.transform(msgs.messages[0]);
+        if (typeof(value) === 'undefined') return;
 
         this.state[name] = this.state[name] || {};
         this.state[name].value = value;
         this.state[name].time = this.toMillisecsPipe.transform(msgs.messages[0].time);
       },
     );
-  }
-
-  parseValue(message: MainfluxMsg): any {
-    return message.value || message.bool_value ||
-      message.string_value || message.data_value || message.sum;
   }
 
   showStates() {

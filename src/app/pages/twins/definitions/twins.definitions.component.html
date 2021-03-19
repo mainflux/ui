@@ -4,49 +4,10 @@
   </nb-card-header>
 
   <nb-card-body>
-    <nb-list>
-      <nb-list-item>
-        <div class="col-md-2">
-          <b>Created</b>
-        </div>
-        <div class="col-md-10">
-          <div class="row">
-            <div class="col-md-2">
-              <b>Name</b>
-            </div>
-            <div class="col-md-5">
-              <b>Channels</b>
-            </div>
-            <div class="col-md-3">
-              <b>Subtopic</b>
-            </div>
-            <div class="col-md-2">
-              <b>Persisted</b>
-            </div>
-          </div>
-        </div>
-      </nb-list-item>
-      <nb-list-item *ngFor="let def of definitions">
-        <div class="col-md-2">
-          {{def.created | date: 'short'}}
-        </div>
-        <div class="col-md-10">
-          <div class="row" *ngFor="let attr of def.attributes">
-            <div class="col-md-2">
-              {{ attr.name }}
-            </div>
-            <div class="col-md-5">
-              {{ attr.channel }}
-            </div>
-            <div class="col-md-3">
-              {{ attr.subtopic }}
-            </div>
-            <div class="col-md-2">
-              <b>{{ attr.persist_state }}</b>
-            </div>
-          </div>
-        </div>
-      </nb-list-item>
-    </nb-list>
+    <nb-card-body>
+      <ngx-table-component [config]="tableConfig"
+                           [page]="page">
+      </ngx-table-component>
+    </nb-card-body>
   </nb-card-body>
 </nb-card>

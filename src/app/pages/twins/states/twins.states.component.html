@@ -3,7 +3,7 @@
     <nb-card size="big">
       <nb-card-header class="card-header">
         <div class="row">
-          <div class="col-md-6"> {{ statesPage.total }} states of {{ twin.name }}</div>
+          <div class="col-md-6"> {{ page.total }} states of {{ twin.name }}</div>
           <div class="col-1 form-key">
             From:
           </div>
@@ -25,11 +25,15 @@
 
       <nb-card-body>
         <ngx-table-component [config]="tableConfig"
-                             [page]="statesPage"
-                             (changeLimitEvent)=onChangeLimit($event)
-                             (changePageEvent)=onChangePage($event)>
+                             [page]="page">
         </ngx-table-component>
       </nb-card-body>
+      <nb-card-footer>
+        <ngx-pagination-component [page]="page"
+                                  (changeLimitEvent)=onChangeLimit($event)
+                                  (changePageEvent)=onChangePage($event)>
+        </ngx-pagination-component>
+      </nb-card-footer>
     </nb-card>
   </div>
 </div>
