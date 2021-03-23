@@ -1,5 +1,12 @@
 # Mainflux IoT Admin UI based on Angular 8+ and <a href="https://github.com/akveo/nebular">Nebular</a>
 
+## Prerequisites
+
+The following are needed to run the UI:
+
+- [Docker](https://docs.docker.com/install/) (version 20.10)
+- [Docker compose](https://docs.docker.com/compose/install/) (version 1.28)
+
 ## Install
 For a quick setup, pre-built images from Docker Hub can be used.
 
