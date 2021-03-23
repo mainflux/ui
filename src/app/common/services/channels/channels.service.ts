@@ -216,7 +216,7 @@ export class ChannelsService {
     const params = new HttpParams()
       .set('offset', offset.toString())
       .set('limit', limit.toString())
-      .set('connected', 'false');
+      .set('disconnected', 'true');
 
     return this.http.get(`${environment.channelsUrl}/${chanID}/things`, { params })
     .map(

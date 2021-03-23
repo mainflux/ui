@@ -166,7 +166,7 @@ export class ThingsService {
     const params = new HttpParams()
       .set('offset', offset.toString())
       .set('limit', limit.toString())
-      .set('connected', 'false')
+      .set('disconnected', 'true')
       .set('order', 'name')
       .set('dir', 'asc');
 
