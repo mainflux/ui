@@ -31,7 +31,7 @@ export class MessagesService {
     const prefix  = readerUrl ? readerUrl.prefix : environment.readerPrefix;
     const suffix  = readerUrl ? readerUrl.suffix : environment.readerSuffix;
 
-    let url = `${environment.readerUrl}/${prefix}/${channel}/${suffix}`;
+    let url = `${environment.readerUrl}/${prefix}/${channel}/${suffix}?`;
 
     Object.keys(filters).forEach(key => {
       url = filters[key] ? url += `&${key}=${filters[key]}` : url;
