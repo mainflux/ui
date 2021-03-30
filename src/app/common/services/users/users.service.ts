@@ -122,8 +122,8 @@ export class UsersService {
     return this.picture;
   }
 
-  getMemberships(userID?: string): any {
-    return this.http.get(`${environment.usersUrl}/${userID}/groups`)
+  getMemberships(memberID?: string): any {
+    return this.http.get(`${environment.membersUrl}/${memberID}/groups`)
       .map(
         resp => {
           return resp;

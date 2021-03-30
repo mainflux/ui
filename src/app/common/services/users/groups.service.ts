@@ -64,8 +64,12 @@ export class UserGroupsService {
       );
   }
 
-  assignUser(groupID: string, userID: string): any {
-    return this.http.put(`${environment.groupsUrl}/${groupID}/users/${userID}`, {})
+  assignUser(groupID: string, userIDs: string[]): any {
+    const assignReq = {
+      members: userIDs,
+      type: 'user',
+    };
+    return this.http.post(`${environment.groupsUrl}/${groupID}/members`, assignReq)
       .map(
         resp => {
           return resp;
@@ -80,8 +84,11 @@ export class UserGroupsService {
       );
   }
 
-  unassignUser(groupID: string, userID: string): any {
-    return this.http.delete(`${environment.groupsUrl}/${groupID}/users/${userID}`)
+  unassignUser(groupID: string, userIDs: string[]): any {
+    const unassignReq = {
+      members: userIDs,
+    };
+    return this.http.request('delete', `${environment.groupsUrl}/${groupID}/members`, {body: unassignReq})
       .map(
         resp => {
           return resp;
@@ -140,7 +147,7 @@ export class UserGroupsService {
   }
 
   getMembers(groupID?: string): any {
-    return this.http.get(`${environment.groupsUrl}/${groupID}/users`)
+    return this.http.get(`${environment.groupsUrl}/${groupID}/members`)
       .map(
         resp => {
           return resp;

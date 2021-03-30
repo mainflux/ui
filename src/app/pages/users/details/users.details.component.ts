@@ -42,27 +42,22 @@ export class UsersDetailsComponent implements OnInit {
   }
 
   getMemberships() {
+    this.usersService.getMemberships(this.user.id).subscribe(
+      (resp: any) => {
+        this.memberships = resp.groups;
+      },
+    );
+
     this.userGroupsService.getGroups().subscribe(
       (resp: any) => {
-        this.userGroups = resp.Groups;
-
-        this.usersService.getMemberships(this.user.id).subscribe(
-          (respMemb: any) => {
-            this.memberships = respMemb.Groups;
-
-            // Remove memberships from available User Groups
-            this.memberships.forEach(m => {
-              this.userGroups = this.userGroups.filter(o => o.id !== m.id);
-            });
-          },
-        );
+        this.userGroups = resp.groups;
       },
     );
   }
 
   onAssign() {
     this.selectedGroups.forEach(o => {
-      this.userGroupsService.assignUser(o.id, this.user.id).subscribe(
+      this.userGroupsService.assignUser(o.id, [this.user.id]).subscribe(
         resp => {
           this.notificationsService.success('Successfully assigned User to Group', '');
           this.selectedGroups = [];
@@ -76,8 +71,8 @@ export class UsersDetailsComponent implements OnInit {
     }
   }
 
-  onUnassign(memberhip: any) {
-    this.userGroupsService.unassignUser(memberhip.id, this.user.id).subscribe(
+  onUnassign(membership: any) {
+    this.userGroupsService.unassignUser(membership.id, [this.user.id]).subscribe(
       resp => {
         this.notificationsService.success('Successfully unassigned User from Group', '');
         this.selectedGroups = [];

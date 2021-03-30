@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 
-import { LocalDataSource } from 'ng2-smart-table';
-import { User } from 'app/common/interfaces/mainflux.interface';
-
+import { PageFilters, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
 import { FsService } from 'app/common/services/fs/fs.service';
-import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
-import { DetailsComponent } from 'app/shared/components/details/details.component';
+import { UsersAddComponent } from 'app/pages/users/add/users.add.component';
 
 const defFreq: number = 100;
 
@@ -19,70 +15,20 @@ const defFreq: number = 100;
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  settings = {
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate: true,
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmSave: true,
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      details: {
-        type: 'custom',
-        renderComponent: DetailsComponent,
-        valuePrepareFunction: (cell, row) => {
-          return row;
-        },
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-      email: {
-        title: 'Email',
-        filter: false,
-      },
-      password: {
-        title: 'Password',
-        filter: false,
-        editable: false,
-      },
-      id: {
-        title: 'ID',
-        editable: false,
-        addable: false,
-        filter: false,
-      },
-    },
-    pager: {
-      display: true,
-      perPage: 6,
-    },
+  tableConfig: TableConfig = {
+    colNames: ['', '', 'Email', 'ID'],
+    keys: ['edit', 'details', 'email', 'id'],
   };
-
-  source: LocalDataSource = new LocalDataSource();
-  users: User[] = [];
-
-  offset = 0;
-  limit = 100;
-  total = 0;
+  page: TablePage = {};
+  pageFilters: PageFilters = {};
 
   searchFreq = 0;
 
   constructor(
+    private router: Router,
     private dialogService: NbDialogService,
     private usersService: UsersService,
     private fsService: FsService,
-    private notificationsService: NotificationsService,
   ) { }
 
   ngOnInit() {
@@ -91,34 +37,57 @@ export class UsersComponent implements OnInit {
   }
 
   getUsers(email?: string): void {
-    this.usersService.getUsers(this.offset, this.limit, email).subscribe(
+    this.usersService.getUsers(this.page.offset, this.page.limit, email).subscribe(
       (resp: any) => {
-        this.total = resp.total;
-        this.users = resp.Users;
-
-        // Load and refresh Users table
-        this.source.load(this.users);
-        this.source.refresh();
+        this.page = {
+          offset: resp.offset,
+          limit: resp.limit,
+          total: resp.total,
+          rows: resp.users,
+        };
       },
     );
   }
 
-  onCreateConfirm(event): void {
-    this.usersService.addUser(event.newData).subscribe(
-      resp => {
-        // close create row
-        event.confirm.resolve();
+  onChangePage(dir: any) {
+    if (dir === 'prev') {
+      this.pageFilters.offset = this.page.offset - this.page.limit;
+    }
+    if (dir === 'next') {
+      this.pageFilters.offset = this.page.offset + this.page.limit;
+    }
+    this.getUsers();
+  }
 
-        this.notificationsService.success('User successfully created', '');
-        this.getUsers();
+  onChangeLimit(limit: number) {
+    this.pageFilters.limit = limit;
+    this.getUsers();
+  }
+
+  openAddModal() {
+    this.dialogService.open(UsersAddComponent, { context: { action: 'Create' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.getUsers();
+        }
       },
     );
   }
 
-  onEditConfirm(event): void {
-    // close edit row
-    event.confirm.resolve();
+  openEditModal(row: any) {
+    this.dialogService.open(UsersAddComponent, { context: { formData: row, action: 'Edit' } }).onClose.subscribe(
+      confirm => {
+        if (confirm) {
+          this.getUsers();
+        }
+      },
+    );
+  }
 
+  onOpenDetails(row: any) {
+    if (row.id) {
+      this.router.navigate([`${this.router.routerState.snapshot.url}/details/${row.id}`]);
+    }
   }
 
   searchUsersbyEmail(input) {
@@ -130,18 +99,7 @@ export class UsersComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_users.csv', this.users);
-  }
-
-  onDeleteConfirm(event): void {
-    this.dialogService.open(ConfirmationComponent, { context: { type: 'User' } }).onClose.subscribe(
-      confirm => {
-        if (confirm) {
-          // close delete row
-          event.confirm.resolve();
-        }
-      },
-    );
+    this.fsService.exportToCsv('mfx_users.csv', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

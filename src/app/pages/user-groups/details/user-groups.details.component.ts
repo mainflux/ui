@@ -43,32 +43,34 @@ export class UserGroupsDetailsComponent implements OnInit {
   getMembers() {
     this.usersService.getUsers().subscribe(
       (resp: any) => {
-        this.users = resp.Users;
+        this.users = resp.users;
+      },
+    );
 
-        this.userGroupsService.getMembers(this.userGroup.id).subscribe(
-          respMemb => {
-            this.members = respMemb.Users;
+    this.userGroupsService.getMembers(this.userGroup.id).subscribe(
+      respMemb => {
+        this.members = respMemb.users;
 
-            // Remove members from available Users
-            this.members.forEach(m => {
-              this.users = this.users.filter(u => u.id !== m.id);
-            });
-          },
-        );
+        if (this.members) {
+          // Remove members from available Users
+          this.members.forEach(m => {
+            this.users = this.users.filter(u => u.id !== m.id);
+          });
+        }
       },
     );
   }
 
   onAssign() {
-    this.selectedUsers.forEach(u => {
-      this.userGroupsService.assignUser(this.userGroup.id, u.id).subscribe(
-        resp => {
-          this.notificationsService.success('Successfully assigned User to Group', '');
-          this.selectedUsers = [];
-          this.getMembers();
-        },
-      );
-    });
+    const userIDs = this.selectedUsers.map(u => u.id);
+
+    this.userGroupsService.assignUser(this.userGroup.id, userIDs).subscribe(
+      resp => {
+        this.notificationsService.success('Successfully assigned User(s) to Group', '');
+        this.selectedUsers = [];
+        this.getMembers();
+      },
+    );
 
     if (this.selectedUsers.length === 0) {
       this.notificationsService.warn('User(s) must be provided', '');
@@ -76,9 +78,9 @@ export class UserGroupsDetailsComponent implements OnInit {
   }
 
   onUnassign(member: any) {
-    this.userGroupsService.unassignUser(this.userGroup.id, member.id).subscribe(
+    this.userGroupsService.unassignUser(this.userGroup.id, [member.id]).subscribe(
       resp => {
-        this.notificationsService.success('Successfully unassigned User from Group', '');
+        this.notificationsService.success('Successfully unassigned User(s) from Group', '');
         this.selectedUsers = [];
         this.getMembers();
       },
