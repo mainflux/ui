@@ -134,7 +134,7 @@ services:
     image: mainflux/users:latest
     container_name: mainflux-users
     volumes:
-      - ./users/emailer/templates/${MF_EMAIL_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
+      - ./templates/${MF_USERS_RESET_PWD_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
     depends_on:
       - users-db
       - auth
@@ -148,7 +148,6 @@ services:
       MF_USERS_DB: ${MF_USERS_DB}
       MF_USERS_HTTP_PORT: ${MF_USERS_HTTP_PORT}
       MF_JAEGER_URL: ${MF_JAEGER_URL}
-      MF_EMAIL_DRIVER: ${MF_EMAIL_DRIVER}
       MF_EMAIL_HOST: ${MF_EMAIL_HOST}
       MF_EMAIL_PORT: ${MF_EMAIL_PORT}
       MF_EMAIL_USERNAME: ${MF_EMAIL_USERNAME}
@@ -208,7 +207,6 @@ services:
       MF_THINGS_HTTP_PORT: ${MF_THINGS_HTTP_PORT}
       MF_THINGS_AUTH_HTTP_PORT: ${MF_THINGS_AUTH_HTTP_PORT}
       MF_THINGS_AUTH_GRPC_PORT: ${MF_THINGS_AUTH_GRPC_PORT}
-      MF_THINGS_SECRET: ${MF_THINGS_SECRET}
       MF_JAEGER_URL: ${MF_JAEGER_URL}
       MF_AUTH_GRPC_URL: ${MF_AUTH_GRPC_URL}
       MF_AUTH_GRPC_TIMEOUT: ${MF_AUTH_GRPC_TIMEOUT}
@@ -259,6 +257,7 @@ services:
       MF_NATS_URL: ${MF_NATS_URL}
       MF_MQTT_ADAPTER_MQTT_TARGET_HOST: vernemq
       MF_MQTT_ADAPTER_MQTT_TARGET_PORT: ${MF_MQTT_BROKER_PORT}
+      MF_MQTT_ADAPTER_MQTT_TARGET_HEALTH_CHECK: http://vernemq:8888/health
       MF_MQTT_ADAPTER_WS_TARGET_HOST: vernemq
       MF_MQTT_ADAPTER_WS_TARGET_PORT: ${MF_MQTT_BROKER_WS_PORT}
       MF_JAEGER_URL: ${MF_JAEGER_URL}
