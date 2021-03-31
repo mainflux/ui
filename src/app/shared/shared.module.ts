@@ -13,7 +13,6 @@ import {
  import { FormsModule } from '@angular/forms';
 
 import { MapModule } from './components/map/map.module';
-import { DetailsModule } from './components/details/details.module';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { ChartModule } from './components/chart/chart.module';
 import { MessageMonitorComponent } from './components/message-monitor/message-monitor.component';
@@ -28,7 +27,6 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     NbButtonModule,
     NbCardModule,
     MapModule,
-    DetailsModule,
     ChartModule,
     NbSelectModule,
     NbDatepickerModule,
@@ -50,7 +48,6 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     NbCardModule,
     NbIconModule,
     MapModule,
-    DetailsModule,
     ChartModule,
     ConfirmationComponent,
     MessageMonitorComponent,

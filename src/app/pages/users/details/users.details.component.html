@@ -21,7 +21,7 @@
               Memberships
             </div>
             <div class="col-md-7">
-              <nb-select multiple placeholder="Select Organisation(s)" [(selected)]="selectedGroups" size="tiny">
+              <nb-select multiple placeholder="Select Group(s)" [(selected)]="selectedGroups" size="tiny">
                 <nb-option *ngFor="let g of this.userGroups" [value]="g">
                   {{ g.name }}
                 </nb-option>
@@ -36,19 +36,19 @@
         </div>
       </nb-card-header>
       <nb-card-body>
-        <div *ngIf="memberships.length === 0">
+        <div *ngIf="!memberships">
           <div style="text-align: center">
             No memberships
           </div>
         </div>
-        <div *ngIf="memberships.length !== 0">
+        <div *ngIf="memberships">
           <div *ngFor="let m of memberships;" class="row" style="padding: 2.6px;">
             <div class="col-md-9">
               <nb-icon status="info" icon="arrow-right-outline"></nb-icon>
               {{ m.name }}
             </div>
             <div class="col-md-3">
-              <button (click)="onUnassign(mem)" nbButton size="tiny" class="button-red">
+              <button (click)="onUnassign(m)" nbButton size="tiny" class="button-red">
                 x
               </button>
             </div>

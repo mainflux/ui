@@ -1,6 +1,7 @@
 export const environment = {
   usersUrl: '/users',
   groupsUrl: '/groups',
+  membersUrl: '/members',
   usersVersionUrl: '/version',
   loginUrl: '/tokens',
   requestPassUrl: '/password/reset-request',
