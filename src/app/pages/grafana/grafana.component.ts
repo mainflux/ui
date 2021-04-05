@@ -10,7 +10,7 @@ const defSearchBarMs: number = 100;
   templateUrl: './grafana.component.html',
   styleUrls: ['./grafana.component.scss'],
 })
-export class GrafanaComponent implements OnInit {
+export class GrafanaDashComponent implements OnInit {
   
   
   constructor(
