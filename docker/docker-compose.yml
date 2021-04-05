@@ -41,6 +41,7 @@ services:
   nginx:
     image: nginx:1.16.0-alpine
     container_name: mainflux-nginx
+    tty: true
     restart: on-failure
     volumes:
       - ./nginx/nginx-${AUTH-key}.conf:/etc/nginx/nginx.conf.template
@@ -381,6 +382,8 @@ services:
     depends_on:
       - influxdb
     restart: on-failure
+    environment:
+      GF_SERVER_ROOT_URL: ${GF_SERVER_ROOT_URL}
     ports:
       - ${MF_INFLUX_WRITER_GRAFANA_PORT}:${MF_GRAFANA_PORT}
     networks:

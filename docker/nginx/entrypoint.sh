@@ -24,4 +24,5 @@ envsubst '
     ${MF_TWINS_HTTP_PORT}
     ${MF_OPCUA_ADAPTER_HTTP_PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
-exec nginx -g "daemon off;"
+
+exec nginx-debug -g "daemon off;"

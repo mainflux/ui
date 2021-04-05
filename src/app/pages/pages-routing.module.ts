@@ -15,6 +15,7 @@ import { UsersComponent } from './users/users.component';
 import { UsersDetailsComponent } from './users/details/users.details.component';
 // Mainflux - Things
 import { ThingsComponent } from './things/things.component';
+import { GrafanaComponent } from './grafana/grafana.component';
 import { ThingsDetailsComponent } from './things/details/things.details.component';
 // Mainflux - Channels
 import { ChannelsComponent } from './channels/channels.component';
@@ -55,6 +56,10 @@ const children = environment.production ?
     {
       path: 'twins',
       component: TwinsComponent,
+    },
+    {
+      path: 'grafana',
+      component: GrafanaComponent,
     },
     {
       path: 'twins/details/:id',
@@ -117,6 +122,10 @@ const children = environment.production ?
     {
       path: 'twins',
       component: TwinsComponent,
+    },
+    {
+      path: 'grafana',
+      component: GrafanaComponent,
     },
     {
       path: 'twins/details/:id',

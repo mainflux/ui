@@ -14,15 +14,16 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       icon: 'film-outline',
       link: '/pages/things',
     },
-    {
-      title: 'Channels',
-      icon: 'flip-2-outline',
-      link: '/pages/channels',
-    },
+ 
     {
       title: 'Twins',
       icon: 'copy-outline',
       link: '/pages/twins',
+    },
+    {
+      title: 'Grafana',
+      icon: 'copy-outline',
+      link: '/grafana',
     },
   ] :
   [
@@ -56,6 +57,11 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       title: 'Twins',
       icon: 'copy-outline',
       link: '/pages/twins',
+    },
+    {
+      title: 'Grafana',
+      icon: 'copy-outline',
+      link: '/grafana',
     },
     {
       title: 'Services',
