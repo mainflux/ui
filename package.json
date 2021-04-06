@@ -63,7 +63,6 @@
     "ng2-charts": "^2.4.2",
     "ng2-ckeditor": "^1.2.2",
     "ng2-completer": "^9.0.1",
-    "ng2-smart-table": "^1.6.0",
     "ngx-mqtt": "^7.0.14",
     "node-sass": "^4.12.0",
     "normalize.css": "6.0.0",
