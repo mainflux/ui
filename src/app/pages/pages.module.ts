@@ -33,7 +33,6 @@ import { UsersAddComponent } from 'app/pages/users/add/users.add.component';
 import { UsersDetailsComponent } from 'app/pages/users/details/users.details.component';
 // Mainflux - Things
 import { ThingsComponent } from 'app/pages/things/things.component';
-import { GrafanaDashComponent} from 'app/pages/grafana/grafana.component';
 import { ThingsAddComponent } from 'app/pages/things/add/things.add.component';
 import { ThingsDetailsComponent } from 'app/pages/things/details/things.details.component';
 // Mainflux - Channels
@@ -46,6 +45,7 @@ import { TwinsAddComponent } from './twins/add/twins.add.component';
 import { TwinsDetailsComponent } from './twins/details/twins.details.component';
 import { TwinsStatesComponent } from './twins/states/twins.states.component';
 import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
+import { GrafanaDetailsComponent } from './things/grafana/grafana.details.component';
 
 @NgModule({
   imports: [
@@ -88,7 +88,7 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     // Things
     ThingsComponent,
     ThingsAddComponent,
-    GrafanaDashComponent,
+    GrafanaDetailsComponent,
     ThingsDetailsComponent,
     // Channels
     ChannelsComponent,

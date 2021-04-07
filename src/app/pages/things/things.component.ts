@@ -18,8 +18,8 @@ const defSearchBarMs: number = 100;
 })
 export class ThingsComponent implements OnInit {
   tableConfig: TableConfig = {
-    colNames: ['', '', '', 'Name', 'Type', 'ID', 'Key'],
-    keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'key'],
+    colNames: ['', '', '', '', 'Name', 'Type', 'ID', 'Key'],
+    keys: ['edit', 'delete', 'details', 'grafana', 'name', 'type', 'id', 'key'],
   };
   page: TablePage = {};
   pageFilters: PageFilters = {};
@@ -113,6 +113,11 @@ export class ThingsComponent implements OnInit {
       this.router.navigate([`${this.router.routerState.snapshot.url}/details/${row.id}`]);
     }
   }
+
+  onOpenGrafana(row: any) {
+    this.router.navigate([`${this.router.routerState.snapshot.url}/details/grafana/${row.id}`]);
+  }
+
 
   searchThing(input) {
     const t = new Date().getTime();

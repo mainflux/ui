@@ -20,6 +20,11 @@
                    (click)="onClickDetails(row)">
           </nb-icon>
         </div>
+        <div *ngSwitchCase="'grafana'" class="detail-button">
+          <nb-icon nbButton size="tiny" icon="star"
+                   (click)="onGrafanaOpen(row)">
+          </nb-icon>
+        </div>
         <div *ngSwitchCase="'checkbox'">
           <nb-checkbox (checkedChange)="onToggleCheckbox(row)"></nb-checkbox>
         </div>

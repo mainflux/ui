@@ -15,12 +15,17 @@ export class TableComponent {
   @Output() editEvent: EventEmitter<any> = new EventEmitter();
   @Output() delEvent: EventEmitter<any> = new EventEmitter();
   @Output() detailsEvent: EventEmitter<any> = new EventEmitter();
+  @Output() grafanaEvent: EventEmitter<any> = new EventEmitter();
   @Output() checkEvent: EventEmitter<any> = new EventEmitter();
   constructor(
   ) { }
 
   onClickDetails(row: any) {
     this.detailsEvent.emit(row);
+  }
+
+  onGrafanaOpen(row: any) {
+    this.grafanaEvent.emit(row);
   }
 
   onEdit(row: any) {
