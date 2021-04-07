@@ -387,6 +387,7 @@ services:
       - mainflux-base-net
     volumes:
       - mainflux-grafana-volume:/var/lib/grafana
+      - ./configs/defaults.ini:/usr/share/grafana/conf/defaults.ini
 
   influxdb-reader:
     image: mainflux/influxdb-reader:latest
