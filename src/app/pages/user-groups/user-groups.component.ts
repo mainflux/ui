@@ -108,7 +108,7 @@ export class UserGroupsComponent implements OnInit {
     }
   }
 
-  searcUserGroupsbyName(input) {
+  searchUserGroupsByName(input) {
     const t = new Date().getTime();
     if ((t - this.searchFreq) > defFreq) {
       this.getGroups(input);

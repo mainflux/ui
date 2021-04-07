@@ -32,7 +32,7 @@
     "secure": false
   },
   "/grafana": {
-    "target": "http://localhost:3000",
+    "target": "http://localhost",
     "secure": false
   },
   "/channels/*": {

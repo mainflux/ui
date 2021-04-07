@@ -1,3 +1,4 @@
+import { GrafanaService } from './services/grafana/grafana.service';
 import { NgModule } from '@angular/core';
 
 import 'rxjs/add/operator/catch';
@@ -36,6 +37,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     MqttManagerService,
     NotificationsService,
     ThingsService,
+    GrafanaService,
     TwinsService,
     UsersService,
     UserGroupsService,

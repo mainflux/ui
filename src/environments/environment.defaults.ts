@@ -18,6 +18,7 @@ export const environment = {
 
   httpAdapterUrl: '/http',
   readerUrl: '/reader',
+  grafanaUrl:'/grafana',
   readerPrefix: 'channels',
   readerSuffix: 'messages',
 

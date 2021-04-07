@@ -23,7 +23,7 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
     {
       title: 'Grafana',
       icon: 'copy-outline',
-      link: '/grafana',
+      link: '/pages/grafana',
     },
   ] :
   [
@@ -61,7 +61,7 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
     {
       title: 'Grafana',
       icon: 'copy-outline',
-      link: '/grafana',
+      link: '/pages/grafana',
     },
     {
       title: 'Services',

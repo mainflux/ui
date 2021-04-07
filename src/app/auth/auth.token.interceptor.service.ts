@@ -27,7 +27,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.authService = this.inj.get(NbAuthService);
-
+    console.log ( 'set request ' + request.url)
     return this.authService.getToken().pipe(switchMap(
       (token: NbAuthJWTToken) => {
         if (token && token.getValue() &&
@@ -36,11 +36,9 @@ export class TokenInterceptor implements HttpInterceptor {
           !request.url.startsWith(environment.bootstrapUrl) &&
           !request.url.startsWith(environment.browseUrl)
         ) {
-          request = request.clone({
-            setHeaders: {
-              'Authorization': token.getValue(),
-            },
-          });
+          const headers = request.headers.append('Authorization', token.getValue());
+          request = request.clone({headers});
+         
         }
         return next.handle(request).pipe(tap(
           resp => {
