@@ -115,7 +115,10 @@ export class ThingsComponent implements OnInit {
   }
 
   onOpenGrafana(row: any) {
-    this.router.navigate([`${this.router.routerState.snapshot.url}/details/grafana/${row.id}`]);
+    alert(row.id)
+    if (row.id) {
+      this.router.navigate([`${this.router.routerState.snapshot.url}/details/grafana/${row.id}`]);
+    }
   }
 
 
