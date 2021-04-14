@@ -131,3 +131,8 @@ export interface TablePage {
   total?: number;
   rows?: Object[];
 }
+
+export interface Grafana {
+  orgId?: number;
+  dashboard?: string;
+}
