@@ -39,6 +39,6 @@ export class GrafanaDetailsComponent implements OnInit {
   }
 
   loadGrafana(orgId: number, dashboard: string, thingId:string) {
-    this.iframeGrafana = this.domSanitizer.bypassSecurityTrustResourceUrl(`${environment.grafanaUrl}/${dashboard}?orgId=${orgId}&var-thing=${thingId}`);
+    this.iframeGrafana = this.domSanitizer.bypassSecurityTrustResourceUrl(`${environment.grafanaUrl}/${dashboard}?orgId=${orgId}&var-thing=${thingId}&kiosk`);
   }
 }
