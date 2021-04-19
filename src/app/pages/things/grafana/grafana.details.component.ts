@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { NotificationsService } from './../../../common/services/notifications/notifications.service';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { Thing, Grafana} from 'app/common/interfaces/mainflux.interface';
@@ -19,6 +20,7 @@ export class GrafanaDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private domSanitizer: DomSanitizer,
     private thingsService: ThingsService,
+    private http: HttpClient,
     private notificationsService: NotificationsService,
   ) { }
 
@@ -39,6 +41,9 @@ export class GrafanaDetailsComponent implements OnInit {
   }
 
   loadGrafana(orgId: number, dashboard: string, thingId:string) {
-    this.iframeGrafana = this.domSanitizer.bypassSecurityTrustResourceUrl(`${environment.grafanaUrl}/${dashboard}?orgId=${orgId}&var-thing=${thingId}&kiosk`);
+    this.http.get(`${environment.grafanaUrl}/${dashboard}?orgId=${orgId}&var-thing=${thingId}&kiosk`)
+    .subscribe(data => {
+      this.iframeGrafana = data;
+   });
   }
 }

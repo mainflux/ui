@@ -130,6 +130,8 @@ services:
       - mainflux-base-net
     volumes:
       - mainflux-users-db-volume:/var/lib/postgresql/data
+    ports:
+      - 6002:5432
 
   users:
     image: mainflux/users:latest
@@ -179,6 +181,8 @@ services:
       - mainflux-base-net
     volumes:
       - mainflux-things-db-volume:/var/lib/postgresql/data
+    ports:
+      - 6001:5432
 
   auth-redis:
     image: redis:5.0-alpine
