@@ -2,11 +2,11 @@
 
 if [ -z "$MF_MQTT_CLUSTER" ]
 then
-      envsubst '${MF_MQTT_ADAPTER_MQTT_PORT}' < /etc/nginx/snippets/mqtt-upstream-single.conf > /etc/nginx/snippets/mqtt-upstream.conf
-      envsubst '${MF_MQTT_ADAPTER_WS_PORT}' < /etc/nginx/snippets/mqtt-ws-upstream-single.conf > /etc/nginx/snippets/mqtt-ws-upstream.conf
+      envsubst '${MF_MQTT_ADAPTER_MQTT_PORT}' < /usr/local/openresty/nginx/conf/snippets/mqtt-upstream-single.conf > /usr/local/openresty/nginx/conf/snippets/mqtt-upstream.conf
+      envsubst '${MF_MQTT_ADAPTER_WS_PORT}' < /usr/local/openresty/nginx/conf/snippets/mqtt-ws-upstream-single.conf > /usr/local/openresty/nginx/conf/snippets/mqtt-ws-upstream.conf
 else
-      envsubst '${MF_MQTT_ADAPTER_MQTT_PORT}' < /etc/nginx/snippets/mqtt-upstream-cluster.conf > /etc/nginx/snippets/mqtt-upstream.conf
-      envsubst '${MF_MQTT_ADAPTER_WS_PORT}' < /etc/nginx/snippets/mqtt-ws-upstream-cluster.conf > /etc/nginx/snippets/mqtt-ws-upstream.conf
+      envsubst '${MF_MQTT_ADAPTER_MQTT_PORT}' < /usr/local/openresty/nginx/conf/snippets/mqtt-upstream-cluster.conf > /usr/local/openresty/nginx/conf/snippets/mqtt-upstream.conf
+      envsubst '${MF_MQTT_ADAPTER_WS_PORT}' < /usr/local/openresty/nginx/conf/snippets/mqtt-ws-upstream-cluster.conf > /usr/local/openresty/nginx/conf/snippets/mqtt-ws-upstream.conf
 fi
 
 envsubst '
@@ -22,7 +22,7 @@ envsubst '
     ${MF_INFLUX_READER_PORT}
     ${MF_BOOTSTRAP_PORT}
     ${MF_TWINS_HTTP_PORT}
-    ${MF_OPCUA_ADAPTER_HTTP_PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+    ${MF_OPCUA_ADAPTER_HTTP_PORT}' < /usr/local/openresty/nginx/conf/nginx.conf.template > /usr/local/openresty/nginx/conf/mfx-nginx.conf
 
 
-exec nginx-debug -g "daemon off;"
+exec /usr/local/openresty/bin/openresty -g "daemon off;" 

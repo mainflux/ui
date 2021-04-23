@@ -25,6 +25,7 @@ export class GrafanaDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     const id = this.route.snapshot.paramMap.get('id');
     this.thingsService.getThing(id)
     this.thingsService.getThing(id).subscribe(
@@ -41,9 +42,13 @@ export class GrafanaDetailsComponent implements OnInit {
   }
 
   loadGrafana(orgId: number, dashboard: string, thingId:string) {
-    this.http.get(`${environment.grafanaUrl}/${dashboard}?orgId=${orgId}&var-thing=${thingId}&kiosk`)
+    // I have to make one duplicated request which actually authenticates the session
+    // since there is a problem with loading of content of request int iframe srcdoc
+    // as scripts are not being properly loaded ( not respecting base ref)
+    this.http.get(`${environment.grafanaUrl}/${dashboard}?orgId=${orgId}&var-thing=${thingId}&kiosk`, {responseType: 'text'} )
     .subscribe(data => {
-      this.iframeGrafana = data;
+      const url = `${environment.grafanaUrl}/${dashboard}?orgId=${orgId}&var-thing=${thingId}&kiosk`;
+      this.iframeGrafana = this.domSanitizer.bypassSecurityTrustResourceUrl(url);
    });
   }
 }
