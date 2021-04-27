@@ -1,3 +1,4 @@
+import { UrlHelperService } from './../pages/services/url/url.helper.service';
 import { NgModule } from '@angular/core';
 
 import 'rxjs/add/operator/catch';
@@ -10,6 +11,7 @@ import { ChannelsService } from './services/channels/channels.service';
 import { GatewaysService } from './services/gateways/gateways.service';
 import { LoraService } from './services/lora/lora.service';
 import { OpcuaService } from './services/opcua/opcua.service';
+import { UrlHelperService } from './services/url/url.helper.service';
 import { OpcuaStore } from 'app/common/store/opcua.store';
 import { MessagesService } from './services/messages/messages.service';
 import { MqttManagerService } from './services/mqtt/mqtt.manager.service';
@@ -25,12 +27,14 @@ import { TokenInterceptor } from 'app/auth/auth.token.interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
+
   providers: [
     BootstrapService,
     ChannelsService,
     GatewaysService,
     LoraService,
     OpcuaService,
+    UrlHelperService,
     OpcuaStore,
     MessagesService,
     MqttManagerService,
