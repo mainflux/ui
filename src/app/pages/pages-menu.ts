@@ -20,11 +20,6 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       icon: 'flip-2-outline',
       link: appPrefix + '/pages/channels',
     },
-    {
-      title: 'Twins',
-      icon: 'copy-outline',
-      link: appPrefix + '/pages/twins',
-    },
   ] :
   [
     {
@@ -54,14 +49,14 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       link: appPrefix + '/pages/channels',
     },
     {
-      title: 'Twins',
-      icon: 'copy-outline',
-      link: appPrefix + '/pages/twins',
-    },
-    {
       title: 'Services',
       icon: 'layers-outline',
       children: [
+        {
+          title: 'Twins',
+          icon: 'copy-outline',
+          link: '/pages/twins',
+        },
         {
           title: 'LoRa',
           icon: 'radio-outline',
@@ -80,4 +75,3 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       ],
     },
   ];
-
