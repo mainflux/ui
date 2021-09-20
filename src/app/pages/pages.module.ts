@@ -39,12 +39,6 @@ import { ThingsDetailsComponent } from 'app/pages/things/details/things.details.
 import { ChannelsComponent } from 'app/pages/channels/channels.component';
 import { ChannelsAddComponent } from 'app/pages/channels/add/channels.add.component';
 import { ChannelsDetailsComponent } from 'app/pages/channels/details/channels.details.component';
-// Mainflux - Twins
-import { TwinsComponent } from './twins/twins.component';
-import { TwinsAddComponent } from './twins/add/twins.add.component';
-import { TwinsDetailsComponent } from './twins/details/twins.details.component';
-import { TwinsStatesComponent } from './twins/states/twins.states.component';
-import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
 
 @NgModule({
   imports: [
@@ -92,12 +86,6 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     ChannelsComponent,
     ChannelsAddComponent,
     ChannelsDetailsComponent,
-    // Twins
-    TwinsComponent,
-    TwinsAddComponent,
-    TwinsDetailsComponent,
-    TwinsStatesComponent,
-    TwinsDefinitionsComponent,
   ],
   providers: [
     NbDialogService,
