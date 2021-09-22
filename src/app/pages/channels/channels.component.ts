@@ -127,25 +127,6 @@ export class ChannelsComponent implements OnInit {
     this.fsService.exportToJson('mfx_channels.txt', this.page.rows);
   }
 
-  onCheckBox(rows: string[]) {
-    this.selectedChannels = rows;
-  }
-
-  deleteChannels() {
-    this.selectedChannels.forEach((channelID, i) => {
-      this.channelsService.deleteChannel(channelID).subscribe(
-        resp => {
-          this.page.rows = this.page.rows.filter((c: Channel) => c.id !== channelID);
-          if (i === this.selectedChannels.length - 1) {
-            this.notificationsService.success('Channel(s) successfully deleted', '');
-            this.getChannels();
-          }
-        },
-      );
-    });
-
-  }
-
   onFileSelected(files: FileList) {
     if (files && files.length > 0) {
       const file: File = files.item(0);

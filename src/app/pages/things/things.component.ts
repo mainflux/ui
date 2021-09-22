@@ -128,23 +128,6 @@ export class ThingsComponent implements OnInit {
     this.fsService.exportToJson('mfx_things.txt', this.page.rows);
   }
 
-  onCheckBox(rows: string[]) {
-    this.selectedThings = rows;
-  }
-
-  deleteThings() {
-    this.selectedThings.forEach((thingID, i) => {
-      this.thingsService.deleteThing(thingID).subscribe(
-        resp => {
-          if (i === this.selectedThings.length - 1) {
-            this.notificationsService.success('Thing(s) successfully deleted', '');
-            this.getThings();
-          }
-        },
-      );
-    });
-  }
-
   onFileSelected(fileList: FileList) {
     if (fileList && fileList.length > 0) {
       const file: File = fileList.item(0);
@@ -160,14 +143,14 @@ export class ThingsComponent implements OnInit {
         lines.forEach( (line, i) => {
           if (i === 0) {
             channelID = line;
-          } else {
-            if (line !== undefined && line !== '') {
-              try {
-                const thing: Thing = JSON.parse(line);
-                things.push(thing);
-              } catch (e) {
-                this.notificationsService.warn('Wrong metadata format', '');
-              }
+          }
+
+          if (line !== undefined && line !== '') {
+            try {
+              const thing: Thing = JSON.parse(line);
+              things.push(thing);
+            } catch (e) {
+              this.notificationsService.warn('Wrong metadata format', '');
             }
           }
         });
