@@ -124,7 +124,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_channels.csv', this.page.rows);
+    this.fsService.exportToJson('mfx_channels.txt', this.page.rows);
   }
 
   onFileSelected(files: FileList) {
@@ -132,29 +132,20 @@ export class ChannelsComponent implements OnInit {
       const file: File = files.item(0);
       const reader: FileReader = new FileReader();
       reader.readAsText(file);
+
       reader.onload = () => {
-        const csv: string = reader.result as string;
-        const lines = csv.split('\n');
         const channels: Channel[] = [];
+        const text: string = reader.result as string;
+        const lines = text.split('\n');
 
         lines.forEach( line => {
-          const col = line.split(this.columnChar);
-          const name = col[0];
-          if (name !== '' && name !== '<empty string>') {
-            let metadata = {};
-            if (col[1] !== undefined) {
-              try {
-                metadata = JSON.parse(col[1]);
-              } catch (e) {
-                this.notificationsService.warn('Wrong metadata format', '');
-              }
+          if (line !== undefined && line !== '') {
+            try {
+              const channel: Channel = JSON.parse(line);
+              channels.push(channel);
+            } catch (e) {
+              this.notificationsService.warn('Wrong metadata format', '');
             }
-
-            const chann = {
-              name: name,
-              metadata: metadata,
-            };
-            channels.push(chann);
           }
         });
 

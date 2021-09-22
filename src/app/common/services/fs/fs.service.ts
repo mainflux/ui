@@ -1,36 +1,32 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 @Injectable()
 export class FsService {
 
   constructor(
+    private notificationsService: NotificationsService,
   ) { }
 
-  exportToCsv(filename: string, rows: any) {
+  exportToJson(filename: string, rows: any) {
     if (!rows || !rows.length) {
       return;
     }
-    const separator = ',';
-    const keys = Object.keys(rows[0]);
-    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM
-    const csvContent =
-      keys.join(separator) +
-      '\n' +
+    const jsonContent =
       rows.map(row => {
-        return keys.map(k => {
-          let cell = row[k] === undefined ? '' : row[k];
-          if (k === 'metadata') {
-            try {
-              cell = JSON.stringify(row[k]);
-              cell =  cell.replace(/[\,]/g, '|');
-            } catch (e) {
-            }
+        let rowJson = '';
+          try {
+            rowJson = JSON.stringify(row);
+          } catch (e) {
+            this.notificationsService.warn('Failed to convert to JSON', '');
           }
-          return cell;
-        }).join(separator);
+        return rowJson;
       }).join('\n');
 
-    const blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' });
+    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM
+    const blob = new Blob([bom, jsonContent], { type: 'text/json;charset=utf-8;' });
     if (navigator.msSaveBlob) { // IE 10+
       navigator.msSaveBlob(blob, filename);
     } else {

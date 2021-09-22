@@ -110,7 +110,7 @@ export class TwinsComponent implements OnInit {
   }
 
   onSaveFile() {
-    this.fsService.exportToCsv('twins.csv', this.page.rows);
+    this.fsService.exportToJson('twins.txt', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

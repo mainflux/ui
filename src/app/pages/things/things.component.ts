@@ -4,6 +4,7 @@ import { NbDialogService } from '@nebular/theme';
 
 import { Thing, PageFilters, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
+import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { FsService } from 'app/common/services/fs/fs.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
@@ -31,6 +32,7 @@ export class ThingsComponent implements OnInit {
     private router: Router,
     private dialogService: NbDialogService,
     private thingsService: ThingsService,
+    private channelsService: ChannelsService,
     private fsService: FsService,
     private notificationsService: NotificationsService,
   ) { }
@@ -123,42 +125,44 @@ export class ThingsComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_things.csv', this.page.rows);
+    this.fsService.exportToJson('mfx_things.txt', this.page.rows);
   }
 
-  onFileSelected(files: FileList) {
-    if (files && files.length > 0) {
-      const file: File = files.item(0);
+  onFileSelected(fileList: FileList) {
+    if (fileList && fileList.length > 0) {
+      const file: File = fileList.item(0);
       const reader: FileReader = new FileReader();
       reader.readAsText(file);
-      reader.onload = () => {
-        const csv: string = reader.result as string;
-        const lines = csv.split('\n');
-        const things: Thing[] = [];
 
-        lines.forEach( line => {
-          const col = line.split(this.columnChar);
-          const name = col[0];
-          if (name !== '' && name !== '<empty string>') {
-            let metadata = {};
-            if (col[1] !== undefined) {
-              try {
-                metadata = JSON.parse(col[1]);
-              } catch (e) {
-                this.notificationsService.warn('Wrong metadata format', '');
-              }
+      reader.onload = () => {
+        const things: Thing[] = [];
+        let channelID: string;
+        const text: string = reader.result as string;
+        const lines = text.split('\n');
+
+        lines.forEach( (line, i) => {
+          if (i === 0) {
+            channelID = line;
+          }
+
+          if (line !== undefined && line !== '') {
+            try {
+              const thing: Thing = JSON.parse(line);
+              things.push(thing);
+            } catch (e) {
+              this.notificationsService.warn('Wrong metadata format', '');
             }
-            const thing = {
-              name: name,
-              metadata: metadata,
-            };
-            things.push(thing);
           }
         });
 
         this.thingsService.addThings(things).subscribe(
-          resp => {
-            this.getThings();
+          (resp: any) => {
+            const thingsIDs = resp.body.things.map( t => t.id);
+            this.channelsService.connectThings([channelID], thingsIDs).subscribe(
+              respConn => {
+                this.getThings();
+              },
+            );
           },
         );
       };
