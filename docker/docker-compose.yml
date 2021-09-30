@@ -43,9 +43,9 @@ services:
     container_name: mainflux-nginx
     restart: on-failure
     volumes:
-      - ./nginx/mfx-${AUTH-key}.conf:/usr/local/openresty/nginx/conf/nginx.conf.template
+      - ./nginx/nginx-${AUTH-key}.conf:/usr/local/openresty/nginx/conf/nginx.conf.template
       - ./nginx/mqtt-${AUTH-key}.conf:/usr/local/openresty/nginx/conf/mqtt.conf.template
-      - ./nginx/nginx-${AUTH-key}.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./nginx/mfx-${AUTH-key}.conf:/usr/local/openresty/nginx/conf/nginx.conf
       - ./nginx/entrypoint.sh:/entrypoint.sh
       - ./nginx/snippets:/usr/local/openresty/nginx/conf/snippets
       - ./ssl/authorization.js:/usr/local/openresty/nginx/conf/snippets/authorization.js

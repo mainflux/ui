@@ -22,7 +22,7 @@ envsubst '
     ${MF_INFLUX_READER_PORT}
     ${MF_BOOTSTRAP_PORT}
     ${MF_TWINS_HTTP_PORT}
-    ${MF_OPCUA_ADAPTER_HTTP_PORT}' < /usr/local/openresty/nginx/conf/nginx.conf.template > /usr/local/openresty/nginx/conf/mfx.conf
+    ${MF_OPCUA_ADAPTER_HTTP_PORT}' < /usr/local/openresty/nginx/conf/nginx.conf.template > /usr/local/openresty/nginx/conf/mfx-nginx.conf
 
 envsubst '
     ${MF_NGINX_MQTT_PORT}
