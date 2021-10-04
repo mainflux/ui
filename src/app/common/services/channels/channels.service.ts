@@ -7,7 +7,6 @@ import { Channel, PageFilters } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 const defLimit: number = 10;
-const defConnLimit: number = 5;
 
 @Injectable()
 export class ChannelsService {
@@ -163,7 +162,7 @@ export class ChannelsService {
         )
       .catch(
         err => {
-          this.notificationsService.error('Failed to connect Things to Channels',
+          this.notificationsService.error('Failed to connect Thing(s) to Channel(s)',
             `Error: ${err.status} - ${err.statusText}`);
             return Observable.throw(err);
         },
@@ -186,9 +185,29 @@ export class ChannelsService {
       );
   }
 
+  disconnectThings(channelIDs: string[], thingIDs: string[]) {
+    const conReq = {
+      channel_ids: channelIDs,
+      thing_ids: thingIDs,
+    };
+    return this.http.put(`${environment.disconnectUrl}`, conReq)
+      .map(
+          resp => {
+            return resp;
+          },
+        )
+      .catch(
+        err => {
+          this.notificationsService.error('Failed to disconnect Thing(s) from Channel(s)',
+            `Error: ${err.status} - ${err.statusText}`);
+            return Observable.throw(err);
+        },
+      );
+  }
+
   connectedThings(chanID: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || defConnLimit;
+    limit = limit || defLimit;
 
     const params = new HttpParams()
       .set('offset', offset.toString())
@@ -211,7 +230,7 @@ export class ChannelsService {
 
   disconnectedThings(chanID: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || defConnLimit;
+    limit = limit || defLimit;
 
     const params = new HttpParams()
       .set('offset', offset.toString())

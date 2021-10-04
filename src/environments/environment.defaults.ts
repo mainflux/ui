@@ -14,6 +14,7 @@ export const environment = {
   bootstrapConfigsUrl: '/bootstrap/things/configs',
   bootstrapUrl: '/bootstrap/things/bootstrap',
   connectUrl: '/connect',
+  disconnectUrl: '/disconnect',
   browseUrl: '/browse',
 
   httpAdapterUrl: '/http',

@@ -78,7 +78,7 @@ export class ThingsDetailsComponent implements OnInit {
     if (this.chansToConnect.length > 0) {
       this.channelsService.connectThings(this.chansToConnect, [this.thing.id]).subscribe(
         resp => {
-          this.notificationsService.success('Successfully connected to Channel(s)', '');
+          this.notificationsService.success('Channel(s) successfully connected to Thing', '');
           this.updateConnections();
         },
       );
@@ -88,14 +88,12 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onDisconnect() {
-    this.chansToDisconnect.forEach(chanID => {
-      this.channelsService.disconnectThing(chanID, this.thing.id).subscribe(
-        resp => {
-          this.notificationsService.success('Successfully disconnected from Channel', '');
-          this.updateConnections();
-        },
-      );
-    });
+    this.channelsService.disconnectThings(this.chansToDisconnect, [this.thing.id]).subscribe(
+      resp => {
+        this.notificationsService.success('Channel(s) successfully disconnected from Thing', '');
+        this.updateConnections();
+      },
+    );
   }
 
   updateConnections() {

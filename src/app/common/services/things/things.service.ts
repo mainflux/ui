@@ -7,7 +7,6 @@ import { Thing, PageFilters } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 const defLimit: number = 10;
-const defConnLimit: number = 5;
 
 @Injectable()
 export class ThingsService {
@@ -136,7 +135,7 @@ export class ThingsService {
 
   connectedChannels(thingID: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || defConnLimit;
+    limit = limit || defLimit;
 
     const params = new HttpParams()
       .set('offset', offset.toString())
@@ -152,7 +151,7 @@ export class ThingsService {
     )
     .catch(
       err => {
-        this.notificationsService.error('Failed to fetch connected Chanels to the Thing',
+        this.notificationsService.error('Failed to fetch connected Channels to the Thing',
           `Error: ${err.status} - ${err.statusText}`);
         return Observable.throw(err);
       },
@@ -161,7 +160,7 @@ export class ThingsService {
 
   disconnectedChannels(thingID: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || defConnLimit;
+    limit = limit || defLimit;
 
     const params = new HttpParams()
       .set('offset', offset.toString())

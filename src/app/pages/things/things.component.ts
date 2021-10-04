@@ -138,19 +138,19 @@ export class ThingsComponent implements OnInit {
         const things: Thing[] = [];
         let channelID: string;
         const text: string = reader.result as string;
-        const lines = text.split('\n');
+        const lines = text.split(/[\r\n]+/);
 
         lines.forEach( (line, i) => {
           if (i === 0) {
             channelID = line;
-          }
-
-          if (line !== undefined && line !== '') {
-            try {
-              const thing: Thing = JSON.parse(line);
-              things.push(thing);
-            } catch (e) {
-              this.notificationsService.warn('Wrong metadata format', '');
+          } else {
+            if (line !== undefined && line !== '') {
+              try {
+                const thing: Thing = JSON.parse(line);
+                things.push(thing);
+              } catch (e) {
+                this.notificationsService.warn('Wrong metadata format', '');
+              }
             }
           }
         });
