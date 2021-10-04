@@ -3,13 +3,11 @@ import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeServ
 
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
-import { RippleService } from '../../../@core/utils/ripple.service';
+import { Subject } from 'rxjs';
 
 // Mainflux - Users
 import { User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
-
 import { STRINGS } from 'assets/text/strings';
 
 @Component({
@@ -18,11 +16,13 @@ import { STRINGS } from 'assets/text/strings';
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+
   private destroy$: Subject<void> = new Subject<void>();
-  public readonly materialTheme$: Observable<boolean>;
   userPictureOnly: boolean = false;
+
   user: User;
   logotype: string = STRINGS.header.logotype;
+  version = '0.0.0';
 
   themes = [
     {
@@ -41,14 +41,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       value: 'corporate',
       name: 'Corporate',
     },
-    {
-      value: 'material-light',
-      name: 'Material Light',
-    },
-    {
-      value: 'material-dark',
-      name: 'Material Dark',
-    },
   ];
 
   currentTheme = 'default';
@@ -58,22 +50,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { title: 'Profile', link: '/pages/profile' },
     { title: 'Log out', link: '/auth/logout' },
   ];
-  version = '0.0.0';
 
-  public constructor(
+  constructor(
     private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private themeService: NbThemeService,
-    private layoutService: LayoutService,
-    private breakpointService: NbMediaBreakpointsService,
-    private rippleService: RippleService,
     private usersService: UsersService,
-  ) {
-    this.materialTheme$ = this.themeService.onThemeChange()
-      .pipe(map(theme => {
-        const themeName: string = theme?.name || '';
-        return themeName.startsWith('material');
-      }));
+    private layoutService: LayoutService,
+    private breakpointService: NbMediaBreakpointsService) {
   }
 
   ngOnInit() {
@@ -105,10 +89,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         map(({ name }) => name),
         takeUntil(this.destroy$),
       )
-      .subscribe(themeName => {
-        this.currentTheme = themeName;
-        this.rippleService.toggle(themeName?.startsWith('material'));
-      });
+      .subscribe(themeName => this.currentTheme = themeName);
   }
 
   ngOnDestroy() {

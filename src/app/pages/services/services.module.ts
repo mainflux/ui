@@ -15,6 +15,12 @@ import { GatewaysDetailsComponent } from 'app/pages/services/gateways/details/ga
 import { GatewaysInfoComponent } from 'app/pages/services/gateways/details/info/gateways.info.component';
 import { GatewaysConfigComponent } from 'app/pages/services/gateways/details/config/gateways.config.component';
 import { GatewaysXtermComponent } from 'app/pages/services/gateways/details/xterm/gateways.xterm.component';
+// Mainflux - Twins
+import { TwinsComponent } from 'app/pages/services/twins/twins.component';
+import { TwinsAddComponent } from 'app/pages/services/twins/add/twins.add.component';
+import { TwinsDetailsComponent } from 'app/pages/services/twins/details/twins.details.component';
+import { TwinsStatesComponent } from 'app/pages/services/twins/states/twins.states.component';
+import { TwinsDefinitionsComponent } from 'app/pages/services/twins/definitions/twins.definitions.component';
 
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
 
@@ -24,18 +30,27 @@ import { ConfirmationComponent } from 'app/shared/components/confirmation/confir
     PagesModule,
   ],
   declarations: [
+    // LoRa
     LoraComponent,
     LoraAddComponent,
     LoraDetailsComponent,
+    // OPC-UA
     OpcuaComponent,
     OpcuaAddComponent,
     OpcuaDetailsComponent,
+    // Gateways
     GatewaysComponent,
     GatewaysAddComponent,
     GatewaysDetailsComponent,
     GatewaysInfoComponent,
     GatewaysConfigComponent,
     GatewaysXtermComponent,
+    // Twins
+    TwinsComponent,
+    TwinsAddComponent,
+    TwinsDetailsComponent,
+    TwinsStatesComponent,
+    TwinsDefinitionsComponent,
   ],
   entryComponents: [
     ConfirmationComponent,

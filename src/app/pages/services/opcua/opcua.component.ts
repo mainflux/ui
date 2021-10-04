@@ -233,7 +233,7 @@ export class OpcuaComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('opcua_nodes.csv', this.page.rows);
+    this.fsService.exportToJson('opcua_nodes.txt', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

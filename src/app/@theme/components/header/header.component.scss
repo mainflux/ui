@@ -33,8 +33,8 @@
     width: auto;
 
     .sidebar-toggle {
-      @include nb-ltr(margin-right, 1.25rem);
-      @include nb-rtl(margin-left, 1.25rem);
+      @include nb-ltr(padding-right, 1.25rem);
+      @include nb-rtl(padding-left, 1.25rem);
       text-decoration: none;
       color: nb-theme(text-hint-color);
       nb-icon {
@@ -52,11 +52,6 @@
     }
   }
 
-  .direction-switcher {
-    @include nb-ltr(margin-left, 2rem);
-    @include nb-rtl(margin-right, 2rem);
-  }
-
   @include media-breakpoint-down(sm) {
     .control-item {
       display: none;
@@ -68,8 +63,7 @@
   }
 
   @include media-breakpoint-down(is) {
-    nb-select,
-    .direction-switcher {
+    nb-select {
       display: none;
     }
   }
