@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { environment } from 'environments/environment';
 import { OpcuaNode, OpcuaTableRow } from 'app/common/interfaces/opcua.interface';
@@ -170,7 +170,7 @@ export class OpcuaService {
         err => {
           this.notificationsService.error('Failed to Browse',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }

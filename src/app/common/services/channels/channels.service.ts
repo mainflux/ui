@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { environment } from 'environments/environment';
 import { Channel, PageFilters } from 'app/common/interfaces/mainflux.interface';
@@ -27,7 +27,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to create Channel',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -43,7 +43,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to create Channels',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -59,7 +59,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to fetch Channel',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -96,7 +96,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to fetch Channels',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -112,7 +112,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to edit Channel',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -128,7 +128,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to delete Channel',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -144,7 +144,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to connect Thing to Channel',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -164,7 +164,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to connect Thing(s) to Channel(s)',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -180,7 +180,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to disconnect Thing from Channel',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -200,7 +200,7 @@ export class ChannelsService {
         err => {
           this.notificationsService.error('Failed to disconnect Thing(s) from Channel(s)',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -223,7 +223,7 @@ export class ChannelsService {
       err => {
         this.notificationsService.error('Failed to fetch connected Things to the Channel',
           `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
       },
     );
   }
@@ -247,7 +247,7 @@ export class ChannelsService {
       err => {
         this.notificationsService.error('Failed to fetch not connected Things to the Channel',
           `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
       },
     );
   }

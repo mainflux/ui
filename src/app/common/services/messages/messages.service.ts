@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
@@ -47,7 +47,7 @@ export class MessagesService {
         err => {
           this.notificationsService.error('Failed to read Messages',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -70,7 +70,7 @@ export class MessagesService {
         err => {
           this.notificationsService.error('Failed to send Message',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
