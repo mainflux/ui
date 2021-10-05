@@ -205,26 +205,6 @@ export class ChannelsService {
       );
   }
 
-  disconnectThings(channelIDs: string[], thingIDs: string[]) {
-    const conReq = {
-      channel_ids: channelIDs,
-      thing_ids: thingIDs,
-    };
-    return this.http.put(`${environment.disconnectUrl}`, conReq)
-      .map(
-          resp => {
-            return resp;
-          },
-        )
-      .catch(
-        err => {
-          this.notificationsService.error('Failed to disconnect Thing(s) from Channel(s)',
-            `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
-        },
-      );
-  }
-
   connectedThings(chanID: string, offset?: number, limit?: number) {
     offset = offset || 0;
     limit = limit || defLimit;
