@@ -92,6 +92,8 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   findConnectedThings(offset?: number, limit?: number) {
+    this.connThingsPage = {};
+
     this.channelsService.connectedThings(this.channel.id, offset, limit).subscribe(
       (resp: any) => {
         this.connThingsPage = {
@@ -109,6 +111,8 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   findDisconnectedThings(offset?: number, limit?: number) {
+    this.disconnThingsPage = {};
+
     this.channelsService.disconnectedThings(this.channel.id, offset, limit).subscribe(
       (resp: any) => {
         this.disconnThingsPage = {
@@ -151,13 +155,11 @@ export class ChannelsDetailsComponent implements OnInit {
     }
   }
 
-  onCheckboxConns(row: any) {
-    const index = this.thingsToConnect.indexOf(row.id);
-    (index > -1) ? this.thingsToConnect.splice(index, 1) : this.thingsToConnect.push(row.id);
+  onCheckboxConns(rows: any) {
+    this.thingsToConnect = rows;
   }
 
-  onCheckboxDisconns(row: any) {
-    const index = this.thingsToDisconnect.indexOf(row.id);
-    (index > -1) ? this.thingsToDisconnect.splice(index, 1) : this.thingsToDisconnect.push(row.id);
+  onCheckboxDisconns(rows: any) {
+    this.thingsToDisconnect = rows;
   }
 }
