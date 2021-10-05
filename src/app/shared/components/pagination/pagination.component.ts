@@ -10,7 +10,7 @@ import { TablePage } from 'app/common/interfaces/mainflux.interface';
 export class PaginationComponent implements OnChanges {
   currentPage = 0;
   totalPages = 0;
-  limits = [5, 10, 20, 50, 100];
+  limits = [5, 10, 50, 100, 1000];
 
   @Input() page: TablePage = {};
   @Output() changeLimitEvent: EventEmitter<any> = new EventEmitter();

@@ -103,9 +103,10 @@ export class ThingsDetailsComponent implements OnInit {
     this.findDisconnectedChans();
   }
 
-  findConnectedChans() {
-    this.thingsService.connectedChannels(this.thing.id, this.connChansPage.offset,
-      this.connChansPage.limit).subscribe(
+  findConnectedChans(offset?: number, limit?: number) {
+    this.connChansPage = {};
+
+    this.thingsService.connectedChannels(this.thing.id, offset, limit).subscribe(
       (resp: any) => {
         this.connChansPage = {
           offset: resp.offset,
@@ -117,9 +118,10 @@ export class ThingsDetailsComponent implements OnInit {
     );
   }
 
-  findDisconnectedChans() {
-    this.thingsService.disconnectedChannels(this.thing.id, this.disconnChansPage.offset,
-      this.disconnChansPage.limit).subscribe(
+  findDisconnectedChans(offset?: number, limit?: number) {
+    this.disconnChansPage = {};
+
+    this.thingsService.disconnectedChannels(this.thing.id, offset, limit).subscribe(
       (resp: any) => {
         this.disconnChansPage = {
           offset: resp.offset,
