@@ -1,5 +1,5 @@
 # Stage 0, based on Node.js, to build and compile Angular
-FROM node:16.9.1 as node
+FROM node:16.10-alpine as node
 WORKDIR /app
 COPY package.json /app/
 COPY package-lock.json /app/
