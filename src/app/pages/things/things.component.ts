@@ -136,15 +136,13 @@ export class ThingsComponent implements OnInit {
     this.selectedThings.forEach((thingID, i) => {
       this.thingsService.deleteThing(thingID).subscribe(
         resp => {
-          this.page.rows = this.page.rows.filter((t: Thing) => t.id !== thingID);
           if (i === this.selectedThings.length - 1) {
             this.notificationsService.success('Thing(s) successfully deleted', '');
+            this.getThings();
           }
         },
       );
     });
-
-    this.selectedThings = [];
   }
 
   onFileSelected(fileList: FileList) {

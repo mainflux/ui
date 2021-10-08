@@ -138,12 +138,12 @@ export class ChannelsComponent implements OnInit {
           this.page.rows = this.page.rows.filter((c: Channel) => c.id !== channelID);
           if (i === this.selectedChannels.length - 1) {
             this.notificationsService.success('Channel(s) successfully deleted', '');
+            this.getChannels();
           }
         },
       );
     });
 
-    this.selectedChannels = [];
   }
 
   onFileSelected(files: FileList) {
