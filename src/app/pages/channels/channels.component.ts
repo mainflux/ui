@@ -63,13 +63,8 @@ export class ChannelsComponent implements OnInit {
     );
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      this.pageFilters.offset = this.page.offset - this.page.limit;
-    }
-    if (dir === 'next') {
-      this.pageFilters.offset = this.page.offset + this.page.limit;
-    }
+  onChangePage(offset: number) {
+    this.pageFilters.limit = offset;
     this.getChannels();
   }
 
@@ -142,12 +137,12 @@ export class ChannelsComponent implements OnInit {
           this.page.rows = this.page.rows.filter((c: Channel) => c.id !== channelID);
           if (i === this.selectedChannels.length - 1) {
             this.notificationsService.success('Channel(s) successfully deleted', '');
+            this.getChannels();
           }
         },
       );
     });
 
-    this.selectedChannels = [];
   }
 
   onFileSelected(files: FileList) {

@@ -64,13 +64,8 @@ export class ThingsComponent implements OnInit {
     );
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      this.pageFilters.offset = this.page.offset - this.page.limit;
-    }
-    if (dir === 'next') {
-      this.pageFilters.offset = this.page.offset + this.page.limit;
-    }
+  onChangePage(offset: any) {
+    this.pageFilters.offset = offset;
     this.getThings();
   }
 
@@ -140,15 +135,13 @@ export class ThingsComponent implements OnInit {
     this.selectedThings.forEach((thingID, i) => {
       this.thingsService.deleteThing(thingID).subscribe(
         resp => {
-          this.page.rows = this.page.rows.filter((t: Thing) => t.id !== thingID);
           if (i === this.selectedThings.length - 1) {
             this.notificationsService.success('Thing(s) successfully deleted', '');
+            this.getThings();
           }
         },
       );
     });
-
-    this.selectedThings = [];
   }
 
   onFileSelected(fileList: FileList) {
