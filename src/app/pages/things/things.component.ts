@@ -161,7 +161,7 @@ export class ThingsComponent implements OnInit {
         const things: Thing[] = [];
         let channelID: string;
         const text: string = reader.result as string;
-        const lines = text.split(/[\r\n]+/);
+        const lines = text.split('\n');
 
         lines.forEach( (line, i) => {
           if (i === 0) {
