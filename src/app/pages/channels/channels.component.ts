@@ -69,6 +69,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   onChangeLimit(lim: number) {
+    this.pageFilters.offset = 0;
     this.pageFilters.limit = lim;
     this.getChannels();
   }

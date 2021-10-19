@@ -133,26 +133,12 @@ export class ChannelsDetailsComponent implements OnInit {
     this.findDisconnectedThings(0, limit);
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      const offset = this.connThingsPage.offset - this.connThingsPage.limit;
-      this.findConnectedThings(offset, this.connThingsPage.limit);
-    }
-    if (dir === 'next') {
-      const offset = this.connThingsPage.offset + this.connThingsPage.limit;
-      this.findConnectedThings(offset, this.connThingsPage.limit);
-    }
+  onChangePage(offset: number) {
+    this.findConnectedThings(offset, this.connThingsPage.limit);
   }
 
-  onChangePageDisconn(dir: any) {
-    if (dir === 'prev') {
-      const offset = this.disconnThingsPage.offset - this.disconnThingsPage.limit;
-      this.findDisconnectedThings(offset, this.disconnThingsPage.limit);
-    }
-    if (dir === 'next') {
-      const offset = this.disconnThingsPage.offset + this.disconnThingsPage.limit;
-      this.findDisconnectedThings(offset, this.disconnThingsPage.limit);
-    }
+  onChangePageDisconn(offset: number) {
+    this.findDisconnectedThings(offset, this.disconnThingsPage.limit);
   }
 
   onCheckboxConns(rows: any) {
