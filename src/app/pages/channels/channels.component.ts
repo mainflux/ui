@@ -20,13 +20,15 @@ const defSearchBarMs: number = 100;
 export class ChannelsComponent implements OnInit {
   tableConfig: TableConfig = {
     colNames: ['', '', '', 'Name', 'Type', 'ID'],
-    keys: ['edit', 'delete', 'details', 'name', 'type', 'id'],
+    keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'checkbox'],
   };
   page: TablePage = {};
   pageFilters: PageFilters = {};
 
   searchTime = 0;
   columnChar = '|';
+
+  selectedChannels: string[] = [];
 
   constructor(
     private router: Router,
@@ -41,6 +43,8 @@ export class ChannelsComponent implements OnInit {
   }
 
   getChannels(name?: string): void {
+    this.page = {};
+
     this.pageFilters.name = name;
     this.channelsService.getChannels(this.pageFilters).subscribe(
       (resp: any) => {
@@ -59,17 +63,13 @@ export class ChannelsComponent implements OnInit {
     );
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      this.pageFilters.offset = this.page.offset - this.page.limit;
-    }
-    if (dir === 'next') {
-      this.pageFilters.offset = this.page.offset + this.page.limit;
-    }
+  onChangePage(offset: number) {
+    this.pageFilters.limit = offset;
     this.getChannels();
   }
 
   onChangeLimit(lim: number) {
+    this.pageFilters.offset = 0;
     this.pageFilters.limit = lim;
     this.getChannels();
   }
@@ -125,6 +125,25 @@ export class ChannelsComponent implements OnInit {
 
   onClickSave() {
     this.fsService.exportToJson('mfx_channels.txt', this.page.rows);
+  }
+
+  onCheckBox(rows: string[]) {
+    this.selectedChannels = rows;
+  }
+
+  deleteChannels() {
+    this.selectedChannels.forEach((channelID, i) => {
+      this.channelsService.deleteChannel(channelID).subscribe(
+        resp => {
+          this.page.rows = this.page.rows.filter((c: Channel) => c.id !== channelID);
+          if (i === this.selectedChannels.length - 1) {
+            this.notificationsService.success('Channel(s) successfully deleted', '');
+            this.getChannels();
+          }
+        },
+      );
+    });
+
   }
 
   onFileSelected(files: FileList) {

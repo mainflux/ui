@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { environment } from 'environments/environment';
 import { UserGroup } from 'app/common/interfaces/mainflux.interface';
@@ -27,7 +27,7 @@ export class UserGroupsService {
         err => {
           this.notificationsService.error('Failed to create User Group',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -43,7 +43,7 @@ export class UserGroupsService {
         err => {
           this.notificationsService.error('Failed to edit User Group',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -59,7 +59,7 @@ export class UserGroupsService {
         err => {
           this.notificationsService.error('Failed to delete User Group',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -79,7 +79,7 @@ export class UserGroupsService {
         err => {
           this.notificationsService.error('Failed to Assing User to Group',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -98,7 +98,7 @@ export class UserGroupsService {
         err => {
           this.notificationsService.error('Failed to Unassing User from Group',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -114,7 +114,7 @@ export class UserGroupsService {
         err => {
           this.notificationsService.error('Failed to fetch User Group',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -141,7 +141,7 @@ export class UserGroupsService {
         err => {
           this.notificationsService.error('Failed to fetch User Groups',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -157,7 +157,7 @@ export class UserGroupsService {
         err => {
           this.notificationsService.error('Failed to fetch Group members',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }

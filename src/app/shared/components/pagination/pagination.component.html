@@ -5,13 +5,19 @@
     </nb-select>
   </div>
   <div *ngIf="totalPages > 1" class="col-10" style="text-align: center;">
-    <button (click)="onChangePage('prev')" nbButton size="tiny" class="page-button">
+    <button (click)="onChangePage('first')" nbButton size="tiny" class="page-button">
       <<
+    </button>
+    <button (click)="onChangePage('prev')" nbButton size="tiny" class="page-button">
+      <
     </button>
     <button (click)="onChangePage('current')" nbButton size="tiny" class="page-button">
       {{ currentPage }}
     </button>
     <button (click)="onChangePage('next')" nbButton size="tiny" class="page-button">
+      >
+    </button>
+    <button (click)="onChangePage('last')" nbButton size="tiny" class="page-button">
       >>
     </button>
   </div>

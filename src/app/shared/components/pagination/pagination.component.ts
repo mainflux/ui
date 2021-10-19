@@ -24,7 +24,7 @@ export class PaginationComponent implements OnChanges {
       const pageNum = (this.page.offset + 1) / this.page.limit;
       this.currentPage = Math.ceil(pageNum);
       // Calculate the number of pages
-      this.totalPages = this.page.total / this.page.limit;
+      this.totalPages = Math.ceil(this.page.total / this.page.limit);
     }
   }
 
@@ -32,12 +32,23 @@ export class PaginationComponent implements OnChanges {
     this.changeLimitEvent.emit(lim);
   }
 
-  onChangePage(dir: any) {
+  onChangePage(dir: string) {
+    let offset: number;
+    if (dir === 'first' && this.currentPage !== 1) {
+      offset = 0;
+      this.changePageEvent.emit(offset);
+    }
     if (dir === 'prev' && this.currentPage > 1) {
-      this.changePageEvent.emit(dir);
+      offset = this.page.offset - this.page.limit;
+      this.changePageEvent.emit(offset);
     }
     if (dir === 'next' && this.totalPages > this.currentPage) {
-      this.changePageEvent.emit(dir);
+      offset = this.page.offset + this.page.limit;
+      this.changePageEvent.emit(offset);
+    }
+    if (dir === 'last' && this.totalPages > this.currentPage) {
+      offset = Math.round(this.page.total / this.page.limit) * this.page.limit;
+      this.changePageEvent.emit(offset);
     }
   }
 }

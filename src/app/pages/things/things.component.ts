@@ -20,13 +20,15 @@ const defSearchBarMs: number = 100;
 export class ThingsComponent implements OnInit {
   tableConfig: TableConfig = {
     colNames: ['', '', '', 'Name', 'Type', 'ID', 'Key'],
-    keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'key'],
+    keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'key', 'checkbox'],
   };
   page: TablePage = {};
   pageFilters: PageFilters = {};
 
   searchTime = 0;
   columnChar = '|';
+
+  selectedThings: string[] = [];
 
   constructor(
     private router: Router,
@@ -42,6 +44,8 @@ export class ThingsComponent implements OnInit {
   }
 
   getThings(name?: string): void {
+    this.page = {};
+
     this.pageFilters.name = name;
     this.thingsService.getThings(this.pageFilters).subscribe(
       (resp: any) => {
@@ -60,17 +64,13 @@ export class ThingsComponent implements OnInit {
     );
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      this.pageFilters.offset = this.page.offset - this.page.limit;
-    }
-    if (dir === 'next') {
-      this.pageFilters.offset = this.page.offset + this.page.limit;
-    }
+  onChangePage(offset: any) {
+    this.pageFilters.offset = offset;
     this.getThings();
   }
 
   onChangeLimit(lim: number) {
+    this.pageFilters.offset = 0;
     this.pageFilters.limit = lim;
     this.getThings();
   }
@@ -128,6 +128,23 @@ export class ThingsComponent implements OnInit {
     this.fsService.exportToJson('mfx_things.txt', this.page.rows);
   }
 
+  onCheckBox(rows: string[]) {
+    this.selectedThings = rows;
+  }
+
+  deleteThings() {
+    this.selectedThings.forEach((thingID, i) => {
+      this.thingsService.deleteThing(thingID).subscribe(
+        resp => {
+          if (i === this.selectedThings.length - 1) {
+            this.notificationsService.success('Thing(s) successfully deleted', '');
+            this.getThings();
+          }
+        },
+      );
+    });
+  }
+
   onFileSelected(fileList: FileList) {
     if (fileList && fileList.length > 0) {
       const file: File = fileList.item(0);
@@ -143,14 +160,14 @@ export class ThingsComponent implements OnInit {
         lines.forEach( (line, i) => {
           if (i === 0) {
             channelID = line;
-          }
-
-          if (line !== undefined && line !== '') {
-            try {
-              const thing: Thing = JSON.parse(line);
-              things.push(thing);
-            } catch (e) {
-              this.notificationsService.warn('Wrong metadata format', '');
+          } else {
+            if (line !== undefined && line !== '') {
+              try {
+                const thing: Thing = JSON.parse(line);
+                things.push(thing);
+              } catch (e) {
+                this.notificationsService.warn('Wrong metadata format', '');
+              }
             }
           }
         });
