@@ -103,10 +103,8 @@ export class ThingsDetailsComponent implements OnInit {
     this.findDisconnectedChans();
   }
 
-  findConnectedChans(offset?: number, limit?: number) {
-    this.connChansPage = {};
-
-    this.thingsService.connectedChannels(this.thing.id, offset, limit).subscribe(
+  findConnectedChans() {
+    this.thingsService.connectedChannels(this.thing.id, this.connChansPage.offset, this.connChansPage.limit).subscribe(
       (resp: any) => {
         this.connChansPage = {
           offset: resp.offset,
@@ -118,10 +116,8 @@ export class ThingsDetailsComponent implements OnInit {
     );
   }
 
-  findDisconnectedChans(offset?: number, limit?: number) {
-    this.disconnChansPage = {};
-
-    this.thingsService.disconnectedChannels(this.thing.id, offset, limit).subscribe(
+  findDisconnectedChans() {
+    this.thingsService.disconnectedChannels(this.thing.id, this.disconnChansPage.offset, this.disconnChansPage.limit).subscribe(
       (resp: any) => {
         this.disconnChansPage = {
           offset: resp.offset,
@@ -134,8 +130,8 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onChangeLimit(limit: number) {
-    this.connChansPage.offset = 0;
-    this.connChansPage.limit = limit;
+    this.connChansPage.offset= 0;
+    this.connChansPage.limit= limit;
     this.findConnectedChans();
   }
 
@@ -145,8 +141,8 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onChangeLimitDisconn(limit: number) {
-    this.disconnChansPage.offset = 0;
-    this.disconnChansPage.limit = limit;
+    this.disconnChansPage.offset= 0;
+    this.disconnChansPage.limit= limit;
     this.findDisconnectedChans();
   }
 
