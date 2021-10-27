@@ -22,5 +22,6 @@ export const environment = {
   readerSuffix: 'messages',
 
   mqttWsUrl: window['env']['mqttWsUrl'] || 'ws://localhost/mqtt',
+  proxyAuth: window['env']['proxyAuth'] || false,
   exportConfigFile: '/configs/export/config.toml',
 };

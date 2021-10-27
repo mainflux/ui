@@ -2,20 +2,21 @@ import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import {
   NbAuthComponent,
-  NbLoginComponent,
   NbRequestPasswordComponent,
   NbResetPasswordComponent,
 } from '@nebular/auth';
 
 // Mfx- Custom Logout and Register components that
 // replace NbLogoutComponent and NbRegisterComponent
-import { LogoutComponent } from 'app/pages/logout/logout.component';
-import { RegisterComponent } from 'app/pages/register/register.component';
+import { LogoutComponent } from './pages/logout/logout.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './auth/auth-guard.service';
 
 export const routes: Routes = [
   {
     path: 'pages',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/pages.module')
       .then(m => m.PagesModule),
   },

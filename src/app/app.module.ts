@@ -29,7 +29,7 @@ import {
 import { FormsModule } from '@angular/forms';
 // Mfx - MQTT dependencies for Gateways page
 import { MqttModule, IMqttServiceOptions, MqttService } from 'ngx-mqtt';
-import { environment } from 'environments/environment';
+import { environment } from '../environments/environment';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   connectOnCreate: false,
   url: environment.mqttWsUrl,
@@ -39,6 +39,7 @@ import { LogoutComponent } from './pages/logout/logout.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './auth/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,9 @@ import { LoginComponent } from './pages/login/login.component';
   ],
   bootstrap: [AppComponent],
   // Mfx dependencies
-  providers: [MqttService],
+  providers: [
+    AuthGuard,
+    MqttService],
 })
 export class AppModule {
 }
