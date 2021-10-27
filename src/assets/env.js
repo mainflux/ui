@@ -3,4 +3,5 @@
   
     // Environment variables
     window["env"]["mqttWsUrl"] = "ws://localhost/mqtt";
+    window["env"]["proxyAuth"] = false;
   })(this);
