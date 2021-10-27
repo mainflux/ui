@@ -25,7 +25,6 @@ export class LoginComponent extends NbLoginComponent {
             } else {
               this.errors = result.getErrors();
             }
-
             const redirect = result.getRedirect();
             if (redirect) {
               setTimeout(() => {
