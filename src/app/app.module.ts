@@ -38,12 +38,14 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 import { LogoutComponent } from './pages/logout/logout.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     // Mfx Componennt
     LogoutComponent,
+    LoginComponent,
     RegisterComponent,
     ProfileComponent,
   ],
