@@ -11,6 +11,7 @@ import {
 // replace NbLogoutComponent and NbRegisterComponent
 import { LogoutComponent } from 'app/pages/logout/logout.component';
 import { RegisterComponent } from 'app/pages/register/register.component';
+import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
   {
@@ -24,11 +25,11 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: NbLoginComponent,
+        component: LoginComponent,
       },
       {
         path: 'login',
-        component: NbLoginComponent,
+        component: LoginComponent,
       },
       {
         path: 'register',
