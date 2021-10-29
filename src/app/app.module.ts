@@ -80,12 +80,8 @@ import { AuthGuard } from './auth/auth-guard.service';
   // Mfx dependencies
   providers: [
     AuthGuard,
-<<<<<<< HEAD
     MqttService,
   ],
-=======
-    MqttService],
->>>>>>> 02664e7 (add auth guard, add env var)
 })
 export class AppModule {
 }
