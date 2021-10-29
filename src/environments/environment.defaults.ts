@@ -24,5 +24,6 @@ export const environment = {
 
   mqttWsUrl: window['env']['mqttWsUrl'] || 'ws://localhost/mqtt',
   proxyAuth: window['env']['proxyAuth'] || false,
+  logoutUrl: window['env']['logoutUrl'] || '/logout',
   exportConfigFile: '/configs/export/config.toml',
 };

@@ -16,7 +16,6 @@ export class LoginComponent extends NbLoginComponent {
         protected router: Router
   ) {
     super(service, options,cd, router);
-
     if ( environment.proxyAuth == true ) {
         this.service.authenticate(this.strategy, this.user).subscribe((result: NbAuthResult) => {
             this.submitted = false;
