@@ -11,7 +11,6 @@ export class AuthGuard implements CanActivate {
     }
   
     canActivate() {
-      console.log("authenticated check");
         return this.authService.isAuthenticated()
           .pipe(
             tap(authenticated => {
