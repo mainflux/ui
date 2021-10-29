@@ -6,4 +6,3 @@
     window["env"]["proxyAuth"] = ${MF_PROXY_AUTH};
     window["env"]["logoutUrl"] = "${MF_PROXY_LOGOUT_URL}";
   })(this);
-  
