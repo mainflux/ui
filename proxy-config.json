@@ -4,7 +4,7 @@
     "secure": false
   },
   "/users": {
-    "target": "http://localhost",
+    "target": "http://localhost:8180",
     "secure": false
   },
   "/members/*": {
@@ -20,7 +20,7 @@
     "secure": false
   },
   "/tokens": {
-    "target": "http://localhost",
+    "target": "http://localhost:8180",
     "secure": false
   },
   "/things/*": {
