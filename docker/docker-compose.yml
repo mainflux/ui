@@ -37,7 +37,6 @@ services:
       MF_PROXY_AUTH: ${MF_PROXY_AUTH}
       MF_PROXY_LOGOUT_URL: ${MF_PROXY_LOGOUT_URL}
 
-
   nginx:
     image: nginx:1.20.0-alpine
     container_name: mainflux-nginx

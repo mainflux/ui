@@ -6,4 +6,3 @@
     window["env"]["logoutUrl"] = "/logout";
     window["env"]["proxyAuth"] = false;
   })(this);
-    
