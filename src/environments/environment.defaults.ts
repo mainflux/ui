@@ -26,4 +26,5 @@ export const environment = {
   proxyAuth: window['env']['proxyAuth'] || false,
   logoutUrl: window['env']['logoutUrl'] || '/logout',
   exportConfigFile: '/configs/export/config.toml',
+  appPrefix: window['env']['appPrefix'] || '',
 };

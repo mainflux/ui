@@ -5,4 +5,5 @@
     window["env"]["mqttWsUrl"] = "ws://localhost/mqtt";
     window["env"]["logoutUrl"] = "/logout";
     window["env"]["proxyAuth"] = false;
+    window["env"]["appPrefix"] = 'app';
   })(this);
