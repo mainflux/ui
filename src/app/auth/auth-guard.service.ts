@@ -8,8 +8,11 @@ import { tap } from 'rxjs/operators';
 export class AuthGuard implements CanActivate {
 
     constructor(private authService: NbAuthService, private router: Router) {
+      if ( environment.appPrefix !== '' ) {
+        this.loginUrl = environment.appPrefix + '/' + this.loginUrl;
+      }
     }
-  
+
     canActivate() {
         return this.authService.isAuthenticated()
           .pipe(

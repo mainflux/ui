@@ -35,6 +35,9 @@ export const NB_CORE_PROVIDERS = [
         baseEndpoint: '',
             login: {
               endpoint: environment.loginUrl,
+              redirect: {
+                failure: '/',
+              },
             },
             register: {
               endpoint: environment.usersUrl,
@@ -47,13 +50,13 @@ export const NB_CORE_PROVIDERS = [
               endpoint: environment.resetPassUrl,
               method: 'put',
             },
-            logout: { 
-              method: 'get', 
+            logout: {
+              method: 'get',
               endpoint: environment.logoutUrl,
-              redirect: { 
-                success: '/', 
-                failure: '/' 
-              } 
+              redirect: {
+                success: '/',
+                failure: '/',
+              },
             },
         }),
     ],

@@ -112,4 +112,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.menuService.navigateHome();
     return false;
   }
+
+  getLink (link: string) {
+    return environment.appPrefix === '' ? link : '/' + environment.appPrefix + '/' + link;
+  }
 }

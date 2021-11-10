@@ -18,7 +18,7 @@ export class LogoutComponent extends NbLogoutComponent {
     super(authService, options, router);
     if (environment.appPrefix !== '') {
       this.loginUrl = '/' + environment.appPrefix + '/auth/login';
-    } 
+    }
   }
 
   logout() {

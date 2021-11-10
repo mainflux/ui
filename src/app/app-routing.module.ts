@@ -18,10 +18,10 @@ import { environment } from '../environments/environment';
 
 
 export const routes: Routes = [
-{ 
+{
   path: environment.appPrefix,
   component: AppComponent,
-  children:[
+  children: [
       {
         path: 'pages',
         canActivate: [AuthGuard],
@@ -64,7 +64,7 @@ export const routes: Routes = [
 
   { path: '', redirectTo: environment.appPrefix, pathMatch: 'full' },
   { path: '**', redirectTo: environment.appPrefix },
-];  
+];
 
 const config: ExtraOptions = {
   useHash: false,

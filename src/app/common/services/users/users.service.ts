@@ -18,10 +18,10 @@ export class UsersService {
     private http: HttpClient,
     private router: Router,
     private notificationsService: NotificationsService,
-  ) { 
+  ) {
     if (environment.appPrefix !== '') {
       this.loginUrl = '/' + environment.appPrefix + '/auth/login';
-    } 
+    }
   }
 
   addUser(user: User) {
