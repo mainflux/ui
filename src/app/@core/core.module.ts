@@ -47,13 +47,13 @@ export const NB_CORE_PROVIDERS = [
               endpoint: environment.resetPassUrl,
               method: 'put',
             },
-            logout: { 
-              method: 'get', 
+            logout: {
+              method: 'get',
               endpoint: environment.logoutUrl,
-              redirect: { 
-                success: '/', 
-                failure: '/' 
-              } 
+              redirect: {
+                success: '/',
+                failure: '/',
+              },
             },
         }),
     ],
