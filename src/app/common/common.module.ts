@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 

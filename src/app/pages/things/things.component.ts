@@ -4,6 +4,7 @@ import { NbDialogService } from '@nebular/theme';
 
 import { Thing, PageFilters, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { ThingsService } from 'app/common/services/things/things.service';
+import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { FsService } from 'app/common/services/fs/fs.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
@@ -19,7 +20,7 @@ const defSearchBarMs: number = 100;
 export class ThingsComponent implements OnInit {
   tableConfig: TableConfig = {
     colNames: ['', '', '', 'Name', 'Type', 'ID', 'Key'],
-    keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'key'],
+    keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'key', 'checkbox'],
   };
   page: TablePage = {};
   pageFilters: PageFilters = {};
@@ -27,10 +28,13 @@ export class ThingsComponent implements OnInit {
   searchTime = 0;
   columnChar = '|';
 
+  selectedThings: string[] = [];
+
   constructor(
     private router: Router,
     private dialogService: NbDialogService,
     private thingsService: ThingsService,
+    private channelsService: ChannelsService,
     private fsService: FsService,
     private notificationsService: NotificationsService,
   ) { }
@@ -40,6 +44,8 @@ export class ThingsComponent implements OnInit {
   }
 
   getThings(name?: string): void {
+    this.page = {};
+
     this.pageFilters.name = name;
     this.thingsService.getThings(this.pageFilters).subscribe(
       (resp: any) => {
@@ -58,17 +64,13 @@ export class ThingsComponent implements OnInit {
     );
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      this.pageFilters.offset = this.page.offset - this.page.limit;
-    }
-    if (dir === 'next') {
-      this.pageFilters.offset = this.page.offset + this.page.limit;
-    }
+  onChangePage(offset: any) {
+    this.pageFilters.offset = offset;
     this.getThings();
   }
 
   onChangeLimit(lim: number) {
+    this.pageFilters.offset = 0;
     this.pageFilters.limit = lim;
     this.getThings();
   }
@@ -123,42 +125,61 @@ export class ThingsComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_things.csv', this.page.rows);
+    this.fsService.exportToJson('mfx_things.txt', this.page.rows);
   }
 
-  onFileSelected(files: FileList) {
-    if (files && files.length > 0) {
-      const file: File = files.item(0);
+  onCheckBox(rows: string[]) {
+    this.selectedThings = rows;
+  }
+
+  deleteThings() {
+    this.selectedThings.forEach((thingID, i) => {
+      this.thingsService.deleteThing(thingID).subscribe(
+        resp => {
+          if (i === this.selectedThings.length - 1) {
+            this.notificationsService.success('Thing(s) successfully deleted', '');
+            this.getThings();
+          }
+        },
+      );
+    });
+  }
+
+  onFileSelected(fileList: FileList) {
+    if (fileList && fileList.length > 0) {
+      const file: File = fileList.item(0);
       const reader: FileReader = new FileReader();
       reader.readAsText(file);
-      reader.onload = () => {
-        const csv: string = reader.result as string;
-        const lines = csv.split('\n');
-        const things: Thing[] = [];
 
-        lines.forEach( line => {
-          const col = line.split(this.columnChar);
-          const name = col[0];
-          if (name !== '' && name !== '<empty string>') {
-            let metadata = {};
-            if (col[1] !== undefined) {
+      reader.onload = () => {
+        const things: Thing[] = [];
+        let channelID: string;
+        const text: string = reader.result as string;
+        const lines = text.split('\n');
+
+        lines.forEach( (line, i) => {
+          if (i === 0) {
+            channelID = line;
+          } else {
+            if (line !== undefined && line !== '') {
               try {
-                metadata = JSON.parse(col[1]);
+                const thing: Thing = JSON.parse(line);
+                things.push(thing);
               } catch (e) {
                 this.notificationsService.warn('Wrong metadata format', '');
               }
             }
-            const thing = {
-              name: name,
-              metadata: metadata,
-            };
-            things.push(thing);
           }
         });
 
         this.thingsService.addThings(things).subscribe(
-          resp => {
-            this.getThings();
+          (resp: any) => {
+            const thingsIDs = resp.body.things.map( t => t.id);
+            this.channelsService.connectThings([channelID], thingsIDs).subscribe(
+              respConn => {
+                this.getThings();
+              },
+            );
           },
         );
       };

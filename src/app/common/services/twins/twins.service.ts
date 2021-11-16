@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { environment } from 'environments/environment';
 import { Twin, PageFilters } from 'app/common/interfaces/mainflux.interface';
@@ -32,7 +32,7 @@ export class TwinsService {
         err => {
           this.notificationsService.error('Failed to get twins',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -49,7 +49,7 @@ export class TwinsService {
         err => {
           this.notificationsService.error('Failed to create twin',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -65,7 +65,7 @@ export class TwinsService {
         err => {
           this.notificationsService.error('Failed to fetch twin',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -82,7 +82,7 @@ export class TwinsService {
         err => {
           this.notificationsService.error('Failed to delete Twin',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -99,7 +99,7 @@ export class TwinsService {
         err => {
           this.notificationsService.error('Failed to edit Twin',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -122,7 +122,7 @@ export class TwinsService {
         err => {
           this.notificationsService.error('Failed to get states',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }

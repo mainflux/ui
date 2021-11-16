@@ -1,6 +1,9 @@
 <table>
-  <tr>
+  <tr *ngIf="page.rows && page.rows.length > 0">
     <th *ngFor="let colName of config.colNames"> {{ colName }} </th>
+    <th class="checkbox">
+      <nb-checkbox [checked]="isSelectedAll" (checkedChange)="onToggleSelectAll($event)"></nb-checkbox>
+    </th>
   </tr>
   <tr *ngFor="let row of page.rows">
     <td  *ngFor="let key of config.keys">
@@ -20,8 +23,8 @@
                    (click)="onClickDetails(row)">
           </nb-icon>
         </div>
-        <div *ngSwitchCase="'checkbox'">
-          <nb-checkbox (checkedChange)="onToggleCheckbox(row)"></nb-checkbox>
+        <div *ngSwitchCase="'checkbox'" class="checkbox">
+          <nb-checkbox [checked]="row.checked" (checkedChange)="onToggleCheckbox(row)"></nb-checkbox>
         </div>
         <div *ngSwitchCase="'time'">
           {{ row[key] | toMillisecs | date:'medium' }}
@@ -44,7 +47,7 @@
   </tr>
 </table>
 
-<div *ngIf="!page.total" class="row no-msg">
+<div *ngIf="page.rows && page.rows.length === 0" class="row no-msg">
   <div class="col-12">
     No content
   </div>

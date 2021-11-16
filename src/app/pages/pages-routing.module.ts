@@ -19,11 +19,6 @@ import { ThingsDetailsComponent } from './things/details/things.details.componen
 // Mainflux - Channels
 import { ChannelsComponent } from './channels/channels.component';
 import { ChannelsDetailsComponent } from './channels/details/channels.details.component';
-// Mainflux - Twins
-import { TwinsComponent } from './twins/twins.component';
-import { TwinsDetailsComponent } from './twins/details/twins.details.component';
-import { TwinsStatesComponent } from './twins/states/twins.states.component';
-import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
 
 const children = environment.production ?
 [
@@ -51,22 +46,6 @@ const children = environment.production ?
     {
       path: 'channels/details/:id',
       component: ChannelsDetailsComponent,
-    },
-    {
-      path: 'twins',
-      component: TwinsComponent,
-    },
-    {
-      path: 'twins/details/:id',
-      component: TwinsDetailsComponent,
-    },
-    {
-      path: 'twins/states/:id',
-      component: TwinsStatesComponent,
-    },
-    {
-      path: 'twins/definitions/:id',
-      component: TwinsDefinitionsComponent,
     },
     {
       path: 'profile',
@@ -113,22 +92,6 @@ const children = environment.production ?
     {
       path: 'channels/details/:id',
       component: ChannelsDetailsComponent,
-    },
-    {
-      path: 'twins',
-      component: TwinsComponent,
-    },
-    {
-      path: 'twins/details/:id',
-      component: TwinsDetailsComponent,
-    },
-    {
-      path: 'twins/states/:id',
-      component: TwinsStatesComponent,
-    },
-    {
-      path: 'twins/definitions/:id',
-      component: TwinsDefinitionsComponent,
     },
     {
       path: 'profile',

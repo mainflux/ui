@@ -140,7 +140,7 @@ export class LoraComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('lora_devices.csv', this.page.rows);
+    this.fsService.exportToJson('lora_devices.txt', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

@@ -78,7 +78,7 @@ export class ThingsDetailsComponent implements OnInit {
     if (this.chansToConnect.length > 0) {
       this.channelsService.connectThings(this.chansToConnect, [this.thing.id]).subscribe(
         resp => {
-          this.notificationsService.success('Successfully connected to Channel(s)', '');
+          this.notificationsService.success('Channel(s) successfully connected to Thing', '');
           this.updateConnections();
         },
       );
@@ -88,14 +88,12 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onDisconnect() {
-    this.chansToDisconnect.forEach(chanID => {
-      this.channelsService.disconnectThing(chanID, this.thing.id).subscribe(
-        resp => {
-          this.notificationsService.success('Successfully disconnected from Channel', '');
-          this.updateConnections();
-        },
-      );
-    });
+    this.channelsService.disconnectThings(this.chansToDisconnect, [this.thing.id]).subscribe(
+      resp => {
+        this.notificationsService.success('Channel(s) successfully disconnected from Thing', '');
+        this.updateConnections();
+      },
+    );
   }
 
   updateConnections() {
@@ -105,8 +103,9 @@ export class ThingsDetailsComponent implements OnInit {
     this.findDisconnectedChans();
   }
 
-  findConnectedChans(offset?: number, limit?: number) {
-    this.thingsService.connectedChannels(this.thing.id, offset, limit).subscribe(
+  findConnectedChans() {
+    this.thingsService.connectedChannels(this.thing.id, this.connChansPage.offset,
+      this.connChansPage.limit).subscribe(
       (resp: any) => {
         this.connChansPage = {
           offset: resp.offset,
@@ -118,8 +117,9 @@ export class ThingsDetailsComponent implements OnInit {
     );
   }
 
-  findDisconnectedChans(offset?: number, limit?: number) {
-    this.thingsService.disconnectedChannels(this.thing.id, offset, limit).subscribe(
+  findDisconnectedChans() {
+    this.thingsService.disconnectedChannels(this.thing.id, this.disconnChansPage.offset,
+      this.disconnChansPage.limit).subscribe(
       (resp: any) => {
         this.disconnChansPage = {
           offset: resp.offset,
@@ -132,43 +132,33 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onChangeLimit(limit: number) {
-    this.findConnectedChans(0, limit);
+    this.connChansPage.offset = 0;
+    this.connChansPage.limit = limit;
+    this.findConnectedChans();
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      const offset = this.connChansPage.offset - this.connChansPage.limit;
-      this.findConnectedChans(offset, this.connChansPage.limit);
-    }
-    if (dir === 'next') {
-      const offset = this.connChansPage.offset + this.connChansPage.limit;
-      this.findConnectedChans(offset, this.connChansPage.limit);
-    }
+  onChangePage(offset: number) {
+    this.connChansPage.offset = offset;
+    this.findConnectedChans();
   }
 
   onChangeLimitDisconn(limit: number) {
-    this.findDisconnectedChans(0, limit);
+    this.disconnChansPage.offset = 0;
+    this.disconnChansPage.limit = limit;
+    this.findDisconnectedChans();
   }
 
-  onChangePageDisconn(dir: any) {
-    if (dir === 'prev') {
-      const offset = this.disconnChansPage.offset - this.disconnChansPage.limit;
-      this.findDisconnectedChans(offset, this.connChansPage.limit);
-    }
-    if (dir === 'next') {
-      const offset = this.disconnChansPage.offset + this.disconnChansPage.limit;
-      this.findDisconnectedChans(offset, this.disconnChansPage.limit);
-    }
+  onChangePageDisconn(offset: any) {
+    this.disconnChansPage.offset = offset;
+    this.findDisconnectedChans();
   }
 
-  onCheckboxConns(row: any) {
-    const index = this.chansToConnect.indexOf(row.id);
-    (index > -1) ? this.chansToConnect.splice(index, 1) : this.chansToConnect.push(row.id);
+  onCheckboxConns(rows: string[]) {
+    this.chansToConnect = rows;
   }
 
-  onCheckboxDisconns(row: any) {
-    const index = this.chansToDisconnect.indexOf(row.id);
-    (index > -1) ? this.chansToDisconnect.splice(index, 1) : this.chansToDisconnect.push(row.id);
+  onCheckboxDisconns(rows: string[]) {
+    this.chansToDisconnect = rows;
   }
 
   onSendMessage() {
