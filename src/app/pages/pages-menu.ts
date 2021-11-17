@@ -1,6 +1,7 @@
 import { environment } from 'environments/environment';
 import { NbMenuItem } from '@nebular/theme';
 
+const appPrefix = '/' + environment.appPrefix ;
 export const MENU_ITEMS: NbMenuItem[] = environment.production ?
   [
     {
@@ -62,11 +63,6 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       icon: 'layers-outline',
       children: [
         {
-          title: 'Twins',
-          icon: 'copy-outline',
-          link: '/pages/twins',
-        },
-        {
           title: 'LoRa',
           icon: 'radio-outline',
           link: appPrefix + '/pages/services/lora',
@@ -84,3 +80,4 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       ],
     },
   ];
+

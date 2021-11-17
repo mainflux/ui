@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
 import { STRINGS } from 'assets/text/strings';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'ngx-header',
@@ -47,8 +48,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Mainflux - Menu and version
   userMenu = [
-    { title: 'Profile', link: '/pages/profile' },
-    { title: 'Log out', link: '/auth/logout' },
+    { title: 'Profile', link: this.getLink('/pages/profile') },
+    { title: 'Log out', link: this.getLink('/auth/logout') },
   ];
 
   constructor(
