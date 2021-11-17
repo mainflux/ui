@@ -6,11 +6,10 @@ import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+    loginUrl: String;
 
     constructor(private authService: NbAuthService, private router: Router) {
-      if ( environment.appPrefix !== '' ) {
-        this.loginUrl = environment.appPrefix + '/' + this.loginUrl;
-      }
+      this.loginUrl = environment.appPrefix === '' ? 'auth/login' : environment.appPrefix + '/' + 'auth/login';
     }
 
     canActivate() {
