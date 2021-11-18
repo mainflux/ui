@@ -16,7 +16,7 @@
     <nb-card size="small">
       <nb-card-header class="card-header">
         Metadata
-        <button nbButton size="tiny" class="button-green"
+        <button nbButton size="tiny" class="button-green button-right"
                 (click)="onEdit()">
           Edit
         </button>
@@ -26,6 +26,22 @@
                   [ngModel]="thing.metadata | json"
                   (ngModelChange)="editorMetadata=$event">
         </textarea>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card size="tiny">
+      <nb-card-header class="card-header">
+        Certificates
+        <button nbButton size="tiny" class="button-green button-right"
+                (click)="onIssueCert()">
+          Issue
+        </button>
+      </nb-card-header>
+      <nb-card-body>
+        <ngx-table-component [config]="serialsTableConfig"
+                             [page]="certsPage"
+                             (detailsEvent)=onViewCert($event)>
+        </ngx-table-component>
       </nb-card-body>
     </nb-card>
   </div>
@@ -47,7 +63,7 @@
                                           (changeLimitEvent)=onChangeLimitDisconn($event)
                                           (changePageEvent)=onChangePageDisconn($event)>
                 </ngx-pagination-component>
-                <button nbButton size="tiny" class="button-green"
+                <button nbButton size="tiny" class="button-green button-right"
                         (click)="onConnect()">
                   Connect
                 </button>
@@ -67,7 +83,7 @@
                                           (changeLimitEvent)=onChangeLimit($event)
                                           (changePageEvent)=onChangePage($event)>
                 </ngx-pagination-component>
-                <button nbButton size="tiny" class="button-red"
+                <button nbButton size="tiny" class="button-red button-right"
                         (click)="onDisconnect()">
                   Disconnect
                 </button>
@@ -81,7 +97,7 @@
     <nb-card size="tiny">
       <nb-card-header class="card-header">
         HTTP Adapter
-        <button (click)="onSendMessage()" nbButton size="tiny" class="button-green">
+        <button (click)="onSendMessage()" nbButton size="tiny" class="button-green button-right">
           Send Message
         </button>
       </nb-card-header>

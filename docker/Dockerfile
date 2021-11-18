@@ -1,6 +1,7 @@
 # Stage 0, based on Node.js, to build and compile Angular
 FROM node:16.10-alpine as node
 WORKDIR /app
+RUN mkdir /app/dist
 COPY package.json /app/
 COPY package-lock.json /app/
 RUN npm install
