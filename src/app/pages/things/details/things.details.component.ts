@@ -114,7 +114,13 @@ export class ThingsDetailsComponent implements OnInit {
   onViewCert(row: any) {
     this.certsService.viewCert(row.cert_serial).subscribe(
       (resp: any) => {
-        this.dialogService.open(ThingsCertComponent{ context: { cert: resp.cert, serial: row.cert_serial } })
+        const ctx = {
+          context: {
+            cert: resp.cert,
+            serial: row.cert_serial,
+          },
+        };
+        this.dialogService.open(ThingsCertComponent, ctx)
           .onClose.subscribe(
             confirm => {
             },
