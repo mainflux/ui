@@ -11,11 +11,13 @@ export class LoginComponent extends NbLoginComponent {
   // strategy inherited
   proxyAuth = environment.proxyAuth;
   
-  constructor(service: NbAuthService,
-    @Inject(NB_AUTH_OPTIONS) protected options: {},
-    protected cd: ChangeDetectorRef,
+  constructor(
+    service: NbAuthService, 
+    @Inject(NB_AUTH_OPTIONS) 
+    protected options: {}, 
+    protected cd: ChangeDetectorRef, 
     protected router: Router,
-  ) {
+    ) {
     super(service, options, cd, router);
 
     if ( environment.proxyAuth === true ) {

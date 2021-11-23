@@ -11,10 +11,10 @@ export class LogoutComponent extends NbLogoutComponent {
   // strategy inherited
   loginUrl: string;
   constructor(
-    @Inject(NB_AUTH_OPTIONS) protected options: {},
-    protected authService: NbAuthService,
+    @Inject(NB_AUTH_OPTIONS) protected options: {}, 
+    protected authService: NbAuthService, 
     protected router: Router,
-  ) {
+    ) {
     super(authService, options, router);
     this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;
   }
