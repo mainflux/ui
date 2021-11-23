@@ -9,7 +9,8 @@ import { environment } from '../../../environments/environment';
 })
 export class LoginComponent extends NbLoginComponent {
   // strategy inherited
-
+  proxyAuth = environment.proxyAuth;
+  
   constructor(service: NbAuthService,
     @Inject(NB_AUTH_OPTIONS) protected options: {},
     protected cd: ChangeDetectorRef,
