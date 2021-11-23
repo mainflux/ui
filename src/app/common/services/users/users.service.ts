@@ -19,7 +19,9 @@ export class UsersService {
     private router: Router,
     private notificationsService: NotificationsService,
   ) {
-    this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;
+    this.loginUrl = environment.appPrefix === ''
+                      ? environment.loginUrl
+                      : environment.appPrefix + '/' + environment.loginUrl;
   }
 
   addUser(user: User) {

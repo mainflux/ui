@@ -21,11 +21,13 @@ export class TokenInterceptor implements HttpInterceptor {
   loginUrl: string;
 
   constructor(
-    private inj: Injector, 
-    private authService: NbAuthService, 
+    private inj: Injector,
+    private authService: NbAuthService,
     private router: Router,
   ) {
-    this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;
+    this.loginUrl = environment.appPrefix === ''
+                      ? environment.loginUrl
+                      : environment.appPrefix + '/' + environment.loginUrl;
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

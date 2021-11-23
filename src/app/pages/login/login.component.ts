@@ -10,7 +10,7 @@ import { environment } from 'environments/environment';
 export class LoginComponent extends NbLoginComponent {
   // strategy inherited
   proxyAuth = environment.proxyAuth;
-  
+
   constructor(
       service: NbAuthService,
       @Inject(NB_AUTH_OPTIONS) protected options: {},
@@ -20,21 +20,21 @@ export class LoginComponent extends NbLoginComponent {
     super(service, options, cd, router);
 
     if ( environment.proxyAuth === true ) {
-        this.service.authenticate(this.strategy, this.user).subscribe((result: NbAuthResult) => {
-            this.submitted = false;
-            if (result.isSuccess()) {
-              this.messages = result.getMessages();
-            } else {
-              this.errors = result.getErrors();
-            }
-            const redirect = result.getRedirect();
-            if (redirect) {
-              setTimeout(() => {
-                return this.router.navigateByUrl(redirect);
-              }, this.redirectDelay);
-            }
-            this.cd.detectChanges();
-        });
+      this.service.authenticate(this.strategy, this.user).subscribe((result: NbAuthResult) => {
+        this.submitted = false;
+        if (result.isSuccess()) {
+          this.messages = result.getMessages();
+        } else {
+          this.errors = result.getErrors();
+        }
+        const redirect = result.getRedirect();
+        if (redirect) {
+          setTimeout(() => {
+            return this.router.navigateByUrl(redirect);
+          }, this.redirectDelay);
+        }
+        this.cd.detectChanges();
+      });
     }
   }
 }

@@ -13,7 +13,9 @@ export class AuthGuard implements CanActivate {
       private authService: NbAuthService,
       private router: Router,
     ) {
-      this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;
+      this.loginUrl = environment.appPrefix === ''
+                        ? environment.loginUrl
+                        : environment.appPrefix + '/' + environment.loginUrl;
     }
 
     canActivate() {
