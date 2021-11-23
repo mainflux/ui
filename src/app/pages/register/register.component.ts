@@ -16,7 +16,7 @@ export class RegisterComponent extends NbRegisterComponent {
       protected authService: NbAuthService,
       protected cd: ChangeDetectorRef,
       protected router: Router,
-    ) {
+  ) {
     super(authService, options, cd, router);
   }
 
