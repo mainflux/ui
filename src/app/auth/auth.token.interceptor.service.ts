@@ -13,17 +13,14 @@ import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
-import { environment } from '../../environments/environment';
+import { environment } from 'environments/environment';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
   loginUrl: string;
 
-  constructor(
-    private inj: Injector,
-    private authService: NbAuthService,
-    private router: Router,
+  constructor(private inj: Injector, private authService: NbAuthService, private router: Router,
   ) {
     this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;
   }

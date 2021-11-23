@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 
 import { NbAuthService, NB_AUTH_OPTIONS, NbLogoutComponent } from '@nebular/auth';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
+import { environment } from 'environments/environment';
 @Component({
   selector: 'ngx-logout',
   template: '',

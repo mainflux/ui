@@ -13,7 +13,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './auth/auth-guard.service';
 import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
+import { environment } from 'environments/environment';
 
 
 

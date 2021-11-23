@@ -2,7 +2,7 @@ import { Component, Inject,  ChangeDetectorRef } from '@angular/core';
 
 import { NbAuthService, NbAuthResult, NB_AUTH_OPTIONS, NbLoginComponent } from '@nebular/auth';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
+import { environment } from 'environments/environment';
 @Component({
   selector: 'ngx-login',
   templateUrl: './login.component.html',
