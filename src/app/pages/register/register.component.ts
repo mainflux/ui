@@ -12,10 +12,10 @@ export class RegisterComponent extends NbRegisterComponent {
   // strategy inherited
 
   constructor(
-    @Inject(NB_AUTH_OPTIONS) protected options: {},
-    protected authService: NbAuthService,
-    protected cd: ChangeDetectorRef,
-    protected router: Router,
+      @Inject(NB_AUTH_OPTIONS) protected options: {},
+      protected authService: NbAuthService,
+      protected cd: ChangeDetectorRef,
+      protected router: Router,
     ) {
     super(authService, options, cd, router);
   }

@@ -22,8 +22,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(
     private inj: Injector, 
-    private authService: 
-    NbAuthService, 
+    private authService: NbAuthService, 
     private router: Router,
   ) {
     this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;

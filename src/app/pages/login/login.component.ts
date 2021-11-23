@@ -12,11 +12,10 @@ export class LoginComponent extends NbLoginComponent {
   proxyAuth = environment.proxyAuth;
   
   constructor(
-    service: NbAuthService,
-    @Inject(NB_AUTH_OPTIONS)
-    protected options: {},
-    protected cd: ChangeDetectorRef,
-    protected router: Router,
+      service: NbAuthService,
+      @Inject(NB_AUTH_OPTIONS) protected options: {},
+      protected cd: ChangeDetectorRef,
+      protected router: Router,
     ) {
     super(service, options, cd, router);
 
