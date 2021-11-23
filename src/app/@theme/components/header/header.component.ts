@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
 import { STRINGS } from 'assets/text/strings';
-import { environment } from '../../../../environments/environment';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'ngx-header',

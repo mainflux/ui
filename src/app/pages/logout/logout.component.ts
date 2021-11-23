@@ -9,16 +9,14 @@ import { environment } from '../../../environments/environment';
 })
 export class LogoutComponent extends NbLogoutComponent {
   // strategy inherited
-  loginUrl = '/auth/login';
+  loginUrl: string;
   constructor(
     @Inject(NB_AUTH_OPTIONS) protected options: {},
     protected authService: NbAuthService,
     protected router: Router,
   ) {
     super(authService, options, router);
-    if (environment.appPrefix !== '') {
-      this.loginUrl = '/' + environment.appPrefix + '/auth/login';
-    }
+    this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;
   }
 
   logout() {

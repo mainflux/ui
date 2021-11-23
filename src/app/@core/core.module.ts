@@ -34,7 +34,7 @@ export const NB_CORE_PROVIDERS = [
         },
         baseEndpoint: '',
             login: {
-              endpoint: environment.loginUrl,
+              endpoint: environment.tokensUrl,
               redirect: {
                 failure: '/',
               },

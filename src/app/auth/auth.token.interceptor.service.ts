@@ -18,16 +18,14 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  loginUrl = '/auth/login';
+  loginUrl: string;
 
   constructor(
     private inj: Injector,
     private authService: NbAuthService,
     private router: Router,
   ) {
-    if (environment.appPrefix !== '') {
-      this.loginUrl = '/' + environment.appPrefix + '/auth/login';
-    }
+    this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

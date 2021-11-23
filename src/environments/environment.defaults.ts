@@ -3,7 +3,7 @@ export const environment = {
   groupsUrl: '/groups',
   membersUrl: '/members',
   usersVersionUrl: '/version',
-  loginUrl: '/tokens',
+  tokensUrl: '/tokens',
   requestPassUrl: '/password/reset-request',
   resetPassUrl: '/password/reset',
   changePassUrl: '/password',
@@ -16,6 +16,7 @@ export const environment = {
   connectUrl: '/connect',
   disconnectUrl: '/disconnect',
   browseUrl: '/browse',
+  loginUrl: '/auth/login',
 
   httpAdapterUrl: '/http',
   readerUrl: '/reader',

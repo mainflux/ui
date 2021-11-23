@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
     loginUrl: String;
 
     constructor(private authService: NbAuthService, private router: Router) {
-      this.loginUrl = environment.appPrefix === '' ? 'auth/login' : environment.appPrefix + '/' + 'auth/login';
+      this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;
     }
 
     canActivate() {
@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
           .pipe(
             tap(authenticated => {
               if (!authenticated) {
-                this.router.navigate(['auth/login']);
+                this.router.navigate([this.loginUrl]);
               }
             }),
         );

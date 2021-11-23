@@ -12,16 +12,14 @@ const defLimit: number = 20;
 @Injectable()
 export class UsersService {
   picture = 'assets/images/mainflux-logo.png';
-  loginUrl = '/auth/login';
+  loginUrl: string;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private notificationsService: NotificationsService,
   ) {
-    if (environment.appPrefix !== '') {
-      this.loginUrl = '/' + environment.appPrefix + '/auth/login';
-    }
+    this.loginUrl = environment.appPrefix === '' ? environment.loginUrl : environment.appPrefix + '/' + environment.loginUrl;
   }
 
   addUser(user: User) {

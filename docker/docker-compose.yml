@@ -135,7 +135,7 @@ services:
     image: mainflux/users:latest
     container_name: mainflux-users
     volumes:
-      - ./templates/${MF_USERS_RESET_PWD_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
+      - ./templates/${MF_EMAIL_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
     depends_on:
       - users-db
       - auth
