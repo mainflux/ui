@@ -7,25 +7,25 @@ import { environment } from 'environments/environment';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    loginUrl: String;
+  loginUrl: String;
 
-    constructor(
-      private authService: NbAuthService,
-      private router: Router,
-    ) {
-      this.loginUrl = environment.appPrefix === ''
-                        ? environment.loginUrl
-                        : environment.appPrefix + '/' + environment.loginUrl;
-    }
+  constructor(
+    private authService: NbAuthService,
+    private router: Router,
+  ) {
+    this.loginUrl = environment.appPrefix === ''
+                      ? environment.loginUrl
+                      : environment.appPrefix + '/' + environment.loginUrl;
+  }
 
-    canActivate() {
-        return this.authService.isAuthenticated()
-          .pipe(
-            tap(authenticated => {
-              if (!authenticated) {
-                this.router.navigate([this.loginUrl]);
-              }
-            }),
-        );
-    }
+  canActivate() {
+    return this.authService.isAuthenticated()
+    .pipe(
+      tap(authenticated => {
+        if (!authenticated) {
+          this.router.navigate([this.loginUrl]);
+        }
+      }),
+    );
+  }
 }
