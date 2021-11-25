@@ -51,7 +51,7 @@ Request to `/tokens` endpoint in this use case is also handled by proxy. When UI
 be authenticated by the means of authenticated session on proxy so `token` is not needed to authenticate requests but it may be used for restricting access to some endpoints (e.g. based on a role in token)
 To use UI in this mode where backend is behind authentication proxy you need to set envs in `.env`.
 * `MF_PROXY_AUTH=true`
-* `MF_PROXY_LOGOUT_URL=/logout ( this may be optional depending on the proxy being used)`
+* `MF_PROXY_LOGOUT_URL=/logout (this may be optional depending on the proxy being used)`
 
 
 ## Preview
