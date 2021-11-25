@@ -152,34 +152,18 @@ export class ThingsComponent implements OnInit {
       reader.readAsText(file);
 
       reader.onload = () => {
-        const things: Thing[] = [];
-        let channelID: string;
+        let things: Thing[] = [];
         const text: string = reader.result as string;
-        const lines = text.split('\n');
 
-        lines.forEach( (line, i) => {
-          if (i === 0) {
-            channelID = line;
-          } else {
-            if (line !== undefined && line !== '') {
-              try {
-                const thing: Thing = JSON.parse(line);
-                things.push(thing);
-              } catch (e) {
-                this.notificationsService.warn('Wrong metadata format', '');
-              }
-            }
-          }
-        });
+        try {
+          things = JSON.parse(text);
+        } catch (e) {
+          this.notificationsService.warn('Wrong metadata format', '');
+        }
 
         this.thingsService.addThings(things).subscribe(
           (resp: any) => {
-            const thingsIDs = resp.body.things.map( t => t.id);
-            this.channelsService.connectThings([channelID], thingsIDs).subscribe(
-              respConn => {
-                this.getThings();
-              },
-            );
+            this.getThings();
           },
         );
       };
