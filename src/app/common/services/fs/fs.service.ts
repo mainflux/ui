@@ -15,26 +15,15 @@ export class FsService {
       return;
     }
 
-    let jsonContent = '[';
-    rows.forEach((row, i) => {
-      let rowJson = '';
-      try {
-        rowJson = JSON.stringify(row);
-      } catch (e) {
-        this.notificationsService.warn('Failed to convert to JSON', '');
-      }
-
-      if (rows.length > 1 && i !== rows.length - 1) {
-        jsonContent = jsonContent + rowJson + ',' + '\n';
-      } else {
-        jsonContent = jsonContent + rowJson;
-      }
-    });
-
-    jsonContent = jsonContent + ']';
+    let jsonRows = '';
+    try {
+      jsonRows = JSON.stringify(rows, null, 2);
+    } catch (e) {
+      this.notificationsService.warn('Failed to convert to JSON', '');
+    }
 
     const bom = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM
-    const blob = new Blob([bom, jsonContent], { type: 'text/json;charset=utf-8;' });
+    const blob = new Blob([bom, jsonRows], { type: 'text/json;charset=utf-8;' });
     if (navigator.msSaveBlob) { // IE 10+
       navigator.msSaveBlob(blob, filename);
     } else {
