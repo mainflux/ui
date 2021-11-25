@@ -14,19 +14,16 @@ export class FsService {
     if (!rows || !rows.length) {
       return;
     }
-    const jsonContent =
-      rows.map(row => {
-        let rowJson = '';
-          try {
-            rowJson = JSON.stringify(row);
-          } catch (e) {
-            this.notificationsService.warn('Failed to convert to JSON', '');
-          }
-        return rowJson;
-      }).join('\n');
+
+    let jsonRows = '';
+    try {
+      jsonRows = JSON.stringify(rows, null, 2);
+    } catch (e) {
+      this.notificationsService.warn('Failed to convert to JSON', '');
+    }
 
     const bom = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM
-    const blob = new Blob([bom, jsonContent], { type: 'text/json;charset=utf-8;' });
+    const blob = new Blob([bom, jsonRows], { type: 'text/json;charset=utf-8;' });
     if (navigator.msSaveBlob) { // IE 10+
       navigator.msSaveBlob(blob, filename);
     } else {

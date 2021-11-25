@@ -153,20 +153,14 @@ export class ChannelsComponent implements OnInit {
       reader.readAsText(file);
 
       reader.onload = () => {
-        const channels: Channel[] = [];
+        let channels: Channel[] = [];
         const text: string = reader.result as string;
-        const lines = text.split('\n');
 
-        lines.forEach( line => {
-          if (line !== undefined && line !== '') {
-            try {
-              const channel: Channel = JSON.parse(line);
-              channels.push(channel);
-            } catch (e) {
-              this.notificationsService.warn('Wrong metadata format', '');
-            }
-          }
-        });
+        try {
+          channels = JSON.parse(text);
+        } catch (e) {
+          this.notificationsService.warn('Wrong metadata format', '');
+        }
 
         this.channelsService.addChannels(channels).subscribe(
           resp => {
