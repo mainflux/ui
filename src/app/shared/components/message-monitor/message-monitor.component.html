@@ -92,13 +92,23 @@
       <div class="col-1 form-key">
         Value:
       </div>
-      <div class="col-2">
+      <div class="col-1">
         <input nbInput fullWidth fieldSize="tiny"
-               [(ngModel)]='httpAdaptVal'>
+               [(ngModel)]='value'>
       </div>
       <div class="col-1">
-        <nb-select class="right" [(selected)]="httpAdaptType" size="tiny">
-          <nb-option *ngFor="let type of this.httpAdaptTypes" [value]="type">{{type}}</nb-option>
+        <nb-select [(selected)]="valueType" size="tiny">
+          <nb-option *ngFor="let type of this.valueTypes" [value]="type">{{type}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="row form-row" *ngIf="mode == 'json'">
+      <div class="col-1 form-key">
+        Format:
+      </div>
+      <div class="col-1">
+        <nb-select [(selected)]="filters.format" size="tiny">
+          <nb-option *ngFor="let format of formats" [value]="format">{{format}}</nb-option>
         </nb-select>
       </div>
     </div>

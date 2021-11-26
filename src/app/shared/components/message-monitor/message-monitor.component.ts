@@ -18,9 +18,10 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
 
   mode: string = 'json';
   modes: string[] = ['json', 'table', 'chart'];
-  httpAdaptType: string = 'float';
-  httpAdaptVal: any;
-  httpAdaptTypes: string[] = ['float', 'bool', 'string', 'data'];
+  valueType: string = 'float';
+  value: any;
+  valueTypes: string[] = ['float', 'bool', 'string', 'data'];
+  formats: string[] = ['senml', 'json'];
 
   msgDatasets: Dataset[] = [];
 
@@ -29,6 +30,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     limit: 20,
     publisher: '',
     subtopic: '',
+    format: '',
     name: '',
     from: 0,
     to: 0,
@@ -87,19 +89,23 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    switch (this.httpAdaptType) {
+    switch (this.valueType) {
       case 'string':
-        this.filters.vs = this.httpAdaptVal;
+        this.filters.vs = this.value;
         break;
       case 'data':
-        this.filters.vd = this.httpAdaptVal;
+        this.filters.vd = this.value;
         break;
       case 'bool':
-        this.filters.vb = this.httpAdaptVal;
+        this.filters.vb = this.value;
         break;
       case 'float':
-        this.filters.v = this.httpAdaptVal;
+        this.filters.v = this.value;
         break;
+    }
+
+    if (this.filters.format === 'senml') {
+      this.filters.format = 'messages';
     }
 
     this.messagesPage.rows = [];
