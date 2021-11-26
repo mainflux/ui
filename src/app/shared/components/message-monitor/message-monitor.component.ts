@@ -18,9 +18,10 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
 
   mode: string = 'json';
   modes: string[] = ['json', 'table', 'chart'];
-  valueType: string = 'float';
   value: any;
+  valueType: string = 'float';
   valueTypes: string[] = ['float', 'bool', 'string', 'data'];
+  format: string = 'senml';
   formats: string[] = ['senml', 'json'];
 
   msgDatasets: Dataset[] = [];
@@ -104,8 +105,13 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
         break;
     }
 
-    if (this.filters.format === 'senml') {
-      this.filters.format = 'messages';
+    switch (this.format) {
+      case 'senml':
+        this.filters.format = 'messages';
+        break;
+      case 'json':
+        this.filters.format = this.format;
+        break;
     }
 
     this.messagesPage.rows = [];
