@@ -75,5 +75,9 @@
   "/certs/*": {
     "target": "http://localhost:8204",
     "secure": false
+  },
+  "/serials/*": {
+    "target": "http://localhost:8204",
+    "secure": false
   }
 }

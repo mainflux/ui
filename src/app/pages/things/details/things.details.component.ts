@@ -62,6 +62,7 @@ export class ThingsDetailsComponent implements OnInit {
   ) {
     this.editorOptions = new JsonEditorOptions();
     this.editorOptions.mode = 'code';
+    this.editorOptions.mainMenuBar = false;
   }
 
   ngOnInit() {

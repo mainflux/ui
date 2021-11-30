@@ -31,7 +31,7 @@ export class CertsService {
   }
 
   listCertsSerials(thingID: string) {
-    return this.http.get(`${environment.certsUrl}/${thingID}/serials`)
+    return this.http.get(`${environment.serialsUrl}/${thingID}`)
       .map(
         resp => {
           return resp;
