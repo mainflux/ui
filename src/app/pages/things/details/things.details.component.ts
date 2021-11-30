@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 
@@ -9,6 +9,8 @@ import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Thing, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { ThingsCertComponent } from '../cert/things.cert.component';
+
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'ngx-things-details-component',
@@ -34,8 +36,6 @@ export class ThingsDetailsComponent implements OnInit {
   chansToConnect: string[] = [];
   chansToDisconnect: string[] = [];
 
-  editorMetadata = '';
-
   httpMsg = {
     name: '',
     value: '',
@@ -46,6 +46,11 @@ export class ThingsDetailsComponent implements OnInit {
   };
   valTypes: string[] = ['float', 'bool', 'string', 'data'];
 
+  hoursValid = '';
+
+  editorOptions: JsonEditorOptions;
+  @ViewChild(JsonEditorComponent, { static: false }) editor: JsonEditorComponent;
+
   constructor(
     private route: ActivatedRoute,
     private thingsService: ThingsService,
@@ -54,7 +59,10 @@ export class ThingsDetailsComponent implements OnInit {
     private certsService: CertsService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
-  ) {}
+  ) {
+    this.editorOptions = new JsonEditorOptions();
+    this.editorOptions.mode = 'code';
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -80,13 +88,11 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onEdit() {
-    if (this.editorMetadata !== '') {
-      try {
-        this.thing.metadata = JSON.parse(this.editorMetadata);
-      } catch (e) {
-        this.notificationsService.error('Wrong metadata format', '');
-        return;
-      }
+    try {
+      this.thing.metadata = this.editor.get();
+    } catch (e) {
+      this.notificationsService.error('Wrong metadata format', '');
+      return;
     }
 
     this.thingsService.editThing(this.thing).subscribe(

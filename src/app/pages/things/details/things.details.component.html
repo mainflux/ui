@@ -14,18 +14,16 @@
     </nb-card>
 
     <nb-card size="small">
-      <nb-card-header class="card-header">
+      <nb-card-header class="card-header editor-header">
         Metadata
         <button nbButton size="tiny" class="button-green button-right"
                 (click)="onEdit()">
           Edit
         </button>
       </nb-card-header>
-      <nb-card-body style="padding: 0px;">
-        <textarea class="form-control"
-                  [ngModel]="thing.metadata | json"
-                  (ngModelChange)="editorMetadata=$event">
-        </textarea>
+      <nb-card-body class="editor-body">
+        <json-editor [options]="editorOptions"
+                     [data]="thing.metadata"></json-editor>
       </nb-card-body>
     </nb-card>
 
@@ -105,7 +103,7 @@
         <div class="row form-row">
           <div class="col-md-2 form-key"> Channel: </div>
           <div class="col-md-10">
-            <nb-select [(selected)]="httpMsg.chanID" size="tiny">
+            <nb-select class="select-http-adapter" [(selected)]="httpMsg.chanID" size="tiny">
               <nb-option *ngFor="let ch of this.connChansPage.rows" [value]="ch.id">{{ch.name}}</nb-option>
             </nb-select>
           </div>

@@ -3,7 +3,7 @@ export const environment = {
   groupsUrl: '/groups',
   membersUrl: '/members',
   usersVersionUrl: '/version',
-  loginUrl: '/tokens',
+  tokensUrl: '/tokens',
   requestPassUrl: '/password/reset-request',
   resetPassUrl: '/password/reset',
   changePassUrl: '/password',
@@ -17,6 +17,7 @@ export const environment = {
   disconnectUrl: '/disconnect',
   browseUrl: '/browse',
   certsUrl: '/certs',
+  loginUrl: '/auth/login',
 
   httpAdapterUrl: '/http',
   readerUrl: '/reader',
@@ -24,5 +25,8 @@ export const environment = {
   readerSuffix: 'messages',
 
   mqttWsUrl: window['env']['mqttWsUrl'] || 'ws://localhost/mqtt',
+  proxyAuth: window['env']['proxyAuth'] || false,
+  logoutUrl: window['env']['logoutUrl'] || '/logout',
   exportConfigFile: '/configs/export/config.toml',
+  appPrefix: window['env']['appPrefix'] || '',
 };

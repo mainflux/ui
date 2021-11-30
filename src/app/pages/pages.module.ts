@@ -40,6 +40,7 @@ import { ThingsDetailsComponent } from 'app/pages/things/details/things.details.
 import { ChannelsComponent } from 'app/pages/channels/channels.component';
 import { ChannelsAddComponent } from 'app/pages/channels/add/channels.add.component';
 import { ChannelsDetailsComponent } from 'app/pages/channels/details/channels.details.component';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 @NgModule({
   imports: [
@@ -57,6 +58,7 @@ import { ChannelsDetailsComponent } from 'app/pages/channels/details/channels.de
     NbCheckboxModule,
     NbListModule,
     NbTabsetModule,
+    NgJsonEditorModule,
   ],
   exports: [
     SharedModule,
