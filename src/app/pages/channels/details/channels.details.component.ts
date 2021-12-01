@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Channel, Thing, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'ngx-channels-details-component',
@@ -26,13 +27,18 @@ export class ChannelsDetailsComponent implements OnInit {
   thingsToConnect: string[] = [];
   thingsToDisconnect: string[] = [];
 
-  editorMetadata = '';
+  editorOptions: JsonEditorOptions;
+  @ViewChild(JsonEditorComponent, { static: false }) editor: JsonEditorComponent;
 
   constructor(
     private route: ActivatedRoute,
     private channelsService: ChannelsService,
     private notificationsService: NotificationsService,
-  ) {}
+  ) {
+    this.editorOptions = new JsonEditorOptions();
+    this.editorOptions.mode = 'code';
+    this.editorOptions.mainMenuBar = false;
+  }
 
   ngOnInit() {
     const chanID = this.route.snapshot.paramMap.get('id');
@@ -46,13 +52,11 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   onEdit() {
-    if (this.editorMetadata !== '') {
-      try {
-        this.channel.metadata = JSON.parse(this.editorMetadata);
-      } catch (e) {
-        this.notificationsService.error('Wrong metadata format', '');
-        return;
-      }
+    try {
+      this.channel.metadata = this.editor.get();
+    } catch (e) {
+      this.notificationsService.error('Wrong metadata format', '');
+      return;
     }
 
     this.channelsService.editChannel(this.channel).subscribe(
