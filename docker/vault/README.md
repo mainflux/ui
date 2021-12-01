@@ -79,7 +79,7 @@ After it runs, it copies the necessary certificates and keys to the `docker/ssl/
 
 The CA parameters are obtained from the environment variables starting with `MF_VAULT_CA` in `.env` file.
 
-## Vault CLI 
+## Vault CLI
 
 It can also be useful to run the Vault CLI for inspection and administration work.
 
