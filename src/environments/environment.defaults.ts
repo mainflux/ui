@@ -16,6 +16,8 @@ export const environment = {
   connectUrl: '/connect',
   disconnectUrl: '/disconnect',
   browseUrl: '/browse',
+  certsUrl: '/certs',
+  serialsUrl: '/serials',
   loginUrl: '/auth/login',
 
   httpAdapterUrl: '/http',

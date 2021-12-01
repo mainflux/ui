@@ -1,8 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
 
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
+
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'ngx-channels-add-component',
@@ -10,8 +12,6 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
   styleUrls: ['./channels.add.component.scss'],
 })
 export class ChannelsAddComponent {
-  editorMetadata = '';
-
   @Input() formData = {
     name: '',
     type: '',
@@ -20,24 +20,31 @@ export class ChannelsAddComponent {
     },
   };
   @Input() action: string = '';
+
+  editorOptions: JsonEditorOptions;
+  @ViewChild(JsonEditorComponent, { static: false }) editor: JsonEditorComponent;
+
   constructor(
     protected dialogRef: NbDialogRef<ChannelsAddComponent>,
     private channelsService: ChannelsService,
     private notificationsService: NotificationsService,
-  ) { }
+  ) {
+    this.editorOptions = new JsonEditorOptions();
+    this.editorOptions.mode = 'code';
+    this.editorOptions.mainMenuBar = false;
+  }
 
   cancel() {
     this.dialogRef.close(false);
   }
 
   submit() {
-    if (this.editorMetadata !== '') {
-      try {
-        this.formData.metadata = JSON.parse(this.editorMetadata) || {};
-      } catch (e) {
-        this.notificationsService.error('Wrong metadata format', '');
-        return;
-      }
+    try {
+      const editor: any = this.editor.get();
+      this.formData.metadata = editor;
+    } catch (e) {
+      this.notificationsService.warn('Wrong metadata format', '');
+      return;
     }
 
     this.formData.type && (this.formData.metadata.type = this.formData.type);

@@ -1,11 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NbDialogService } from '@nebular/theme';
 
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
+import { CertsService } from 'app/common/services/certs/certs.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Thing, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
+import { ThingsCertComponent } from '../cert/things.cert.component';
 
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
@@ -21,9 +24,14 @@ export class ThingsDetailsComponent implements OnInit {
     colNames: ['Name', 'Channel ID'],
     keys: ['name', 'id', 'checkbox'],
   };
+  serialsTableConfig: TableConfig = {
+    colNames: ['', 'Serial ID'],
+    keys: ['details', 'cert_serial', 'checkbox'],
+  };
 
   connChansPage: TablePage = {};
   disconnChansPage: TablePage = {};
+  certsPage: TablePage = {};
 
   chansToConnect: string[] = [];
   chansToDisconnect: string[] = [];
@@ -47,11 +55,14 @@ export class ThingsDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
+    private dialogService: NbDialogService,
+    private certsService: CertsService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
   ) {
     this.editorOptions = new JsonEditorOptions();
     this.editorOptions.mode = 'code';
+    this.editorOptions.mainMenuBar = false;
   }
 
   ngOnInit() {
@@ -61,6 +72,18 @@ export class ThingsDetailsComponent implements OnInit {
       (th: Thing) => {
         this.thing = th;
         this.updateConnections();
+        this.getCertsSerials();
+      },
+    );
+  }
+
+  getCertsSerials() {
+    this.certsService.listCertsSerials(this.thing.id).subscribe(
+      (resp: any) => {
+        this.certsPage.offset = resp.offset;
+        this.certsPage.limit = resp.limit;
+        this.certsPage.total = resp.total;
+        this.certsPage.rows = resp.certs;
       },
     );
   }
@@ -76,6 +99,39 @@ export class ThingsDetailsComponent implements OnInit {
     this.thingsService.editThing(this.thing).subscribe(
       resp => {
         this.notificationsService.success('Thing metadata successfully edited', '');
+      },
+    );
+  }
+
+  onIssueCert() {
+    const cert = {
+      thing_id: this.thing.id,
+      key_bits: 2048,
+      key_type: 'rsa',
+      valid:    '100h',
+    };
+
+    this.certsService.issueCert(cert).subscribe(
+      resp => {
+        this.getCertsSerials();
+      },
+    );
+  }
+
+  onViewCert(row: any) {
+    this.certsService.viewCert(row.cert_serial).subscribe(
+      (resp: any) => {
+        const ctx = {
+          context: {
+            cert: resp.cert,
+            serial: row.cert_serial,
+          },
+        };
+        this.dialogService.open(ThingsCertComponent, ctx)
+          .onClose.subscribe(
+            confirm => {
+            },
+        );
       },
     );
   }

@@ -22,6 +22,7 @@ envsubst '
     ${MF_INFLUX_READER_PORT}
     ${MF_BOOTSTRAP_PORT}
     ${MF_TWINS_HTTP_PORT}
+    ${MF_CERTS_HTTP_PORT}
     ${MF_OPCUA_ADAPTER_HTTP_PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
 exec nginx -g "daemon off;"

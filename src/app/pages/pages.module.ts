@@ -34,6 +34,7 @@ import { UsersDetailsComponent } from 'app/pages/users/details/users.details.com
 // Mainflux - Things
 import { ThingsComponent } from 'app/pages/things/things.component';
 import { ThingsAddComponent } from 'app/pages/things/add/things.add.component';
+import { ThingsCertComponent } from 'app/pages/things/cert/things.cert.component';
 import { ThingsDetailsComponent } from 'app/pages/things/details/things.details.component';
 // Mainflux - Channels
 import { ChannelsComponent } from 'app/pages/channels/channels.component';
@@ -83,6 +84,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
     // Things
     ThingsComponent,
     ThingsAddComponent,
+    ThingsCertComponent,
     ThingsDetailsComponent,
     // Channels
     ChannelsComponent,
