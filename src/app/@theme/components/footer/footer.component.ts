@@ -6,7 +6,7 @@ import { STRINGS } from 'assets/text/strings';
   styleUrls: ['./footer.component.scss'],
   template: `
     <span class="created-by">
-      <b><a href="https://mainflux.com" target="_blank">Mainflux</a></b> 2021
+      <b><a href="https://mainflux.com" target="_blank">Mainflux</a></b> {{ currentYear }}
     </span>
     <div class="socials">
     <a href="https://github.com/mainflux/mainflux" target="_blank" class="ion ion-social-github"></a>
@@ -18,4 +18,5 @@ import { STRINGS } from 'assets/text/strings';
 })
 export class FooterComponent {
   disclaimer: string = STRINGS.footer.disclaimer;
+  currentYear: number = new Date().getFullYear();
 }
