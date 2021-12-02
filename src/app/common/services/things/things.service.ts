@@ -1,13 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { environment } from 'environments/environment';
 import { Thing, PageFilters } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
 const defLimit: number = 10;
-const defConnLimit: number = 5;
 
 @Injectable()
 export class ThingsService {
@@ -28,7 +27,7 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to create Thing',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -44,7 +43,7 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to create Things',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -60,7 +59,7 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to fetch Thing',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -97,7 +96,7 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to get Things',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -113,7 +112,7 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to delete Thing',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -129,14 +128,14 @@ export class ThingsService {
         err => {
           this.notificationsService.error('Failed to edit Thing',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
 
   connectedChannels(thingID: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || defConnLimit;
+    limit = limit || defLimit;
 
     const params = new HttpParams()
       .set('offset', offset.toString())
@@ -152,16 +151,16 @@ export class ThingsService {
     )
     .catch(
       err => {
-        this.notificationsService.error('Failed to fetch connected Chanels to the Thing',
+        this.notificationsService.error('Failed to fetch connected Channels to the Thing',
           `Error: ${err.status} - ${err.statusText}`);
-        return Observable.throw(err);
+        return throwError(err);
       },
     );
   }
 
   disconnectedChannels(thingID: string, offset?: number, limit?: number) {
     offset = offset || 0;
-    limit = limit || defConnLimit;
+    limit = limit || defLimit;
 
     const params = new HttpParams()
       .set('offset', offset.toString())
@@ -180,7 +179,7 @@ export class ThingsService {
       err => {
         this.notificationsService.error('Failed to fetch not connected Channels to the Thing',
           `Error: ${err.status} - ${err.statusText}`);
-        return Observable.throw(err);
+        return throwError(err);
       },
     );
   }

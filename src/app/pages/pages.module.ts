@@ -34,17 +34,13 @@ import { UsersDetailsComponent } from 'app/pages/users/details/users.details.com
 // Mainflux - Things
 import { ThingsComponent } from 'app/pages/things/things.component';
 import { ThingsAddComponent } from 'app/pages/things/add/things.add.component';
+import { ThingsCertComponent } from 'app/pages/things/cert/things.cert.component';
 import { ThingsDetailsComponent } from 'app/pages/things/details/things.details.component';
 // Mainflux - Channels
 import { ChannelsComponent } from 'app/pages/channels/channels.component';
 import { ChannelsAddComponent } from 'app/pages/channels/add/channels.add.component';
 import { ChannelsDetailsComponent } from 'app/pages/channels/details/channels.details.component';
-// Mainflux - Twins
-import { TwinsComponent } from './twins/twins.component';
-import { TwinsAddComponent } from './twins/add/twins.add.component';
-import { TwinsDetailsComponent } from './twins/details/twins.details.component';
-import { TwinsStatesComponent } from './twins/states/twins.states.component';
-import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 @NgModule({
   imports: [
@@ -62,6 +58,7 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     NbCheckboxModule,
     NbListModule,
     NbTabsetModule,
+    NgJsonEditorModule,
   ],
   exports: [
     SharedModule,
@@ -87,17 +84,12 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     // Things
     ThingsComponent,
     ThingsAddComponent,
+    ThingsCertComponent,
     ThingsDetailsComponent,
     // Channels
     ChannelsComponent,
     ChannelsAddComponent,
     ChannelsDetailsComponent,
-    // Twins
-    TwinsComponent,
-    TwinsAddComponent,
-    TwinsDetailsComponent,
-    TwinsStatesComponent,
-    TwinsDefinitionsComponent,
   ],
   providers: [
     NbDialogService,

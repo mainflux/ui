@@ -142,7 +142,7 @@ export class GatewaysComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('gateways.csv', this.page.rows);
+    this.fsService.exportToJson('gateways.txt', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
+@import '~jsoneditor/dist/jsoneditor.min.css';
+
+.button-header {
+  width: 100%;
+}
+
+.button-checkbox {
+  float: right;
+  margin-bottom: 5px;
+}
+
 .button-green {
   background-color: #a5bb6b !important;
   border-color: #a5bb6b !important;
@@ -39,7 +51,6 @@
 
 .button-add {
   margin-bottom: 10px;
-  position: right;
   color: white !important;
   background-color: #2a64f6 !important;
 }
@@ -53,12 +64,12 @@
 
 // Header
 .header-logo {
-  font-family: 'Montserrat' sans-serif !important;
+  font-family: 'Montserrat'!important;
   font-weight: 700 !important;
   color: white !important;
 }
 .header-version {
-  font-family: 'Montserrat' sans-serif !important;
+  font-family: 'Montserrat' !important;
   font-weight: 10 !important;
   color: white !important;
 }

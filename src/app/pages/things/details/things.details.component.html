@@ -16,16 +16,30 @@
     <nb-card size="small">
       <nb-card-header class="card-header">
         Metadata
-        <button nbButton size="tiny" class="button-green"
+        <button nbButton size="tiny" class="button-green button-right"
                 (click)="onEdit()">
           Edit
         </button>
       </nb-card-header>
-      <nb-card-body style="padding: 0px;">
-        <textarea class="form-control"
-                  [ngModel]="thing.metadata | json"
-                  (ngModelChange)="editorMetadata=$event">
-        </textarea>
+      <nb-card-body class="editor-body">
+        <json-editor [options]="editorOptions"
+                     [data]="thing.metadata"></json-editor>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card size="tiny">
+      <nb-card-header class="card-header">
+        Certificates
+        <button nbButton size="tiny" class="button-green button-right"
+                (click)="onIssueCert()">
+          Issue
+        </button>
+      </nb-card-header>
+      <nb-card-body>
+        <ngx-table-component [config]="serialsTableConfig"
+                             [page]="certsPage"
+                             (detailsEvent)=onViewCert($event)>
+        </ngx-table-component>
       </nb-card-body>
     </nb-card>
   </div>
@@ -34,8 +48,8 @@
     <nb-card>
       <nb-card-body style="padding:0; margin:0;">
         <nb-tabset>
-          <nb-tab tabTitle="Connect">
-            <nb-card size="medium"  style="padding:0; margin:0;">
+          <nb-tab tabTitle="Connect ({{ disconnChansPage.total }})">
+            <nb-card size="medium" style="padding:0; margin:0;">
               <nb-card-body>
                 <ngx-table-component [config]="tableConfig"
                                      [page]="disconnChansPage"
@@ -47,14 +61,14 @@
                                           (changeLimitEvent)=onChangeLimitDisconn($event)
                                           (changePageEvent)=onChangePageDisconn($event)>
                 </ngx-pagination-component>
-                <button nbButton size="tiny" class="button-green"
+                <button nbButton size="tiny" class="button-green button-right"
                         (click)="onConnect()">
                   Connect
                 </button>
               </nb-card-footer>
             </nb-card>
           </nb-tab>
-          <nb-tab tabTitle="Disconnect">
+          <nb-tab tabTitle="Disconnect ({{ connChansPage.total }})">
             <nb-card size="medium"  style="padding:0; margin:0;">
               <nb-card-body>
                 <ngx-table-component [config]="tableConfig"
@@ -67,7 +81,7 @@
                                           (changeLimitEvent)=onChangeLimit($event)
                                           (changePageEvent)=onChangePage($event)>
                 </ngx-pagination-component>
-                <button nbButton size="tiny" class="button-red"
+                <button nbButton size="tiny" class="button-red button-right"
                         (click)="onDisconnect()">
                   Disconnect
                 </button>
@@ -81,7 +95,7 @@
     <nb-card size="tiny">
       <nb-card-header class="card-header">
         HTTP Adapter
-        <button (click)="onSendMessage()" nbButton size="tiny" class="button-green">
+        <button (click)="onSendMessage()" nbButton size="tiny" class="button-green button-right">
           Send Message
         </button>
       </nb-card-header>
@@ -89,7 +103,7 @@
         <div class="row form-row">
           <div class="col-md-2 form-key"> Channel: </div>
           <div class="col-md-10">
-            <nb-select [(selected)]="httpMsg.chanID" size="tiny">
+            <nb-select class="select-http-adapter" [(selected)]="httpMsg.chanID" size="tiny">
               <nb-option *ngFor="let ch of this.connChansPage.rows" [value]="ch.id">{{ch.name}}</nb-option>
             </nb-select>
           </div>

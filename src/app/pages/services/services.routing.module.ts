@@ -7,8 +7,28 @@ import { OpcuaComponent } from 'app/pages/services/opcua/opcua.component';
 import { OpcuaDetailsComponent } from 'app/pages/services/opcua/details/opcua.details.component';
 import { GatewaysComponent } from 'app/pages/services/gateways/gateways.component';
 import { GatewaysDetailsComponent } from 'app/pages/services/gateways/details/gateways.details.component';
+import { TwinsComponent } from './twins/twins.component';
+import { TwinsDetailsComponent } from './twins/details/twins.details.component';
+import { TwinsStatesComponent } from './twins/states/twins.states.component';
+import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
 
 const routes: Routes = [
+  {
+    path: 'twins',
+    component: TwinsComponent,
+  },
+  {
+    path: 'twins/details/:id',
+    component: TwinsDetailsComponent,
+  },
+  {
+    path: 'twins/states/:id',
+    component: TwinsStatesComponent,
+  },
+  {
+    path: 'twins/definitions/:id',
+    component: TwinsDefinitionsComponent,
+  },
   {
     path: 'lora',
     component: LoraComponent,

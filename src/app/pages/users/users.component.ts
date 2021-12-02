@@ -99,7 +99,7 @@ export class UsersComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_users.csv', this.page.rows);
+    this.fsService.exportToJson('mfx_users.txt', this.page.rows);
   }
 
   onFileSelected(files: FileList) {

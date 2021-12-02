@@ -31,6 +31,10 @@
     "target": "http://localhost:8182",
     "secure": false
   },
+  "/disconnect": {
+    "target": "http://localhost:8182",
+    "secure": false
+  },
   "/channels/*": {
     "target": "http://localhost:8182",
     "secure": false
@@ -66,6 +70,14 @@
   },
   "/states/*": {
     "target": "http://localhost:9021",
+    "secure": false
+  },
+  "/certs/*": {
+    "target": "http://localhost:8204",
+    "secure": false
+  },
+  "/serials/*": {
+    "target": "http://localhost:8204",
     "secure": false
   }
 }

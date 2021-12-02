@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import 'rxjs/add/observable/empty';
+import { Observable, throwError, EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { environment } from 'environments/environment';
@@ -13,12 +12,17 @@ const defLimit: number = 20;
 @Injectable()
 export class UsersService {
   picture = 'assets/images/mainflux-logo.png';
+  loginUrl: string;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private notificationsService: NotificationsService,
-  ) { }
+  ) {
+    this.loginUrl = environment.appPrefix === ''
+                      ? environment.loginUrl
+                      : environment.appPrefix + '/' + environment.loginUrl;
+  }
 
   addUser(user: User) {
     return this.http.post(environment.usersUrl, user, { observe: 'response' })
@@ -31,7 +35,7 @@ export class UsersService {
         err => {
           this.notificationsService.error('Failed to create User',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -50,7 +54,7 @@ export class UsersService {
       .catch(
         err => {
           this.router.navigateByUrl('/auth/login');
-          return Observable.empty();
+          return EMPTY;
         },
       );
   }
@@ -77,7 +81,7 @@ export class UsersService {
         err => {
           this.notificationsService.error('Failed to fetch Users',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -93,7 +97,7 @@ export class UsersService {
         err => {
           this.notificationsService.error('Failed to edit User',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -109,7 +113,7 @@ export class UsersService {
         err => {
           this.notificationsService.error('Failed to change User password',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }
@@ -133,7 +137,7 @@ export class UsersService {
         err => {
           this.notificationsService.error('Failed to fetch Group memberships',
             `Error: ${err.status} - ${err.statusText}`);
-            return Observable.throw(err);
+            return throwError(err);
         },
       );
   }

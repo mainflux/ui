@@ -117,7 +117,7 @@ export class UserGroupsComponent implements OnInit {
   }
 
   onClickSave() {
-    this.fsService.exportToCsv('mfx_user_groups.csv', this.page.rows);
+    this.fsService.exportToJson('mfx_user_groups.txt', this.page.rows);
   }
 
   onFileSelected(files: FileList) {
