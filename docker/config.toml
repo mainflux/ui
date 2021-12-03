@@ -5,8 +5,11 @@
 subjects = ["channels.>"]
 
 [transformer]
-format = "json"
+# SenML or JSON
+format = "senml"
+# Used if format is SenML
 content_type = "application/senml+json"
+# Used if format is JSON
 timestamps = [{ field_name = "seconds_key", field_format = "unix",    location = "UTC"},
               { field_name = "millis_key",  field_format = "unix_ms", location = "UTC"},
               { field_name = "micros_key",  field_format = "unix_us", location = "UTC"},
