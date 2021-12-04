@@ -433,7 +433,7 @@ services:
       - ./config.toml:/config.toml
 
   grafana:
-    image: grafana/grafana:7.3.7
+    image: grafana/grafana:8.3.0
     container_name: mainflux-grafana
     depends_on:
       - influxdb
