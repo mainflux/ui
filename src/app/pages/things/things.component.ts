@@ -19,7 +19,7 @@ const defSearchBarMs: number = 100;
 })
 export class ThingsComponent implements OnInit {
   tableConfig: TableConfig = {
-    colNames: ['', '', '', 'Name', 'Type', 'ID', 'Key'],
+    colNames: ['', '', '', 'Name', 'Type', 'ID', 'Key', 'checkbox'],
     keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'key', 'checkbox'],
   };
   page: TablePage = {};

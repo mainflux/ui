@@ -21,7 +21,7 @@ export class ThingsDetailsComponent implements OnInit {
   thing: Thing = {};
 
   tableConfig: TableConfig = {
-    colNames: ['Name', 'Channel ID'],
+    colNames: ['Name', 'Channel ID', 'checkbox'],
     keys: ['name', 'id', 'checkbox'],
   };
   serialsTableConfig: TableConfig = {

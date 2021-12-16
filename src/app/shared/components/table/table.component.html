@@ -2,11 +2,11 @@
   <tr *ngIf="page.rows && page.rows.length > 0">
     <th *ngFor="let colName of config.colNames">
       <div [ngSwitch]="colName">
+        <div *ngSwitchCase="'checkbox'" class="checkbox">
+          <nb-checkbox [checked]="isSelectedAll" (checkedChange)="onToggleSelectAll($event)"></nb-checkbox>
+        </div>
         <div *ngSwitchDefault>
           {{ colName }}
-        </div>
-        <div *ngSwitchCase="checkbox">
-          <nb-checkbox [checked]="isSelectedAll" (checkedChange)="onToggleSelectAll($event)"></nb-checkbox>
         </div>
       </div>
     </th>

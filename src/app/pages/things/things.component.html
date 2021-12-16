@@ -1,7 +1,28 @@
-<button nbButton size="medium" class="button-add"
+<button nbButton size="small" class="button-blue button-left"
         (click)="openAddModal()"
         shape="semi-round">
   Create Thing
+</button>
+
+<button nbButton size="small" class="button-blue button-left"
+        (click)="onClickSave()"
+        shape="semi-round">
+  <nb-icon icon="save-outline"></nb-icon>
+  Save
+</button>
+
+<button nbButton size="small" class="button-green button-left"
+        (click)="fileInput.click()"
+        shape="semi-round">
+  <nb-icon icon="file-add-outline"></nb-icon>
+  Upload
+  <input hidden #fileInput (change)="onFileSelected($event.target.files)" type="file">
+</button>
+
+<button nbButton size="small" class="button-right" [ngClass]="selectedThings.length > 0 ? 'button-red' : 'button-grey'"
+        (click)="deleteThings()"
+        shape="semi-round">
+  Delete
 </button>
 
 <nb-card size="large">
@@ -14,33 +35,13 @@
         <input nbInput fullWidth placeholder="Search..." fieldSize="small"
                (input)="searchThing($event.target.value)">
       </div>
-      <div class="col-md-2">
-        <button nbButton size="small" class="button-blue button-header"
-                (click)="onClickSave()">
-          <nb-icon icon="save-outline"></nb-icon>
-          Save
-        </button>
-      </div>
-      <div class="col-md-2">
-        <button nbButton size="small" class="button-green button-header"
-                (click)="fileInput.click()">
-          <nb-icon icon="file-add-outline"></nb-icon>
-          Upload
-          <input hidden #fileInput (change)="onFileSelected($event.target.files)" type="file">
-        </button>
+      <div class="col-md-4">
+
       </div>
     </div>
   </nb-card-header>
 
   <nb-card-body>
-    <div class="row">
-      <div class="col-12">
-        <button *ngIf="selectedThings.length > 0" nbButton size="tiny" class="button-red button-checkbox"
-                (click)="deleteThings()">
-          Delete
-        </button>
-      </div>
-    </div>
     <ngx-table-component [config]="tableConfig"
                          [page]="page"
                          (editEvent)=openEditModal($event)
