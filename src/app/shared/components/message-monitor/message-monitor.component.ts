@@ -19,8 +19,11 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   mode: string = 'chart';
   modes: string[] = ['json', 'table', 'chart'];
 
-  valType: string = 'float';
-  valTypes: string[] = ['float', 'bool', 'string', 'data'];
+  value: any;
+  valueType: string = 'float';
+  valueTypes: string[] = ['float', 'bool', 'string', 'data'];
+  format: string = 'senml';
+  formats: string[] = ['senml', 'json'];
 
   msgDatasets: Dataset[] = [];
 
@@ -29,8 +32,8 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     limit: 20,
     publisher: '',
     subtopic: '',
+    format: '',
     name: '',
-    value: '',
     from: 0,
     to: 0,
   };
@@ -86,6 +89,30 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   getChannelMessages() {
     if (this.chanID === '' || this.thingKey === '') {
       return;
+    }
+
+    switch (this.valueType) {
+      case 'string':
+        this.filters.vs = this.value;
+        break;
+      case 'data':
+        this.filters.vd = this.value;
+        break;
+      case 'bool':
+        this.filters.vb = this.value;
+        break;
+      case 'float':
+        this.filters.v = this.value;
+        break;
+    }
+
+    switch (this.format) {
+      case 'senml':
+        this.filters.format = 'messages';
+        break;
+      case 'json':
+        this.filters.format = this.format;
+        break;
     }
 
     this.messagesPage.rows = [];

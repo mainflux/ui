@@ -1,15 +1,30 @@
 <nb-card size="large">
   <nb-card-header class="card-header">
-    <div class="row">
-      <div class="col-2">
-        Messages Reader:
+    <div class="row" style="margin-bottom: 20px;">
+      <div class="col">
+        Messages:
       </div>
+      <div class="col">
+        <nb-select class="right" [(selected)]="mode" size="tiny">
+          <nb-option *ngFor="let mode of this.modes" [value]="mode">{{mode}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="row header-row">
       <div *ngIf="mode == 'json'" class="col-1 form-key">
         Prefix:
       </div>
       <div *ngIf="mode == 'json'" class="col-2">
         <input nbInput fullWidth fieldSize="tiny"
                [(ngModel)]='readerUrl.prefix'>
+      </div>
+      <div class="col-1 form-key">
+        Channel:
+      </div>
+      <div class="col-4">
+        <nb-select fullWidth [(selected)]="chanID" size="tiny" (selectedChange)="getChannelMessages()">
+          <nb-option *ngFor="let ch of channels" [value]="ch.id">{{ch.id}}</nb-option>
+        </nb-select>
       </div>
       <div *ngIf="mode == 'json'" class="col-1 form-key">
         Suffix:
@@ -18,10 +33,58 @@
         <input nbInput fullWidth fieldSize="tiny"
                [(ngModel)]='readerUrl.suffix'>
       </div>
-      <div class="col">
-        <nb-select class="right" [(selected)]="mode" size="tiny">
-          <nb-option *ngFor="let mode of this.modes" [value]="mode">{{mode}}</nb-option>
+    </div>
+    <div class="row header-row">
+      <div class="col-1 form-key">
+        Format:
+      </div>
+      <div class="col-2">
+        <nb-select fullWidth [(selected)]="format" size="tiny">
+          <nb-option *ngFor="let format of formats" [value]="format">{{format}}</nb-option>
         </nb-select>
+      </div>
+      <div class="col-1 form-key">
+        Publisher:
+      </div>
+      <div class="col-4">
+        <nb-select fullWidth [(selected)]="filters.publisher" size="tiny" (selectedChange)="getChannelMessages()">
+          <nb-option *ngFor="let pub of publishers" [value]="pub.id">{{pub.id}}</nb-option>
+        </nb-select>
+      </div>
+      <div class="col-1 form-key">
+        Subtopic:
+      </div>
+      <div class="col-2">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='filters.subtopic'>
+      </div>
+    </div>
+    <div class="row header-row">
+      <div class="col-1 form-key">
+        Name:
+      </div>
+      <div class="col-2">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='filters.name'>
+      </div>
+      <div class="col-1 form-key">
+        Value:
+      </div>
+      <div class="col-2">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='value'>
+      </div>
+      <div class="col-2">
+        <nb-select fullWidth [(selected)]="valueType" size="tiny">
+          <nb-option *ngFor="let type of this.valueTypes" [value]="type">{{type}}</nb-option>
+        </nb-select>
+      </div>
+      <div class="col-1 form-key">
+        Time:
+      </div>
+      <div class="col-3">
+        <input nbInput placeholder="Pick up date" [nbDatepicker]="rangepicker" fullWidth fieldSize="tiny">
+        <nb-rangepicker #rangepicker (rangeChange)="getRangeDate($event)"></nb-rangepicker>
       </div>
     </div>
   </nb-card-header>
@@ -49,63 +112,10 @@
                                 (changePageEvent)=onChangePage($event)>
       </ngx-pagination-component>
     </div>
-    <div class="row form-row">
-      <div class="col-1 form-key">
-        Channels:
-      </div>
-      <div class="col-4">
-        <nb-select fullWidth [(selected)]="chanID" size="tiny" (selectedChange)="getChannelMessages()">
-          <nb-option *ngFor="let ch of channels" [value]="ch.id">{{ch.id}}</nb-option>
-        </nb-select>
-      </div>
-      <div class="col-1 form-key">
-        Subtopic:
-      </div>
-      <div class="col-2">
-        <input nbInput fullWidth fieldSize="tiny"
-               [(ngModel)]='filters.subtopic'>
-      </div>
-      <div class="col-1 form-key">
-        Time:
-      </div>
-      <div class="col-2">
-        <input nbInput placeholder="Pick up date" [nbDatepicker]="rangepicker" fullWidth fieldSize="tiny">
-        <nb-rangepicker #rangepicker (rangeChange)="getRangeDate($event)"></nb-rangepicker>
-      </div>
-    </div>
-    <div class="row form-row">
-      <div class="col-1 form-key">
-        Publisher:
-      </div>
-      <div class="col-4">
-        <nb-select fullWidth [(selected)]="filters.publisher" size="tiny" (selectedChange)="getChannelMessages()">
-          <nb-option *ngFor="let pub of publishers" [value]="pub.id">{{pub.id}}</nb-option>
-        </nb-select>
-      </div>
-      <div class="col-1 form-key">
-        Name:
-      </div>
-      <div class="col-2">
-        <input nbInput fullWidth fieldSize="tiny"
-               [(ngModel)]='filters.name'>
-      </div>
-      <div class="col-1 form-key">
-        Value:
-      </div>
-      <div class="col-2">
-        <input nbInput fullWidth fieldSize="tiny"
-               [(ngModel)]='filters.value'>
-      </div>
-      <div class="col-1">
-        <nb-select class="right" [(selected)]="valType" size="tiny">
-          <nb-option *ngFor="let type of this.valTypes" [value]="type">{{type}}</nb-option>
-        </nb-select>
-      </div>
-    </div>
     <div class="right">
       <button nbButton size="tiny" class="button-green"
               (click)="getChannelMessages()">
-        Filter
+        Read
       </button>
     </div>
   </nb-card-footer>

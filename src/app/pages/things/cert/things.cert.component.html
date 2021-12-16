@@ -1,0 +1,17 @@
+<nb-card>
+  <nb-card-header class="table-header">
+    Certificate: {{ serial }}
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="row">
+    </div>
+    <code>
+      {{ cert }}
+    </code>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <button nbButton status="info" (click)="submit()"> Copy to Clipboard </button>
+  </nb-card-footer>
+</nb-card>

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Channel, Thing, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'ngx-channels-details-component',
@@ -26,13 +27,18 @@ export class ChannelsDetailsComponent implements OnInit {
   thingsToConnect: string[] = [];
   thingsToDisconnect: string[] = [];
 
-  editorMetadata = '';
+  editorOptions: JsonEditorOptions;
+  @ViewChild(JsonEditorComponent, { static: false }) editor: JsonEditorComponent;
 
   constructor(
     private route: ActivatedRoute,
     private channelsService: ChannelsService,
     private notificationsService: NotificationsService,
-  ) {}
+  ) {
+    this.editorOptions = new JsonEditorOptions();
+    this.editorOptions.mode = 'code';
+    this.editorOptions.mainMenuBar = false;
+  }
 
   ngOnInit() {
     const chanID = this.route.snapshot.paramMap.get('id');
@@ -46,13 +52,11 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   onEdit() {
-    if (this.editorMetadata !== '') {
-      try {
-        this.channel.metadata = JSON.parse(this.editorMetadata);
-      } catch (e) {
-        this.notificationsService.error('Wrong metadata format', '');
-        return;
-      }
+    try {
+      this.channel.metadata = this.editor.get();
+    } catch (e) {
+      this.notificationsService.error('Wrong metadata format', '');
+      return;
     }
 
     this.channelsService.editChannel(this.channel).subscribe(
@@ -67,7 +71,7 @@ export class ChannelsDetailsComponent implements OnInit {
       this.channelsService.connectThings([this.channel.id], this.thingsToConnect).subscribe(
         resp => {
           this.updateConnections();
-          this.notificationsService.success('Thing(s) successfully connected', '');
+          this.notificationsService.success('Thing(s) successfully connected to Channel', '');
         },
       );
     } else {
@@ -76,14 +80,12 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   onDisconnect() {
-    this.thingsToDisconnect.forEach(thingID => {
-      this.channelsService.disconnectThing(this.channel.id, thingID).subscribe(
-        resp => {
-          this.updateConnections();
-          this.notificationsService.success('Thing successfully disconnected', '');
-        },
-      );
-    });
+    this.channelsService.disconnectThings([this.channel.id], this.thingsToDisconnect).subscribe(
+      resp => {
+        this.updateConnections();
+        this.notificationsService.success('Thing(s) successfully disconnected from Channel', '');
+      },
+    );
   }
 
   updateConnections() {
@@ -94,6 +96,8 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   findConnectedThings(offset?: number, limit?: number) {
+    this.connThingsPage = {};
+
     this.channelsService.connectedThings(this.channel.id, offset, limit).subscribe(
       (resp: any) => {
         this.connThingsPage = {
@@ -111,6 +115,8 @@ export class ChannelsDetailsComponent implements OnInit {
   }
 
   findDisconnectedThings(offset?: number, limit?: number) {
+    this.disconnThingsPage = {};
+
     this.channelsService.disconnectedThings(this.channel.id, offset, limit).subscribe(
       (resp: any) => {
         this.disconnThingsPage = {
@@ -131,35 +137,19 @@ export class ChannelsDetailsComponent implements OnInit {
     this.findDisconnectedThings(0, limit);
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      const offset = this.connThingsPage.offset - this.connThingsPage.limit;
-      this.findConnectedThings(offset, this.connThingsPage.limit);
-    }
-    if (dir === 'next') {
-      const offset = this.connThingsPage.offset + this.connThingsPage.limit;
-      this.findConnectedThings(offset, this.connThingsPage.limit);
-    }
+  onChangePage(offset: number) {
+    this.findConnectedThings(offset, this.connThingsPage.limit);
   }
 
-  onChangePageDisconn(dir: any) {
-    if (dir === 'prev') {
-      const offset = this.disconnThingsPage.offset - this.disconnThingsPage.limit;
-      this.findDisconnectedThings(offset, this.disconnThingsPage.limit);
-    }
-    if (dir === 'next') {
-      const offset = this.disconnThingsPage.offset + this.disconnThingsPage.limit;
-      this.findDisconnectedThings(offset, this.disconnThingsPage.limit);
-    }
+  onChangePageDisconn(offset: number) {
+    this.findDisconnectedThings(offset, this.disconnThingsPage.limit);
   }
 
-  onCheckboxConns(row: any) {
-    const index = this.thingsToConnect.indexOf(row.id);
-    (index > -1) ? this.thingsToConnect.splice(index, 1) : this.thingsToConnect.push(row.id);
+  onCheckboxConns(rows: any) {
+    this.thingsToConnect = rows;
   }
 
-  onCheckboxDisconns(row: any) {
-    const index = this.thingsToDisconnect.indexOf(row.id);
-    (index > -1) ? this.thingsToDisconnect.splice(index, 1) : this.thingsToDisconnect.push(row.id);
+  onCheckboxDisconns(rows: any) {
+    this.thingsToDisconnect = rows;
   }
 }

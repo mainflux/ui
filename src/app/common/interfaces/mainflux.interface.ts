@@ -97,7 +97,11 @@ export interface MsgFilters {
   publisher?: string;
   subtopic?: string;
   name?: string;
-  value?: string;
+  format?: string;
+  v?: string;
+  vs?: string;
+  vd?: string;
+  vb?: string;
   from?: number;
   to?: number;
 }

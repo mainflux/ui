@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
@@ -31,14 +31,11 @@ export class MessagesService {
     const prefix  = readerUrl ? readerUrl.prefix : environment.readerPrefix;
     const suffix  = readerUrl ? readerUrl.suffix : environment.readerSuffix;
 
-    let url = `${environment.readerUrl}/${prefix}/${channel}/${suffix}`;
-    url += `?offset=${filters.offset}&limit=${filters.limit}`;
-    url = filters.publisher ? url += `&publisher=${filters.publisher}` : url;
-    url = filters.subtopic ? url += `&subtopic=${encodeURIComponent(filters.subtopic)}` : url;
-    url = filters.name ? url += `&name=${filters.name}` : url;
-    url = filters.value ? url += `&v=${filters.value}` : url;
-    url = filters.from ? url += `&from=${filters.from}` : url;
-    url = filters.to ? url += `&to=${filters.to}` : url;
+    let url = `${environment.readerUrl}/${prefix}/${channel}/${suffix}?`;
+
+    Object.keys(filters).forEach(key => {
+      url = filters[key] ? url += `&${key}=${filters[key]}` : url;
+    });
 
     return this.http.get(url, { headers: headers })
       .map(
@@ -50,7 +47,7 @@ export class MessagesService {
         err => {
           this.notificationsService.error('Failed to read Messages',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }
@@ -73,7 +70,7 @@ export class MessagesService {
         err => {
           this.notificationsService.error('Failed to send Message',
             `Error: ${err.status} - ${err.statusText}`);
-          return Observable.throw(err);
+          return throwError(err);
         },
       );
   }

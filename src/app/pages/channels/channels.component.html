@@ -4,7 +4,7 @@
   Create Channel
 </button>
 
-<nb-card>
+<nb-card size="large">
   <nb-card-header class="table-header">
     <div class="row">
       <div class="col-md-4">
@@ -32,11 +32,20 @@
     </div>
   </nb-card-header>
   <nb-card-body>
+    <div class="row">
+      <div class="col-12">
+        <button *ngIf="selectedChannels.length > 0" nbButton size="tiny" class="button-red button-checkbox"
+                (click)="deleteChannels()">
+          Delete
+        </button>
+      </div>
+    </div>
     <ngx-table-component [config]="tableConfig"
                          [page]="page"
                          (editEvent)=openEditModal($event)
                          (delEvent)=openDeleteModal($event)
-                         (detailsEvent)=onOpenDetails($event)>
+                         (detailsEvent)=onOpenDetails($event)
+                         (checkEvent)=onCheckBox($event)>
     </ngx-table-component>
   </nb-card-body>
   <nb-card-footer>

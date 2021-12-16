@@ -1,11 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NbDialogService } from '@nebular/theme';
 
 import { ThingsService } from 'app/common/services/things/things.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
+import { CertsService } from 'app/common/services/certs/certs.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Thing, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
+import { ThingsCertComponent } from '../cert/things.cert.component';
+
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'ngx-things-details-component',
@@ -19,14 +24,17 @@ export class ThingsDetailsComponent implements OnInit {
     colNames: ['Name', 'Channel ID'],
     keys: ['name', 'id', 'checkbox'],
   };
+  serialsTableConfig: TableConfig = {
+    colNames: ['', 'Serial ID'],
+    keys: ['details', 'cert_serial', 'checkbox'],
+  };
 
   connChansPage: TablePage = {};
   disconnChansPage: TablePage = {};
+  certsPage: TablePage = {};
 
   chansToConnect: string[] = [];
   chansToDisconnect: string[] = [];
-
-  editorMetadata = '';
 
   httpMsg = {
     name: '',
@@ -38,13 +46,24 @@ export class ThingsDetailsComponent implements OnInit {
   };
   valTypes: string[] = ['float', 'bool', 'string', 'data'];
 
+  hoursValid = '';
+
+  editorOptions: JsonEditorOptions;
+  @ViewChild(JsonEditorComponent, { static: false }) editor: JsonEditorComponent;
+
   constructor(
     private route: ActivatedRoute,
     private thingsService: ThingsService,
     private channelsService: ChannelsService,
+    private dialogService: NbDialogService,
+    private certsService: CertsService,
     private messagesService: MessagesService,
     private notificationsService: NotificationsService,
-  ) {}
+  ) {
+    this.editorOptions = new JsonEditorOptions();
+    this.editorOptions.mode = 'code';
+    this.editorOptions.mainMenuBar = false;
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -53,18 +72,28 @@ export class ThingsDetailsComponent implements OnInit {
       (th: Thing) => {
         this.thing = th;
         this.updateConnections();
+        this.getCertsSerials();
+      },
+    );
+  }
+
+  getCertsSerials() {
+    this.certsService.listCertsSerials(this.thing.id).subscribe(
+      (resp: any) => {
+        this.certsPage.offset = resp.offset;
+        this.certsPage.limit = resp.limit;
+        this.certsPage.total = resp.total;
+        this.certsPage.rows = resp.certs;
       },
     );
   }
 
   onEdit() {
-    if (this.editorMetadata !== '') {
-      try {
-        this.thing.metadata = JSON.parse(this.editorMetadata);
-      } catch (e) {
-        this.notificationsService.error('Wrong metadata format', '');
-        return;
-      }
+    try {
+      this.thing.metadata = this.editor.get();
+    } catch (e) {
+      this.notificationsService.error('Wrong metadata format', '');
+      return;
     }
 
     this.thingsService.editThing(this.thing).subscribe(
@@ -74,11 +103,44 @@ export class ThingsDetailsComponent implements OnInit {
     );
   }
 
+  onIssueCert() {
+    const cert = {
+      thing_id: this.thing.id,
+      key_bits: 2048,
+      key_type: 'rsa',
+      valid:    '100h',
+    };
+
+    this.certsService.issueCert(cert).subscribe(
+      resp => {
+        this.getCertsSerials();
+      },
+    );
+  }
+
+  onViewCert(row: any) {
+    this.certsService.viewCert(row.cert_serial).subscribe(
+      (resp: any) => {
+        const ctx = {
+          context: {
+            cert: resp.cert,
+            serial: row.cert_serial,
+          },
+        };
+        this.dialogService.open(ThingsCertComponent, ctx)
+          .onClose.subscribe(
+            confirm => {
+            },
+        );
+      },
+    );
+  }
+
   onConnect() {
     if (this.chansToConnect.length > 0) {
       this.channelsService.connectThings(this.chansToConnect, [this.thing.id]).subscribe(
         resp => {
-          this.notificationsService.success('Successfully connected to Channel(s)', '');
+          this.notificationsService.success('Channel(s) successfully connected to Thing', '');
           this.updateConnections();
         },
       );
@@ -88,14 +150,12 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onDisconnect() {
-    this.chansToDisconnect.forEach(chanID => {
-      this.channelsService.disconnectThing(chanID, this.thing.id).subscribe(
-        resp => {
-          this.notificationsService.success('Successfully disconnected from Channel', '');
-          this.updateConnections();
-        },
-      );
-    });
+    this.channelsService.disconnectThings(this.chansToDisconnect, [this.thing.id]).subscribe(
+      resp => {
+        this.notificationsService.success('Channel(s) successfully disconnected from Thing', '');
+        this.updateConnections();
+      },
+    );
   }
 
   updateConnections() {
@@ -105,8 +165,9 @@ export class ThingsDetailsComponent implements OnInit {
     this.findDisconnectedChans();
   }
 
-  findConnectedChans(offset?: number, limit?: number) {
-    this.thingsService.connectedChannels(this.thing.id, offset, limit).subscribe(
+  findConnectedChans() {
+    this.thingsService.connectedChannels(this.thing.id, this.connChansPage.offset,
+      this.connChansPage.limit).subscribe(
       (resp: any) => {
         this.connChansPage = {
           offset: resp.offset,
@@ -118,8 +179,9 @@ export class ThingsDetailsComponent implements OnInit {
     );
   }
 
-  findDisconnectedChans(offset?: number, limit?: number) {
-    this.thingsService.disconnectedChannels(this.thing.id, offset, limit).subscribe(
+  findDisconnectedChans() {
+    this.thingsService.disconnectedChannels(this.thing.id, this.disconnChansPage.offset,
+      this.disconnChansPage.limit).subscribe(
       (resp: any) => {
         this.disconnChansPage = {
           offset: resp.offset,
@@ -132,43 +194,33 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onChangeLimit(limit: number) {
-    this.findConnectedChans(0, limit);
+    this.connChansPage.offset = 0;
+    this.connChansPage.limit = limit;
+    this.findConnectedChans();
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      const offset = this.connChansPage.offset - this.connChansPage.limit;
-      this.findConnectedChans(offset, this.connChansPage.limit);
-    }
-    if (dir === 'next') {
-      const offset = this.connChansPage.offset + this.connChansPage.limit;
-      this.findConnectedChans(offset, this.connChansPage.limit);
-    }
+  onChangePage(offset: number) {
+    this.connChansPage.offset = offset;
+    this.findConnectedChans();
   }
 
   onChangeLimitDisconn(limit: number) {
-    this.findDisconnectedChans(0, limit);
+    this.disconnChansPage.offset = 0;
+    this.disconnChansPage.limit = limit;
+    this.findDisconnectedChans();
   }
 
-  onChangePageDisconn(dir: any) {
-    if (dir === 'prev') {
-      const offset = this.disconnChansPage.offset - this.disconnChansPage.limit;
-      this.findDisconnectedChans(offset, this.connChansPage.limit);
-    }
-    if (dir === 'next') {
-      const offset = this.disconnChansPage.offset + this.disconnChansPage.limit;
-      this.findDisconnectedChans(offset, this.disconnChansPage.limit);
-    }
+  onChangePageDisconn(offset: any) {
+    this.disconnChansPage.offset = offset;
+    this.findDisconnectedChans();
   }
 
-  onCheckboxConns(row: any) {
-    const index = this.chansToConnect.indexOf(row.id);
-    (index > -1) ? this.chansToConnect.splice(index, 1) : this.chansToConnect.push(row.id);
+  onCheckboxConns(rows: string[]) {
+    this.chansToConnect = rows;
   }
 
-  onCheckboxDisconns(row: any) {
-    const index = this.chansToDisconnect.indexOf(row.id);
-    (index > -1) ? this.chansToDisconnect.splice(index, 1) : this.chansToDisconnect.push(row.id);
+  onCheckboxDisconns(rows: string[]) {
+    this.chansToDisconnect = rows;
   }
 
   onSendMessage() {

@@ -7,8 +7,12 @@
     "target": "http://localhost:8180",
     "secure": false
   },
-  "/groups": {
-    "target": "http://localhost:8180",
+  "/members/*": {
+    "target": "http://localhost:8189",
+    "secure": false
+  },
+  "/groups/*": {
+    "target": "http://localhost:8189",
     "secure": false
   },
   "/version": {
@@ -24,6 +28,10 @@
     "secure": false
   },
   "/connect": {
+    "target": "http://localhost:8182",
+    "secure": false
+  },
+  "/disconnect": {
     "target": "http://localhost:8182",
     "secure": false
   },
@@ -62,6 +70,14 @@
   },
   "/states/*": {
     "target": "http://localhost:9021",
+    "secure": false
+  },
+  "/certs/*": {
+    "target": "http://localhost:8204",
+    "secure": false
+  },
+  "/serials/*": {
+    "target": "http://localhost:8204",
     "secure": false
   }
 }

@@ -18,33 +18,29 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 
 // Mainflux - Dependencies
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule } from '@angular/forms';
 // Mainflux - Common and Shared
 import { SharedModule } from 'app/shared/shared.module';
 import { CommonModule } from 'app/common/common.module';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
-import { DetailsComponent } from 'app/shared/components/details/details.component';
 // Mainflux - User Groups
-import { UserGroupsComponent } from './user-groups/user-groups.component';
-import { UserGroupsDetailsComponent } from './user-groups/details/user-groups.details.component';
+import { UserGroupsComponent } from 'app/pages/user-groups/user-groups.component';
+import { UserGroupsAddComponent } from 'app/pages/user-groups/add/user-groups.add.component';
+import { UserGroupsDetailsComponent } from 'app/pages/user-groups/details/user-groups.details.component';
 // Mainflux - User
 import { UsersComponent } from 'app/pages/users/users.component';
+import { UsersAddComponent } from 'app/pages/users/add/users.add.component';
 import { UsersDetailsComponent } from 'app/pages/users/details/users.details.component';
 // Mainflux - Things
 import { ThingsComponent } from 'app/pages/things/things.component';
 import { ThingsAddComponent } from 'app/pages/things/add/things.add.component';
+import { ThingsCertComponent } from 'app/pages/things/cert/things.cert.component';
 import { ThingsDetailsComponent } from 'app/pages/things/details/things.details.component';
 // Mainflux - Channels
 import { ChannelsComponent } from 'app/pages/channels/channels.component';
 import { ChannelsAddComponent } from 'app/pages/channels/add/channels.add.component';
 import { ChannelsDetailsComponent } from 'app/pages/channels/details/channels.details.component';
-// Mainflux - Twins
-import { TwinsComponent } from './twins/twins.component';
-import { TwinsAddComponent } from './twins/add/twins.add.component';
-import { TwinsDetailsComponent } from './twins/details/twins.details.component';
-import { TwinsStatesComponent } from './twins/states/twins.states.component';
-import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions.component';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 @NgModule({
   imports: [
@@ -54,7 +50,6 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     DashboardModule,
     SharedModule,
     CommonModule,
-    Ng2SmartTableModule,
     FormsModule,
     NbButtonModule,
     NbCardModule,
@@ -63,9 +58,9 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     NbCheckboxModule,
     NbListModule,
     NbTabsetModule,
+    NgJsonEditorModule,
   ],
   exports: [
-    Ng2SmartTableModule,
     SharedModule,
     CommonModule,
     FormsModule,
@@ -80,33 +75,28 @@ import { TwinsDefinitionsComponent } from './twins/definitions/twins.definitions
     PagesComponent,
     // User Groups
     UserGroupsComponent,
+    UserGroupsAddComponent,
     UserGroupsDetailsComponent,
     // Users
     UsersComponent,
+    UsersAddComponent,
     UsersDetailsComponent,
     // Things
     ThingsComponent,
     ThingsAddComponent,
+    ThingsCertComponent,
     ThingsDetailsComponent,
     // Channels
     ChannelsComponent,
     ChannelsAddComponent,
     ChannelsDetailsComponent,
-    // Twins
-    TwinsComponent,
-    TwinsAddComponent,
-    TwinsDetailsComponent,
-    TwinsStatesComponent,
-    TwinsDefinitionsComponent,
   ],
   providers: [
     NbDialogService,
     NbWindowService,
   ],
   entryComponents: [
-    ThingsAddComponent,
     ConfirmationComponent,
-    DetailsComponent,
   ],
 })
 export class PagesModule {

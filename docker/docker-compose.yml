@@ -21,14 +21,14 @@ volumes:
   mainflux-twins-db-volume:
   mainflux-twins-db-configdb-volume:
   mainflux-mqtt-broker-volume:
+  mainflux-certs-db-volume:
+  mainflux-vault-volume:
 
 services:
   ui:
     image: mainflux/ui:latest
     container_name: mainflux-ui
     restart: on-failure
-    volumes:
-      - ./nginx/entrypoint-ui.sh:/entrypoint.sh
     ports:
       - ${MF_UI_PORT}:${MF_UI_PORT}
     networks:
@@ -36,10 +36,13 @@ services:
     environment:
       MF_UI_PORT: ${MF_UI_PORT}
       MF_UI_MQTT_WS_URL: ${MF_UI_MQTT_WS_URL}
+      MF_PROXY_AUTH: ${MF_PROXY_AUTH}
+      MF_PROXY_LOGOUT_URL: ${MF_PROXY_LOGOUT_URL}
+      MF_UI_APP_PREFIX: ${MF_UI_APP_PREFIX}
     command: /entrypoint.sh
 
   nginx:
-    image: nginx:1.16.0-alpine
+    image: nginx:1.20.0-alpine
     container_name: mainflux-nginx
     restart: on-failure
     volumes:
@@ -59,7 +62,7 @@ services:
     networks:
       - mainflux-base-net
     env_file:
-      - ../.env
+      - .env
     command: /entrypoint.sh
     depends_on:
       - things
@@ -68,7 +71,7 @@ services:
       - http-adapter
 
   nats:
-    image: nats:1.3.0
+    image: nats:2.2.4-alpine
     container_name: mainflux-nats
     command: "-c /etc/nats/nats.conf"
     restart: on-failure
@@ -134,7 +137,7 @@ services:
     image: mainflux/users:latest
     container_name: mainflux-users
     volumes:
-      - ./users/emailer/templates/${MF_EMAIL_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
+      - ./templates/${MF_EMAIL_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
     depends_on:
       - users-db
       - auth
@@ -148,7 +151,6 @@ services:
       MF_USERS_DB: ${MF_USERS_DB}
       MF_USERS_HTTP_PORT: ${MF_USERS_HTTP_PORT}
       MF_JAEGER_URL: ${MF_JAEGER_URL}
-      MF_EMAIL_DRIVER: ${MF_EMAIL_DRIVER}
       MF_EMAIL_HOST: ${MF_EMAIL_HOST}
       MF_EMAIL_PORT: ${MF_EMAIL_PORT}
       MF_EMAIL_USERNAME: ${MF_EMAIL_USERNAME}
@@ -208,7 +210,6 @@ services:
       MF_THINGS_HTTP_PORT: ${MF_THINGS_HTTP_PORT}
       MF_THINGS_AUTH_HTTP_PORT: ${MF_THINGS_AUTH_HTTP_PORT}
       MF_THINGS_AUTH_GRPC_PORT: ${MF_THINGS_AUTH_GRPC_PORT}
-      MF_THINGS_SECRET: ${MF_THINGS_SECRET}
       MF_JAEGER_URL: ${MF_JAEGER_URL}
       MF_AUTH_GRPC_URL: ${MF_AUTH_GRPC_URL}
       MF_AUTH_GRPC_TIMEOUT: ${MF_AUTH_GRPC_TIMEOUT}
@@ -220,7 +221,7 @@ services:
       - mainflux-base-net
 
   jaeger:
-    image: jaegertracing/all-in-one:1.13
+    image: jaegertracing/all-in-one:1.20
     container_name: mainflux-jaeger
     ports:
       - ${MF_JAEGER_PORT}:${MF_JAEGER_PORT}/udp
@@ -259,6 +260,7 @@ services:
       MF_NATS_URL: ${MF_NATS_URL}
       MF_MQTT_ADAPTER_MQTT_TARGET_HOST: vernemq
       MF_MQTT_ADAPTER_MQTT_TARGET_PORT: ${MF_MQTT_BROKER_PORT}
+      MF_MQTT_ADAPTER_MQTT_TARGET_HEALTH_CHECK: http://vernemq:8888/health
       MF_MQTT_ADAPTER_WS_TARGET_HOST: vernemq
       MF_MQTT_ADAPTER_WS_TARGET_PORT: ${MF_MQTT_BROKER_WS_PORT}
       MF_JAEGER_URL: ${MF_JAEGER_URL}
@@ -289,7 +291,7 @@ services:
       - mainflux-base-net
 
   es-redis:
-    image: redis:5.0-alpine
+    image: redis:6.2.2-alpine
     container_name: mainflux-es-redis
     restart: on-failure
     networks:
@@ -299,7 +301,7 @@ services:
 
   ## OPC-UA ADAPTER
   opcua-redis:
-    image: redis:5.0-alpine
+    image: redis:6.2.2-alpine
     container_name: mainflux-opcua-redis
     restart: on-failure
     networks:
@@ -337,17 +339,18 @@ services:
 
   ## INFLUX DB
   influxdb:
-    image: influxdb:1.8.3
+    image: influxdb:1.8.5
     container_name: mainflux-influxdb
     restart: on-failure
     environment:
-      INFLUXDB_DB: ${MF_INFLUX_WRITER_DB}
-      INFLUXDB_ADMIN_USER: ${MF_INFLUX_WRITER_DB_USER}
-      INFLUXDB_ADMIN_PASSWORD: ${MF_INFLUX_WRITER_DB_PASS}
+      INFLUXDB_DB: ${MF_INFLUXDB_DB}
+      INFLUXDB_ADMIN_USER: ${MF_INFLUXDB_ADMIN_USER}
+      INFLUXDB_ADMIN_PASSWORD: ${MF_INFLUXDB_ADMIN_PASSWORD}
+      INFLUXDB_HTTP_AUTH_ENABLED: ${MF_INFLUXDB_HTTP_AUTH_ENABLED}
     networks:
       - mainflux-base-net
     ports:
-      - ${MF_INFLUX_WRITER_DB_PORT}:${MF_INFLUX_WRITER_DB_PORT}
+      - ${MF_INFLUXDB_PORT}:${MF_INFLUXDB_PORT}
     volumes:
       - mainflux-influxdb-volume:/var/lib/influxdb
 
@@ -356,7 +359,6 @@ services:
     container_name: mainflux-influxdb-writer
     depends_on:
       - influxdb
-      - nats
     restart: on-failure
     environment:
       MF_INFLUX_WRITER_LOG_LEVEL: debug
@@ -364,17 +366,17 @@ services:
       MF_INFLUX_WRITER_PORT: ${MF_INFLUX_WRITER_PORT}
       MF_INFLUX_WRITER_BATCH_SIZE: ${MF_INFLUX_WRITER_BATCH_SIZE}
       MF_INFLUX_WRITER_BATCH_TIMEOUT: ${MF_INFLUX_WRITER_BATCH_TIMEOUT}
-      MF_INFLUX_WRITER_DB: ${MF_INFLUX_WRITER_DB}
+      MF_INFLUXDB_DB: ${MF_INFLUXDB_DB}
       MF_INFLUX_WRITER_DB_HOST: mainflux-influxdb
-      MF_INFLUX_WRITER_DB_PORT: ${MF_INFLUX_WRITER_DB_PORT}
-      MF_INFLUX_WRITER_DB_USER: ${MF_INFLUX_WRITER_DB_USER}
-      MF_INFLUX_WRITER_DB_PASS: ${MF_INFLUX_WRITER_DB_PASS}
+      MF_INFLUXDB_PORT: ${MF_INFLUXDB_PORT}
+      MF_INFLUXDB_ADMIN_USER: ${MF_INFLUXDB_ADMIN_USER}
+      MF_INFLUXDB_ADMIN_PASSWORD: ${MF_INFLUXDB_ADMIN_PASSWORD}
     ports:
       - ${MF_INFLUX_WRITER_PORT}:${MF_INFLUX_WRITER_PORT}
     networks:
       - mainflux-base-net
     volumes:
-      - ./subjects.toml:/config/subjects.toml
+      - ./config.toml:/config.toml
 
   grafana:
     image: grafana/grafana:7.3.7
@@ -388,6 +390,7 @@ services:
       - mainflux-base-net
     volumes:
       - mainflux-grafana-volume:/var/lib/grafana
+      - ./configs/grafana-defaults.ini:/usr/share/grafana/conf/defaults.ini
 
   influxdb-reader:
     image: mainflux/influxdb-reader:latest
@@ -396,11 +399,11 @@ services:
     environment:
       MF_INFLUX_READER_LOG_LEVEL: debug
       MF_INFLUX_READER_PORT: ${MF_INFLUX_READER_PORT}
-      MF_INFLUX_READER_DB: ${MF_INFLUX_READER_DB}
+      MF_INFLUXDB_DB: ${MF_INFLUXDB_DB}
       MF_INFLUX_READER_DB_HOST: mainflux-influxdb
-      MF_INFLUX_READER_DB_PORT: ${MF_INFLUX_READER_DB_PORT}
-      MF_INFLUX_READER_DB_USER: ${MF_INFLUX_READER_DB_USER}
-      MF_INFLUX_READER_DB_PASS: ${MF_INFLUX_READER_DB_PASS}
+      MF_INFLUXDB_PORT: ${MF_INFLUXDB_PORT}
+      MF_INFLUXDB_ADMIN_USER: ${MF_INFLUXDB_ADMIN_USER}
+      MF_INFLUXDB_ADMIN_PASSWORD: ${MF_INFLUXDB_ADMIN_PASSWORD}
       MF_INFLUX_READER_SERVER_CERT: ${MF_INFLUX_READER_SERVER_CERT}
       MF_INFLUX_READER_SERVER_KEY: ${MF_INFLUX_READER_SERVER_KEY}
       MF_JAEGER_URL: ${MF_JAEGER_URL}
@@ -413,35 +416,9 @@ services:
     volumes:
       - ../../ssl/certs:/etc/ssl/certs
 
-  ## LORA ADAPTER
-  lora-redis:
-    image: redis:5.0-alpine
-    container_name: mainflux-lora-redis
-    restart: on-failure
-    networks:
-      - mainflux-base-net
-
-  lora-adapter:
-    image: mainflux/lora:latest
-    container_name: mainflux-lora
-    depends_on:
-      - nats
-    restart: on-failure
-    environment:
-      MF_LORA_ADAPTER_LOG_LEVEL: ${MF_LORA_ADAPTER_LOG_LEVEL}
-      MF_THINGS_ES_URL: es-redis:${MF_REDIS_TCP_PORT}
-      MF_LORA_ADAPTER_ROUTE_MAP_URL: lora-redis:${MF_REDIS_TCP_PORT}
-      MF_LORA_ADAPTER_MESSAGES_URL: ${MF_LORA_ADAPTER_MESSAGES_URL}
-      MF_LORA_ADAPTER_HTTP_PORT: ${MF_LORA_ADAPTER_HTTP_PORT}
-      MF_NATS_URL: ${MF_NATS_URL}
-    ports:
-      - ${MF_LORA_ADAPTER_HTTP_PORT}:${MF_LORA_ADAPTER_HTTP_PORT}
-    networks:
-      - mainflux-base-net
-
   ## BOOTSTRAP
   bootstrap-db:
-    image: postgres:13.1-alpine
+    image: postgres:13.3-alpine
     container_name: mainflux-bootstrap-db
     restart: on-failure
     environment:
@@ -556,3 +533,67 @@ services:
       - ${MF_TWINS_HTTP_PORT}:${MF_TWINS_HTTP_PORT}
     networks:
       - mainflux-base-net
+
+# Certs
+  certs-db:
+    image: postgres:13.3-alpine
+    container_name: mainflux-certs-db
+    restart: on-failure
+    environment:
+      POSTGRES_USER: ${MF_CERTS_DB_USER}
+      POSTGRES_PASSWORD: ${MF_CERTS_DB_PASS}
+      POSTGRES_DB: ${MF_CERTS_DB}
+    networks:
+      - mainflux-base-net
+    volumes:
+      - mainflux-certs-db-volume:/var/lib/postgresql/data
+
+  certs:
+    image: mainflux/certs:latest
+    container_name: mainflux-certs
+    depends_on:
+      - certs-db
+    restart: on-failure
+    networks:
+      - mainflux-base-net
+    ports:
+      - ${MF_CERTS_HTTP_PORT}:${MF_CERTS_HTTP_PORT}
+    environment:
+      MF_CERTS_LOG_LEVEL: ${MF_CERTS_LOG_LEVEL}
+      MF_CERTS_DB_HOST: certs-db
+      MF_CERTS_DB_PORT: ${MF_CERTS_DB_PORT}
+      MF_CERTS_DB_PASS: ${MF_CERTS_DB_PASS}
+      MF_CERTS_DB_USER: ${MF_CERTS_DB_USER}
+      MF_CERTS_DB: ${MF_CERTS_DB}
+      MF_CERTS_DB_SSL_MODE: ${MF_CERTS_DB_SSL_MODE}
+      MF_CERTS_DB_SSL_CERT: ${MF_CERTS_DB_SSL_CERT}
+      MF_CERTS_DB_SSL_KEY: ${MF_CERTS_DB_SSL_KEY}
+      MF_CERTS_DB_SSL_ROOT_CERT: ${MF_CERTS_DB_SSL_ROOT_CERT}
+      MF_CERTS_ENCRYPT_KEY: ${MF_CERTS_ENCRYPT_KEY}
+      MF_CERTS_CLIENT_TLS: ${MF_CERTS_CLIENT_TLS}
+      MF_CERTS_CA_CERTS: ${MF_CERTS_CA_CERTS}
+      MF_CERTS_HTTP_PORT: ${MF_CERTS_HTTP_PORT}
+      MF_CERTS_SERVER_CERT: ${MF_CERTS_SERVER_CERT}
+      MF_CERTS_SERVER_KEY: ${MF_CERTS_SERVER_KEY}
+      MF_CERTS_SIGN_CA_PATH: ${MF_CERTS_SIGN_CA_PATH}
+      MF_CERTS_SIGN_CA_KEY_PATH: ${MF_CERTS_SIGN_CA_KEY_PATH}
+      MF_CERTS_SIGN_HOURS_VALID: ${MF_CERTS_SIGN_HOURS_VALID}
+      MF_CERTS_SIGN_RSA_BITS: ${MF_CERTS_SIGN_RSA_BITS}
+      MF_VAULT_TOKEN: ${MF_VAULT_TOKEN}
+      MF_VAULT_CA_NAME: ${MF_VAULT_CA_NAME}
+      MF_VAULT_CA_ROLE_NAME: ${MF_VAULT_CA_ROLE_NAME}
+      MF_VAULT_PKI_PATH: ${MF_VAULT_PKI_PATH}
+      MF_SDK_BASE_URL: ${MF_SDK_BASE_URL}
+      MF_SDK_THINGS_PREFIX: ${MF_SDK_THINGS_PREFIX}
+      MF_JAEGER_URL: ${MF_JAEGER_URL}
+      MF_AUTH_GRPC_URL: ${MF_AUTH_GRPC_URL}
+      MF_AUTH_GRPC_TIMEOUT: ${MF_AUTH_GRPC_TIMEOUT}
+      MF_CERTS_VAULT_HOST: ${MF_CERTS_VAULT_HOST}
+    volumes:
+      - ../../ssl/certs/ca.key:/etc/ssl/certs/ca.key
+      - ../../ssl/certs/ca.crt:/etc/ssl/certs/ca.crt
+
+  vault:
+    extends:
+      file: ./vault/docker-compose.yml
+      service: vault
