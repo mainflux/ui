@@ -111,14 +111,9 @@ export interface ReaderUrl {
   suffix?: string;
 }
 
-export interface Message {
-  value: number;
-  time: number;
-}
-
 export interface Dataset {
   label?: string;
-  messages?: Message[];
+  messages?: MainfluxMsg[];
 }
 
 export interface TableConfig {

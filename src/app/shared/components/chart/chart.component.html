@@ -1,3 +1,6 @@
+<nb-select class="right" [(selected)]="chartType" size="tiny">
+  <nb-option *ngFor="let type of this.chartTypes" [value]="type">{{type}}</nb-option>
+</nb-select>
 <div class="canvas">
   <canvas baseChart
           [datasets]="chartDataSets"
