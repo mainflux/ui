@@ -16,9 +16,8 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   messages: MainfluxMsg[] = [];
   chanID = '';
 
-  mode: string = 'chart';
+  mode: string = 'json';
   modes: string[] = ['json', 'table', 'chart'];
-
   value: any;
   valueType: string = 'float';
   valueTypes: string[] = ['float', 'bool', 'string', 'data'];

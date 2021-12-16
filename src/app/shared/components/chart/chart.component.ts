@@ -31,9 +31,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
   constructor(
     private toMillisecsPipe: ToMillisecsPipe,
     private messageValuePipe: MessageValuePipe,
-  ) {
-
-  }
+  ) {}
 
   ngAfterViewInit() {
     this.select.selectedChange.subscribe(
