@@ -19,7 +19,7 @@ const defSearchBarMs: number = 100;
 
 export class ChannelsComponent implements OnInit {
   tableConfig: TableConfig = {
-    colNames: ['', '', '', 'Name', 'Type', 'ID'],
+    colNames: ['', '', '', 'Name', 'Type', 'ID', 'checkbox'],
     keys: ['edit', 'delete', 'details', 'name', 'type', 'id', 'checkbox'],
   };
   page: TablePage = {};

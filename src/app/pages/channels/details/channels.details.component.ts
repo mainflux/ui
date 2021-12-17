@@ -17,7 +17,7 @@ export class ChannelsDetailsComponent implements OnInit {
   thingKey = '';
 
   tableConfig: TableConfig = {
-    colNames: ['Name', 'Thing ID'],
+    colNames: ['Name', 'Thing ID', 'checkbox'],
     keys: ['name', 'id', 'checkbox'],
   };
 

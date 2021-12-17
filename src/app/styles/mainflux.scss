@@ -28,6 +28,12 @@
   color: white !important;
 }
 
+.button-grey {
+  background-color: #d3d4de !important;
+  border-color: #d3d4de !important;
+  color: white !important;
+}
+
 .table-header {
   background-color: #d3d4de !important;
   text-align: center !important;
@@ -49,12 +55,15 @@
   margin-bottom: 15px;
 }
 
-.button-add {
+.button-left {
+  margin-right: 10px;
   margin-bottom: 10px;
-  color: white !important;
-  background-color: #2a64f6 !important;
 }
 
+.button-right {
+  float: right;
+  margin-left: 10px;
+}
 
 // NGX-ADMIN Style Patch
 // Background

@@ -45,10 +45,10 @@
   </div>
 
   <div class="col-md-6">
-    <nb-card>
+    <nb-card size="large">
       <nb-card-body style="padding:0; margin:0;">
         <nb-tabset>
-          <nb-tab tabTitle="Connect ({{ disconnChansPage.total }})">
+          <nb-tab tabTitle="Disconnected ({{ disconnChansPage.total }})">
             <nb-card size="medium" style="padding:0; margin:0;">
               <nb-card-body>
                 <ngx-table-component [config]="tableConfig"
@@ -68,7 +68,7 @@
               </nb-card-footer>
             </nb-card>
           </nb-tab>
-          <nb-tab tabTitle="Disconnect ({{ connChansPage.total }})">
+          <nb-tab tabTitle="Connected ({{ connChansPage.total }})">
             <nb-card size="medium"  style="padding:0; margin:0;">
               <nb-card-body>
                 <ngx-table-component [config]="tableConfig"
