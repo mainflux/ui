@@ -31,7 +31,7 @@
     <nb-card size="large">
       <nb-card-body style="padding:0; margin:0;">
         <nb-tabset>
-          <nb-tab tabTitle="Connect ({{ disconnThingsPage.total }})">
+          <nb-tab tabTitle="Disconnected ({{ disconnThingsPage.total }})">
             <nb-card size="medium"  style="padding:0; margin:0;">
               <nb-card-body>
                 <ngx-table-component [config]="tableConfig"
@@ -51,7 +51,7 @@
               </nb-card-footer>
             </nb-card>
           </nb-tab>
-          <nb-tab tabTitle="Disconnect ({{ connThingsPage.total }})">
+          <nb-tab tabTitle="Connected ({{ connThingsPage.total }})">
             <nb-card size="medium"  style="padding:0; margin:0;">
               <nb-card-body>
                 <ngx-table-component [config]="tableConfig"

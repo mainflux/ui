@@ -5,18 +5,18 @@
 </button>
 
 <button nbButton size="small" class="button-blue button-left"
-        (click)="onClickSave()"
-        shape="semi-round">
-  <nb-icon icon="save-outline"></nb-icon>
-  Save
-</button>
-
-<button nbButton size="small" class="button-green button-left"
         (click)="fileInput.click()"
         shape="semi-round">
   <nb-icon icon="file-add-outline"></nb-icon>
   Upload
   <input hidden #fileInput (change)="onFileSelected($event.target.files)" type="file">
+</button>
+
+<button nbButton size="small" class="button-green button-left"
+        (click)="onClickSave()"
+        shape="semi-round">
+  <nb-icon icon="save-outline"></nb-icon>
+  Save
 </button>
 
 <button nbButton size="small" class="button-right" [ngClass]="selectedThings.length > 0 ? 'button-red' : 'button-grey'"
