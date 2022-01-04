@@ -5,6 +5,7 @@ import { throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 import { Channel, PageFilters } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
+import { Cert } from 'app/common/interfaces/certs.interface';
 
 @Injectable()
 export class CertsService {
@@ -14,7 +15,7 @@ export class CertsService {
     private notificationsService: NotificationsService,
   ) { }
 
-  issueCert(cert: any) {
+  issueCert(cert: Cert) {
     return this.http.post(environment.certsUrl, cert, { observe: 'response' })
       .map(
           resp => {

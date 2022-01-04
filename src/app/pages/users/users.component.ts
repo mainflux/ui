@@ -93,6 +93,7 @@ export class UsersComponent implements OnInit {
   searchUsersbyEmail(input) {
     const t = new Date().getTime();
     if ((t - this.searchFreq) > defFreq) {
+      this.pageFilters.offset = 0;
       this.getUsers(input);
       this.searchFreq = t;
     }

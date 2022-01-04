@@ -118,6 +118,7 @@ export class ChannelsComponent implements OnInit {
   searchChannel(input) {
     const t = new Date().getTime();
     if ((t - this.searchTime) > defSearchBarMs) {
+      this.pageFilters.offset = 0;
       this.getChannels(input);
       this.searchTime = t;
     }

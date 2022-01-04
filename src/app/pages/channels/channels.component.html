@@ -1,7 +1,8 @@
 <button nbButton size="small" class="button-blue button-left"
         (click)="openAddModal()"
         shape="semi-round">
-  Create Channel
+  <nb-icon icon="plus-outline"></nb-icon>
+  Create
 </button>
 
 <button nbButton size="small" class="button-blue button-left"
@@ -23,6 +24,7 @@
         [ngClass]="selectedChannels.length > 0 ? 'button-red' : 'button-grey'"
         (click)="deleteChannels()"
         shape="semi-round">
+  <nb-icon icon="trash-2-outline"></nb-icon>
   Delete
 </button>
 

@@ -36,7 +36,7 @@ export const CHART_OPTIONS: { [key: string]: ChartOptions; } = {
     scales: {
       xAxes: [{
         type: 'time',
-        distribution: 'linear',
+        distribution: 'series',
         ticks: {
           fontSize: 12,
           minRotation: 30,
