@@ -13,7 +13,7 @@ export class UsersAddComponent {
   editorMetadata = '';
 
   @Input() formData = {
-    name: '',
+    email: '',
     password: '',
     metadata: {},
   };

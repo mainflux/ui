@@ -119,6 +119,7 @@ export class ThingsComponent implements OnInit {
   searchThing(input) {
     const t = new Date().getTime();
     if ((t - this.searchTime) > defSearchBarMs) {
+      this.pageFilters.offset = 0;
       this.getThings(input);
       this.searchTime = t;
     }
