@@ -47,7 +47,7 @@ export class PaginationComponent implements OnChanges {
       this.changePageEvent.emit(offset);
     }
     if (dir === 'last' && this.totalPages > this.currentPage) {
-      offset = Math.round(this.page.total / this.page.limit) * this.page.limit;
+      offset = Math.floor((this.page.total - 1) / this.page.limit) * this.page.limit;
       this.changePageEvent.emit(offset);
     }
   }
