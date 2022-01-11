@@ -119,7 +119,7 @@ export class UsersService {
   }
 
   getServiceVersion() {
-    return this.http.get(environment.usersVersionUrl);
+    return this.http.get(environment.usersHealthUrl);
   }
 
   getUserPicture(): any {

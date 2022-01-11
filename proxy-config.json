@@ -15,7 +15,7 @@
     "target": "http://localhost:8189",
     "secure": false
   },
-  "/version": {
+  "/health": {
     "target": "http://localhost:8180",
     "secure": false
   },
