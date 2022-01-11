@@ -16,7 +16,7 @@
     "secure": false
   },
   "/health": {
-    "target": "http://localhost:8180",
+    "target": "http://localhost:8182",
     "secure": false
   },
   "/tokens": {
