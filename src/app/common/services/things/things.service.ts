@@ -16,6 +16,10 @@ export class ThingsService {
     private notificationsService: NotificationsService,
   ) { }
 
+  getServiceHealth() {
+    return this.http.get(environment.thingsHealthUrl);
+  }
+
   addThing(thing: Thing) {
     return this.http.post(environment.thingsUrl, thing, { observe: 'response' })
       .map(

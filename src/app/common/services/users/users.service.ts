@@ -118,10 +118,6 @@ export class UsersService {
       );
   }
 
-  getServiceVersion() {
-    return this.http.get(environment.thingsHealthUrl);
-  }
-
   getUserPicture(): any {
     return this.picture;
   }
