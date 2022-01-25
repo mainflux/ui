@@ -15,8 +15,8 @@
     "target": "http://localhost:8189",
     "secure": false
   },
-  "/version": {
-    "target": "http://localhost:8180",
+  "/health": {
+    "target": "http://localhost:8182",
     "secure": false
   },
   "/tokens": {

@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 // Mainflux - Users
 import { User } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
+import { ThingsService } from 'app/common/services/things/things.service';
 import { STRINGS } from 'assets/text/strings';
 import { environment } from 'environments/environment';
 
@@ -57,6 +58,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private menuService: NbMenuService,
     private themeService: NbThemeService,
     private usersService: UsersService,
+    private thingsService: ThingsService,
     private layoutService: LayoutService,
     private breakpointService: NbMediaBreakpointsService) {
   }
@@ -71,7 +73,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.user.picture = this.usersService.getUserPicture();
       },
     );
-    this.usersService.getServiceVersion().subscribe(
+
+    // Mfx - get Things service Version
+    this.thingsService.getServiceHealth().subscribe(
       (resp: any) => {
         this.version = resp.version;
       },

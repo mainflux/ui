@@ -2,7 +2,7 @@ export const environment = {
   usersUrl: '/users',
   groupsUrl: '/groups',
   membersUrl: '/members',
-  usersVersionUrl: '/version',
+  thingsHealthUrl: '/health',
   tokensUrl: '/tokens',
   requestPassUrl: '/password/reset-request',
   resetPassUrl: '/password/reset',
