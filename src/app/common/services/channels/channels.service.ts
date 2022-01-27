@@ -72,15 +72,9 @@ export class ChannelsService {
       .set('offset', filters.offset.toString())
       .set('limit', filters.limit.toString())
       .set('order', 'name')
-      .set('dir', 'asc');
+      .set('dir', 'asc')
+      .set('metadata', filters.metadata);
 
-    if (filters.type) {
-      if (filters.metadata) {
-        params = params.append('metadata', `{"${filters.type}": ${filters.metadata}}`);
-      } else {
-        params = params.append('metadata', `{"type":"${filters.type}"}`);
-      }
-    }
 
     if (filters.name) {
       params = params.append('name', filters.name);

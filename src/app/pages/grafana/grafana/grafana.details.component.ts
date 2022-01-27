@@ -54,8 +54,11 @@ export class GrafanaDetailsComponent implements OnInit {
     this.page = {};
 
     this.pageFilters.name = name;
-    this.pageFilters.type = 'temperature';
-    this.pageFilters.metadata = '{"dashboard":"grafana"}';
+    
+    this.pageFilters.metadata = {
+                    "dashboard":"grafana"
+                  };
+                  
     this.thingsService.getThings(this.pageFilters).subscribe(
       (resp: any) => {
         this.page = {

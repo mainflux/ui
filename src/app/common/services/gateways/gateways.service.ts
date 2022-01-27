@@ -28,7 +28,7 @@ export class GatewaysService {
   ) { }
 
   getGateways(filters: PageFilters) {
-    filters.type = typeGateway;
+    filters.metadata = {"type":typeGateway}
     return this.thingsService.getThings(filters);
   }
 
