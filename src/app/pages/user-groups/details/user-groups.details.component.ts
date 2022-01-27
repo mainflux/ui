@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { UserGroup, User } from 'app/common/interfaces/mainflux.interface';
+import { UserGroup, User, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
 import { UsersService } from 'app/common/services/users/users.service';
 import { UserGroupsService } from 'app/common/services/users/groups.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
+
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'ngx-user-groups-details-component',
@@ -12,29 +14,38 @@ import { NotificationsService } from 'app/common/services/notifications/notifica
   styleUrls: ['./user-groups.details.component.scss'],
 })
 export class UserGroupsDetailsComponent implements OnInit {
-  offset = 0;
-  limit = 20;
+  group: UserGroup = {};
+  membersPage: TablePage = {};
+  unassignedPage: TablePage = {};
 
-  userGroup: UserGroup = {};
-  users: User[] = [];
-  members: User[] = [];
+  editorOptions: JsonEditorOptions;
+  @ViewChild(JsonEditorComponent, { static: false }) editor: JsonEditorComponent;
 
-  selectedUsers = [];
+  usersToAssign: string[] = [];
+  usersToUnassign: string[] = [];
+
+  tableConfig: TableConfig = {
+    colNames: ['Email', 'ID', 'checkbox'],
+    keys: ['email', 'id', 'checkbox'],
+  };
 
   constructor(
     private route: ActivatedRoute,
     private usersService: UsersService,
     private userGroupsService: UserGroupsService,
     private notificationsService: NotificationsService,
-  ) {}
+  ) {
+    this.editorOptions = new JsonEditorOptions();
+    this.editorOptions.mode = 'code';
+    this.editorOptions.mainMenuBar = false;
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
 
     this.userGroupsService.getGroup(id).subscribe(
       (resp: any) => {
-        this.userGroup = resp;
-
+        this.group = resp;
         this.getMembers();
       },
     );
@@ -43,18 +54,25 @@ export class UserGroupsDetailsComponent implements OnInit {
   getMembers() {
     this.usersService.getUsers().subscribe(
       (resp: any) => {
-        this.users = resp.users;
+        this.unassignedPage.rows = resp.users;
+        this.unassignedPage.total = resp.total;
+        this.unassignedPage.offset = resp.offset;
+        this.unassignedPage.limit = resp.limit;
       },
     );
 
-    this.userGroupsService.getMembers(this.userGroup.id).subscribe(
-      respMemb => {
-        this.members = respMemb.users;
+    this.userGroupsService.getMembers(this.group.id).subscribe(
+      resp => {
+        this.membersPage.rows = resp.users;
+        this.membersPage.total = resp.total;
+        this.membersPage.offset = resp.offset;
+        this.membersPage.limit = resp.limit;
 
-        if (this.members) {
+        if (this.membersPage.total > 0) {
           // Remove members from available Users
-          this.members.forEach(m => {
-            this.users = this.users.filter(u => u.id !== m.id);
+          this.membersPage.rows.forEach((m: any) => {
+            this.unassignedPage.rows = this.unassignedPage.rows
+            .filter((u: any) => u.id !== m.id);
           });
         }
       },
@@ -62,27 +80,66 @@ export class UserGroupsDetailsComponent implements OnInit {
   }
 
   onAssign() {
-    const userIDs = this.selectedUsers.map(u => u.id);
-
-    this.userGroupsService.assignUser(this.userGroup.id, userIDs).subscribe(
+    this.userGroupsService.assignUser(this.group.id, this.usersToAssign).subscribe(
       resp => {
         this.notificationsService.success('Successfully assigned User(s) to Group', '');
-        this.selectedUsers = [];
         this.getMembers();
       },
     );
 
-    if (this.selectedUsers.length === 0) {
+    if (this.usersToAssign.length === 0) {
       this.notificationsService.warn('User(s) must be provided', '');
     }
   }
 
-  onUnassign(member: any) {
-    this.userGroupsService.unassignUser(this.userGroup.id, [member.id]).subscribe(
+  onUnassign() {
+    this.userGroupsService.unassignUser(this.group.id, this.usersToUnassign).subscribe(
       resp => {
         this.notificationsService.success('Successfully unassigned User(s) from Group', '');
-        this.selectedUsers = [];
         this.getMembers();
+      },
+    );
+  }
+
+  onChangeLimitMembers(limit: number) {
+    this.membersPage.offset = 0;
+    this.membersPage.limit = limit;
+    this.getMembers();
+  }
+
+  onChangePageMembers(offset: number) {
+    this.membersPage.offset = offset;
+    this.getMembers();
+  }
+
+  onChangeLimitUnassigned(limit: number) {
+    this.unassignedPage.offset = 0;
+    this.unassignedPage.limit = limit;
+  }
+
+  onChangePageUnassigned(offset: any) {
+    this.unassignedPage.offset = offset;
+  }
+
+  onCheckboxUnassigned(rows: string[]) {
+    this.usersToAssign = rows;
+  }
+
+  onCheckboxMembers(rows: string[]) {
+    this.usersToUnassign = rows;
+  }
+
+  onEdit() {
+    try {
+      this.group.metadata = this.editor.get();
+    } catch (e) {
+      this.notificationsService.error('Wrong metadata format', '');
+      return;
+    }
+
+    this.userGroupsService.editGroup(this.group).subscribe(
+      resp => {
+        this.notificationsService.success('Group metadata successfully edited', '');
       },
     );
   }

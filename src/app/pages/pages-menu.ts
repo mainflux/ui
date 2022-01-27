@@ -29,7 +29,7 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       home: true,
     },
     {
-      title: 'User Groups',
+      title: 'Users Groups',
       icon: 'shield-outline',
       link: appPrefix + '/pages/users/groups',
     },
@@ -55,7 +55,7 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
         {
           title: 'Twins',
           icon: 'copy-outline',
-          link: '/pages/twins',
+          link: appPrefix + '/pages/services/twins',
         },
         {
           title: 'LoRa',

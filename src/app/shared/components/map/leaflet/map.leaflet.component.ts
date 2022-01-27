@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import * as L from 'leaflet';
 import { MqttService, IMqttMessage } from 'ngx-mqtt';
+import { MsgFilters } from 'app/common/interfaces/mainflux.interface';
 import { Gateway } from 'app/common/interfaces/gateway.interface';
 
 
@@ -83,7 +84,10 @@ export class MapComponent implements OnChanges {
       const channelID: string = gw.metadata ? gw.metadata.data_channel_id : '';
 
       if (gw.key !== undefined && channelID !== '') {
-        this.msgService.getMessages(channelID, gw.key, gw.id).subscribe(
+        const filters: MsgFilters = {
+          publisher: gw.id,
+        };
+        this.msgService.getMessages(channelID, gw.key, filters).subscribe(
           (resp: any) => {
             let lon: Number;
             let lat: Number;

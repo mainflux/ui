@@ -21,7 +21,7 @@ export class UsersService {
   ) {
     this.loginUrl = environment.appPrefix === ''
                       ? environment.loginUrl
-                      : environment.appPrefix + '/' + environment.loginUrl;
+                      : '/' + environment.appPrefix + environment.loginUrl;
   }
 
   addUser(user: User) {
@@ -53,7 +53,8 @@ export class UsersService {
       )
       .catch(
         err => {
-          this.router.navigateByUrl('/auth/login');
+          this.notificationsService.error('Failed to fetch User',
+            `Error: ${err.status} - ${err.statusText}`);
           return EMPTY;
         },
       );
@@ -81,7 +82,7 @@ export class UsersService {
         err => {
           this.notificationsService.error('Failed to fetch Users',
             `Error: ${err.status} - ${err.statusText}`);
-            return throwError(err);
+            return EMPTY;
         },
       );
   }

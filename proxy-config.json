@@ -7,6 +7,13 @@
     "target": "http://localhost:8180",
     "secure": false
   },
+  "/groups/users/*": {
+    "target": "http://localhost:8180",
+    "secure": false,
+    "pathRewrite": {
+      "^/groups/users": "/groups"
+    }
+  },
   "/members/*": {
     "target": "http://localhost:8189",
     "secure": false

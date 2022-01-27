@@ -81,11 +81,13 @@
 
   <button nbButton
           fullWidth
-          status="primary"
-          size="large"
+          status="success"
           [disabled]="submitted || !form.valid"
           [class.btn-pulse]="submitted">
-    Log In
+    Sign In
   </button>
 </form>
 
+<section class="another-action" aria-label="Register">
+  Don't have an account? <a class="text-link" routerLink="../register">Sign Up</a>
+</section>
