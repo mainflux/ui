@@ -16,6 +16,11 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       link: appPrefix + '/pages/things',
     },
     {
+      title: 'Grafana',
+      icon: 'film-outline',
+      link: appPrefix + '/pages/grafana',
+    },
+    {
       title: 'Channels',
       icon: 'flip-2-outline',
       link: appPrefix + '/pages/channels',
@@ -42,6 +47,11 @@ export const MENU_ITEMS: NbMenuItem[] = environment.production ?
       title: 'Things',
       icon: 'film-outline',
       link: appPrefix + '/pages/things',
+    },
+    {
+      title: 'Grafana',
+      icon: 'film-outline',
+      link: appPrefix + '/pages/grafana',
     },
     {
       title: 'Channels',

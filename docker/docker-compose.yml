@@ -445,7 +445,7 @@ services:
     volumes:
       - mainflux-grafana-volume:/var/lib/grafana
       - ./configs/grafana-defaults.ini:/usr/share/grafana/conf/defaults.ini
-
+      - ./configs/jwks.json:/usr/share/grafana/conf/jwks.json
   influxdb-reader:
     image: mainflux/influxdb-reader:latest
     container_name: mainflux-influxdb-reader

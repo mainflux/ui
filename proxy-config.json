@@ -27,6 +27,10 @@
     "target": "http://localhost:8182",
     "secure": false
   },
+  "/grafana/*": {
+    "target": "http://localhost:3001",
+    "secure": false
+  },
   "/connect": {
     "target": "http://localhost:8182",
     "secure": false

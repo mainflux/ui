@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-8">
+        <div class="col-1 form-key">
+            Thing:
+        </div>
+        <div class="col-6">
+          <nb-select fullWidth [(selected)]="thing" size="tiny" (selectedChange)="getThings()">
+            <nb-option *ngFor="let th of this.page.rows" [value]="th">{{th.name}}</nb-option>
+          </nb-select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <iframe [src]="iframeGrafana" frameborder = "0"></iframe>
+</div>
