@@ -4,8 +4,11 @@ export interface UserGroup {
   description?: string;
   metadata?: Object;
   owner_id?: string;
-  parent_id?: string;
+  path?: string;
+  level?: string;
   users?: User[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface User {

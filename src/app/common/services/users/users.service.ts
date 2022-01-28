@@ -12,17 +12,12 @@ const defLimit: number = 20;
 @Injectable()
 export class UsersService {
   picture = 'assets/images/mainflux-logo.png';
-  loginUrl: string;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private notificationsService: NotificationsService,
-  ) {
-    this.loginUrl = environment.appPrefix === ''
-                      ? environment.loginUrl
-                      : environment.appPrefix + '/' + environment.loginUrl;
-  }
+  ) {}
 
   addUser(user: User) {
     return this.http.post(environment.usersUrl, user, { observe: 'response' })
@@ -53,7 +48,8 @@ export class UsersService {
       )
       .catch(
         err => {
-          this.router.navigateByUrl('/auth/login');
+          this.notificationsService.error('Failed to fetch User',
+            `Error: ${err.status} - ${err.statusText}`);
           return EMPTY;
         },
       );
@@ -81,7 +77,7 @@ export class UsersService {
         err => {
           this.notificationsService.error('Failed to fetch Users',
             `Error: ${err.status} - ${err.statusText}`);
-            return throwError(err);
+            return EMPTY;
         },
       );
   }

@@ -7,7 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 
 import { environment } from 'environments/environment';
 
-// Mainflux - User Groups
+// Mainflux - Users Groups
 import { UserGroupsComponent } from './user-groups/user-groups.component';
 import { UserGroupsDetailsComponent } from './user-groups/details/user-groups.details.component';
 // Mainflux - User

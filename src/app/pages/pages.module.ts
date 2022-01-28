@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'app/shared/shared.module';
 import { CommonModule } from 'app/common/common.module';
 import { ConfirmationComponent } from 'app/shared/components/confirmation/confirmation.component';
-// Mainflux - User Groups
+// Mainflux - Users Groups
 import { UserGroupsComponent } from 'app/pages/user-groups/user-groups.component';
 import { UserGroupsAddComponent } from 'app/pages/user-groups/add/user-groups.add.component';
 import { UserGroupsDetailsComponent } from 'app/pages/user-groups/details/user-groups.details.component';
@@ -73,7 +73,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
   ],
   declarations: [
     PagesComponent,
-    // User Groups
+    // Users Groups
     UserGroupsComponent,
     UserGroupsAddComponent,
     UserGroupsDetailsComponent,

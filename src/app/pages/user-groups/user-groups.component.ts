@@ -18,13 +18,15 @@ const defFreq: number = 100;
 })
 export class UserGroupsComponent implements OnInit {
   tableConfig: TableConfig = {
-    colNames: ['', '', '', 'Name', 'Description', 'ID'],
-    keys: ['edit', 'delete', 'details', 'name', 'description', 'id'],
+    colNames: ['', '', '', 'Name', 'Level', 'ID', 'Path', 'checkbox'],
+    keys: ['edit', 'delete', 'details', 'name', 'level', 'id', 'path', 'checkbox'],
   };
   page: TablePage = {};
   pageFilters: PageFilters = {};
 
   searchFreq = 0;
+
+  selectedGroups: string[] = [];
 
   constructor(
     private router: Router,
@@ -35,7 +37,7 @@ export class UserGroupsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Fetch all User Groups
+    // Fetch all Users Groups
     this.getGroups();
   }
 
@@ -118,6 +120,10 @@ export class UserGroupsComponent implements OnInit {
 
   onClickSave() {
     this.fsService.exportToJson('mfx_user_groups.txt', this.page.rows);
+  }
+
+  onCheckBox(rows: string[]) {
+    this.selectedGroups = rows;
   }
 
   onFileSelected(files: FileList) {

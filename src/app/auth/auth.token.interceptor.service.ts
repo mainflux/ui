@@ -27,7 +27,7 @@ export class TokenInterceptor implements HttpInterceptor {
   ) {
     this.loginUrl = environment.appPrefix === ''
                       ? environment.loginUrl
-                      : environment.appPrefix + '/' + environment.loginUrl;
+                      : '/' + environment.appPrefix + environment.loginUrl;
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

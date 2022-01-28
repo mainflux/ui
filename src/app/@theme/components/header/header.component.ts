@@ -119,6 +119,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   // Mfx - construct url with prefix
   getLink (link: string) {
-    return environment.appPrefix === '' ? link : '/' + environment.appPrefix + '/' + link;
+    return environment.appPrefix === '' ? link : '/' + environment.appPrefix + link;
   }
 }

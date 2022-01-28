@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
   ) {
     this.loginUrl = environment.appPrefix === ''
                       ? environment.loginUrl
-                      : environment.appPrefix + '/' + environment.loginUrl;
+                      : '/' + environment.appPrefix + environment.loginUrl;
   }
 
   canActivate() {

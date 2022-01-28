@@ -3,6 +3,8 @@ import { Component, ChangeDetectorRef, Inject } from '@angular/core';
 import { NbAuthService, NB_AUTH_OPTIONS, NbRegisterComponent } from '@nebular/auth';
 import { Router } from '@angular/router';
 
+import { environment } from 'environments/environment';
+
 @Component({
   selector: 'ngx-register-component',
   templateUrl: 'register.component.html',
@@ -10,6 +12,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent extends NbRegisterComponent {
   // user inherited
   // strategy inherited
+  loginUrl: string;
 
   constructor(
     @Inject(NB_AUTH_OPTIONS) protected options: {},
@@ -18,6 +21,10 @@ export class RegisterComponent extends NbRegisterComponent {
     protected router: Router,
   ) {
     super(authService, options, cd, router);
+
+    this.loginUrl = environment.appPrefix === ''
+                      ? environment.loginUrl
+                      : '/' + environment.appPrefix + environment.loginUrl;
   }
 
   register() {
@@ -31,7 +38,7 @@ export class RegisterComponent extends NbRegisterComponent {
           password: this.user.password,
         }).subscribe(
           respAuth => {
-            this.router.navigateByUrl('/pages/dashboard');
+            this.router.navigateByUrl(this.loginUrl);
           },
         );
       },

@@ -109,7 +109,7 @@ export class TwinsComponent implements OnInit {
     this.twinsService.editTwin(event.newData).subscribe();
   }
 
-  onSaveFile() {
+  onClickSave() {
     this.fsService.exportToJson('twins.txt', this.page.rows);
   }
 

@@ -33,7 +33,7 @@ export class UserGroupsService {
   }
 
   editGroup(org: UserGroup) {
-    return this.http.patch(`${environment.groupsUrl}/${org.id}`, org)
+    return this.http.put(`${environment.groupsUrl}/${org.id}`, org)
       .map(
         resp => {
           return resp;
@@ -67,7 +67,7 @@ export class UserGroupsService {
   assignUser(groupID: string, userIDs: string[]): any {
     const assignReq = {
       members: userIDs,
-      type: 'user',
+      type: 'users',
     };
     return this.http.post(`${environment.groupsUrl}/${groupID}/members`, assignReq)
       .map(
@@ -139,7 +139,7 @@ export class UserGroupsService {
       )
       .catch(
         err => {
-          this.notificationsService.error('Failed to fetch User Groups',
+          this.notificationsService.error('Failed to fetch Users Groups',
             `Error: ${err.status} - ${err.statusText}`);
             return throwError(err);
         },
@@ -147,7 +147,7 @@ export class UserGroupsService {
   }
 
   getMembers(groupID?: string): any {
-    return this.http.get(`${environment.groupsUrl}/${groupID}/members`)
+    return this.http.get(`${environment.groupsUrl}/users/${groupID}`)
       .map(
         resp => {
           return resp;
