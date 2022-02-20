@@ -41,6 +41,7 @@ import { ChannelsComponent } from 'app/pages/channels/channels.component';
 import { ChannelsAddComponent } from 'app/pages/channels/add/channels.add.component';
 import { ChannelsDetailsComponent } from 'app/pages/channels/details/channels.details.component';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { GrafanaDetailsComponent } from './grafana/grafana/grafana.details.component';
 
 @NgModule({
   imports: [
@@ -86,6 +87,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
     ThingsAddComponent,
     ThingsCertComponent,
     ThingsDetailsComponent,
+    GrafanaDetailsComponent,
     // Channels
     ChannelsComponent,
     ChannelsAddComponent,

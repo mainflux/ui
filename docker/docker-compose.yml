@@ -433,7 +433,7 @@ services:
       - ./config.toml:/config.toml
 
   grafana:
-    image: grafana/grafana:7.3.7
+    image: grafana/grafana:8.3.0
     container_name: mainflux-grafana
     depends_on:
       - influxdb
@@ -445,7 +445,7 @@ services:
     volumes:
       - mainflux-grafana-volume:/var/lib/grafana
       - ./configs/grafana-defaults.ini:/usr/share/grafana/conf/defaults.ini
-
+      - ./configs/jwks.json:/usr/share/grafana/conf/jwks.json
   influxdb-reader:
     image: mainflux/influxdb-reader:latest
     container_name: mainflux-influxdb-reader

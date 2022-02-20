@@ -90,8 +90,7 @@ export interface PageFilters {
   offset?: number;
   limit?: number;
   name?: string;
-  type?: string;
-  metadata?: string;
+  metadata?: any;
 }
 
 export interface MsgFilters {

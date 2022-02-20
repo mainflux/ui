@@ -5,6 +5,7 @@ import { throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 import { Thing, PageFilters } from 'app/common/interfaces/mainflux.interface';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
+import { filter } from 'rxjs-compat/operator/filter';
 
 const defLimit: number = 10;
 
@@ -78,13 +79,9 @@ export class ThingsService {
       .set('order', 'name')
       .set('dir', 'asc');
 
-    if (filters.type) {
-      if (filters.metadata) {
-        params = params.append('metadata', `{"${filters.type}": ${filters.metadata}}`);
-      } else {
-        params = params.append('metadata', `{"type":"${filters.type}"}`);
+      if (filters.metadata){
+        params = params.append('metadata', JSON.stringify(filters.metadata));
       }
-    }
 
     if (filters.name) {
       params = params.append('name', filters.name);

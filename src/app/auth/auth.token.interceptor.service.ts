@@ -39,11 +39,13 @@ export class TokenInterceptor implements HttpInterceptor {
           !request.url.startsWith(environment.httpAdapterUrl) &&
           !request.url.startsWith(environment.readerUrl) &&
           !request.url.startsWith(environment.bootstrapUrl) &&
-          !request.url.startsWith(environment.browseUrl)
+          !request.url.startsWith(environment.browseUrl) &&
+          !request.url.startsWith('/grafana')
         ) {
           request = request.clone({
             setHeaders: {
               'Authorization': token.getValue(),
+              'X-WEBAUTH-USER': token.getName(),
             },
           });
         }
