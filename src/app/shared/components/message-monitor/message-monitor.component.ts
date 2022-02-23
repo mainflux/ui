@@ -115,7 +115,7 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.messagesPage.rows = [];
-    this.messagesService.getMessages(this.chanID, this.thingKey, this.filters, this.readerUrl).subscribe(
+    this.messagesService.getMessages(this.chanID, this.filters, this.readerUrl).subscribe(
       (resp: any) => {
         if (resp.messages) {
           this.messagesPage = {
@@ -123,8 +123,25 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
             limit: resp.limit,
             total: resp.total,
             rows: resp.messages.map((msg: MainfluxMsg) => {
-              msg.value = this.messageValuePipe.transform(msg);
-              return msg;
+              if (msg.value) {
+                msg.value = this.messageValuePipe.transform(msg);
+                return msg;
+              }
+              if (msg.string_value) {
+                msg.value = this.messageValuePipe.transform(msg);
+                delete msg.string_value;
+                return msg;
+              }
+              if (msg.bool_value) {
+                msg.value = this.messageValuePipe.transform(msg);
+                delete msg.bool_value;
+                return msg;
+              }
+              if (msg.data_value) {
+                msg.value = this.messageValuePipe.transform(msg);
+                delete msg.data_value;
+                return msg;
+              }
             }),
           };
           this.msgDatasets = [{

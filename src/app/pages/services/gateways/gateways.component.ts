@@ -60,7 +60,7 @@ export class GatewaysComponent implements OnInit {
             publisher: gw.id,
           };
 
-          this.messagesService.getMessages(dataChannID, gw.key, msgFilters).subscribe(
+          this.messagesService.getMessages(dataChannID, msgFilters).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
                 gw.seen = msgResp.messages[0].time;

@@ -61,17 +61,17 @@ export interface Twin {
 }
 
 export interface SenMLRec {
-  bn: string;
-  bt: number;
-  bu: string;
-  bver: number;
-  n: string;
-  t: number;
-  u: string;
-  v: number;
-  vd: number;
-  vb: number;
-  vs: string;
+  bn?: string;
+  bt?: number;
+  bu?: string;
+  bver?: number;
+  n?: string;
+  t?: number;
+  u?: string;
+  v?: number;
+  vd?: string;
+  vb?: boolean;
+  vs?: string;
 }
 
 export interface MainfluxMsg {

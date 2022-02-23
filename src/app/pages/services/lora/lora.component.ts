@@ -61,7 +61,7 @@ export class LoraComponent implements OnInit {
               publisher: lora.id,
             };
 
-            this.messagesService.getMessages(chanID, lora.key, msgFilters).subscribe(
+            this.messagesService.getMessages(chanID, msgFilters).subscribe(
               (msgResp: any) => {
                 if (msgResp.messages) {
                   lora.seen = msgResp.messages[0].time;
@@ -94,7 +94,11 @@ export class LoraComponent implements OnInit {
     this.dialogService.open(LoraAddComponent, { context: { action: 'Create' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          this.getLoraDevices();
+          setTimeout(
+            () => {
+              this.getLoraDevices();
+            }, 3000,
+          );
         }
       },
     );
@@ -104,7 +108,11 @@ export class LoraComponent implements OnInit {
     this.dialogService.open(LoraAddComponent, { context: { formData: row, action: 'Edit' } }).onClose.subscribe(
       confirm => {
         if (confirm) {
-          this.getLoraDevices();
+          setTimeout(
+            () => {
+              this.getLoraDevices();
+            }, 3000,
+          );
         }
       },
     );

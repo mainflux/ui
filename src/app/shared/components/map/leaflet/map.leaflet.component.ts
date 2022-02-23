@@ -87,7 +87,7 @@ export class MapComponent implements OnChanges {
         const filters: MsgFilters = {
           publisher: gw.id,
         };
-        this.msgService.getMessages(channelID, gw.key, filters).subscribe(
+        this.msgService.getMessages(channelID, filters).subscribe(
           (resp: any) => {
             let lon: Number;
             let lat: Number;

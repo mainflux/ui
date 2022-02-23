@@ -7,6 +7,8 @@ import { Config, ConfigContent, ConfigUpdate } from 'app/common/interfaces/boots
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { ThingsService } from 'app/common/services/things/things.service';
 
+const thingSchemePrefix = 'Thing ';
+
 @Injectable()
 export class BootstrapService {
   content: ConfigContent = {
@@ -77,7 +79,7 @@ export class BootstrapService {
 
   getConfig(gateway: Gateway) {
     const headers = new HttpHeaders({
-      'Authorization': gateway.metadata.external_key,
+      'Authorization': thingSchemePrefix + gateway.metadata.external_key,
     });
 
     return this.http.get(`${environment.bootstrapUrl}/${gateway.metadata.external_id}`, { headers: headers });
