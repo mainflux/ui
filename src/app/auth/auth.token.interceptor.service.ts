@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
 import { environment } from 'environments/environment';
 
+const bearerSchemePrefix = 'Bearer ';
+
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
@@ -37,13 +39,12 @@ export class TokenInterceptor implements HttpInterceptor {
       (token: NbAuthJWTToken) => {
         if (token && token.getValue() &&
           !request.url.startsWith(environment.httpAdapterUrl) &&
-          !request.url.startsWith(environment.readerUrl) &&
           !request.url.startsWith(environment.bootstrapUrl) &&
           !request.url.startsWith(environment.browseUrl)
         ) {
           request = request.clone({
             setHeaders: {
-              'Authorization': token.getValue(),
+              'Authorization': bearerSchemePrefix + token.getValue(),
             },
           });
         }
@@ -51,11 +52,11 @@ export class TokenInterceptor implements HttpInterceptor {
           resp => {
           },
           err => {
-            // Status 403 - Forbiden
             if (err instanceof HttpErrorResponse &&
               err.status === 403 || err.status === 401 &&
               !request.url.startsWith(environment.httpAdapterUrl) &&
-              !request.url.startsWith(environment.readerUrl)) {
+              !request.url.startsWith(environment.readerUrl) &&
+              !request.url.startsWith(environment.bootstrapUrl)) {
               localStorage.removeItem('auth_app_token');
               this.router.navigateByUrl(this.loginUrl);
             }

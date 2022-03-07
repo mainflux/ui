@@ -6,9 +6,11 @@ import { environment } from 'environments/environment';
 import { ThingsService } from 'app/common/services/things/things.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 
-import { MsgFilters, ReaderUrl } from 'app/common/interfaces/mainflux.interface';
+import { MsgFilters, ReaderUrl, SenMLRec } from 'app/common/interfaces/mainflux.interface';
 
 const defLimit: number = 100;
+const thingSchemePrefix = 'Thing ';
+const ctAppJsonSenml = 'application/senml+json';
 
 @Injectable()
 export class MessagesService {
@@ -20,13 +22,9 @@ export class MessagesService {
     private notificationsService: NotificationsService,
   ) { }
 
-  getMessages(channel: string, thingKey: string, filters: MsgFilters, readerUrl?: ReaderUrl) {
+  getMessages(channel: string, filters: MsgFilters, readerUrl?: ReaderUrl) {
     filters.offset = filters.offset || 0;
     filters.limit = filters.limit || defLimit;
-
-    const headers = new HttpHeaders({
-      'Authorization': thingKey,
-    });
 
     const prefix  = readerUrl ? readerUrl.prefix : environment.readerPrefix;
     const suffix  = readerUrl ? readerUrl.suffix : environment.readerSuffix;
@@ -37,7 +35,7 @@ export class MessagesService {
       url = filters[key] ? url += `&${key}=${filters[key]}` : url;
     });
 
-    return this.http.get(url, { headers: headers })
+    return this.http.get(url)
       .map(
         resp => {
           return resp;
@@ -52,15 +50,16 @@ export class MessagesService {
       );
   }
 
-  sendMessage(channel: string, key: string, msg: string, subtopic?: string) {
+  sendSenML(channel: string, key: string, senml: any, subtopic?: string) {
     const headers = new HttpHeaders({
-      'Authorization': key,
+      'Authorization': thingSchemePrefix + key,
+      'Content-Type': ctAppJsonSenml,
     });
 
     let url = `${environment.httpAdapterUrl}/${environment.readerPrefix}/${channel}/${environment.readerSuffix}`;
     url = subtopic ? url += `/${encodeURIComponent(subtopic)}` : url;
 
-    return this.http.post(url, msg, { headers: headers })
+    return this.http.post(url, senml, { headers: headers })
       .map(
         resp => {
           return resp;
@@ -79,11 +78,20 @@ export class MessagesService {
     const lon = 44.7 + 0.5 * Math.random();
     const lat = 20.4 + 0.5 * Math.random();
 
-    const message = `[{"bn":"location-", "n":"lon", "v":${lon}}, {"n":"lat", "v":${lat}}]`;
+    const senml = [
+      {
+        bn: 'location-',
+        n: 'lon',
+        v: lon,
+      }, {
+        n: 'lat',
+        v: lat,
+      },
+    ];
 
     this.thingsService.getThing(thingID).subscribe(
       (resp: any) => {
-        this.sendMessage(chanID, resp.key, message).subscribe();
+        this.sendSenML(chanID, resp.key, senml).subscribe();
       },
     );
   }

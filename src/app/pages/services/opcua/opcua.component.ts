@@ -75,7 +75,7 @@ export class OpcuaComponent implements OnInit {
           node.nodeID = node.metadata.opcua.node_id;
 
           const chanID: string = node.metadata ? node.metadata.channel_id : '';
-          this.messagesService.getMessages(chanID, node.key, {publisher: node.id}).subscribe(
+          this.messagesService.getMessages(chanID, {publisher: node.id}).subscribe(
             (msgResp: any) => {
               if (msgResp.messages) {
                 node.seen = msgResp.messages[0].time;

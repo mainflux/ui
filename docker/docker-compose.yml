@@ -27,7 +27,7 @@ volumes:
 
 services:
   ui:
-    image: mainflux/ui:latest
+    image: mainflux/ui:${MF_RELEASE_TAG}
     container_name: mainflux-ui
     restart: on-failure
     ports:
@@ -96,7 +96,7 @@ services:
       - mainflux-auth-db-volume:/var/lib/postgresql/data
 
   auth:
-    image: mainflux/auth:latest
+    image: mainflux/auth:${MF_RELEASE_TAG}
     container_name: mainflux-auth
     depends_on:
       - auth-db
@@ -192,7 +192,7 @@ services:
       - mainflux-users-db-volume:/var/lib/postgresql/data
 
   users:
-    image: mainflux/users:latest
+    image: mainflux/users:${MF_RELEASE_TAG}
     container_name: mainflux-users
     volumes:
       - ./templates/${MF_USERS_RESET_PWD_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
@@ -251,7 +251,7 @@ services:
       - mainflux-auth-redis-volume:/data
 
   things:
-    image: mainflux/things:latest
+    image: mainflux/things:${MF_RELEASE_TAG}
     container_name: mainflux-things
     depends_on:
       - things-db
@@ -291,7 +291,7 @@ services:
       - mainflux-base-net
 
   vernemq:
-    image: mainflux/vernemq:latest
+    image: mainflux/vernemq:${MF_RELEASE_TAG}
     container_name: mainflux-vernemq
     restart: on-failure
     environment:
@@ -304,7 +304,7 @@ services:
 
   ## MQTT ADAPTER
   mqtt-adapter:
-    image: mainflux/mqtt:latest
+    image: mainflux/mqtt:${MF_RELEASE_TAG}
     container_name: mainflux-mqtt
     depends_on:
       - vernemq
@@ -331,7 +331,7 @@ services:
 
   ## HTTP ADAPTER
   http-adapter:
-    image: mainflux/http:latest
+    image: mainflux/http:${MF_RELEASE_TAG}
     container_name: mainflux-http
     depends_on:
       - things
@@ -369,7 +369,7 @@ services:
       - mainflux-opcua-redis-volume:/data
 
   opcua-adapter:
-    image: mainflux/opcua:latest
+    image: mainflux/opcua:${MF_RELEASE_TAG}
     container_name: mainflux-opcua
     depends_on:
       - nats
@@ -414,7 +414,7 @@ services:
       - mainflux-influxdb-volume:/var/lib/influxdb
 
   influxdb-writer:
-    image: mainflux/influxdb-writer:latest
+    image: mainflux/influxdb-writer:${MF_RELEASE_TAG}
     container_name: mainflux-influxdb-writer
     depends_on:
       - influxdb
@@ -452,7 +452,7 @@ services:
       - ./configs/grafana-defaults.ini:/usr/share/grafana/conf/defaults.ini
 
   influxdb-reader:
-    image: mainflux/influxdb-reader:latest
+    image: mainflux/influxdb-reader:${MF_RELEASE_TAG}
     container_name: mainflux-influxdb-reader
     restart: on-failure
     environment:
@@ -468,6 +468,8 @@ services:
       MF_JAEGER_URL: ${MF_JAEGER_URL}
       MF_THINGS_AUTH_GRPC_URL: ${MF_THINGS_AUTH_GRPC_URL}
       MF_THINGS_AUTH_GRPC_TIMEOUT: ${MF_THINGS_AUTH_GRPC_TIMEOUT}
+      MF_AUTH_GRPC_URL: ${MF_AUTH_GRPC_URL}
+      MF_AUTH_GRPC_TIMEOUT : ${MF_AUTH_GRPC_TIMEOUT}
     ports:
       - ${MF_INFLUX_READER_PORT}:${MF_INFLUX_READER_PORT}
     networks:
@@ -490,7 +492,7 @@ services:
       - mainflux-bootstrap-db-volume:/var/lib/postgresql/data
 
   bootstrap:
-    image: mainflux/bootstrap:latest
+    image: mainflux/bootstrap:${MF_RELEASE_TAG}
     container_name: mainflux-bootstrap
     depends_on:
       - bootstrap-db
@@ -517,7 +519,7 @@ services:
 
   # Provision
   provision:
-    image: mainflux/provision:latest
+    image: mainflux/provision:${MF_RELEASE_TAG}
     container_name: mainflux-provision
     restart: on-failure
     networks:
@@ -608,7 +610,7 @@ services:
       - mainflux-certs-db-volume:/var/lib/postgresql/data
 
   certs:
-    image: mainflux/certs:latest
+    image: mainflux/certs:${MF_RELEASE_TAG}
     container_name: mainflux-certs
     depends_on:
       - certs-db

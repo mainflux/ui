@@ -124,7 +124,7 @@ export class TwinsDetailsComponent implements OnInit, OnDestroy {
       offset: 0,
       limit: 1,
     };
-    this.messagesService.getMessages(chan, key, msgFilters).subscribe(
+    this.messagesService.getMessages(chan, msgFilters).subscribe(
       (msgs: any) => {
         if (!msgs.messages) {
           return;

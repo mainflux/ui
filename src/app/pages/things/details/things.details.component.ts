@@ -7,7 +7,7 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { CertsService } from 'app/common/services/certs/certs.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Thing, TableConfig, TablePage } from 'app/common/interfaces/mainflux.interface';
+import { Thing, TableConfig, TablePage, SenMLRec } from 'app/common/interfaces/mainflux.interface';
 import { ThingsCertComponent } from '../cert/things.cert.component';
 import { Cert } from 'app/common/interfaces/certs.interface';
 
@@ -231,26 +231,29 @@ export class ThingsDetailsComponent implements OnInit {
       return;
     }
 
-    const time = this.httpMsg.time ? `"t": ${this.httpMsg.time},` : '';
-    let msg: string = '';
+    const msg: SenMLRec = {
+      t: this.httpMsg.time ? Number(this.httpMsg.time) : null,
+      bn: this.httpMsg.name,
+    };
     switch (this.httpMsg.valType) {
       case 'string':
-        msg = `[{${time} "n":"${this.httpMsg.name}", "vs": "${this.httpMsg.value}"}]`;
+        msg.vs = this.httpMsg.value;
         break;
       case 'data':
-        msg = `[{${time} "n":"${this.httpMsg.name}", "vd": "${this.httpMsg.value}"}]`;
+        msg.vd = this.httpMsg.value;
         break;
       case 'bool':
-        msg = `[{${time} "n":"${this.httpMsg.name}", "vb": ${this.httpMsg.value}}]`;
+        msg.vb = Boolean(this.httpMsg.value);
         break;
       case 'float':
       default:
-        msg = `[{${time} "n":"${this.httpMsg.name}", "v": ${this.httpMsg.value}}]`;
+        msg.v = Number(this.httpMsg.value);
         break;
     }
 
+    const senml = [msg];
 
-    this.messagesService.sendMessage(this.httpMsg.chanID, this.thing.key, msg, this.httpMsg.subtopic).subscribe(
+    this.messagesService.sendSenML(this.httpMsg.chanID, this.thing.key, msg, this.httpMsg.subtopic).subscribe(
       resp => {
         this.notificationsService.success('Message succefully sent', '');
       },
