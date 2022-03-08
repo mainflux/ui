@@ -253,7 +253,7 @@ export class ThingsDetailsComponent implements OnInit {
 
     const senml = [msg];
 
-    this.messagesService.sendSenML(this.httpMsg.chanID, this.thing.key, msg, this.httpMsg.subtopic).subscribe(
+    this.messagesService.sendSenML(this.httpMsg.chanID, this.thing.key, senml, this.httpMsg.subtopic).subscribe(
       resp => {
         this.notificationsService.success('Message succefully sent', '');
       },
