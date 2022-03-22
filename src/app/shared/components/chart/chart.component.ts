@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 
 import { ChartDataSets, ChartType, ChartOptions, ChartPoint } from 'chart.js';
 import { BaseChartDirective, Color } from 'ng2-charts';
@@ -16,31 +16,20 @@ import {
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
 })
-export class ChartComponent implements OnChanges, AfterViewInit {
+export class ChartComponent implements OnChanges {
   chartColors: Color[] = CHART_COLORS;
   chartOptions: ChartOptions = CHART_OPTIONS['line'];
 
   chartDataSets: ChartDataSets[] = [];
-  chartType: ChartType = 'line';
-  chartTypes: string[] = ['line', 'scatter'];
 
+  @Input() chartType: ChartType = 'line';
   @Input() msgDatasets: Dataset[] = [];
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
-  @ViewChild(NbSelectComponent, { static: false }) select: NbSelectComponent;
 
   constructor(
     private toMillisecsPipe: ToMillisecsPipe,
     private messageValuePipe: MessageValuePipe,
   ) {}
-
-  ngAfterViewInit() {
-    this.select.selectedChange.subscribe(
-      (event: ChartType) => {
-        this.chartType = event;
-        this.chartOptions = CHART_OPTIONS[event];
-      },
-    );
-  }
 
   ngOnChanges() {
     this.chartDataSets = [];
@@ -48,7 +37,6 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     this.msgDatasets.forEach( dataset => {
       const dataSet: ChartDataSets = {
         data: [],
-        label: dataset.label,
       };
 
       // Create charts by name

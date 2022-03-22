@@ -1,7 +1,7 @@
 export const CHART_COLORS = [
   {
     backgroundColor: 'transparent',
-    borderColor: '#35A7FF',
+    borderColor: '#5f8ecf',
     pointBackgroundColor: 'rgba(148,159,177,1)',
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',

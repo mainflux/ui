@@ -14,7 +14,7 @@ export class IntervalService {
     if (this.callbacks.indexOf(callback) > -1) {
       return;
     }
-    this.callbacks.push(callback);
+    this.callbacks.push(callback.bind(context));
 
     interval = interval || defaultInterval;
     const id = window.setInterval(callback.bind(context), interval);

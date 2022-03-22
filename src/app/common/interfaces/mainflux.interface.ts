@@ -16,7 +16,36 @@ export interface User {
   email?: string;
   password?: string;
   picture?: string;
-  metadata?: Object;
+  metadata?: UserMetadata;
+}
+
+export interface UserMetadata {
+  profile?: UserProfile;
+  dashboardConf?: DashboardConf;
+}
+
+export interface UserProfile {
+  picture?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  company?: string;
+  department?: string;
+  occupation?: string;
+  location?: string;
+}
+
+export interface DashboardConf {
+  mainfluxIntro?: boolean;
+  cards?: CardConf[];
+}
+
+export interface CardConf {
+  channel?: string;
+  filters?: MsgFilters;
+  title?: string;
+  mode?: string;
 }
 
 export interface Channel {

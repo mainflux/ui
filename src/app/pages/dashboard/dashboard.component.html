@@ -1,7 +1,25 @@
+<button nbButton size="medium" class="button-blue button-left"
+        (click)="onCreateCard()" title="Create card">
+  <nb-icon icon="plus-outline" shape="semi-round"></nb-icon>
+</button>
+
 <div class="row">
+  <div *ngFor="let conf of dashboardConf.cards; index as i;" class="col-6" [class.col-12]="conf.mode  === 'table'">
+    <ngx-message-monitor [config]="conf"
+                         (saveConfigEvent)="onSaveConfig($event, i)"
+                         (deleteConfigEvent)="onDeleteConfig(i)">
+    </ngx-message-monitor>
+  </div>
+</div>
+
+<div class="row" *ngIf="dashboardConf.mainfluxIntro">
   <div class="col-xxl-12">
     <nb-card size="tiny" class="dash-top">
       <nb-card-body>
+        <button nbButton size="tiny" class="button-blue button-right"
+                (click)="onCloseWelcome()">
+          <nb-icon icon="close-outline" shape="semi-round"></nb-icon>
+        </button>
         <h5 class="dash-top-text">{{title}}</h5>
         <p class="dash-top-text">{{description}}</p>
         <a class="dash-top-button" href="https://www.youtube.com/watch?v=H4BPKfvCZLk"
@@ -13,7 +31,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="dashboardConf.mainfluxIntro">
   <div class="col-xxl-4">
     <nb-card size="medium">
       <nb-card-header>
