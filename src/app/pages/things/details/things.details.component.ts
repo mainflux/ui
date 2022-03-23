@@ -7,7 +7,7 @@ import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { CertsService } from 'app/common/services/certs/certs.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
-import { Thing, TableConfig, TablePage, SenMLRec } from 'app/common/interfaces/mainflux.interface';
+import { Thing, Channel, TableConfig, TablePage, SenMLRec } from 'app/common/interfaces/mainflux.interface';
 import { ThingsCertComponent } from '../cert/things.cert.component';
 import { Cert } from 'app/common/interfaces/certs.interface';
 
@@ -20,6 +20,7 @@ import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 })
 export class ThingsDetailsComponent implements OnInit {
   thing: Thing = {};
+  chanID = '';
 
   tableConfig: TableConfig = {
     colNames: ['Name', 'Channel ID', 'checkbox'],
@@ -48,6 +49,8 @@ export class ThingsDetailsComponent implements OnInit {
   valTypes: string[] = ['float', 'bool', 'string', 'data'];
 
   hoursValid = '';
+
+  messages = [];
 
   editorOptions: JsonEditorOptions;
   @ViewChild(JsonEditorComponent, { static: false }) editor: JsonEditorComponent;
@@ -176,8 +179,27 @@ export class ThingsDetailsComponent implements OnInit {
           total: resp.total,
           rows: resp.channels,
         };
+
+        this.getChannelMessages();
       },
     );
+  }
+
+  getChannelMessages() {
+    if (this.chanID === '' && this.connChansPage.rows.length > 0) {
+      const chan: Channel = this.connChansPage.rows[0];
+      this.chanID = chan.id;
+    }
+    if (this.chanID !== '') {
+      const filters = {
+        publisher: this.thing.id,
+      };
+      this.messagesService.getMessages(this.chanID, filters).subscribe(
+        (resp: any) => {
+          this.messages = resp.messages;
+        },
+      );
+    }
   }
 
   findDisconnectedChans() {
@@ -233,7 +255,7 @@ export class ThingsDetailsComponent implements OnInit {
 
     const msg: SenMLRec = {
       t: this.httpMsg.time ? Number(this.httpMsg.time) : null,
-      bn: this.httpMsg.name,
+      n: this.httpMsg.name,
     };
     switch (this.httpMsg.valType) {
       case 'string':

@@ -14,7 +14,6 @@ import {
 
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 
 // Mainflux - Dependencies
@@ -41,18 +40,19 @@ import { ChannelsComponent } from 'app/pages/channels/channels.component';
 import { ChannelsAddComponent } from 'app/pages/channels/add/channels.add.component';
 import { ChannelsDetailsComponent } from 'app/pages/channels/details/channels.details.component';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
+// Mainflux - Dashboard
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   imports: [
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,
-    DashboardModule,
+    NbCardModule,
     SharedModule,
     CommonModule,
     FormsModule,
     NbButtonModule,
-    NbCardModule,
     NbInputModule,
     NbSelectModule,
     NbCheckboxModule,
@@ -73,6 +73,8 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
   ],
   declarations: [
     PagesComponent,
+    // Dashboard
+    DashboardComponent,
     // Users Groups
     UserGroupsComponent,
     UserGroupsAddComponent,

@@ -14,7 +14,6 @@ import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 })
 export class ChannelsDetailsComponent implements OnInit {
   channel: Channel = {};
-  thingKey = '';
 
   tableConfig: TableConfig = {
     colNames: ['Name', 'Thing ID', 'checkbox'],
@@ -106,10 +105,6 @@ export class ChannelsDetailsComponent implements OnInit {
           total: resp.total,
           rows: resp.things,
         };
-        if (this.connThingsPage.rows.length > 0) {
-          const thing: Thing = this.connThingsPage.rows[0];
-          this.thingKey = thing.key;
-        }
       },
     );
   }

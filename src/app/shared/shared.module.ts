@@ -16,6 +16,7 @@ import { MapModule } from './components/map/map.module';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { ChartModule } from './components/chart/chart.module';
 import { MessageMonitorComponent } from './components/message-monitor/message-monitor.component';
+import { MessageMonitorConfigComponent } from './components/message-monitor/config/message-monitor.config.component';
 import { MessageValuePipe } from './pipes/message-value.pipe';
 import { ToMillisecsPipe } from './pipes/time.pipe';
 import { TableComponent } from './components/table/table.component';
@@ -38,6 +39,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
   declarations: [
     ConfirmationComponent,
     MessageMonitorComponent,
+    MessageMonitorConfigComponent,
     MessageValuePipe,
     ToMillisecsPipe,
     TableComponent,

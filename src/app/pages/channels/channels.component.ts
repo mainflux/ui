@@ -64,7 +64,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   onChangePage(offset: number) {
-    this.pageFilters.limit = offset;
+    this.pageFilters.offset = offset;
     this.getChannels();
   }
 

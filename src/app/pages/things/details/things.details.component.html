@@ -42,6 +42,30 @@
         </ngx-table-component>
       </nb-card-body>
     </nb-card>
+
+    <nb-card size="medium">
+      <nb-card-header class="card-header">
+        <div class="row">
+          <div class="col-3">
+            Messages
+          </div>
+          <div class="col-6">
+            <nb-select fullWidth [(selected)]="chanID" size="tiny">
+              <nb-option *ngFor="let ch of connChansPage.rows" [value]="ch.id">{{ch.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="col-3">
+            <button nbButton size="tiny" class="button-green button-right"
+                    (click)="getChannelMessages()">
+              Read Messages
+            </button>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <pre  *ngFor="let message of messages">{{ message | json }}</pre>
+      </nb-card-body>
+    </nb-card>
   </div>
 
   <div class="col-md-6">
@@ -94,7 +118,7 @@
 
     <nb-card size="tiny">
       <nb-card-header class="card-header">
-        HTTP Adapter
+        HTTP Client
         <button (click)="onSendMessage()" nbButton size="tiny" class="button-green button-right">
           Send Message
         </button>
@@ -102,8 +126,8 @@
       <nb-card-body>
         <div class="row form-row">
           <div class="col-md-2 form-key"> Channel: </div>
-          <div class="col-md-10">
-            <nb-select class="select-http-adapter" [(selected)]="httpMsg.chanID" size="tiny">
+          <div class="col-md-8">
+            <nb-select class="select-http-adapter" [(selected)]="httpMsg.chanID" fullWidth size="tiny">
               <nb-option *ngFor="let ch of this.connChansPage.rows" [value]="ch.id">{{ch.name}}</nb-option>
             </nb-select>
           </div>
@@ -127,11 +151,11 @@
                    [(ngModel)]='httpMsg.name'>
           </div>
           <div class="col-md-2 form-key"> Value: </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <input nbInput fullWidth fieldSize="tiny"
                    [(ngModel)]='httpMsg.value'>
           </div>
-          <div class="col-1">
+          <div class="col-2">
             <nb-select class="right" [(selected)]="httpMsg.valType" size="tiny">
               <nb-option *ngFor="let type of this.valTypes" [value]="type">{{type}}</nb-option>
             </nb-select>
@@ -141,8 +165,3 @@
     </nb-card>
   </div>
 </div>
-
-<!-- Message Reader Monitor -->
-<ngx-message-monitor [channels]="connChansPage.rows"
-                     [thingKey]="thing.key">
-</ngx-message-monitor>

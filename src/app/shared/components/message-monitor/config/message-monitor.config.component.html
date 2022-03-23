@@ -1,0 +1,127 @@
+<nb-card>
+  <nb-card-header class="table-header">
+    Configuration
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        Card type:
+      </div>
+      <div class="col-9">
+        <nb-select [(selected)]="config.mode" size="tiny">
+          <nb-option *ngFor="let mode of this.modes" [value]="mode">{{mode}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        Title:
+      </div>
+      <div class="col-9">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='config.title'>
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        Database Format:
+      </div>
+      <div class="col-3">
+        <nb-select fullWidth [(selected)]="format" size="tiny">
+          <nb-option *ngFor="let format of formats" [value]="format">{{format}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        Channel:
+      </div>
+      <div class="col-9">
+        <nb-select fullWidth [(selected)]="config.channel" size="tiny" (selectedChange)="onSelectChannel()">
+          <nb-option *ngFor="let ch of channels" [value]="ch.id">{{ch.name}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        Publisher:
+      </div>
+      <div class="col-9">
+        <nb-select fullWidth [(selected)]="config.filters.publisher" size="tiny">
+          <nb-option *ngFor="let pub of publishers" [value]="pub.id">{{pub.name}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        Subtopic:
+      </div>
+      <div class="col-9">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='config.filters.subtopic'>
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        Name:
+      </div>
+      <div class="col-9">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='config.filters.name'>
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        Value:
+      </div>
+      <div class="col-4">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='value'>
+      </div>
+      <div class="col-5">
+        <nb-select fullWidth [(selected)]="valueType" size="tiny">
+          <nb-option *ngFor="let type of this.valueTypes" [value]="type">{{type}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        Time Range:
+      </div>
+      <div class="col-9">
+        <nb-rangepicker #rangepicker (rangeChange)="getRangeDate($event)"></nb-rangepicker>
+        <input nbInput placeholder="From / To" fullWidth [nbDatepicker]="rangepicker" fieldSize="tiny">
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        From:
+      </div>
+      <div class="col-9">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='config.filters.from'>
+      </div>
+    </div>
+    <div class="row conf-row">
+      <div class="col-3 form-key">
+        To:
+      </div>
+      <div class="col-9">
+        <input nbInput fullWidth fieldSize="tiny"
+               [(ngModel)]='config.filters.to'>
+      </div>
+    </div>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <button nbButton status="success"
+            (click)="submit()" class="button-footer">
+            Save
+    </button>
+    <button nbButton status="danger"
+            (click)="cancel()" class="button-footer">
+            Delete
+    </button>
+  </nb-card-footer>
+</nb-card>

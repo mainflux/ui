@@ -1,11 +1,14 @@
-import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
-import { Channel, Thing, MainfluxMsg, MsgFilters, Dataset,
+import { Component, Input, Output, OnInit, OnChanges, OnDestroy, EventEmitter } from '@angular/core';
+import { NbDialogService } from '@nebular/theme';
+
+import { Channel, Thing, MainfluxMsg, CardConf, Dataset,
   TableConfig, TablePage, ReaderUrl } from 'app/common/interfaces/mainflux.interface';
 import { IntervalService } from 'app/common/services/interval/interval.service';
 import { MessagesService } from 'app/common/services/messages/messages.service';
 import { ChannelsService } from 'app/common/services/channels/channels.service';
 import { environment } from 'environments/environment';
 import { MessageValuePipe } from 'app/shared/pipes/message-value.pipe';
+import { MessageMonitorConfigComponent } from './config/message-monitor.config.component';
 
 @Component({
   selector: 'ngx-message-monitor',
@@ -14,28 +17,8 @@ import { MessageValuePipe } from 'app/shared/pipes/message-value.pipe';
 })
 export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   messages: MainfluxMsg[] = [];
-  chanID = '';
-
-  mode: string = 'json';
-  modes: string[] = ['json', 'table', 'chart'];
-  value: any;
-  valueType: string = 'float';
-  valueTypes: string[] = ['float', 'bool', 'string', 'data'];
-  format: string = 'senml';
-  formats: string[] = ['senml', 'json'];
 
   msgDatasets: Dataset[] = [];
-
-  filters: MsgFilters = {
-    offset: 0,
-    limit: 20,
-    publisher: '',
-    subtopic: '',
-    format: '',
-    name: '',
-    from: 0,
-    to: 0,
-  };
 
   readerUrl: ReaderUrl = {
     prefix: environment.readerPrefix,
@@ -50,72 +33,45 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
   };
   messagesPage: TablePage = {};
 
-  @Input() channels: Channel[] = [];
-  @Input() thingKey: string;
+  @Input() config: CardConf = {
+    mode: '',
+    channel: '',
+    filters: {
+      offset: 0,
+      limit: 20,
+      publisher: '',
+      subtopic: '',
+      format: '',
+      name: '',
+      from: 0,
+      to: 0,
+    },
+  };
+  @Output() saveConfigEvent: EventEmitter<any> = new EventEmitter();
+  @Output() deleteConfigEvent: EventEmitter<any> = new EventEmitter();
   constructor(
     private intervalService: IntervalService,
     private messagesService: MessagesService,
     private channelsService: ChannelsService,
     private messageValuePipe: MessageValuePipe,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
-    this.intervalService.set(this, this.getChannelMessages);
-  }
-
-  getRangeDate(event) {
-    if (event.start && event.end) {
-      this.filters = {
-        from: new Date(event.start).getTime() / 1000,
-        to: new Date(event.end).getTime() / 1000,
-      };
+    if (this.config.channel !== undefined) {
+      this.intervalService.set(this, this.getChannelMessages);
     }
-
-    this.getChannelMessages();
   }
 
   ngOnChanges() {
-    if (this.channels === undefined) {
-        return;
-    }
-
-    if (this.channels.length > 0 && this.channels[0].id && this.thingKey !== '') {
-      this.chanID = this.channels[0].id;
+    if (this.config.channel !== undefined) {
       this.getChannelMessages();
     }
   }
 
   getChannelMessages() {
-    if (this.chanID === '' || this.thingKey === '') {
-      return;
-    }
-
-    switch (this.valueType) {
-      case 'string':
-        this.filters.vs = this.value;
-        break;
-      case 'data':
-        this.filters.vd = this.value;
-        break;
-      case 'bool':
-        this.filters.vb = this.value;
-        break;
-      case 'float':
-        this.filters.v = this.value;
-        break;
-    }
-
-    switch (this.format) {
-      case 'senml':
-        this.filters.format = 'messages';
-        break;
-      case 'json':
-        this.filters.format = this.format;
-        break;
-    }
-
     this.messagesPage.rows = [];
-    this.messagesService.getMessages(this.chanID, this.filters, this.readerUrl).subscribe(
+    this.messagesService.getMessages(this.config.channel, this.config.filters || {}, this.readerUrl).subscribe(
       (resp: any) => {
         if (resp.messages) {
           this.messagesPage = {
@@ -123,60 +79,61 @@ export class MessageMonitorComponent implements OnInit, OnChanges, OnDestroy {
             limit: resp.limit,
             total: resp.total,
             rows: resp.messages.map((msg: MainfluxMsg) => {
-              if (msg.value) {
+              if (msg.value !== undefined) {
                 msg.value = this.messageValuePipe.transform(msg);
-                return msg;
               }
-              if (msg.string_value) {
+              if (msg.string_value !== undefined) {
                 msg.value = this.messageValuePipe.transform(msg);
                 delete msg.string_value;
-                return msg;
               }
-              if (msg.bool_value) {
+              if (msg.bool_value !== undefined) {
                 msg.value = this.messageValuePipe.transform(msg);
                 delete msg.bool_value;
-                return msg;
               }
-              if (msg.data_value) {
+              if (msg.data_value !== undefined) {
                 msg.value = this.messageValuePipe.transform(msg);
                 delete msg.data_value;
-                return msg;
               }
+              return msg;
             }),
           };
           this.msgDatasets = [{
-            label: `Channel: ${this.chanID}`,
+            label: `Channel: ${this.config.channel}`,
             messages: <MainfluxMsg[]>this.messagesPage.rows,
           }];
-        }
-      },
-    );
-
-    this.channelsService.connectedThings(this.chanID).subscribe(
-      (resp: any) => {
-        if (resp.things) {
-          this.publishers = resp.things;
         }
       },
     );
   }
 
   onChangeLimit(lim: number) {
-    this.filters.limit = lim;
+    this.config.filters.offset = 0;
+    this.config.filters.limit = lim;
     this.getChannelMessages();
   }
 
-  onChangePage(dir: any) {
-    if (dir === 'prev') {
-      this.filters.offset = this.messagesPage.offset - this.messagesPage.limit;
-    }
-    if (dir === 'next') {
-      this.filters.offset = this.messagesPage.offset + this.messagesPage.limit;
-    }
+  onChangePage(offset: any) {
+    this.config.filters.offset = offset;
     this.getChannelMessages();
   }
 
   ngOnDestroy(): void {
     this.intervalService.clear();
+  }
+
+  openConfigModal() {
+    this.config.filters = this.config.filters || {};
+    this.dialogService.open(MessageMonitorConfigComponent, { context: {config: this.config} }).onClose.subscribe(
+      resp => {
+        if (resp === false) {
+          this.deleteConfigEvent.emit();
+        }
+        if (resp) {
+          this.config = resp;
+          this.saveConfigEvent.emit(resp);
+          this.getChannelMessages();
+        }
+      },
+    );
   }
 }
