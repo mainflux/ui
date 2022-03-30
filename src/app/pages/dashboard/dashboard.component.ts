@@ -11,7 +11,11 @@ import { User, PageFilters, TablePage, DashboardConf, CardConf } from 'app/commo
 })
 
 export class DashboardComponent implements OnInit {
-  user: User;
+  user: User = {
+    metadata: {
+      dashboardConf: {},
+    },
+  };
   title: string = STRINGS.home.title;
   description: string = STRINGS.home.description;
 
@@ -19,7 +23,7 @@ export class DashboardComponent implements OnInit {
 
   page: TablePage = {};
   dashboardConf: DashboardConf = {
-    cards: [{}],
+    cards: [],
     mainfluxIntro: true,
   };
 
@@ -31,9 +35,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.usersService.getProfile().subscribe(
       (resp: User) => {
-        this.user = resp;
-        if (this.user.metadata.dashboardConf) {
-           this.dashboardConf = this.user.metadata.dashboardConf;
+        if (resp.metadata && resp.metadata.dashboardConf) {
+           this.dashboardConf = resp.metadata.dashboardConf;
         }
       },
     );
@@ -65,7 +68,8 @@ export class DashboardComponent implements OnInit {
   }
 
   onCloseWelcome() {
-    this.user.metadata.dashboardConf.mainfluxIntro = false;
+    this.dashboardConf.mainfluxIntro = false;
+    this.user.metadata.dashboardConf = this.dashboardConf;
     this.usersService.editUser(this.user).subscribe();
   }
 }
