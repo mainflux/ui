@@ -1,5 +1,42 @@
 # Mainflux-UI Changelog
 
+## 0.13.0 - 15. APR 2022.
+
+- NOISSUE - Update changelog for release 0.13.0
+- NOISSUE - Fix influx envars and minor dashboard fix (#249)
+- NOISSUE - Create message monitor config and creation in home page (#248)
+- NOISSUE - Fix env.template.js (#247)
+- NOISSUE - Use Bearer or Thing authorization header scheme prefixes (#243)
+- NOISSUE - Update docker-compose (#245)
+- Bump url-parse from 1.5.7 to 1.5.10 (#244)
+- Bump url-parse from 1.5.1 to 1.5.7 (#242)
+- Bump follow-redirects from 1.14.1 to 1.14.8 (#241)
+- Bump y18n from 3.2.1 to 3.2.2 (#240)
+- Bump trim-off-newlines from 1.0.1 to 1.0.3 (#239)
+- Bump karma from 6.3.4 to 6.3.14 (#238)
+- Bump handlebars from 4.0.11 to 4.7.7 (#237)
+- NOISSUE - Fix users groups and services pages and loginUrl (#235)
+- NOISSUE - Change endpoint  /version by /health new one (#233)
+- NOISSUE - Add Keto to docker-compose and improve message monitor (#234)
+- NOISSUE - Fix certs req and users creation (#232)
+- NOISSUE - Improve message monitor charts types (#231)
+- Add chart type selection (#195)
+- NOISSUE - Update transformer config.toml (#229)
+- NOISSUE - Use latest influxDB config (#226)
+- NOISSUE - Dynamically set the year in the footer (#216)
+- UI-132 - Add Issue and View certs in Things details (#221)
+- NOISSUE - Add format http param to message-monitor (#224)
+- NOISSUE - Replace custom json editor by ang-jsoneditor (#222)
+- NOISSUE - Use pure JSON to save and upload Things and Channels (#223)
+- NOISSUE - Add dynamic prefix conf, and authentication when behind proxy. (#219)
+- Bump chart.js from 2.7.1 to 2.9.4 (#220)
+- NOISSUE - Update ngx-admin and use JSON for import/export (#214)
+- Bump chart.js from 2.7.1 to 2.9.4 (#210)
+- NOISSUE - Update docker-compose deps and remove lora-adapter (#213)
+- Update CHANGELOG.md (#209)
+- NOISSUE - Add defaults.ini as docker volume for grafana container (#205)
+- NOISSUE - Fix nginx conf for groups (#206)
+
 ## 0.12.1 - 11. MAY 2021.
 
 - NOISSUE - Fix nginx conf for groups
