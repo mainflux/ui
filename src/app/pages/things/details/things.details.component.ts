@@ -9,7 +9,7 @@ import { MessagesService } from 'app/common/services/messages/messages.service';
 import { NotificationsService } from 'app/common/services/notifications/notifications.service';
 import { Thing, Channel, TableConfig, TablePage, SenMLRec } from 'app/common/interfaces/mainflux.interface';
 import { ThingsCertComponent } from '../cert/things.cert.component';
-import { Cert } from 'app/common/interfaces/certs.interface';
+import { CertReq } from 'app/common/interfaces/certs.interface';
 
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
@@ -21,6 +21,8 @@ import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 export class ThingsDetailsComponent implements OnInit {
   thing: Thing = {};
   chanID = '';
+  format = 'senml';
+  formats = ['senml', 'json'];
 
   tableConfig: TableConfig = {
     colNames: ['Name', 'Channel ID', 'checkbox'],
@@ -108,7 +110,7 @@ export class ThingsDetailsComponent implements OnInit {
   }
 
   onIssueCert() {
-    const cert: Cert = {
+    const cert: CertReq = {
       thing_id: this.thing.id,
       key_bits: 2048,
       key_type: 'rsa',
@@ -116,7 +118,18 @@ export class ThingsDetailsComponent implements OnInit {
     };
 
     this.certsService.issueCert(cert).subscribe(
-      resp => {
+      (resp: any) => {
+        const ctx = {
+          context: {
+            certRes: resp,
+          },
+        };
+        this.dialogService.open(ThingsCertComponent, ctx)
+          .onClose.subscribe(
+            confirm => {
+            },
+        );
+
         this.getCertsSerials();
       },
     );
@@ -127,8 +140,7 @@ export class ThingsDetailsComponent implements OnInit {
       (resp: any) => {
         const ctx = {
           context: {
-            cert: resp.cert,
-            serial: row.cert_serial,
+            certRes: resp,
           },
         };
         this.dialogService.open(ThingsCertComponent, ctx)
@@ -193,6 +205,7 @@ export class ThingsDetailsComponent implements OnInit {
     if (this.chanID !== '') {
       const filters = {
         publisher: this.thing.id,
+        format: this.format === 'senml' ? 'messages' : this.format,
       };
       this.messagesService.getMessages(this.chanID, filters).subscribe(
         (resp: any) => {

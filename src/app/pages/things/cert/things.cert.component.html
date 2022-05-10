@@ -1,14 +1,14 @@
 <nb-card>
   <nb-card-header class="table-header">
-    Certificate: {{ serial }}
+    Client {{ certRes.client_key ? 'Key' : 'Certificate' }}: {{ certRes.cert_serial }}
   </nb-card-header>
 
   <nb-card-body>
     <div class="row">
+      <code>
+        {{ certRes.client_key ? certRes.client_key : certRes.client_cert }}
+      </code>
     </div>
-    <code>
-      {{ cert }}
-    </code>
   </nb-card-body>
 
   <nb-card-footer>

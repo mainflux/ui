@@ -49,15 +49,20 @@
           <div class="col-3">
             Messages
           </div>
-          <div class="col-6">
+          <div class="col-4">
             <nb-select fullWidth [(selected)]="chanID" size="tiny">
               <nb-option *ngFor="let ch of connChansPage.rows" [value]="ch.id">{{ch.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="col-2">
+            <nb-select fullWidth [(selected)]="format" size="tiny">
+              <nb-option *ngFor="let format of formats" [value]="format">{{format}}</nb-option>
             </nb-select>
           </div>
           <div class="col-3">
             <button nbButton size="tiny" class="button-green button-right"
                     (click)="getChannelMessages()">
-              Read Messages
+              Read
             </button>
           </div>
         </div>
